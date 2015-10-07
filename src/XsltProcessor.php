@@ -34,11 +34,7 @@ class XsltProcessor extends PhpXsltProcessor
      */
     public function transformToXML($doc)
     {
-        $styleSheet = $this->styleSheet;
-
-        if ($this->styleSheet instanceof SimpleXMLElement) {
-            $styleSheet = dom_import_simplexml($this->styleSheet)->ownerDocument;
-        }
+        $styleSheet = $this->styleSheetToDomDocument();
 
         parent::importStylesheet($this->getTranspiledStyleSheet($styleSheet));
         return parent::transformToXml($doc);
@@ -50,11 +46,7 @@ class XsltProcessor extends PhpXsltProcessor
      */
     public function transformToDoc($doc)
     {
-        $styleSheet = $this->styleSheet;
-
-        if ($this->styleSheet instanceof SimpleXMLElement) {
-            $styleSheet = dom_import_simplexml($this->styleSheet)->ownerDocument;
-        }
+        $styleSheet = $this->styleSheetToDomDocument();
 
         parent::importStylesheet($this->getTranspiledStyleSheet($styleSheet));
         return parent::transformToDoc($doc);
@@ -67,11 +59,7 @@ class XsltProcessor extends PhpXsltProcessor
      */
     public function transformToUri($doc, $uri)
     {
-        $styleSheet = $this->styleSheet;
-
-        if ($this->styleSheet instanceof SimpleXMLElement) {
-            $styleSheet = dom_import_simplexml($this->styleSheet)->ownerDocument;
-        }
+        $styleSheet = $this->styleSheetToDomDocument();
 
         parent::importStylesheet($this->getTranspiledStyleSheet($styleSheet));
         return parent::transformToUri($doc, $uri);
@@ -112,5 +100,13 @@ class XsltProcessor extends PhpXsltProcessor
         $transpiledStyleSheet->loadXML($bootstrap);
 
         return $transpiledStyleSheet;
+    }
+
+    private function styleSheetToDomDocument () {
+        if ($this->styleSheet instanceof SimpleXMLElement) {
+            return dom_import_simplexml($this->styleSheet)->ownerDocument;
+        }
+
+        return $this->styleSheet;
     }
 }
