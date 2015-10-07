@@ -1,0 +1,22 @@
+{
+    "name" : "genkgo/camt",
+    "description": "Library to read CAMT files (XML containing bank statements). Currently only CAMT.053 is supported.",
+    "require" : {
+        "php" : ">=5.6",
+        "ext-xsl" : "*"
+    },
+    "require-dev" : {
+        "phpunit/phpunit" : "~4.0",
+        "phpunit/phpunit-mock-objects" : "~2.3"
+    },
+    "autoload" : {
+        "psr-4" : {
+            "Genkgo\\Xsl\\" : ["src"]
+        }
+    },
+    "autoload-dev" : {
+        "psr-4" : {
+            "Genkgo\\Xsl\\" : ["tests"]
+        }
+    }
+}
