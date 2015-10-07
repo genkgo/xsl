@@ -93,7 +93,8 @@ class XsltProcessor extends PhpXsltProcessor
      * @param DOMDocument $styleSheet
      * @return DOMDocument
      */
-    private function createTranspiledDocument (DOMDocument $styleSheet) {
+    private function createTranspiledDocument (DOMDocument $styleSheet)
+    {
         $startRoot =  '<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">';
         $endRoot = '</xsl:stylesheet>';
 
