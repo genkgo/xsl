@@ -2,7 +2,6 @@
 namespace Genkgo\Xsl;
 
 use DOMDocument;
-use DOMNode;
 use SimpleXMLElement;
 use XSLTProcessor as PhpXsltProcessor;
 
@@ -12,35 +11,106 @@ use XSLTProcessor as PhpXsltProcessor;
  */
 class XsltProcessor extends PhpXsltProcessor
 {
-
-    public function __construct () {
-    }
+    /**
+     * @var bool
+     */
+    private static $booted = false;
+    /**
+     * @var
+     */
+    private $styleSheet;
 
     /**
-     * @param DOMNode $doc
-     * @return DOMDocument|bool
+     * @param object $stylesheet
      */
-    public function transformToDoc($doc)
+    public function importStyleSheet($stylesheet)
     {
-        return parent::transformToDoc($doc);
-    }
-
-    /**
-     * @param DOMDocument $doc
-     * @param string $uri
-     * @return int|bool
-     */
-    public function transformToUri($doc, $uri)
-    {
-        return parent::transformToUri($doc, $uri);
+        $this->styleSheet = $stylesheet;
     }
 
     /**
      * @param DOMDocument|SimpleXMLElement $doc
-     * @return string|bool
+     * @return string
      */
     public function transformToXML($doc)
     {
-        return parent::transformToXML($doc);
+        $styleSheet = $this->styleSheet;
+
+        if ($this->styleSheet instanceof SimpleXMLElement) {
+            $styleSheet = dom_import_simplexml($this->styleSheet)->ownerDocument;
+        }
+
+        parent::importStylesheet($this->getTranspiledStyleSheet($styleSheet));
+        return parent::transformToXml($doc);
+    }
+
+    /**
+     * @param \DOMNode $doc
+     * @return DOMDocument
+     */
+    public function transformToDoc($doc)
+    {
+        $styleSheet = $this->styleSheet;
+
+        if ($this->styleSheet instanceof SimpleXMLElement) {
+            $styleSheet = dom_import_simplexml($this->styleSheet)->ownerDocument;
+        }
+
+        parent::importStylesheet($this->getTranspiledStyleSheet($styleSheet));
+        return parent::transformToDoc($doc);
+    }
+
+    /**
+     * @param DOMDocument|SimpleXMLElement $doc
+     * @param string $uri
+     * @return int
+     */
+    public function transformToUri($doc, $uri)
+    {
+        $styleSheet = $this->styleSheet;
+
+        if ($this->styleSheet instanceof SimpleXMLElement) {
+            $styleSheet = dom_import_simplexml($this->styleSheet)->ownerDocument;
+        }
+
+        parent::importStylesheet($this->getTranspiledStyleSheet($styleSheet));
+        return parent::transformToUri($doc, $uri);
+    }
+
+    /**
+     * @param DOMDocument $styleSheet
+     * @return DOMDocument
+     */
+    private function getTranspiledStyleSheet(DOMDocument $styleSheet)
+    {
+        if (self::$booted === false) {
+            stream_wrapper_register('gxsl', Stream::class);
+            self::$booted = true;
+        }
+
+        $documentContext = new Context($styleSheet);
+
+        $streamContext = stream_context_create([
+            'gxsl' => [
+                'documentContext' => $documentContext
+            ]
+        ]);
+        libxml_set_streams_context($streamContext);
+
+        $startRoot =  '<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">';
+        $endRoot = '</xsl:stylesheet>';
+
+        if (is_file($styleSheet->documentURI)) {
+            $home = dirname($styleSheet->documentURI) . '/~';
+        } else {
+            $home = $styleSheet->documentURI . '/~';
+        }
+
+        $bootstrap = $startRoot . '<xsl:include href="gxsl://' . $home . '" />' . $endRoot;
+
+        $transpiledStyleSheet = new DOMDocument('1.0', 'UTF-8');
+        $transpiledStyleSheet->loadXML($bootstrap);
+
+        return $transpiledStyleSheet;
     }
 }

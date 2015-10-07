@@ -31,7 +31,6 @@ namespace Genkgo\Xsl;
 
 class XpathLexerTest extends AbstractTestCase
 {
-
     public function testTokenize()
     {
         $sourcePath = '//*[@id="i"]';
@@ -67,7 +66,7 @@ class XpathLexerTest extends AbstractTestCase
         $this->assertCount(8, $resultLexer);
     }
 
-    function testSeek()
+    public function testSeek()
     {
         $expectedTokens = ['name', '(', '"some_name"', ')'];
         $resultLexer = new XpathLexer($expectedTokens);
@@ -78,7 +77,8 @@ class XpathLexerTest extends AbstractTestCase
         }
     }
 
-    function testBack() {
+    public function testBack()
+    {
         $expectedTokens = ['..', '/', 'contents', '/', 'child', '::', 'sections'];
 
         $resultLexer = new XpathLexer($expectedTokens);
@@ -88,5 +88,29 @@ class XpathLexerTest extends AbstractTestCase
 
         $resultLexer->prev();
         $this->assertEquals($expectedTokens[count($expectedTokens) - 1], $resultLexer->current());
+    }
+
+    public function testIterate()
+    {
+        $expectedTokens = ['..', '/', 'contents', '/', 'child', '::', 'sections'];
+
+        $index = 0;
+        $resultLexer = new XpathLexer($expectedTokens);
+        foreach ($resultLexer as $resultToken) {
+            $this->assertEquals($expectedTokens[$index], $resultToken);
+            $this->assertEquals($index, $resultLexer->key());
+            $index++;
+        }
+    }
+
+    public function testWhiteSpace()
+    {
+        $source = "\nconcat(a, b)";
+        $expectedTokens = ['concat', '(', 'a', ',', 'b', ')'];
+
+        $resultLexer = XpathLexer::tokenize($source);
+        foreach ($resultLexer as $resultToken) {
+            $this->assertEquals($expectedTokens[$resultLexer->key()], $resultToken);
+        }
     }
 }

@@ -33,18 +33,40 @@ use Countable;
 use Iterator;
 use SeekableIterator;
 
-class XpathLexer implements Iterator, SeekableIterator, Countable {
-
+/**
+ * Class XpathLexer
+ * @package Genkgo\Xsl
+ */
+class XpathLexer implements Iterator, SeekableIterator, Countable
+{
+    /**
+     * @var
+     */
     private $tokens;
+    /**
+     * @var int
+     */
     private $position = 0;
 
+    /**
+     *
+     */
     const LEADING_WHITESPACE = ' /^\s/';
 
-    public function __construct ($tokens) {
+    /**
+     * @param $tokens
+     */
+    public function __construct($tokens)
+    {
         $this->tokens = $tokens;
     }
 
-    public static function tokenize ($source) {
+    /**
+     * @param $source
+     * @return XpathLexer
+     */
+    public static function tokenize($source)
+    {
         $tokens = [];
         preg_match_all(static::compileTokenRegEx(), $source, $tokens);
         $tokens = $tokens[0];
@@ -59,6 +81,9 @@ class XpathLexer implements Iterator, SeekableIterator, Countable {
         return new static($tokens);
     }
 
+    /**
+     * @return string
+     */
     private static function compileTokenRegEx()
     {
         $tokens = [
@@ -135,6 +160,9 @@ class XpathLexer implements Iterator, SeekableIterator, Countable {
         return count($this->tokens);
     }
 
+    /**
+     *
+     */
     public function prev()
     {
         $this->position--;
