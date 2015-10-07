@@ -85,6 +85,11 @@ class XsltProcessor extends PhpXsltProcessor
         ]);
         libxml_set_streams_context($streamContext);
 
+        $transpiledStyleSheet = $this->createTranspiledDocument($styleSheet);
+        return $transpiledStyleSheet;
+    }
+
+    private function createTranspiledDocument (DOMDocument $styleSheet) {
         $startRoot =  '<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">';
         $endRoot = '</xsl:stylesheet>';
 
@@ -98,7 +103,6 @@ class XsltProcessor extends PhpXsltProcessor
 
         $transpiledStyleSheet = new DOMDocument('1.0', 'UTF-8');
         $transpiledStyleSheet->loadXML($bootstrap);
-
         return $transpiledStyleSheet;
     }
 
