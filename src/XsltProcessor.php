@@ -92,7 +92,7 @@ class XsltProcessor extends PhpXsltProcessor
      * @param DOMDocument $styleSheet
      * @return DOMDocument
      */
-    private function createTranspiledDocument (DOMDocument $styleSheet)
+    private function createTranspiledDocument(DOMDocument $styleSheet)
     {
         if (is_file($styleSheet->documentURI)) {
             $home = dirname($styleSheet->documentURI) . '/~';
@@ -108,7 +108,8 @@ class XsltProcessor extends PhpXsltProcessor
     /**
      * @return DOMDocument
      */
-    private function styleSheetToDomDocument () {
+    private function styleSheetToDomDocument()
+    {
         if ($this->styleSheet instanceof SimpleXMLElement) {
             return dom_import_simplexml($this->styleSheet)->ownerDocument;
         }
