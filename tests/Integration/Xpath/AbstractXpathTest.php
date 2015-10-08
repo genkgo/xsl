@@ -2,10 +2,10 @@
 namespace Genkgo\Xsl\Integration\Xpath;
 
 use DOMDocument;
-use Genkgo\Xsl\AbstractTestCase;
+use Genkgo\Xsl\Integration\AbstractIntegrationTestCase;
 use Genkgo\Xsl\XsltProcessor;
 
-abstract class AbstractXpathTest extends AbstractTestCase {
+abstract class AbstractXpathTest extends AbstractIntegrationTestCase {
 
     protected function transformFile ($path) {
         $styleSheet = new DOMDocument();

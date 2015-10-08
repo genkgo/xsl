@@ -5,21 +5,8 @@ use DOMDocument;
 use Genkgo\Xsl\AbstractTestCase;
 use Genkgo\Xsl\XsltProcessor;
 
-class ProcessXslt1DocumentsTest extends AbstractTestCase
+class ProcessXslt1DocumentsTest extends AbstractIntegrationTestCase
 {
-    private $oldCwd;
-
-    public function setUp()
-    {
-        $this->oldCwd = getcwd();
-        chdir(dirname(__DIR__));
-    }
-
-    public function tearDown()
-    {
-        chdir($this->oldCwd);
-    }
-
     public function testCollection()
     {
         $xslDoc = new DOMDocument();
