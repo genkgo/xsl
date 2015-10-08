@@ -76,7 +76,8 @@ class XsltProcessor extends PhpXsltProcessor
             self::$booted = true;
         }
 
-        $transpiler = new Transpiler(new Context($styleSheet));
+        $transformers = [new Xpath\Transformer()];
+        $transpiler = new Transpiler(new Context($styleSheet), $transformers);
 
         $streamContext = stream_context_create([
             'gxsl' => [
@@ -85,6 +86,7 @@ class XsltProcessor extends PhpXsltProcessor
         ]);
         libxml_set_streams_context($streamContext);
 
+        $this->registerPHPFunctions();
         return $this->createTranspiledDocument($styleSheet);
     }
 
