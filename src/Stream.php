@@ -36,18 +36,13 @@ class Stream
         $filename = str_replace('gxsl://', '', $path);
 
         $streamContext = stream_context_get_options($this->context);
-        if (!isset($streamContext['gxsl']['documentContext']) || $streamContext['gxsl']['documentContext'] instanceof Context === false) {
-            throw new StreamException('A gxsl stream should have a document context, no document context given');
+        if (!isset($streamContext['gxsl']['transpiler']) || $streamContext['gxsl']['transpiler'] instanceof Transpiler === false) {
+            throw new StreamException('A gxsl stream should have a transpiler, no transpiler given');
         }
 
-        /** @var Context $documentContext */
-        $documentContext = $streamContext['gxsl']['documentContext'];
-
-        if (substr($filename, -1, 1) === '~') {
-            $this->template = $documentContext->getDocument()->saveXML();
-        } else {
-            $this->template = file_get_contents($filename);
-        }
+        /** @var Transpiler $transpiler */
+        $transpiler = $streamContext['gxsl']['transpiler'];
+        $this->template = $transpiler->transpile($filename);
 
         return true;
     }

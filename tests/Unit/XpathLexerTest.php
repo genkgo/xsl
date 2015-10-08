@@ -35,8 +35,8 @@ class XpathLexerTest extends AbstractTestCase
     {
         $sourcePath = '//*[@id="i"]';
         $expectedTokens = ['//', '*', '[', '@', 'id', '=', '"i"', ']'];
-        $resultLexer = XpathLexer::tokenize($sourcePath);
-        $expectedLexer = new XpathLexer($expectedTokens);
+        $resultLexer = Xpath\Lexer::tokenize($sourcePath);
+        $expectedLexer = new Xpath\Lexer($expectedTokens);
 
         for ($i = 0; $i < count($expectedTokens); $i++) {
             $this->assertEquals($expectedLexer->current(), $resultLexer->current());
@@ -49,7 +49,7 @@ class XpathLexerTest extends AbstractTestCase
     {
         $expectedTokens = ['/', 'bookstore', '/', 'book', '[', 'price', '>',
             '35.00', ']'];
-        $resultLexer = new XpathLexer($expectedTokens);
+        $resultLexer = new Xpath\Lexer($expectedTokens);
 
         for ($i = 0; $i < count($expectedTokens); $i++) {
             $this->assertEquals($expectedTokens[$i], $resultLexer->current());
@@ -59,17 +59,17 @@ class XpathLexerTest extends AbstractTestCase
 
     public function testCount()
     {
-        $resultLexer = new XpathLexer([]);
+        $resultLexer = new Xpath\Lexer([]);
         $this->assertCount(0, $resultLexer);
 
-        $resultLexer = new XpathLexer(['//', '*', '[', '@', 'id', '=', '"i"', ']']);
+        $resultLexer = new Xpath\Lexer(['//', '*', '[', '@', 'id', '=', '"i"', ']']);
         $this->assertCount(8, $resultLexer);
     }
 
     public function testSeek()
     {
         $expectedTokens = ['name', '(', '"some_name"', ')'];
-        $resultLexer = new XpathLexer($expectedTokens);
+        $resultLexer = new Xpath\Lexer($expectedTokens);
         $this->assertEquals($expectedTokens[0], $resultLexer->current());
         for ($i = 0; $i < count($expectedTokens); $i++) {
             $resultLexer->seek($i);
@@ -81,7 +81,7 @@ class XpathLexerTest extends AbstractTestCase
     {
         $expectedTokens = ['..', '/', 'contents', '/', 'child', '::', 'sections'];
 
-        $resultLexer = new XpathLexer($expectedTokens);
+        $resultLexer = new Xpath\Lexer($expectedTokens);
         for ($i = 0; $i < count($expectedTokens); $i++) {
             $resultLexer->next();
         }
@@ -95,7 +95,7 @@ class XpathLexerTest extends AbstractTestCase
         $expectedTokens = ['..', '/', 'contents', '/', 'child', '::', 'sections'];
 
         $index = 0;
-        $resultLexer = new XpathLexer($expectedTokens);
+        $resultLexer = new Xpath\Lexer($expectedTokens);
         foreach ($resultLexer as $resultToken) {
             $this->assertEquals($expectedTokens[$index], $resultToken);
             $this->assertEquals($index, $resultLexer->key());
@@ -108,7 +108,7 @@ class XpathLexerTest extends AbstractTestCase
         $source = "\nconcat(a, b)";
         $expectedTokens = ['concat', '(', 'a', ',', 'b', ')'];
 
-        $resultLexer = XpathLexer::tokenize($source);
+        $resultLexer = Xpath\Lexer::tokenize($source);
         foreach ($resultLexer as $resultToken) {
             $this->assertEquals($expectedTokens[$resultLexer->key()], $resultToken);
         }

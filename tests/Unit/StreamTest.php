@@ -6,6 +6,7 @@ use Genkgo\Xsl\AbstractTestCase;
 use Genkgo\Xsl\Context;
 use Genkgo\Xsl\Exception\StreamException;
 use Genkgo\Xsl\Stream;
+use Genkgo\Xsl\Transpiler;
 
 class StreamTest extends AbstractTestCase
 {
@@ -16,7 +17,7 @@ class StreamTest extends AbstractTestCase
         $stream = new Stream();
         $stream->context = stream_context_create([
             'gxsl' => [
-                'documentContext' => new Context(new DOMDocument('1.0', 'UTF-8'))
+                'transpiler' => new Transpiler(new Context(new DOMDocument('1.0', 'UTF-8')))
             ]
         ]);
         $stream->stream_open('gxsl://~', 'r', 0, $openedPath);

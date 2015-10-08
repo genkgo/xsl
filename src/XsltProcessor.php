@@ -76,17 +76,16 @@ class XsltProcessor extends PhpXsltProcessor
             self::$booted = true;
         }
 
-        $documentContext = new Context($styleSheet);
+        $transpiler = new Transpiler(new Context($styleSheet));
 
         $streamContext = stream_context_create([
             'gxsl' => [
-                'documentContext' => $documentContext
+                'transpiler' => $transpiler
             ]
         ]);
         libxml_set_streams_context($streamContext);
 
-        $transpiledStyleSheet = $this->createTranspiledDocument($styleSheet);
-        return $transpiledStyleSheet;
+        return $this->createTranspiledDocument($styleSheet);
     }
 
     /**
@@ -95,19 +94,14 @@ class XsltProcessor extends PhpXsltProcessor
      */
     private function createTranspiledDocument (DOMDocument $styleSheet)
     {
-        $startRoot =  '<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">';
-        $endRoot = '</xsl:stylesheet>';
-
         if (is_file($styleSheet->documentURI)) {
             $home = dirname($styleSheet->documentURI) . '/~';
         } else {
             $home = $styleSheet->documentURI . '/~';
         }
 
-        $bootstrap = $startRoot . '<xsl:include href="gxsl://' . $home . '" />' . $endRoot;
-
         $transpiledStyleSheet = new DOMDocument('1.0', 'UTF-8');
-        $transpiledStyleSheet->loadXML($bootstrap);
+        $transpiledStyleSheet->load('gxsl://' . $home);
         return $transpiledStyleSheet;
     }
 

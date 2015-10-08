@@ -27,17 +27,17 @@
 /**
  * @author moz@google.com (Michael Zhou)
  */
-namespace Genkgo\Xsl;
+namespace Genkgo\Xsl\Xpath;
 
 use Countable;
 use Iterator;
 use SeekableIterator;
 
 /**
- * Class XpathLexer
- * @package Genkgo\Xsl
+ * Class Lexer
+ * @package Genkgo\Xsl\Xpath
  */
-class XpathLexer implements Iterator, SeekableIterator, Countable
+class Lexer implements Iterator, SeekableIterator, Countable
 {
     /**
      * @var
@@ -63,7 +63,7 @@ class XpathLexer implements Iterator, SeekableIterator, Countable
 
     /**
      * @param $source
-     * @return XpathLexer
+     * @return Lexer
      */
     public static function tokenize($source)
     {
