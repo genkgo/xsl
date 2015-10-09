@@ -4,6 +4,7 @@ namespace Genkgo\Xsl\Unit;
 use DOMDocument;
 use Genkgo\Xsl\AbstractTestCase;
 use Genkgo\Xsl\Context;
+use Genkgo\Xsl\Exception\ReadOnlyStreamException;
 use Genkgo\Xsl\Exception\StreamException;
 use Genkgo\Xsl\Stream;
 use Genkgo\Xsl\Transpiler;
@@ -32,5 +33,13 @@ class StreamTest extends AbstractTestCase
         $stream = new Stream();
         $stream->context = stream_context_create();
         $stream->stream_open('gxsl://~', 'r', 0, $openedPath);
+    }
+
+    public function testStreamWrite()
+    {
+        $this->setExpectedException(ReadOnlyStreamException::class);
+
+        $stream = new Stream();
+        $stream->stream_write('something');
     }
 }
