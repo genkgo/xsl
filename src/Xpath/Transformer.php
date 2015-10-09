@@ -17,6 +17,8 @@ class Transformer implements TransformerInterface {
         $this->addFunction('floor');
         $this->addFunction('round');
         $this->addFunction('roundHalfToEven');
+        $this->addFunction('endsWith');
+        $this->addFunction('indexOf');
     }
 
     private function addFunction ($name, $class = Functions::class) {
