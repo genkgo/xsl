@@ -1,7 +1,7 @@
 <?php
 namespace Genkgo\Xsl\Integration\Xpath;
 
-class StringTest extends AbstractXpathTest {
+class TextTest extends AbstractXpathTest {
 
     public function testConcat () {
         $this->assertEquals('Hello World!', $this->transformFile('Stubs/Xpath/String/concat.xsl'));
