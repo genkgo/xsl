@@ -96,12 +96,32 @@ class TextTest extends AbstractXpathTest {
             'param1' => 'tattoo',
             'param2' => 'tat'
         ]));
+
+        $this->assertEquals('tattoo', $this->transformFile('Stubs/Xpath/String/substring-before.xsl', [
+            'param1' => 'tattoo',
+            'param2' => ''
+        ]));
+
+        $this->assertEquals('', $this->transformFile('Stubs/Xpath/String/substring-before.xsl', [
+            'param1' => 'tattoo',
+            'param2' => 'test'
+        ]));
     }
 
     public function testSubstringBefore () {
         $this->assertEquals('tat', $this->transformFile('Stubs/Xpath/String/substring-before.xsl', [
             'param1' => 'tattoo',
             'param2' => 'too'
+        ]));
+
+        $this->assertEquals('tattoo', $this->transformFile('Stubs/Xpath/String/substring-before.xsl', [
+            'param1' => 'tattoo',
+            'param2' => ''
+        ]));
+
+        $this->assertEquals('', $this->transformFile('Stubs/Xpath/String/substring-before.xsl', [
+            'param1' => 'tattoo',
+            'param2' => 'test'
         ]));
     }
 
