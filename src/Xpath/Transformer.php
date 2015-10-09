@@ -9,6 +9,29 @@ use Genkgo\Xsl\TransformerInterface;
 
 class Transformer implements TransformerInterface {
 
+    private $functions = [];
+
+    public function __construct () {
+        $this->addFunction('abs');
+        $this->addFunction('ceiling');
+        $this->addFunction('floor');
+        $this->addFunction('round');
+        $this->addFunction('roundHalfToEven');
+    }
+
+    private function addFunction ($name, $class = Functions::class) {
+        $this->functions[$this->dasherize($name)] = [$class, $name];
+    }
+
+    private function dasherize ($methodName) {
+        if (ctype_lower($methodName) === false) {
+            $methodName = strtolower(preg_replace('/(.)(?=[A-Z])/', '$1'.  '-', $methodName));
+            $methodName = preg_replace('/\s+/', '', $methodName);
+        }
+
+        return $methodName;
+    }
+
     public function transform(DOMDocument $document)
     {
         $document->documentElement->setAttribute('xmlns:php', 'http://php.net/xsl');
@@ -32,11 +55,12 @@ class Transformer implements TransformerInterface {
         $resultTokens = [];
         $lexer = Lexer::tokenize($xpathExpression);
         foreach ($lexer as $token) {
-            if ($token === 'abs') {
+            if (isset($this->functions[$token])) {
+                list($class, $method) = $this->functions[$token];
                 $resultTokens[] = 'php:function';
                 $resultTokens[] = '(';
                 $resultTokens[] = '\'';
-                $resultTokens[] = Functions::class. '::abs';
+                $resultTokens[] = $class. '::' . $method;
                 $resultTokens[] = '\'';
                 $resultTokens[] = ',';
                 $lexer->next();

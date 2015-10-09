@@ -1,10 +1,10 @@
 <?php
 namespace Genkgo\Xsl\Xpath;
 
+use Genkgo\Xsl\Xpath\Functions\Math;
+
 class Functions {
 
-    public static function abs ($number) {
-        return abs($number);
-    }
+    use Math;
 
 }
