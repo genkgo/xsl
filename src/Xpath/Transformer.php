@@ -23,6 +23,7 @@ class Transformer implements TransformerInterface
         $transpiler->addFunction(new StringFunction('floor', Functions::class));
         $transpiler->addFunction(new StringFunction('round', Functions::class));
         $transpiler->addFunction(new StringFunction('roundHalfToEven', Functions::class));
+        $transpiler->addFunction(new StringFunction('startsWith', Functions::class));
         $transpiler->addFunction(new StringFunction('endsWith', Functions::class));
         $transpiler->addFunction(new StringFunction('indexOf', Functions::class));
         $transpiler->addFunction(new StringFunction('matches', Functions::class));
@@ -32,5 +33,6 @@ class Transformer implements TransformerInterface
         $transpiler->addFunction(new StringFunction('translate', Functions::class));
         $transpiler->addFunction(new StringFunction('substringAfter', Functions::class));
         $transpiler->addFunction(new StringFunction('substringBefore', Functions::class));
+        $transpiler->addFunction(new StringFunction('replace', Functions::class));
     }
 }

@@ -21,6 +21,30 @@ class TextTest extends AbstractXpathTest
         ]));
     }
 
+    public function testStringLength()
+    {
+        $this->assertEquals('5', $this->transformFile('Stubs/Xpath/Text/string-length.xsl', [
+            'param1' => 'Hello',
+        ]));
+
+        $this->assertEquals('11', $this->transformFile('Stubs/Xpath/Text/string-length.xsl', [
+            'param1' => 'Hello World',
+        ]));
+    }
+
+    public function testStartsWith()
+    {
+        $this->assertEquals('false', $this->transformFile('Stubs/Xpath/Text/starts-with.xsl', [
+            'param1' => 'Hello',
+            'param2' => 'World'
+        ]));
+
+        $this->assertEquals('true', $this->transformFile('Stubs/Xpath/Text/starts-with.xsl', [
+            'param1' => 'Hello World',
+            'param2' => 'Hello'
+        ]));
+    }
+
     public function testEndsWith()
     {
         $this->assertEquals('false', $this->transformFile('Stubs/Xpath/Text/ends-with.xsl', [
@@ -81,6 +105,11 @@ class TextTest extends AbstractXpathTest
     public function testTokenize()
     {
         $this->assertEquals('xsl2istranspiledbygenkgo/xsl', $this->transformFile('Stubs/Xpath/Text/tokenize.xsl'));
+    }
+
+    public function testReplace()
+    {
+        $this->assertEquals('[1=ab][2=]cd', $this->transformFile('Stubs/Xpath/Text/replace.xsl'));
     }
 
     public function testTranslate()

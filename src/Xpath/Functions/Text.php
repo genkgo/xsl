@@ -11,6 +11,20 @@ trait Text
      * @param $haystack
      * @param $needle
      * @return bool
+     *
+     * @author Salman A
+     * @link http://stackoverflow.com/questions/834303/startswith-and-endswith-functions-in-php
+     */
+    public static function startsWith($haystack, $needle) {
+        return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== false;
+    }
+    /**
+     * @param $haystack
+     * @param $needle
+     * @return bool
+     *
+     * @author Salman A
+     * @link http://stackoverflow.com/questions/834303/startswith-and-endswith-functions-in-php
      */
     public static function endsWith($haystack, $needle)
     {
@@ -128,5 +142,19 @@ trait Text
         }
 
         return $resultSet;
+    }
+
+    /**
+     * @param $input
+     * @param $pattern
+     * @param string $flags
+     * @return \DOMDocument
+     */
+    public static function replace($input, $pattern, $replacement, $flags = '')
+    {
+        $resultSet = new \DOMDocument();
+        $resultSet->appendChild($resultSet->createElement('resultSet'));
+
+        return preg_replace('/'.$pattern.'/'.$flags, $replacement, $input);
     }
 }
