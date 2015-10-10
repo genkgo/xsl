@@ -100,7 +100,7 @@ class Lexer implements Iterator, SeekableIterator, Countable
             '.', // Any single character.
         ];
 
-        return '/' . implode('|', $tokens) . '/';
+        return '/'.implode('|', $tokens).'/';
     }
 
     /**
@@ -144,7 +144,7 @@ class Lexer implements Iterator, SeekableIterator, Countable
     }
 
     /**
-     * @param int $position
+     * @param  int  $position
      * @return void
      */
     public function seek($position)

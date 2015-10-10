@@ -3,8 +3,7 @@ namespace Genkgo\Xsl;
 
 use DOMDocument;
 
-interface TransformerInterface {
-
-    public function transform (DOMDocument $document);
-
+interface TransformerInterface
+{
+    public function transform(DOMDocument $document, Transpiler $transpiler);
 }

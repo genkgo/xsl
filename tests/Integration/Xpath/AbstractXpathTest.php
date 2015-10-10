@@ -5,9 +5,10 @@ use DOMDocument;
 use Genkgo\Xsl\Integration\AbstractIntegrationTestCase;
 use Genkgo\Xsl\XsltProcessor;
 
-abstract class AbstractXpathTest extends AbstractIntegrationTestCase {
-
-    protected function transformFile ($path, array $parameters = []) {
+abstract class AbstractXpathTest extends AbstractIntegrationTestCase
+{
+    protected function transformFile($path, array $parameters = [])
+    {
         $styleSheet = new DOMDocument();
         $styleSheet->load($path);
 
@@ -20,5 +21,4 @@ abstract class AbstractXpathTest extends AbstractIntegrationTestCase {
 
         return trim($processor->transformToXml($styleSheet));
     }
-
 }

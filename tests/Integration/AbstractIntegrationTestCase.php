@@ -3,8 +3,8 @@ namespace Genkgo\Xsl\Integration;
 
 use Genkgo\Xsl\AbstractTestCase;
 
-abstract class AbstractIntegrationTestCase extends AbstractTestCase {
-
+abstract class AbstractIntegrationTestCase extends AbstractTestCase
+{
     private $oldCwd;
 
     public function setUp()
@@ -17,5 +17,4 @@ abstract class AbstractIntegrationTestCase extends AbstractTestCase {
     {
         chdir($this->oldCwd);
     }
-
 }

@@ -21,5 +21,4 @@ class ProcessXslt2DocumentsTest extends AbstractIntegrationTestCase
 
         $this->assertEquals(157, trim($processorResult));
     }
-
 }

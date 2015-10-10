@@ -63,6 +63,7 @@ class Stream
     {
         $bytes = substr($this->template, $this->position, $count);
         $this->position += $count;
+
         return $bytes;
     }
 
