@@ -2,7 +2,6 @@
 namespace Genkgo\Xsl\Integration;
 
 use DOMDocument;
-use Genkgo\Xsl\AbstractTestCase;
 use Genkgo\Xsl\XsltProcessor;
 
 class ProcessXslt2DocumentsTest extends AbstractIntegrationTestCase
