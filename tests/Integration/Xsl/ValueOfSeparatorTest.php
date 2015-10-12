@@ -1,7 +1,7 @@
 <?php
 namespace Genkgo\Xsl\Integration\Xsl;
 
-class ValueOfSeparator extends AbstractXslTest
+class ValueOfSeparatorTest extends AbstractXslTest
 {
     public function testSubstringBefore()
     {
