@@ -17,10 +17,6 @@ final class Transpiler
      * @var array|TransformerInterface[]
      */
     private $transformers;
-    /**
-     * @var FunctionInterface[]
-     */
-    private $functions = [];
 
     /**
      * @param Context $context
@@ -30,25 +26,6 @@ final class Transpiler
     {
         $this->context = $context;
         $this->transformers = $transformers;
-    }
-
-    public function addFunction(StringFunction $function)
-    {
-        $this->functions[$function->getXpathMethod()] = $function;
-    }
-
-    public function hasFunction($name)
-    {
-        return isset($this->functions[$name]);
-    }
-
-    /**
-     * @param $name
-     * @return StringFunction
-     */
-    public function getFunction($name)
-    {
-        return $this->functions[$name];
     }
 
     /**
@@ -76,7 +53,7 @@ final class Transpiler
             $document->documentElement->setAttribute('version', '1.0');
 
             foreach ($this->transformers as $transformer) {
-                $transformer->transform($document, $this);
+                $transformer->transform($document);
             }
         }
 

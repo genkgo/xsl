@@ -8,7 +8,7 @@ use DOMNodeList;
 use DOMXPath;
 use Genkgo\Xsl\TransformerInterface;
 use Genkgo\Xsl\Transpiler;
-use Genkgo\Xsl\Xpath\Lexer;
+use Genkgo\Xsl\Xpath\Compiler;
 
 /**
  * Class Transformer
@@ -17,10 +17,24 @@ use Genkgo\Xsl\Xpath\Lexer;
 class Transformer implements TransformerInterface
 {
     /**
-     * @param DOMDocument $document
-     * @param Transpiler $transpiler
+     * @var Compiler
      */
-    public function transform(DOMDocument $document, Transpiler $transpiler)
+    private $xpathCompiler;
+
+    /**
+     * Transformer constructor.
+     * @param Compiler $xpathCompiler
+     */
+    public function __construct(Compiler $xpathCompiler)
+    {
+        $this->xpathCompiler = $xpathCompiler;
+    }
+
+
+    /**
+     * @param DOMDocument $document
+     */
+    public function transform(DOMDocument $document)
     {
         $document->documentElement->setAttribute('xmlns:php', 'http://php.net/xsl');
         $matchAndSelectElements = new DOMXPath($document);
@@ -31,9 +45,8 @@ class Transformer implements TransformerInterface
             if ($element->hasAttribute('match')) {
                 $element->setAttribute(
                     'match',
-                    $this->transformXpathExpression(
-                        $element->getAttribute('match'),
-                        $transpiler
+                    $this->xpathCompiler->compile(
+                        $element->getAttribute('match')
                     )
                 );
             }
@@ -41,9 +54,8 @@ class Transformer implements TransformerInterface
             if ($element->hasAttribute('select')) {
                 $element->setAttribute(
                     'select',
-                    $this->transformXpathExpression(
-                        $element->getAttribute('select'),
-                        $transpiler
+                    $this->xpathCompiler->compile(
+                        $element->getAttribute('select')
                     )
                 );
             }
@@ -51,7 +63,7 @@ class Transformer implements TransformerInterface
             if ($element->nodeName === 'xsl:value-of' && $element->hasAttribute('separator')) {
                 $select = $element->getAttribute('select');
                 $separator = $element->getAttribute('separator');
-                $callback = static::class . '::valueOfSeparate';
+                $callback = Elements::class . '::valueOfSeparate';
 
                 $element->setAttribute(
                     'select',
@@ -59,49 +71,5 @@ class Transformer implements TransformerInterface
                 );
             }
         }
-    }
-
-    /**
-     * @param $xpathExpression
-     * @param Transpiler $transpiler
-     * @return string
-     */
-    private function transformXpathExpression($xpathExpression, Transpiler $transpiler)
-    {
-        $resultTokens = [];
-        $lexer = Lexer::tokenize($xpathExpression);
-        foreach ($lexer as $token) {
-            if ($transpiler->hasFunction($token)) {
-                $function = $transpiler->getFunction($token);
-                $resultTokens = array_merge($resultTokens, $function->replace($lexer));
-            } else {
-                $resultTokens[] = $token;
-            }
-        }
-
-        return implode('', $resultTokens);
-    }
-
-    /**
-     * @param DOMDocument[] $elements
-     * @param $separator
-     * @return string
-     */
-    public static function valueOfSeparate ($elements, $separator) {
-        $result = '';
-
-        $index = 0;
-        foreach ($elements as $element) {
-            foreach ($element->documentElement->childNodes as $node) {
-                if ($index > 0) {
-                    $result .= $separator;
-                }
-
-                $result .= $node->nodeValue;
-                $index++;
-            }
-        }
-
-        return $result;
     }
 }

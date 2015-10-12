@@ -2,6 +2,7 @@
 namespace Genkgo\Xsl;
 
 use DOMDocument;
+use Genkgo\Xsl\Xpath\Compiler;
 use SimpleXMLElement;
 use XSLTProcessor as PhpXsltProcessor;
 
@@ -76,7 +77,7 @@ class XsltProcessor extends PhpXsltProcessor
             self::$booted = true;
         }
 
-        $transformers = [new Xpath\Transformer(), new Xsl\Transformer()];
+        $transformers = [new Xsl\Transformer(new Compiler())];
         $transpiler = new Transpiler(new Context($styleSheet), $transformers);
 
         $streamContext = stream_context_create([
