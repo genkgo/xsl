@@ -1,5 +1,6 @@
 <?php
 namespace Genkgo\Xsl\Xpath\Functions;
+use Genkgo\Xsl\Schema\XsSequence;
 
 /**
  * Class Text
@@ -132,16 +133,7 @@ trait Text
      */
     public static function tokenize($input, $pattern, $flags = '')
     {
-        $resultSet = new \DOMDocument();
-        $resultSet->appendChild($resultSet->createElement('resultSet'));
-
-        $matches = preg_split('/'.$pattern.'/'.$flags, $input);
-        foreach ($matches as $match) {
-            $result = $resultSet->createElement('result', $match);
-            $resultSet->documentElement->appendChild($result);
-        }
-
-        return $resultSet;
+        return XsSequence::fromArray(preg_split('/'.$pattern.'/'.$flags, $input));
     }
 
     /**

@@ -4,6 +4,10 @@ namespace Genkgo\Xsl\Xpath;
 use Genkgo\Xsl\FunctionInterface;
 use Genkgo\Xsl\StringFunction;
 
+/**
+ * Class Compiler
+ * @package Genkgo\Xsl\Xpath
+ */
 final class Compiler {
 
     /**
@@ -11,6 +15,9 @@ final class Compiler {
      */
     private $functions = [];
 
+    /**
+     *
+     */
     public function __construct () {
         $this->addFunction(new StringFunction('abs', Functions::class));
         $this->addFunction(new StringFunction('ceiling', Functions::class));
@@ -30,11 +37,18 @@ final class Compiler {
         $this->addFunction(new StringFunction('replace', Functions::class));
     }
 
+    /**
+     * @param FunctionInterface $function
+     */
     public function addFunction(FunctionInterface $function)
     {
         $this->functions[$function->getXpathMethod()] = $function;
     }
 
+    /**
+     * @param $xpathExpression
+     * @return string
+     */
     public function compile ($xpathExpression) {
         $resultTokens = [];
         $lexer = Lexer::tokenize($xpathExpression);
