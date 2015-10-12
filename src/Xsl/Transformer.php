@@ -3,6 +3,7 @@ namespace Genkgo\Xsl\Xsl;
 
 use DOMDocument;
 use DOMElement;
+use DOMNode;
 use DOMNodeList;
 use DOMXPath;
 use Genkgo\Xsl\TransformerInterface;
@@ -46,6 +47,17 @@ class Transformer implements TransformerInterface
                     )
                 );
             }
+
+            if ($element->nodeName === 'xsl:value-of' && $element->hasAttribute('separator')) {
+                $select = $element->getAttribute('select');
+                $separator = $element->getAttribute('separator');
+                $callback = static::class . '::valueOfSeparate';
+
+                $element->setAttribute(
+                    'select',
+                    'php:function(\'' . $callback . '\', ' . $select . ', \'' . $separator . '\')'
+                );
+            }
         }
     }
 
@@ -68,5 +80,28 @@ class Transformer implements TransformerInterface
         }
 
         return implode('', $resultTokens);
+    }
+
+    /**
+     * @param DOMDocument[] $elements
+     * @param $separator
+     * @return string
+     */
+    public static function valueOfSeparate ($elements, $separator) {
+        $result = '';
+
+        $index = 0;
+        foreach ($elements as $element) {
+            foreach ($element->documentElement->childNodes as $node) {
+                if ($index > 0) {
+                    $result .= $separator;
+                }
+
+                $result .= $node->nodeValue;
+                $index++;
+            }
+        }
+
+        return $result;
     }
 }
