@@ -19,30 +19,34 @@ final class Compiler {
      *
      */
     public function __construct () {
-        $this->addFunction(new StringFunction('abs', Functions::class));
-        $this->addFunction(new StringFunction('ceiling', Functions::class));
-        $this->addFunction(new StringFunction('floor', Functions::class));
-        $this->addFunction(new StringFunction('round', Functions::class));
-        $this->addFunction(new StringFunction('roundHalfToEven', Functions::class));
-        $this->addFunction(new StringFunction('startsWith', Functions::class));
-        $this->addFunction(new StringFunction('endsWith', Functions::class));
-        $this->addFunction(new StringFunction('indexOf', Functions::class));
-        $this->addFunction(new StringFunction('matches', Functions::class));
-        $this->addFunction(new StringFunction('lowerCase', Functions::class));
-        $this->addFunction(new StringFunction('upperCase', Functions::class));
-        $this->addFunction(new StringFunction('tokenize', Functions::class));
-        $this->addFunction(new StringFunction('translate', Functions::class));
-        $this->addFunction(new StringFunction('substringAfter', Functions::class));
-        $this->addFunction(new StringFunction('substringBefore', Functions::class));
-        $this->addFunction(new StringFunction('replace', Functions::class));
+        $this
+            ->addFunction(new StringFunction('abs', Functions::class))
+            ->addFunction(new StringFunction('ceiling', Functions::class))
+            ->addFunction(new StringFunction('floor', Functions::class))
+            ->addFunction(new StringFunction('round', Functions::class))
+            ->addFunction(new StringFunction('roundHalfToEven', Functions::class))
+            ->addFunction(new StringFunction('startsWith', Functions::class))
+            ->addFunction(new StringFunction('endsWith', Functions::class))
+            ->addFunction(new StringFunction('indexOf', Functions::class))
+            ->addFunction(new StringFunction('matches', Functions::class))
+            ->addFunction(new StringFunction('lowerCase', Functions::class))
+            ->addFunction(new StringFunction('upperCase', Functions::class))
+            ->addFunction(new StringFunction('tokenize', Functions::class))
+            ->addFunction(new StringFunction('translate', Functions::class))
+            ->addFunction(new StringFunction('substringAfter', Functions::class))
+            ->addFunction(new StringFunction('substringBefore', Functions::class))
+            ->addFunction(new StringFunction('replace', Functions::class))
+        ;
     }
 
     /**
      * @param FunctionInterface $function
+     * @return $this
      */
     public function addFunction(FunctionInterface $function)
     {
         $this->functions[$function->getXpathMethod()] = $function;
+        return $this;
     }
 
     /**
