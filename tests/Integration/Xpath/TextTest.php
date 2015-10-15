@@ -107,6 +107,11 @@ class TextTest extends AbstractXpathTest
         $this->assertEquals('xsl2istranspiledbygenkgo/xsl', $this->transformFile('Stubs/Xpath/Text/tokenize.xsl'));
     }
 
+    public function testStringJoin()
+    {
+        $this->assertEquals('xsl2,is,transpiled,by,genkgo/xsl', $this->transformFile('Stubs/Xpath/Text/string-join.xsl'));
+    }
+
     public function testReplace()
     {
         $this->assertEquals('[1=ab][2=]cd', $this->transformFile('Stubs/Xpath/Text/replace.xsl'));

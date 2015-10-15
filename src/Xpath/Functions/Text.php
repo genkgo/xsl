@@ -149,4 +149,23 @@ trait Text
 
         return preg_replace('/'.$pattern.'/'.$flags, $replacement, $input);
     }
+
+    public static function stringJoin ($elements, $separator)
+    {
+        $result = '';
+
+        $index = 0;
+        foreach ($elements as $sequence) {
+            foreach ($sequence->documentElement->childNodes as $node) {
+                if ($index > 0) {
+                    $result .= $separator;
+                }
+
+                $result .= $node->nodeValue;
+                $index++;
+            }
+        }
+
+        return $result;
+    }
 }

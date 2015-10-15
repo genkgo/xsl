@@ -2,6 +2,7 @@
 namespace Genkgo\Xsl\Xpath;
 
 use Genkgo\Xsl\FunctionInterface;
+use Genkgo\Xsl\ObjectFunction;
 use Genkgo\Xsl\StringFunction;
 
 /**
@@ -36,6 +37,7 @@ final class Compiler {
             ->addFunction(new StringFunction('substringAfter', Functions::class))
             ->addFunction(new StringFunction('substringBefore', Functions::class))
             ->addFunction(new StringFunction('replace', Functions::class))
+            ->addFunction(new ObjectFunction('stringJoin', Functions::class))
         ;
     }
 
