@@ -17,7 +17,7 @@ trait Date
      */
     public static function currentTime()
     {
-        return new XsTime(new DateTimeImmutable());
+        return XsTime::fromDateTime(new DateTimeImmutable());
     }
 
     /**
@@ -25,7 +25,7 @@ trait Date
      */
     public static function currentDate()
     {
-        return new XsDate(new DateTimeImmutable());
+        return XsDate::fromDateTime(new DateTimeImmutable());
     }
 
     /**
@@ -33,6 +33,6 @@ trait Date
      */
     public static function currentDateTime()
     {
-        return new XsDateTime(new DateTimeImmutable());
+        return XsDateTime::fromDateTime(new DateTimeImmutable());
     }
 }

@@ -16,14 +16,6 @@ final class Compiler
     private $functions = [];
 
     /**
-     *
-     */
-    public function __construct()
-    {
-        $this->addFunctions(Functions::supportedFunctions());
-    }
-
-    /**
      * @param FunctionInterface[] $functions
      * @return $this
      */

@@ -1,23 +1,12 @@
 <?php
 namespace Genkgo\Xsl\Schema;
 
-use DOMDocument;
-
 /**
  * Class XsSequence
  * @package Genkgo\Xsl\Schema
  */
-final class XsSequence extends DOMDocument
+final class XsSequence extends AbstractXsElement
 {
-    /**
-     *
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->appendChild($this->createElement('xs:sequence'));
-    }
-
     /**
      * @param array $list
      * @return XsSequence
@@ -27,10 +16,19 @@ final class XsSequence extends DOMDocument
         $sequence = new static;
 
         foreach ($list as $item) {
-            $child = $sequence->createElement('xs:string', $item);
+            $child = $sequence->createElementNs(XmlSchema::URI, 'xs:string', $item);
             $sequence->documentElement->appendChild($child);
         }
 
         return $sequence;
     }
+
+    /**
+     * @return string
+     */
+    protected function getElementName()
+    {
+        return 'sequence';
+    }
+
 }

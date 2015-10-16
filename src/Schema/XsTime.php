@@ -8,27 +8,20 @@ use DOMDocument;
  * Class XsTime
  * @package Genkgo\Xsl\Schema
  */
-final class XsTime extends DOMDocument
+final class XsTime extends AbstractXsElement
 {
     /**
      *
      */
     const FORMAT = 'H:i:sP';
 
-    /**
-     * @param DateTimeImmutable $date
-     */
-    public function __construct(DateTimeImmutable $date)
+    protected function getElementName()
     {
-        parent::__construct();
-        $this->appendChild($this->createElement('xs:time', $date->format(self::FORMAT)));
+        return 'time';
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public static function fromDateTime (DateTimeImmutable $date)
     {
-        return $this->documentElement->nodeValue;
+        return new static($date->format(self::FORMAT));
     }
 }

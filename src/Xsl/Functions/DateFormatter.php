@@ -3,6 +3,8 @@ namespace Genkgo\Xsl\Xsl\Functions;
 
 use DateTimeImmutable;
 use DOMDocument;
+use DOMElement;
+use Genkgo\Xsl\Schema\XmlSchema;
 use Genkgo\Xsl\Schema\XsDate;
 use Genkgo\Xsl\Schema\XsDateTime;
 use Genkgo\Xsl\Schema\XsTime;
@@ -23,13 +25,8 @@ trait DateFormatter
      */
     public static function formatDate($value, $picture)
     {
-        if (count($value) === 0) {
-            return '';
-        }
-
-        if ($value[0]->documentElement->nodeName !== 'xs:date') {
-            throw new InvalidArgumentException('format-date expects a date object');
-        }
+        $value = self::sequenceToDate($value);
+        self::assertSchema($value[0]->documentElement, 'date');
 
         $date = DateTimeImmutable::createFromFormat(XsDate::FORMAT, $value[0]->documentElement->nodeValue);
         return self::formatEvaluatedDateTime($date, $picture, Functions::FLAG_DATE);
@@ -43,13 +40,8 @@ trait DateFormatter
      */
     public static function formatTime($value, $picture)
     {
-        if (count($value) === 0) {
-            return '';
-        }
-
-        if ($value[0]->documentElement->nodeName !== 'xs:time') {
-            throw new InvalidArgumentException('format-date expects a date object');
-        }
+        $value = self::sequenceToDate($value);
+        self::assertSchema($value[0]->documentElement, 'time');
 
         $date = DateTimeImmutable::createFromFormat(XsTime::FORMAT, $value[0]->documentElement->nodeValue);
         return self::formatEvaluatedDateTime($date, $picture, Functions::FLAG_TIME);
@@ -63,16 +55,31 @@ trait DateFormatter
      */
     public static function formatDateTime($value, $picture)
     {
-        if (count($value) === 0) {
-            return '';
-        }
-
-        if ($value[0]->documentElement->nodeName !== 'xs:dateTime') {
-            throw new InvalidArgumentException('format-date expects a date object');
-        }
+        $value = self::sequenceToDate($value);
+        self::assertSchema($value[0]->documentElement, 'dateTime');
 
         $date = DateTimeImmutable::createFromFormat(XsDateTime::FORMAT, $value[0]->documentElement->nodeValue);
         return self::formatEvaluatedDateTime($date, $picture, Functions::FLAG_DATE + Functions::FLAG_TIME);
+    }
+
+    private static function sequenceToDate ($value) {
+        if (is_array($value) === false) {
+            throw new InvalidArgumentException("Expected a date object, got scalar");
+        }
+
+        return $value;
+    }
+
+    /**
+     * @param DOMElement $element
+     * @param $name
+     * @throws InvalidArgumentException
+     */
+    private static function assertSchema(DOMElement $element, $name) {
+        if ($element->namespaceURI !== XmlSchema::URI || $element->localName !== $name) {
+            $nsSchema = XmlSchema::URI;
+            throw new InvalidArgumentException("Expected a {$nsSchema}:{$name} object, got {$element->nodeName}");
+        }
     }
 
     /**
@@ -114,8 +121,10 @@ trait DateFormatter
                 $i++;
             } else {
                 $close = ($i < strlen($picture) ? strpos($picture, "]", $i) : -1);
-                if ($close == -1) {
-                    // throw here
+                if ($close === -1 || $close === false) {
+                    $exception = new InvalidArgumentException('Wrong formatted date, missing ]');
+                    $exception->setErrorCode('XTDE1340');
+                    throw $exception;
                 }
                 $componentFormat = substr($picture, $i, $close);
                 $result[] = self::formatDateComponent($date, $componentFormat, $flags);
@@ -139,16 +148,15 @@ trait DateFormatter
     {
         $matches = preg_match_all('/([YMDdWwFHhmsfZzPCE])\\s*(.*)/', $componentFormat, $groups);
         if ($matches === 0) {
-            // throw here
+            $exception = new InvalidArgumentException('No valid components found');
+            $exception->setErrorCode('XTDE1340');
+            throw $exception;
         }
 
         $ignoreDate = ($flags & Functions::FLAG_DATE) === 0;
         $ignoreTime = ($flags & Functions::FLAG_TIME) === 0;
 
         $component = $groups[1][0];
-        if ($component == null) {
-            $component = "";
-        }
 
         switch (substr($component, 0, 1)) {
             case 'Y':   // year
@@ -191,8 +199,6 @@ trait DateFormatter
                 }
 
                 return $date->format('W');
-            case 'w':   // week in month
-                throw new InvalidArgumentException('Week in month is not supported');
             case 'H':   // hour in day
                 if ($ignoreTime) {
                     $exception = new InvalidArgumentException('Cannot use time context');
@@ -225,8 +231,6 @@ trait DateFormatter
                 }
 
                 return $date->format('s');
-            case 'f':   // fractional seconds
-                throw new InvalidArgumentException('Fractional seconds are not supported');
             case 'Z':   // timezone in +hh:mm format, unless format=N in which case use timezone name
                 return $date->format('P');
             case 'z':       // timezone
@@ -247,14 +251,10 @@ trait DateFormatter
                 }
 
                 return $date->format('A');
-            case 'C':   // calendar
-                throw new InvalidArgumentException('Calendar name is not supported');
-            case 'E':   // era
-                throw new InvalidArgumentException('Era is not supported');
-            default:
-                $exception = new InvalidArgumentException('Unknown component' . $component);
-                $exception->setErrorCode('XTDE1340');
-                throw $exception;
         }
+
+        $exception = new InvalidArgumentException("Component [{$component}] is not supported");
+        $exception->setErrorCode('XTDE1340');
+        throw $exception;
     }
 }

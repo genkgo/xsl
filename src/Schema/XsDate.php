@@ -8,27 +8,24 @@ use DOMDocument;
  * Class XsDate
  * @package Genkgo\Xsl\Schema
  */
-final class XsDate extends DOMDocument
+final class XsDate extends AbstractXsElement
 {
     /**
      *
      */
     const FORMAT = 'Y-m-dP';
 
-    /**
-     * @param DateTimeImmutable $date
-     */
-    public function __construct(DateTimeImmutable $date = null)
+    protected function getElementName()
     {
-        parent::__construct();
-        $this->appendChild($this->createElement('xs:date', $date->format(self::FORMAT)));
+        return 'date';
     }
 
     /**
-     * @return string
+     * @param DateTimeImmutable $date
+     * @return XsDate
      */
-    public function __toString()
+    public static function fromDateTime (DateTimeImmutable $date)
     {
-        return $this->documentElement->nodeValue;
+        return new static($date->format(self::FORMAT));
     }
 }

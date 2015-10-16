@@ -158,7 +158,10 @@ trait Text
 
         $index = 0;
         foreach ($elements as $sequence) {
-            foreach ($sequence->documentElement->childNodes as $node) {
+            $itemsXpath = new \DOMXPath($sequence);
+            $items = $itemsXpath->query('xs:*');
+
+            foreach ($items as $node) {
                 if ($index > 0) {
                     $result .= $separator;
                 }

@@ -15,8 +15,11 @@ class Elements
         $result = '';
 
         $index = 0;
-        foreach ($elements as $element) {
-            foreach ($element->documentElement->childNodes as $node) {
+        foreach ($elements as $sequence) {
+            $itemsXpath = new \DOMXPath($sequence);
+            $items = $itemsXpath->query('xs:*');
+
+            foreach ($items as $node) {
                 if ($index > 0) {
                     $result .= $separator;
                 }

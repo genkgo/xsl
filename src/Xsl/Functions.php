@@ -21,15 +21,4 @@ class Functions
 
     use DateFormatter;
 
-    /**
-     * @return array
-     */
-    public static function supportedFunctions()
-    {
-        return [
-            new ObjectFunction('formatDate', static::class),
-            new ObjectFunction('formatTime', static::class),
-            new ObjectFunction('formatDateTime', static::class, 'format-dateTime'),
-        ];
-    }
 }
