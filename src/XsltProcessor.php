@@ -2,8 +2,6 @@
 namespace Genkgo\Xsl;
 
 use DOMDocument;
-use Genkgo\Xsl\Xpath\Compiler;
-use Genkgo\Xsl\Xpath\XmlPath;
 use SimpleXMLElement;
 use XSLTProcessor as PhpXsltProcessor;
 
@@ -21,6 +19,21 @@ class XsltProcessor extends PhpXsltProcessor
      * @var
      */
     private $styleSheet;
+    /**
+     * @var array|XmlNamespaceInterface[]
+     */
+    private $namespaces = [];
+
+    /**
+     *
+     */
+    public function __construct () {
+        $this->namespaces = [
+            new Schema\XmlSchema(),
+            new Xsl\XslTransformations(),
+            new Xpath\XmlPath()
+        ];
+    }
 
     /**
      * @param object $stylesheet
@@ -73,24 +86,8 @@ class XsltProcessor extends PhpXsltProcessor
      */
     private function getTranspiledStyleSheet(DOMDocument $styleSheet)
     {
-        if (self::$booted === false) {
-            stream_wrapper_register('gxsl', Stream::class);
-            self::$booted = true;
-        }
-
-        $xpathCompiler = new Compiler();
-
-        $xmlSchema = new Schema\XmlSchema();
-        $xmlSchema->registerXpathFunctions($xpathCompiler);
-
-        $xslTransformations = new Xsl\XslTransformations();
-        $xslTransformations->registerXpathFunctions($xpathCompiler);
-
-        $xmlPath = new XmlPath();
-        $xmlPath->registerXpathFunctions($xpathCompiler);
-
-        $transformers = [new Xsl\Transformer($xpathCompiler)];
-        $transpiler = new Transpiler(new Context($styleSheet), $transformers);
+        $this->boot();
+        $transpiler = $this->createTranspiler($styleSheet);
 
         $streamContext = stream_context_create([
             'gxsl' => [
@@ -101,6 +98,30 @@ class XsltProcessor extends PhpXsltProcessor
 
         $this->registerPHPFunctions();
         return $this->createTranspiledDocument($styleSheet);
+    }
+
+    /**
+     *
+     */
+    private function boot () {
+        if (self::$booted === false) {
+            stream_wrapper_register('gxsl', Stream::class);
+            self::$booted = true;
+        }
+    }
+
+    /**
+     * @param DOMDocument $styleSheet
+     * @return Transpiler
+     */
+    private function createTranspiler (DOMDocument $styleSheet) {
+        $xpathCompiler = new Xpath\Compiler();
+        foreach ($this->namespaces as $namespace) {
+            $namespace->registerXpathFunctions($xpathCompiler);
+        }
+
+        $transformers = [new Xsl\Transformer($xpathCompiler)];
+        return new Transpiler(new Context($styleSheet), $transformers);
     }
 
     /**
