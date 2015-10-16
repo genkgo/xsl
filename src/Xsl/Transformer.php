@@ -58,6 +58,10 @@ class Transformer implements TransformerInterface
         }
     }
 
+    /**
+     * @param DOMDocument $document
+     * @return array
+     */
     private function retrieveNamespacesFromDocument(DOMDocument $document)
     {
         $namespaces = [];
