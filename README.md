@@ -39,6 +39,25 @@ $transpiler->importStylesheet($xslDoc);
 echo $transpiler->transformToXML($xmlDoc);
 ```
 
+## Create your own extenions
+
+You can also register your own extensions. Just implement the `XmlNamespaceInterface` and you
+are ready to use your own elements and xpath functions.
+
+```php
+<?php
+use Genkgo\Xsl\XsltProcessor;
+
+class MyExtensions implements XmlNamespaceInterface {
+    // implementation here
+}
+
+$config = new Config();
+$config->setExtensions(new MyExtensions());
+
+$transpiler = new XsltProcessor($config);
+```
+
 ## Contributing
 
 - Found a bug? Please try to solve it yourself first and issue a pull request. If you are not able to fix it, at least
