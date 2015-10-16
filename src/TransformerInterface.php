@@ -5,5 +5,5 @@ use DOMDocument;
 
 interface TransformerInterface
 {
-    public function transform(DOMDocument $document);
+    public function transform(DOMDocument $document, Context $documentContext);
 }

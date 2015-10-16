@@ -77,7 +77,11 @@ class XsltProcessor extends PhpXsltProcessor
             self::$booted = true;
         }
 
-        $transformers = [new Xsl\Transformer(new Compiler())];
+        $xPathCompiler = new Compiler();
+        $xPathCompiler->addFunctions(Xsl\Functions::supportedFunctions());
+        $xPathCompiler->addNsFunctions(Schema\Functions::supportedFunctions(), 'http://www.w3.org/2001/XMLSchema');
+
+        $transformers = [new Xsl\Transformer($xPathCompiler)];
         $transpiler = new Transpiler(new Context($styleSheet), $transformers);
 
         $streamContext = stream_context_create([

@@ -9,6 +9,8 @@ use DOMDocument;
  */
 class Context
 {
+    private $namespaces;
+
     /**
      * @var DOMDocument
      */
@@ -28,5 +30,15 @@ class Context
     public function getDocument()
     {
         return $this->document;
+    }
+
+    public function setNamespaces($namespaces)
+    {
+        $this->namespaces = $namespaces;
+    }
+
+    public function getNamespace($localName)
+    {
+        return $this->namespaces[$localName];
     }
 }

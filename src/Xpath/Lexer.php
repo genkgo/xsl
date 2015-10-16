@@ -153,6 +153,15 @@ class Lexer implements Iterator, SeekableIterator, Countable
     }
 
     /**
+     * @param int $position
+     * @return string
+     */
+    public function peek ($position)
+    {
+        return $this->tokens[$position];
+    }
+
+    /**
      * @return int
      */
     public function count()

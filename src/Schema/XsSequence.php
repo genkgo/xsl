@@ -7,7 +7,7 @@ use DOMDocument;
  * Class XsSequence
  * @package Genkgo\Xsl\Schema
  */
-class XsSequence extends DOMDocument {
+final class XsSequence extends DOMDocument {
 
     /**
      *

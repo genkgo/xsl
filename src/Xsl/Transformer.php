@@ -6,6 +6,7 @@ use DOMElement;
 use DOMNode;
 use DOMNodeList;
 use DOMXPath;
+use Genkgo\Xsl\Context;
 use Genkgo\Xsl\TransformerInterface;
 use Genkgo\Xsl\Transpiler;
 use Genkgo\Xsl\Xpath\Compiler;
@@ -33,9 +34,13 @@ class Transformer implements TransformerInterface
 
     /**
      * @param DOMDocument $document
+     * @param Context $documentContext
      */
-    public function transform(DOMDocument $document)
+    public function transform(DOMDocument $document, Context $documentContext)
     {
+        $localContext = new Context($documentContext->getDocument());
+        $localContext->setNamespaces($this->retrieveNamespacesFromDocument($document));
+
         $document->documentElement->setAttribute('xmlns:php', 'http://php.net/xsl');
         $matchAndSelectElements = new DOMXPath($document);
 
@@ -46,7 +51,8 @@ class Transformer implements TransformerInterface
                 $element->setAttribute(
                     'match',
                     $this->xpathCompiler->compile(
-                        $element->getAttribute('match')
+                        $element->getAttribute('match'),
+                        $localContext
                     )
                 );
             }
@@ -55,7 +61,8 @@ class Transformer implements TransformerInterface
                 $element->setAttribute(
                     'select',
                     $this->xpathCompiler->compile(
-                        $element->getAttribute('select')
+                        $element->getAttribute('select'),
+                        $localContext
                     )
                 );
             }
@@ -71,5 +78,16 @@ class Transformer implements TransformerInterface
                 );
             }
         }
+    }
+
+    private function retrieveNamespacesFromDocument (DOMDocument $document) {
+        $namespaces = [];
+
+        $listOfNamespaces = new DOMXPath($document);
+        foreach( $listOfNamespaces->query('namespace::*') as $node) {
+            $namespaces[$node->localName] = $node->namespaceURI;
+        }
+
+        return $namespaces;
     }
 }

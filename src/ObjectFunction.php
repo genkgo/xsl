@@ -34,8 +34,12 @@ class ObjectFunction implements FunctionInterface
         $resultTokens[] = '\'';
         $resultTokens[] = $this->class.'::'.$this->name;
         $resultTokens[] = '\'';
-        $resultTokens[] = ',';
+
         $lexer->next();
+
+        if ($lexer->peek($lexer->key() + 1) !== ')') {
+            $resultTokens[] = ',';
+        }
 
         return $resultTokens;
     }

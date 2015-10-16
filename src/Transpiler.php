@@ -53,7 +53,7 @@ final class Transpiler
             $document->documentElement->setAttribute('version', '1.0');
 
             foreach ($this->transformers as $transformer) {
-                $transformer->transform($document);
+                $transformer->transform($document, $this->context);
             }
         }
 

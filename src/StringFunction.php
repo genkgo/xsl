@@ -8,6 +8,7 @@ class StringFunction implements FunctionInterface
     private $name;
     private $class;
     private $xpathMethod;
+    private $namespace = '';
 
     public function __construct($name, $class, $xpathMethod = null)
     {
@@ -21,6 +22,10 @@ class StringFunction implements FunctionInterface
         $this->xpathMethod = $xpathMethod;
     }
 
+    public function setNamespace($namespace) {
+        $this->namespace = $namespace;
+    }
+
     public function getXpathMethod()
     {
         return $this->xpathMethod;
@@ -32,7 +37,13 @@ class StringFunction implements FunctionInterface
         $resultTokens[] = 'php:functionString';
         $resultTokens[] = '(';
         $resultTokens[] = '\'';
-        $resultTokens[] = $this->class.'::'.$this->name;
+
+        if ($this->namespace) {
+            $resultTokens[] = $this->class.'::' . $this->namespace . ucfirst($this->name);
+        } else {
+            $resultTokens[] = $this->class.'::' . $this->name;
+        }
+
         $resultTokens[] = '\'';
         $resultTokens[] = ',';
         $lexer->next();

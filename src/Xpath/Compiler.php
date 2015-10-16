@@ -1,9 +1,8 @@
 <?php
 namespace Genkgo\Xsl\Xpath;
 
+use Genkgo\Xsl\Context;
 use Genkgo\Xsl\FunctionInterface;
-use Genkgo\Xsl\ObjectFunction;
-use Genkgo\Xsl\StringFunction;
 
 /**
  * Class Compiler
@@ -16,49 +15,51 @@ final class Compiler {
      */
     private $functions = [];
 
-    /**
-     *
-     */
     public function __construct () {
-        $this
-            ->addFunction(new StringFunction('abs', Functions::class))
-            ->addFunction(new StringFunction('ceiling', Functions::class))
-            ->addFunction(new StringFunction('floor', Functions::class))
-            ->addFunction(new StringFunction('round', Functions::class))
-            ->addFunction(new StringFunction('roundHalfToEven', Functions::class))
-            ->addFunction(new StringFunction('startsWith', Functions::class))
-            ->addFunction(new StringFunction('endsWith', Functions::class))
-            ->addFunction(new StringFunction('indexOf', Functions::class))
-            ->addFunction(new StringFunction('matches', Functions::class))
-            ->addFunction(new StringFunction('lowerCase', Functions::class))
-            ->addFunction(new StringFunction('upperCase', Functions::class))
-            ->addFunction(new StringFunction('tokenize', Functions::class))
-            ->addFunction(new StringFunction('translate', Functions::class))
-            ->addFunction(new StringFunction('substringAfter', Functions::class))
-            ->addFunction(new StringFunction('substringBefore', Functions::class))
-            ->addFunction(new StringFunction('replace', Functions::class))
-            ->addFunction(new ObjectFunction('stringJoin', Functions::class))
-        ;
+        $this->addFunctions(Functions::supportedFunctions());
     }
 
     /**
-     * @param FunctionInterface $function
+     * @param FunctionInterface[] $functions
      * @return $this
      */
-    public function addFunction(FunctionInterface $function)
+    public function addFunctions($functions)
     {
-        $this->functions[$function->getXpathMethod()] = $function;
+        foreach ($functions as $function) {
+            $this->functions[$function->getXpathMethod()] = $function;
+        }
+        return $this;
+    }
+
+    /**
+     * @param FunctionInterface[] $functions
+     * @param $namespace
+     * @return $this
+     */
+    public function addNsFunctions(array $functions, $namespace)
+    {
+        foreach ($functions as $function) {
+            $this->functions[$namespace . ':' . $function->getXpathMethod()] = $function;
+        }
         return $this;
     }
 
     /**
      * @param $xpathExpression
+     * @param Context $context
      * @return string
      */
-    public function compile ($xpathExpression) {
+    public function compile ($xpathExpression, Context $context) {
         $resultTokens = [];
         $lexer = Lexer::tokenize($xpathExpression);
         foreach ($lexer as $token) {
+            $namespacedMethod = strpos($token, ':');
+            if ($namespacedMethod !== false) {
+                $namespace = $context->getNamespace(substr($token, 0, $namespacedMethod));
+                if ($namespace !== null) {
+                    $token = $namespace . ':' . substr($token, $namespacedMethod + 1);
+                }
+            }
             if (isset($this->functions[$token])) {
                 $function = $this->functions[$token];
                 $resultTokens = array_merge($resultTokens, $function->replace($lexer));
@@ -69,5 +70,4 @@ final class Compiler {
 
         return implode('', $resultTokens);
     }
-
 }
