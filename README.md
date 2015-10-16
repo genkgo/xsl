@@ -46,6 +46,7 @@ are ready to use your own elements and xpath functions.
 
 ```php
 <?php
+use Genkgo\Xsl\Config;
 use Genkgo\Xsl\XsltProcessor;
 
 class MyExtensions implements XmlNamespaceInterface {
