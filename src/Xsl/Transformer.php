@@ -3,13 +3,14 @@ namespace Genkgo\Xsl\Xsl;
 
 use DOMDocument;
 use DOMElement;
-use DOMNode;
 use DOMNodeList;
 use DOMXPath;
 use Genkgo\Xsl\Context;
 use Genkgo\Xsl\TransformerInterface;
-use Genkgo\Xsl\Transpiler;
 use Genkgo\Xsl\Xpath\Compiler;
+use Genkgo\Xsl\Xsl\Node\AttributeMatch;
+use Genkgo\Xsl\Xsl\Node\AttributeSelect;
+use Genkgo\Xsl\Xsl\Node\ElementValueOf;
 
 /**
  * Class Transformer
@@ -18,9 +19,9 @@ use Genkgo\Xsl\Xpath\Compiler;
 class Transformer implements TransformerInterface
 {
     /**
-     * @var Compiler
+     * @var ElementTransformerInterface[]
      */
-    private $xpathCompiler;
+    private $elementTransformers = [];
 
     /**
      * Transformer constructor.
@@ -28,7 +29,11 @@ class Transformer implements TransformerInterface
      */
     public function __construct(Compiler $xpathCompiler)
     {
-        $this->xpathCompiler = $xpathCompiler;
+        $this->elementTransformers = [
+            new AttributeMatch($xpathCompiler),
+            new AttributeSelect($xpathCompiler),
+            new ElementValueOf(),
+        ];
     }
 
 
@@ -47,35 +52,8 @@ class Transformer implements TransformerInterface
         /** @var DOMNodeList|DOMElement[] $list */
         $list = $matchAndSelectElements->query('//xsl:*[@match|@select]');
         foreach ($list as $element) {
-            if ($element->hasAttribute('match')) {
-                $element->setAttribute(
-                    'match',
-                    $this->xpathCompiler->compile(
-                        $element->getAttribute('match'),
-                        $localContext
-                    )
-                );
-            }
-
-            if ($element->hasAttribute('select')) {
-                $element->setAttribute(
-                    'select',
-                    $this->xpathCompiler->compile(
-                        $element->getAttribute('select'),
-                        $localContext
-                    )
-                );
-            }
-
-            if ($element->nodeName === 'xsl:value-of' && $element->hasAttribute('separator')) {
-                $select = $element->getAttribute('select');
-                $separator = $element->getAttribute('separator');
-                $callback = Elements::class . '::valueOfSeparate';
-
-                $element->setAttribute(
-                    'select',
-                    'php:function(\'' . $callback . '\', ' . $select . ', \'' . $separator . '\')'
-                );
+            foreach ($this->elementTransformers as $elementTransformer) {
+                $elementTransformer->transform($element, $localContext);
             }
         }
     }
