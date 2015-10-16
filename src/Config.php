@@ -14,9 +14,11 @@ final class Config {
 
     /**
      * @param XmlNamespaceInterface[] $extensions
+     * @return Config
      */
     public function setExtensions (array $extensions) {
         $this->extensions = $extensions;
+        return $this;
     }
 
     /**
@@ -37,10 +39,12 @@ final class Config {
 
     /**
      * @param boolean $upgradeToXsl2
+     * @return Config
      */
     public function setUpgradeToXsl2($upgradeToXsl2)
     {
         $this->upgradeToXsl2 = $upgradeToXsl2;
+        return $this;
     }
 
     /**
