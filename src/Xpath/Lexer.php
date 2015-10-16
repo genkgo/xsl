@@ -68,11 +68,11 @@ class Lexer implements Iterator, SeekableIterator, Countable
     public static function tokenize($source)
     {
         $tokens = [];
-        preg_match_all(static::compileTokenRegEx(), $source, $tokens);
+        preg_match_all(self::compileTokenRegEx(), $source, $tokens);
         $tokens = $tokens[0];
 
         // Removes tokens starting with whitespace from the array.
-        for ($i = 0; $i < count($tokens); $i++) {
+        for ($i = 0, $numberOfTokens = count($tokens); $i < $numberOfTokens; $i++) {
             if (preg_match(self::LEADING_WHITESPACE, $tokens[$i]) === 1) {
                 array_splice($tokens, $i, 1);
             }
