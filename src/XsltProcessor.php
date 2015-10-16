@@ -20,19 +20,19 @@ class XsltProcessor extends PhpXsltProcessor
      */
     private $styleSheet;
     /**
-     * @var array|XmlNamespaceInterface[]
+     * @var Config
      */
-    private $namespaces = [];
+    private $config;
 
     /**
-     *
+     * @param Config $config
      */
-    public function __construct () {
-        $this->namespaces = [
-            new Schema\XmlSchema(),
-            new Xsl\XslTransformations(),
-            new Xpath\XmlPath()
-        ];
+    public function __construct (Config $config = null) {
+        if ($config === null) {
+            $config = Config::fromDefault();
+        }
+
+        $this->config = $config;
     }
 
     /**
@@ -118,12 +118,30 @@ class XsltProcessor extends PhpXsltProcessor
         $xpathCompiler = new Xpath\Compiler();
         $transpiler = new Transpiler(new Context($styleSheet));
 
-        foreach ($this->namespaces as $namespace) {
+        $namespaces = $this->getNamespaces();
+        foreach ($namespaces as $namespace) {
             $namespace->registerXpathFunctions($xpathCompiler);
             $namespace->registerTransformers($transpiler, $xpathCompiler);
         }
 
         return $transpiler;
+    }
+
+    /**
+     * @return XmlNamespaceInterface[]
+     */
+    private function getNamespaces () {
+        if ($this->config->shouldUpgradeToXsl2()) {
+            $namespaces = [
+                new Schema\XmlSchema(),
+                new Xsl\XslTransformations(),
+                new Xpath\XmlPath()
+            ];
+        } else {
+            $namespaces = [];
+        }
+
+        return array_merge($namespaces, $this->config->getExtensions());
     }
 
     /**
