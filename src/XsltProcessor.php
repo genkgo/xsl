@@ -116,12 +116,14 @@ class XsltProcessor extends PhpXsltProcessor
      */
     private function createTranspiler (DOMDocument $styleSheet) {
         $xpathCompiler = new Xpath\Compiler();
+        $transpiler = new Transpiler(new Context($styleSheet));
+
         foreach ($this->namespaces as $namespace) {
             $namespace->registerXpathFunctions($xpathCompiler);
+            $namespace->registerTransformers($transpiler, $xpathCompiler);
         }
 
-        $transformers = [new Xsl\Transformer($xpathCompiler)];
-        return new Transpiler(new Context($styleSheet), $transformers);
+        return $transpiler;
     }
 
     /**

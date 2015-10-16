@@ -2,6 +2,7 @@
 namespace Genkgo\Xsl\Schema;
 
 use Genkgo\Xsl\ObjectFunction;
+use Genkgo\Xsl\Transpiler;
 use Genkgo\Xsl\XmlNamespaceInterface;
 use Genkgo\Xsl\Xpath\Compiler;
 
@@ -27,4 +28,12 @@ class XmlSchema implements XmlNamespaceInterface{
         ], self::URI);
     }
 
+    /**
+     * @param Transpiler $transpiler
+     * @param Compiler $compiler
+     */
+    public function registerTransformers(Transpiler $transpiler, Compiler $compiler)
+    {
+        ;
+    }
 }

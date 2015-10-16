@@ -2,6 +2,7 @@
 namespace Genkgo\Xsl\Xsl;
 
 use Genkgo\Xsl\ObjectFunction;
+use Genkgo\Xsl\Transpiler;
 use Genkgo\Xsl\XmlNamespaceInterface;
 use Genkgo\Xsl\Xpath\Compiler;
 
@@ -9,7 +10,7 @@ use Genkgo\Xsl\Xpath\Compiler;
  * Class XslTransformations
  * @package Genkgo\Xsl\Xsl
  */
-class XslTransformations implements XmlNamespaceInterface{
+class XslTransformations implements XmlNamespaceInterface {
 
     /**
      *
@@ -27,4 +28,12 @@ class XslTransformations implements XmlNamespaceInterface{
         ]);
     }
 
+    /**
+     * @param Transpiler $transpiler
+     * @param Compiler $compiler
+     */
+    public function registerTransformers(Transpiler $transpiler, Compiler $compiler)
+    {
+        $transpiler->registerTransformer(new Transformer($compiler));
+    }
 }

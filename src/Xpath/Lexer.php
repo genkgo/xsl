@@ -72,7 +72,7 @@ class Lexer implements Iterator, SeekableIterator, Countable
         $tokens = $tokens[0];
 
         // Removes tokens starting with whitespace from the array.
-        for ($i = 0, $numberOfTokens = count($tokens); $i < $numberOfTokens; $i++) {
+        for ($i = 0; $i < count($tokens); $i++) {
             if (preg_match(self::LEADING_WHITESPACE, $tokens[$i]) === 1) {
                 array_splice($tokens, $i, 1);
             }

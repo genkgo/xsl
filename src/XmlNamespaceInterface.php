@@ -15,4 +15,10 @@ interface XmlNamespaceInterface {
      */
     public function registerXpathFunctions (Compiler $compiler);
 
+    /**
+     * @param Transpiler $transpiler
+     * @param Compiler $compiler
+     */
+    public function registerTransformers(Transpiler $transpiler, Compiler $compiler);
+
 }

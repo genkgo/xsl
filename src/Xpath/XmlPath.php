@@ -3,6 +3,7 @@ namespace Genkgo\Xsl\Xpath;
 
 use Genkgo\Xsl\ObjectFunction;
 use Genkgo\Xsl\StringFunction;
+use Genkgo\Xsl\Transpiler;
 use Genkgo\Xsl\XmlNamespaceInterface;
 
 class XmlPath implements XmlNamespaceInterface {
@@ -36,5 +37,14 @@ class XmlPath implements XmlNamespaceInterface {
             new ObjectFunction('currentDate', Functions::class),
             new ObjectFunction('currentDateTime', Functions::class, 'current-dateTime'),
         ]);
+    }
+
+    /**
+     * @param Transpiler $transpiler
+     * @param Compiler $compiler
+     */
+    public function registerTransformers(Transpiler $transpiler, Compiler $compiler)
+    {
+        ;
     }
 }

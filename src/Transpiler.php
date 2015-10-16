@@ -13,19 +13,26 @@ final class Transpiler
      * @var Context
      */
     private $context;
+
     /**
      * @var array|TransformerInterface[]
      */
-    private $transformers;
+    private $transformers = [];
 
     /**
      * @param Context $context
-     * @param array|TransformerInterface[] $transformers
      */
-    public function __construct(Context $context, array $transformers = [])
+    public function __construct(Context $context)
     {
         $this->context = $context;
-        $this->transformers = $transformers;
+    }
+
+    /**
+     * @param TransformerInterface $transformer
+     */
+    public function registerTransformer (TransformerInterface $transformer)
+    {
+        $this->transformers[] = $transformer;
     }
 
     /**
