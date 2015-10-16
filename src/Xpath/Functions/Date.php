@@ -6,12 +6,16 @@ use Genkgo\Xsl\Schema\XsDate;
 use Genkgo\Xsl\Schema\XsDateTime;
 use Genkgo\Xsl\Schema\XsTime;
 
-trait Date {
-
+/**
+ * Class Date
+ * @package Genkgo\Xsl\Xpath\Functions
+ */
+trait Date
+{
     /**
      * @return XsTime
      */
-    public static function currentTime ()
+    public static function currentTime()
     {
         return new XsTime(new DateTimeImmutable());
     }
@@ -19,7 +23,7 @@ trait Date {
     /**
      * @return XsDate
      */
-    public static function currentDate ()
+    public static function currentDate()
     {
         return new XsDate(new DateTimeImmutable());
     }
@@ -27,9 +31,8 @@ trait Date {
     /**
      * @return XsDateTime
      */
-    public static function currentDateTime ()
+    public static function currentDateTime()
     {
         return new XsDateTime(new DateTimeImmutable());
     }
-
 }

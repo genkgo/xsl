@@ -1,5 +1,6 @@
 <?php
 namespace Genkgo\Xsl\Xpath\Functions;
+
 use Genkgo\Xsl\Schema\XsSequence;
 
 /**
@@ -16,7 +17,8 @@ trait Text
      * @author Salman A
      * @link http://stackoverflow.com/questions/834303/startswith-and-endswith-functions-in-php
      */
-    public static function startsWith($haystack, $needle) {
+    public static function startsWith($haystack, $needle)
+    {
         return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== false;
     }
     /**
@@ -150,7 +152,7 @@ trait Text
         return preg_replace('/'.$pattern.'/'.$flags, $replacement, $input);
     }
 
-    public static function stringJoin ($elements, $separator)
+    public static function stringJoin($elements, $separator)
     {
         $result = '';
 

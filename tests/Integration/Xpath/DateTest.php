@@ -26,5 +26,4 @@ class DateTest extends AbstractXpathTest
             $this->transformFile('Stubs/Xpath/Date/current-dateTime.xsl')
         ));
     }
-
 }

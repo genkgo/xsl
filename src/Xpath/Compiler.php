@@ -8,14 +8,18 @@ use Genkgo\Xsl\FunctionInterface;
  * Class Compiler
  * @package Genkgo\Xsl\Xpath
  */
-final class Compiler {
-
+final class Compiler
+{
     /**
      * @var FunctionInterface[]
      */
     private $functions = [];
 
-    public function __construct () {
+    /**
+     *
+     */
+    public function __construct()
+    {
         $this->addFunctions(Functions::supportedFunctions());
     }
 
@@ -49,19 +53,15 @@ final class Compiler {
      * @param Context $context
      * @return string
      */
-    public function compile ($xpathExpression, Context $context) {
+    public function compile($xpathExpression, Context $context)
+    {
         $resultTokens = [];
         $lexer = Lexer::tokenize($xpathExpression);
         foreach ($lexer as $token) {
-            $namespacedMethod = strpos($token, ':');
-            if ($namespacedMethod !== false) {
-                $namespace = $context->getNamespace(substr($token, 0, $namespacedMethod));
-                if ($namespace !== null) {
-                    $token = $namespace . ':' . substr($token, $namespacedMethod + 1);
-                }
-            }
-            if (isset($this->functions[$token])) {
-                $function = $this->functions[$token];
+            $functionName = $this->convertTokenToFunctionName($token, $context);
+
+            if (isset($this->functions[$functionName])) {
+                $function = $this->functions[$functionName];
                 $resultTokens = array_merge($resultTokens, $function->replace($lexer));
             } else {
                 $resultTokens[] = $token;
@@ -69,5 +69,24 @@ final class Compiler {
         }
 
         return implode('', $resultTokens);
+    }
+
+    /**
+     * @param $token
+     * @param Context $context
+     * @return string
+     */
+    private function convertTokenToFunctionName($token, Context $context)
+    {
+        $functionName = strpos($token, ':');
+
+        if ($functionName !== false) {
+            $namespace = $context->getNamespace(substr($token, 0, $functionName));
+            if ($namespace !== null) {
+                $token = $namespace . ':' . substr($token, $functionName + 1);
+            }
+        }
+
+        return $token;
     }
 }

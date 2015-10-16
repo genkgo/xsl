@@ -7,21 +7,23 @@ use DOMDocument;
  * Class XsSequence
  * @package Genkgo\Xsl\Schema
  */
-final class XsSequence extends DOMDocument {
-
+final class XsSequence extends DOMDocument
+{
     /**
      *
      */
-    public function __construct () {
+    public function __construct()
+    {
         parent::__construct();
         $this->appendChild($this->createElement('xs:sequence'));
     }
 
     /**
      * @param array $list
-     * @return static
+     * @return XsSequence
      */
-    public static function fromArray (array $list) {
+    public static function fromArray(array $list)
+    {
         $sequence = new static;
 
         foreach ($list as $item) {
@@ -31,5 +33,4 @@ final class XsSequence extends DOMDocument {
 
         return $sequence;
     }
-
 }

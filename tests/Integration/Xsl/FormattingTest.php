@@ -8,7 +8,6 @@ use Genkgo\Xsl\Schema\XsTime;
 
 class FormattingTest extends AbstractXslTest
 {
-
     public function testFormatDate()
     {
         $phpDate = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2015-10-16 09:37:00');
@@ -56,5 +55,4 @@ class FormattingTest extends AbstractXslTest
             'picture' => '[Y]-[M]-[D] [h]:[m]:[s] [P]'
         ]));
     }
-
 }

@@ -80,11 +80,12 @@ class Transformer implements TransformerInterface
         }
     }
 
-    private function retrieveNamespacesFromDocument (DOMDocument $document) {
+    private function retrieveNamespacesFromDocument(DOMDocument $document)
+    {
         $namespaces = [];
 
         $listOfNamespaces = new DOMXPath($document);
-        foreach( $listOfNamespaces->query('namespace::*') as $node) {
+        foreach ($listOfNamespaces->query('namespace::*') as $node) {
             $namespaces[$node->localName] = $node->namespaceURI;
         }
 

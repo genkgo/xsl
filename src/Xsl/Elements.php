@@ -3,14 +3,15 @@ namespace Genkgo\Xsl\Xsl;
 
 use DOMDocument;
 
-class Elements {
-
+class Elements
+{
     /**
      * @param DOMDocument[] $elements
      * @param $separator
      * @return string
      */
-    public static function valueOfSeparate ($elements, $separator) {
+    public static function valueOfSeparate($elements, $separator)
+    {
         $result = '';
 
         $index = 0;
@@ -27,5 +28,4 @@ class Elements {
 
         return $result;
     }
-
 }

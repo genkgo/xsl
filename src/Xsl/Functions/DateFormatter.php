@@ -2,22 +2,27 @@
 namespace Genkgo\Xsl\Xsl\Functions;
 
 use DateTimeImmutable;
+use DOMDocument;
 use Genkgo\Xsl\Schema\XsDate;
 use Genkgo\Xsl\Schema\XsDateTime;
 use Genkgo\Xsl\Schema\XsTime;
 use Genkgo\Xsl\Xpath\Exception\InvalidArgumentException;
 use Genkgo\Xsl\Xsl\Functions;
 
-trait Formatting
+/**
+ * Class DateFormatter
+ * @package Genkgo\Xsl\Xsl\Functions
+ */
+trait DateFormatter
 {
-
     /**
-     * @param $value
+     * @param DOMDocument[] $value
      * @param $picture
      * @return string
      * @throws InvalidArgumentException
      */
-    public static function formatDate ($value, $picture) {
+    public static function formatDate($value, $picture)
+    {
         if (count($value) === 0) {
             return '';
         }
@@ -27,16 +32,17 @@ trait Formatting
         }
 
         $date = DateTimeImmutable::createFromFormat(XsDate::FORMAT, $value[0]->documentElement->nodeValue);
-        return self::formatEvaluatedDateTime($date, $picture);
+        return self::formatEvaluatedDateTime($date, $picture, Functions::FLAG_DATE);
     }
 
     /**
-     * @param $value
-     * @param $picture
+     * @param DOMDocument[] $value
+     * @param string $picture
      * @return string
      * @throws InvalidArgumentException
      */
-    public static function formatTime ($value, $picture) {
+    public static function formatTime($value, $picture)
+    {
         if (count($value) === 0) {
             return '';
         }
@@ -46,16 +52,17 @@ trait Formatting
         }
 
         $date = DateTimeImmutable::createFromFormat(XsTime::FORMAT, $value[0]->documentElement->nodeValue);
-        return self::formatEvaluatedDateTime($date, $picture);
+        return self::formatEvaluatedDateTime($date, $picture, Functions::FLAG_TIME);
     }
 
     /**
-     * @param $value
-     * @param $picture
+     * @param DOMDocument[] $value
+     * @param string $picture
      * @return string
      * @throws InvalidArgumentException
      */
-    public static function formatDateTime ($value, $picture) {
+    public static function formatDateTime($value, $picture)
+    {
         if (count($value) === 0) {
             return '';
         }
@@ -65,17 +72,19 @@ trait Formatting
         }
 
         $date = DateTimeImmutable::createFromFormat(XsDateTime::FORMAT, $value[0]->documentElement->nodeValue);
-        return self::formatEvaluatedDateTime($date, $picture);
+        return self::formatEvaluatedDateTime($date, $picture, Functions::FLAG_DATE + Functions::FLAG_TIME);
     }
 
     /**
      * @param DateTimeImmutable $date
-     * @param $picture
+     * @param string $picture
+     * @param int $flags
      * @return string
      * @throws InvalidArgumentException
      * @credits https://github.com/Saxonica/Saxon-CE/ https://github.com/Saxonica/Saxon-CE/blob/master/notices/MOZILLA.txt
      */
-    private static function formatEvaluatedDateTime (DateTimeImmutable $date, $picture) {
+    private static function formatEvaluatedDateTime(DateTimeImmutable $date, $picture, $flags)
+    {
         $result = [];
 
         $i = 0;
@@ -109,7 +118,7 @@ trait Formatting
                     // throw here
                 }
                 $componentFormat = substr($picture, $i, $close);
-                $result[] = self::formatDateComponent($date, $componentFormat, Functions::FLAG_DATE);
+                $result[] = self::formatDateComponent($date, $componentFormat, $flags);
                 $i = $close + 1;
             }
         }
@@ -117,14 +126,24 @@ trait Formatting
         return implode('', $result);
     }
 
-    private static function formatDateComponent (DateTimeImmutable $date, $componentFormat, $flags) {
+    /**
+     * @param DateTimeImmutable $date
+     * @param string $componentFormat
+     * @param int $flags
+     * @return string
+     * @throws InvalidArgumentException
+     *
+     * @credits https://github.com/Saxonica/Saxon-CE/ https://github.com/Saxonica/Saxon-CE/blob/master/notices/MOZILLA.txt
+     */
+    private static function formatDateComponent(DateTimeImmutable $date, $componentFormat, $flags)
+    {
         $matches = preg_match_all('/([YMDdWwFHhmsfZzPCE])\\s*(.*)/', $componentFormat, $groups);
         if ($matches === 0) {
             // throw here
         }
 
-        $ignoreDate = $flags & Functions::FLAG_DATE === 0;
-        $ignoreTime = $flags & Functions::FLAG_TIME === 0;
+        $ignoreDate = ($flags & Functions::FLAG_DATE) === 0;
+        $ignoreTime = ($flags & Functions::FLAG_TIME) === 0;
 
         $component = $groups[1][0];
         if ($component == null) {
@@ -238,5 +257,4 @@ trait Formatting
                 throw $exception;
         }
     }
-
 }

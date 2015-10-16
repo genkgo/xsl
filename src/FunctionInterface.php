@@ -16,7 +16,7 @@ interface FunctionInterface
 
     /**
      * @param Lexer $lexer
-     * @return mixed
+     * @return array|string[]
      */
     public function replace(Lexer $lexer);
 }

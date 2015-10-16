@@ -3,12 +3,19 @@ namespace Genkgo\Xsl\Xpath\Exception;
 
 use Exception;
 
-class InvalidArgumentException extends Exception {
-
+/**
+ * Class InvalidArgumentException
+ * @package Genkgo\Xsl\Xpath\Exception
+ */
+class InvalidArgumentException extends Exception
+{
+    /**
+     * @var string
+     */
     private $errorCode;
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getErrorCode()
     {
@@ -16,12 +23,10 @@ class InvalidArgumentException extends Exception {
     }
 
     /**
-     * @param mixed $errorCode
+     * @param string $errorCode
      */
     public function setErrorCode($errorCode)
     {
         $this->errorCode = $errorCode;
     }
-
-
 }

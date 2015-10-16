@@ -1,6 +1,7 @@
 <?php
 namespace Genkgo\Xsl\Xpath;
 
+use Genkgo\Xsl\FunctionInterface;
 use Genkgo\Xsl\ObjectFunction;
 use Genkgo\Xsl\StringFunction;
 use Genkgo\Xsl\Xpath\Functions\Date;
@@ -17,7 +18,11 @@ class Functions
     use Text;
     use Date;
 
-    public static function supportedFunctions () {
+    /**
+     * @return array|FunctionInterface[]
+     */
+    public static function supportedFunctions()
+    {
         return [
             new StringFunction('abs', Functions::class),
             new StringFunction('ceiling', Functions::class),
