@@ -1,6 +1,9 @@
 <?php
 namespace Genkgo\Xsl;
 
+use Genkgo\Cache\CallbackCacheInterface;
+use Genkgo\Xsl\Exception\CacheDisabledException;
+
 final class Config {
 
     /**
@@ -11,6 +14,10 @@ final class Config {
      * @var array
      */
     private $extensions = [];
+    /**
+     * @var CallbackCacheInterface
+     */
+    private $cacheAdapter;
 
     /**
      * @param XmlNamespaceInterface[] $extensions
@@ -45,6 +52,25 @@ final class Config {
     {
         $this->upgradeToXsl2 = $upgradeToXsl2;
         return $this;
+    }
+
+    /**
+     * @param CallbackCacheInterface $cacheAdapter
+     */
+    public function setCacheAdapter (CallbackCacheInterface $cacheAdapter) {
+        $this->cacheAdapter = $cacheAdapter;
+    }
+
+    /**
+     * @return CallbackCacheInterface
+     * @throws CacheDisabledException
+     */
+    public function getCacheAdapter() {
+        if ($this->cacheAdapter === null) {
+            throw new CacheDisabledException();
+        }
+
+        return $this->cacheAdapter;
     }
 
     /**

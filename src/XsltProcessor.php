@@ -3,6 +3,7 @@ namespace Genkgo\Xsl;
 
 use DOMDocument;
 use Genkgo\Xsl\Callback\PhpCallback;
+use Genkgo\Xsl\Exception\CacheDisabledException;
 use SimpleXMLElement;
 use XSLTProcessor as PhpXsltProcessor;
 
@@ -120,12 +121,7 @@ class XsltProcessor extends PhpXsltProcessor
     {
         $this->boot();
 
-
-        $streamContext = stream_context_create([
-            'gxsl' => [
-                'transpiler' => $transpiler
-            ]
-        ]);
+        $streamContext = stream_context_create($this->createStreamOptions($transpiler));
         libxml_set_streams_context($streamContext);
 
         return $this->createTranspiledDocument($styleSheet);
@@ -193,7 +189,7 @@ class XsltProcessor extends PhpXsltProcessor
     private function createTranspiledDocument(DOMDocument $styleSheet)
     {
         if (is_file($styleSheet->documentURI)) {
-            $home = dirname($styleSheet->documentURI) . '/~';
+            $home = $styleSheet->documentURI . '_';
         } else {
             $home = $styleSheet->documentURI . '/~';
         }
@@ -229,5 +225,25 @@ class XsltProcessor extends PhpXsltProcessor
     private function stopTransformation(Transpiler $transpiler)
     {
         PhpCallback::detach($transpiler->context);
+    }
+
+    /**
+     * @param Transpiler $transpiler
+     * @return array
+     */
+    private function createStreamOptions(Transpiler $transpiler)
+    {
+        $contextOptions = [
+            'gxsl' => [
+                'transpiler' => $transpiler
+            ]
+        ];
+
+        try {
+            $contextOptions['gxsl']['cache'] = $this->config->getCacheAdapter();
+        } catch (CacheDisabledException $e) {
+        }
+
+        return $contextOptions;
     }
 }
