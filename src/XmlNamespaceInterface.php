@@ -13,7 +13,7 @@ interface XmlNamespaceInterface {
      * @param Compiler $compiler
      * @return void
      */
-    public function registerXpathFunctions (Compiler $compiler);
+    public function registerXpathFunctions(Compiler $compiler);
 
     /**
      * @param Transpiler $transpiler
