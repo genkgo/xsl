@@ -23,6 +23,10 @@ class XsltProcessor extends PhpXsltProcessor
      * @var Config
      */
     private $config;
+    /**
+     * @var array
+     */
+    private $phpFunctions = [];
 
     /**
      * @param Config $config
@@ -80,6 +84,20 @@ class XsltProcessor extends PhpXsltProcessor
         return parent::transformToUri($doc, $uri);
     }
 
+    public function registerPHPFunctions ($restrict = null) {
+        if (is_string($restrict)) {
+            $this->phpFunctions = [$restrict];
+        }
+
+        if (is_array($restrict)) {
+            $this->phpFunctions = $restrict;
+        }
+
+        if ($restrict === null) {
+            $this->phpFunctions = null;
+        }
+    }
+
     /**
      * @param DOMDocument $styleSheet
      * @return DOMDocument
@@ -96,7 +114,6 @@ class XsltProcessor extends PhpXsltProcessor
         ]);
         libxml_set_streams_context($streamContext);
 
-        $this->registerPHPFunctions();
         return $this->createTranspiledDocument($styleSheet);
     }
 
@@ -116,12 +133,19 @@ class XsltProcessor extends PhpXsltProcessor
      */
     private function createTranspiler (DOMDocument $styleSheet) {
         $xpathCompiler = new Xpath\Compiler();
-        $transpiler = new Transpiler(new Context($styleSheet));
+        $transpiler = new Transpiler(new TransformationContext($styleSheet, $xpathCompiler));
 
         $namespaces = $this->getNamespaces();
         foreach ($namespaces as $namespace) {
             $namespace->registerXpathFunctions($xpathCompiler);
             $namespace->registerTransformers($transpiler, $xpathCompiler);
+        }
+
+        if ($this->phpFunctions === null) {
+            parent::registerPHPFunctions();
+        } else {
+            $this->phpFunctions[] = PhpCallback::class . '::call';
+            parent::registerPHPFunctions($this->phpFunctions);
         }
 
         return $transpiler;

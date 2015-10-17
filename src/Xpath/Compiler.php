@@ -1,7 +1,7 @@
 <?php
 namespace Genkgo\Xsl\Xpath;
 
-use Genkgo\Xsl\Context;
+use Genkgo\Xsl\DocumentContext;
 use Genkgo\Xsl\FunctionInterface;
 
 /**
@@ -42,10 +42,10 @@ final class Compiler
 
     /**
      * @param $xpathExpression
-     * @param Context $context
+     * @param DocumentContext $context
      * @return string
      */
-    public function compile($xpathExpression, Context $context)
+    public function compile($xpathExpression, DocumentContext $context)
     {
         $resultTokens = [];
         $lexer = Lexer::tokenize($xpathExpression);
@@ -65,10 +65,10 @@ final class Compiler
 
     /**
      * @param $token
-     * @param Context $context
+     * @param DocumentContext $context
      * @return string
      */
-    private function convertTokenToFunctionName($token, Context $context)
+    private function convertTokenToFunctionName($token, DocumentContext $context)
     {
         $functionName = strpos($token, ':');
 

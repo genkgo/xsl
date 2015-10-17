@@ -5,7 +5,7 @@ use DOMDocument;
 use DOMElement;
 use DOMNodeList;
 use DOMXPath;
-use Genkgo\Xsl\Context;
+use Genkgo\Xsl\DocumentContext;
 use Genkgo\Xsl\TransformerInterface;
 use Genkgo\Xsl\Xpath\Compiler;
 use Genkgo\Xsl\Xsl\Node\AttributeMatch;
@@ -39,12 +39,11 @@ class Transformer implements TransformerInterface
 
     /**
      * @param DOMDocument $document
-     * @param Context $documentContext
      */
-    public function transform(DOMDocument $document, Context $documentContext)
+    public function transform(DOMDocument $document)
     {
-        $localContext = new Context($documentContext->getDocument());
-        $localContext->setNamespaces($this->retrieveNamespacesFromDocument($document));
+        $documentContext = new DocumentContext();
+        $documentContext->setNamespaces($this->retrieveNamespacesFromDocument($document));
 
         $document->documentElement->setAttribute('xmlns:php', 'http://php.net/xsl');
         $matchAndSelectElements = new DOMXPath($document);
@@ -53,7 +52,7 @@ class Transformer implements TransformerInterface
         $list = $matchAndSelectElements->query('//xsl:*[@match|@select]');
         foreach ($list as $element) {
             foreach ($this->elementTransformers as $elementTransformer) {
-                $elementTransformer->transform($element, $localContext);
+                $elementTransformer->transform($element, $documentContext);
             }
         }
     }

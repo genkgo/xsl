@@ -2,7 +2,7 @@
 namespace Genkgo\Xsl\Xsl\Node;
 
 use DOMElement;
-use Genkgo\Xsl\Context;
+use Genkgo\Xsl\DocumentContext;
 use Genkgo\Xsl\Xpath\Compiler;
 use Genkgo\Xsl\Xsl\ElementTransformerInterface;
 
@@ -26,9 +26,9 @@ class AttributeMatch implements ElementTransformerInterface {
 
     /**
      * @param DOMElement $element
-     * @param Context $context
+     * @param DocumentContext $context
      */
-    public function transform(DOMElement $element, Context $context)
+    public function transform(DOMElement $element, DocumentContext $context)
     {
         if ($element->hasAttribute('match')) {
             $element->setAttribute(

@@ -10,7 +10,7 @@ use DOMDocument;
 final class Transpiler
 {
     /**
-     * @var Context
+     * @var TransformationContext
      */
     private $context;
 
@@ -20,9 +20,9 @@ final class Transpiler
     private $transformers = [];
 
     /**
-     * @param Context $context
+     * @param TransformationContext $context
      */
-    public function __construct(Context $context)
+    public function __construct(TransformationContext $context)
     {
         $this->context = $context;
     }

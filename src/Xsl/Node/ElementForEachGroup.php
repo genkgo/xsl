@@ -3,12 +3,12 @@ namespace Genkgo\Xsl\Xsl\Node;
 
 use DOMDocument;
 use DOMElement;
-use Genkgo\Xsl\Context;
+use Genkgo\Xsl\DocumentContext;
 use Genkgo\Xsl\Xsl\ElementTransformerInterface;
 
 class ElementForEachGroup implements ElementTransformerInterface {
 
-    public function transform(DOMElement $element, Context $context)
+    public function transform(DOMElement $element, DocumentContext $context)
     {
         if ($element->nodeName === 'xsl:for-each-group') {
             $select = $element->getAttribute('select');
