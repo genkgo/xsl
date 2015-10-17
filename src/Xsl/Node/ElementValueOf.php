@@ -3,8 +3,10 @@ namespace Genkgo\Xsl\Xsl\Node;
 
 use DOMDocument;
 use DOMElement;
+use Genkgo\Xsl\Callback\PhpCallback;
 use Genkgo\Xsl\DocumentContext;
-use Genkgo\Xsl\PhpCallback;
+use Genkgo\Xsl\Schema\XmlSchema;
+use Genkgo\Xsl\Xpath\FunctionBuilder;
 use Genkgo\Xsl\Xsl\ElementTransformerInterface;
 
 class ElementValueOf implements ElementTransformerInterface {
@@ -14,17 +16,25 @@ class ElementValueOf implements ElementTransformerInterface {
         if ($element->nodeName === 'xsl:value-of' && $element->hasAttribute('separator')) {
             $select = $element->getAttribute('select');
             $separator = $element->getAttribute('separator');
-            $callback = static::class;
 
-            $element->setAttribute(
-                'select',
-                'php:function(\'' . PhpCallback::class . '::call\',\'' . $callback . '\',\'valueOfSeparate\', ' . $select . ', \'' . $separator . '\')'
-            );
+            $endsWith = '/xs:sequence';
+            if (substr($select, strlen($endsWith) * -1) === $endsWith) {
+                $callback = (new FunctionBuilder('php:function'))
+                    ->addArgument(PhpCallback::class . '::call')
+                    ->addArgument(static::class)
+                    ->addArgument('valueOfSeparate')
+                    ->addArgument($select, false)
+                    ->addArgument($separator);
+
+                $element->setAttribute('select', $callback->build());
+            }
+
+            $element->removeAttribute('separator');
         }
     }
 
     /**
-     * @param DOMDocument[] $elements
+     * @param DOMElement[] $elements
      * @param $separator
      * @return string
      */
@@ -34,8 +44,8 @@ class ElementValueOf implements ElementTransformerInterface {
 
         $index = 0;
         foreach ($elements as $sequence) {
-            $itemsXpath = new \DOMXPath($sequence);
-            $items = $itemsXpath->query('xs:*');
+            $itemsXpath = new \DOMXPath($sequence->ownerDocument);
+            $items = $itemsXpath->query('xs:*', $sequence);
 
             foreach ($items as $node) {
                 if ($index > 0) {

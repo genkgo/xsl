@@ -40,7 +40,7 @@ use SeekableIterator;
 class Lexer implements Iterator, SeekableIterator, Countable
 {
     /**
-     * @var
+     * @var array|string[]
      */
     private $tokens;
     /**
@@ -56,7 +56,7 @@ class Lexer implements Iterator, SeekableIterator, Countable
     /**
      * @param $tokens
      */
-    public function __construct($tokens)
+    public function __construct(array $tokens)
     {
         $this->tokens = $tokens;
     }
@@ -101,6 +101,14 @@ class Lexer implements Iterator, SeekableIterator, Countable
         ];
 
         return '/'.implode('|', $tokens).'/';
+    }
+
+    /**
+     * @param array|string[] $tokens
+     * @param int $position
+     */
+    public function insert (array $tokens, $position) {
+        array_splice($this->tokens, $position, 0, $tokens);
     }
 
     /**
@@ -158,7 +166,11 @@ class Lexer implements Iterator, SeekableIterator, Countable
      */
     public function peek($position)
     {
-        return $this->tokens[$position];
+        if (isset($this->tokens[$position])) {
+            return $this->tokens[$position];
+        } else {
+            return null;
+        }
     }
 
     /**

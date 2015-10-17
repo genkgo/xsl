@@ -2,6 +2,7 @@
 namespace Genkgo\Xsl;
 
 use DOMDocument;
+use Genkgo\Xsl\Callback\PhpCallback;
 use SimpleXMLElement;
 use XSLTProcessor as PhpXsltProcessor;
 
@@ -55,8 +56,14 @@ class XsltProcessor extends PhpXsltProcessor
     {
         $styleSheet = $this->styleSheetToDomDocument();
 
-        parent::importStylesheet($this->getTranspiledStyleSheet($styleSheet));
-        return parent::transformToXml($doc);
+        $transpiler = $this->createTranspiler($styleSheet);
+        parent::importStylesheet($this->getTranspiledStyleSheet($transpiler, $styleSheet));
+
+        $this->startTransformation($transpiler);
+        $result = parent::transformToXml($doc);
+        $this->stopTransformation($transpiler);
+
+        return $result;
     }
 
     /**
@@ -67,8 +74,14 @@ class XsltProcessor extends PhpXsltProcessor
     {
         $styleSheet = $this->styleSheetToDomDocument();
 
-        parent::importStylesheet($this->getTranspiledStyleSheet($styleSheet));
-        return parent::transformToDoc($doc);
+        $transpiler = $this->createTranspiler($styleSheet);
+        parent::importStylesheet($this->getTranspiledStyleSheet($transpiler, $styleSheet));
+
+        $this->startTransformation($transpiler);
+        $result = parent::transformToDoc($doc);
+        $this->stopTransformation($transpiler);
+
+        return $result;
     }
 
     /**
@@ -80,8 +93,14 @@ class XsltProcessor extends PhpXsltProcessor
     {
         $styleSheet = $this->styleSheetToDomDocument();
 
-        parent::importStylesheet($this->getTranspiledStyleSheet($styleSheet));
-        return parent::transformToUri($doc, $uri);
+        $transpiler = $this->createTranspiler($styleSheet);
+        parent::importStylesheet($this->getTranspiledStyleSheet($transpiler, $styleSheet));
+
+        $this->startTransformation($transpiler);
+        $result = parent::transformToUri($doc, $uri);
+        $this->stopTransformation($transpiler);
+
+        return $result;
     }
 
     public function registerPHPFunctions ($restrict = null) {
@@ -89,23 +108,18 @@ class XsltProcessor extends PhpXsltProcessor
             $this->phpFunctions = [$restrict];
         }
 
-        if (is_array($restrict)) {
-            $this->phpFunctions = $restrict;
-        }
-
-        if ($restrict === null) {
-            $this->phpFunctions = null;
-        }
+        $this->phpFunctions = $restrict;
     }
 
     /**
+     * @param Transpiler $transpiler
      * @param DOMDocument $styleSheet
      * @return DOMDocument
      */
-    private function getTranspiledStyleSheet(DOMDocument $styleSheet)
+    private function getTranspiledStyleSheet(Transpiler $transpiler, DOMDocument $styleSheet)
     {
         $this->boot();
-        $transpiler = $this->createTranspiler($styleSheet);
+
 
         $streamContext = stream_context_create([
             'gxsl' => [
@@ -132,20 +146,24 @@ class XsltProcessor extends PhpXsltProcessor
      * @return Transpiler
      */
     private function createTranspiler (DOMDocument $styleSheet) {
+        $phpFunctions = $this->phpFunctions;
+
+        if ($phpFunctions === null) {
+            parent::registerPHPFunctions();
+        } else {
+            $phpFunctions[] = PhpCallback::class . '::call';
+            $phpFunctions[] = PhpCallback::class . '::callContext';
+            parent::registerPHPFunctions($phpFunctions);
+        }
+
         $xpathCompiler = new Xpath\Compiler();
-        $transpiler = new Transpiler(new TransformationContext($styleSheet, $xpathCompiler));
+        $context = new TransformationContext($styleSheet, $xpathCompiler, $phpFunctions);
+        $transpiler = new Transpiler($context);
 
         $namespaces = $this->getNamespaces();
         foreach ($namespaces as $namespace) {
             $namespace->registerXpathFunctions($xpathCompiler);
             $namespace->registerTransformers($transpiler, $xpathCompiler);
-        }
-
-        if ($this->phpFunctions === null) {
-            parent::registerPHPFunctions();
-        } else {
-            $this->phpFunctions[] = PhpCallback::class . '::call';
-            parent::registerPHPFunctions($this->phpFunctions);
         }
 
         return $transpiler;
@@ -195,5 +213,21 @@ class XsltProcessor extends PhpXsltProcessor
         }
 
         return $this->styleSheet;
+    }
+
+    /**
+     * @param Transpiler $transpiler
+     */
+    private function startTransformation(Transpiler $transpiler)
+    {
+        PhpCallback::attach($transpiler->context);
+    }
+
+    /**
+     * @param Transpiler $transpiler
+     */
+    private function stopTransformation(Transpiler $transpiler)
+    {
+        PhpCallback::detach($transpiler->context);
     }
 }

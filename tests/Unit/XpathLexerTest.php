@@ -113,4 +113,16 @@ class XpathLexerTest extends AbstractTestCase
             $this->assertEquals($expectedTokens[$resultLexer->key()], $resultToken);
         }
     }
+
+    public function testInsert()
+    {
+        $expectedTokens = ['//', '*', '[', '@', 'id', '=', '"i"', ']', '/', 'book'];
+        $resultLexer = new Xpath\Lexer(['//', '*', '[', '@', 'id', '=', '"i"', ']']);
+        $resultLexer->insert(['/', 'book'], 8);
+
+        $this->assertCount(10, $resultLexer);
+        $this->assertEquals($expectedTokens[8], $resultLexer->peek(8));
+        $this->assertEquals($expectedTokens[9], $resultLexer->peek(9));
+    }
+
 }

@@ -1,25 +1,31 @@
 <?php
-namespace Genkgo\Xsl;
+namespace Genkgo\Xsl\Callback;
 
+use Genkgo\Xsl\DocumentContext;
 use Genkgo\Xsl\Xpath\Lexer;
 
 /**
- * Class StringFunction
- * @package Genkgo\Xsl
+ * Class ContextFunction
+ * @package Genkgo\Xsl\Callback
  */
-class StringFunction extends AbstractFunction implements FunctionInterface
+class ContextFunction extends AbstractFunction implements FunctionInterface
 {
     /**
      * @param Lexer $lexer
+     * @param DocumentContext $context
      * @return array
      */
-    public function replace(Lexer $lexer)
+    public function replace(Lexer $lexer, DocumentContext $context)
     {
         $resultTokens = [];
-        $resultTokens[] = 'php:functionString';
+        $resultTokens[] = 'php:function';
         $resultTokens[] = '(';
         $resultTokens[] = '\'';
-        $resultTokens[] = PhpCallback::class.'::call';
+        $resultTokens[] = PhpCallback::class.'::callContext';
+        $resultTokens[] = '\'';
+        $resultTokens[] = ',';
+        $resultTokens[] = '\'';
+        $resultTokens[] = spl_object_hash($context->getTransformationContext());
         $resultTokens[] = '\'';
         $resultTokens[] = ',';
         $resultTokens[] = '\'';
@@ -29,8 +35,11 @@ class StringFunction extends AbstractFunction implements FunctionInterface
         $resultTokens[] = '\'';
         $resultTokens[] = $this->name;
         $resultTokens[] = '\'';
+        $resultTokens[] = ',';
+        $resultTokens[] = '.';
 
         $lexer->next();
+
         if ($lexer->peek($lexer->key() + 1) !== ')') {
             $resultTokens[] = ',';
         }

@@ -1,9 +1,9 @@
 <?php
-namespace Genkgo\Xsl;
+namespace Genkgo\Xsl\Callback;
 
 /**
  * Class AbstractFunction
- * @package Genkgo\Xsl
+ * @package Genkgo\Xsl\Callback
  */
 abstract class AbstractFunction
 {

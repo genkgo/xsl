@@ -1,7 +1,7 @@
 <?php
 namespace Genkgo\Xsl\Stubs\Extension;
 
-use Genkgo\Xsl\StringFunction;
+use Genkgo\Xsl\Callback\StringFunction;
 use Genkgo\Xsl\Transpiler;
 use Genkgo\Xsl\XmlNamespaceInterface;
 use Genkgo\Xsl\Xpath\Compiler;

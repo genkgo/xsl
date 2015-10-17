@@ -6,7 +6,7 @@
 
     <xsl:template match="/">
         <xsl:for-each select="tokenize('xsl2 is transpiled by genkgo/xsl', '\s')">
-            <xsl:value-of select="." />
+            <xsl:value-of select="concat('|', ., '|')" />
         </xsl:for-each>
     </xsl:template>
 

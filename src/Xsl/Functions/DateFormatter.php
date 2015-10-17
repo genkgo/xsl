@@ -18,56 +18,54 @@ use Genkgo\Xsl\Xsl\Functions;
 trait DateFormatter
 {
     /**
-     * @param DOMDocument[] $value
+     * @param DOMElement[] $value
      * @param $picture
      * @return string
      * @throws InvalidArgumentException
      */
     public static function formatDate($value, $picture)
     {
-        $value = self::sequenceToDate($value);
-        self::assertSchema($value[0]->documentElement, 'date');
+        self::assertArray($value);
+        self::assertSchema($value[0], 'date');
 
-        $date = DateTimeImmutable::createFromFormat(XsDate::FORMAT, $value[0]->documentElement->nodeValue);
+        $date = DateTimeImmutable::createFromFormat(XsDate::FORMAT, $value[0]->nodeValue);
         return self::formatEvaluatedDateTime($date, $picture, Functions::FLAG_DATE);
     }
 
     /**
-     * @param DOMDocument[] $value
+     * @param DOMElement[] $value
      * @param string $picture
      * @return string
      * @throws InvalidArgumentException
      */
     public static function formatTime($value, $picture)
     {
-        $value = self::sequenceToDate($value);
-        self::assertSchema($value[0]->documentElement, 'time');
+        self::assertArray($value);
+        self::assertSchema($value[0], 'time');
 
-        $date = DateTimeImmutable::createFromFormat(XsTime::FORMAT, $value[0]->documentElement->nodeValue);
+        $date = DateTimeImmutable::createFromFormat(XsTime::FORMAT, $value[0]->nodeValue);
         return self::formatEvaluatedDateTime($date, $picture, Functions::FLAG_TIME);
     }
 
     /**
-     * @param DOMDocument[] $value
+     * @param DOMElement[] $value
      * @param string $picture
      * @return string
      * @throws InvalidArgumentException
      */
     public static function formatDateTime($value, $picture)
     {
-        $value = self::sequenceToDate($value);
-        self::assertSchema($value[0]->documentElement, 'dateTime');
+        self::assertArray($value);
+        self::assertSchema($value[0], 'dateTime');
 
-        $date = DateTimeImmutable::createFromFormat(XsDateTime::FORMAT, $value[0]->documentElement->nodeValue);
+        $date = DateTimeImmutable::createFromFormat(XsDateTime::FORMAT, $value[0]->nodeValue);
         return self::formatEvaluatedDateTime($date, $picture, Functions::FLAG_DATE + Functions::FLAG_TIME);
     }
 
-    private static function sequenceToDate ($value) {
+    private static function assertArray ($value) {
         if (is_array($value) === false) {
             throw new InvalidArgumentException("Expected a date object, got scalar");
         }
-
-        return $value;
     }
 
     /**

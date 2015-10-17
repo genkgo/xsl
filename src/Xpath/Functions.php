@@ -14,5 +14,4 @@ class Functions
     use Math;
     use Text;
     use Date;
-
 }

@@ -12,7 +12,7 @@ final class Transpiler
     /**
      * @var TransformationContext
      */
-    private $context;
+    public $context;
 
     /**
      * @var array|TransformerInterface[]
@@ -49,6 +49,8 @@ final class Transpiler
         $document->load($path);
         return $this->transformDocument($document)->saveXML();
     }
+
+
 
     /**
      * @param DOMDocument $document

@@ -1,6 +1,9 @@
 <?php
 namespace Genkgo\Xsl\Xpath\Functions;
 
+use DOMDocument;
+use DOMElement;
+use DOMXPath;
 use Genkgo\Xsl\Schema\XsSequence;
 
 /**
@@ -131,7 +134,7 @@ trait Text
      * @param $input
      * @param $pattern
      * @param string $flags
-     * @return \DOMDocument
+     * @return DOMDocument
      */
     public static function tokenize($input, $pattern, $flags = '')
     {
@@ -142,24 +145,26 @@ trait Text
      * @param $input
      * @param $pattern
      * @param string $flags
-     * @return \DOMDocument
+     * @return DOMDocument
      */
     public static function replace($input, $pattern, $replacement, $flags = '')
     {
-        $resultSet = new \DOMDocument();
-        $resultSet->appendChild($resultSet->createElement('resultSet'));
-
         return preg_replace('/'.$pattern.'/'.$flags, $replacement, $input);
     }
 
+    /**
+     * @param DOMElement[] $elements
+     * @param $separator
+     * @return string
+     */
     public static function stringJoin($elements, $separator)
     {
         $result = '';
 
         $index = 0;
         foreach ($elements as $sequence) {
-            $itemsXpath = new \DOMXPath($sequence);
-            $items = $itemsXpath->query('xs:*');
+            $itemsXpath = new \DOMXPath($sequence->ownerDocument);
+            $items = $itemsXpath->query('xs:*', $sequence);
 
             foreach ($items as $node) {
                 if ($index > 0) {

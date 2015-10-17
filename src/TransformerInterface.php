@@ -3,7 +3,16 @@ namespace Genkgo\Xsl;
 
 use DOMDocument;
 
+/**
+ * Interface TransformerInterface
+ * @package Genkgo\Xsl
+ */
 interface TransformerInterface
 {
-    public function transform(DOMDocument $document);
+    /**
+     * @param DOMDocument $document
+     * @param TransformationContext $transformationContext
+     * @return void
+     */
+    public function transform(DOMDocument $document, TransformationContext $transformationContext);
 }

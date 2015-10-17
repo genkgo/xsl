@@ -1,19 +1,21 @@
 <?php
-namespace Genkgo\Xsl;
+namespace Genkgo\Xsl\Callback;
 
+use Genkgo\Xsl\DocumentContext;
 use Genkgo\Xsl\Xpath\Lexer;
 
 /**
  * Class ObjectFunction
- * @package Genkgo\Xsl
+ * @package Genkgo\Xsl\Callback
  */
 class ObjectFunction extends AbstractFunction implements FunctionInterface
 {
     /**
      * @param Lexer $lexer
+     * @param DocumentContext $context
      * @return array
      */
-    public function replace(Lexer $lexer)
+    public function replace(Lexer $lexer, DocumentContext $context)
     {
         $resultTokens = [];
         $resultTokens[] = 'php:function';

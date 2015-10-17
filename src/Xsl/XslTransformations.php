@@ -1,7 +1,9 @@
 <?php
 namespace Genkgo\Xsl\Xsl;
 
-use Genkgo\Xsl\ObjectFunction;
+use Genkgo\Xsl\Callback\ContextFunction;
+use Genkgo\Xsl\Callback\ObjectFunction;
+use Genkgo\Xsl\Callback\ReturnXsFunction;
 use Genkgo\Xsl\Transpiler;
 use Genkgo\Xsl\XmlNamespaceInterface;
 use Genkgo\Xsl\Xpath\Compiler;
@@ -25,6 +27,8 @@ class XslTransformations implements XmlNamespaceInterface {
             new ObjectFunction('formatDate', Functions::class),
             new ObjectFunction('formatTime', Functions::class),
             new ObjectFunction('formatDateTime', Functions::class, 'format-dateTime'),
+            new ContextFunction('currentGroupingKey', Functions::class),
+            new ReturnXsFunction(new ContextFunction('currentGroup', Functions::class), 'sequence')
         ]);
     }
 

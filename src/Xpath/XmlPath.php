@@ -1,8 +1,9 @@
 <?php
 namespace Genkgo\Xsl\Xpath;
 
-use Genkgo\Xsl\ObjectFunction;
-use Genkgo\Xsl\StringFunction;
+use Genkgo\Xsl\Callback\ObjectFunction;
+use Genkgo\Xsl\Callback\ReturnXsFunction;
+use Genkgo\Xsl\Callback\StringFunction;
 use Genkgo\Xsl\Transpiler;
 use Genkgo\Xsl\XmlNamespaceInterface;
 
@@ -27,7 +28,6 @@ class XmlPath implements XmlNamespaceInterface {
             new StringFunction('matches', Functions::class),
             new StringFunction('lowerCase', Functions::class),
             new StringFunction('upperCase', Functions::class),
-            new StringFunction('tokenize', Functions::class),
             new StringFunction('translate', Functions::class),
             new StringFunction('substringAfter', Functions::class),
             new StringFunction('substringBefore', Functions::class),
@@ -36,6 +36,7 @@ class XmlPath implements XmlNamespaceInterface {
             new ObjectFunction('currentTime', Functions::class),
             new ObjectFunction('currentDate', Functions::class),
             new ObjectFunction('currentDateTime', Functions::class, 'current-dateTime'),
+            new ReturnXsFunction(new ObjectFunction('tokenize', Functions::class), 'sequence'),
         ]);
     }
 
