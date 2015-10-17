@@ -43,7 +43,7 @@ echo $transpiler->transformToXML($xmlDoc);
 
 You can also register your own extensions. Just implement the `XmlNamespaceInterface` and you
 are ready to use your own element transformations and xpath functions. See the example below and the [integration
-test](https://github.com/genkgo/xsl/tree/master/tests/Stubs/ExtensionTest.php) to understand how it works.
+test](https://github.com/genkgo/xsl/blob/master/tests/Integration/ExtensionTest.php) to understand how it works.
 
 
 ```php
