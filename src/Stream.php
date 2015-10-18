@@ -145,7 +145,7 @@ class Stream
      * @return int
      * @throws ReadOnlyStreamException
      */
-    public function stream_write($data)
+    public function stream_write()
     {
         throw new ReadOnlyStreamException();
     }

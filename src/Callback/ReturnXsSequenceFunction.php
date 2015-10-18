@@ -11,6 +11,10 @@ use Genkgo\Xsl\Xpath\Lexer;
 class ReturnXsSequenceFunction implements FunctionInterface
 {
     /**
+     * @var FunctionInterface
+     */
+    private $parentFunction;
+    /**
      * @param FunctionInterface $parentFunction
      */
     public function __construct(FunctionInterface $parentFunction)

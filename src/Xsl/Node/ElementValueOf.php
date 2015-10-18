@@ -43,21 +43,24 @@ class ElementValueOf implements ElementTransformerInterface
      */
     public static function valueOf($elements, $separator)
     {
-        $result = '';
-
         if (is_scalar($elements)) {
             return $elements;
         }
 
-        $index = 0;
-        foreach ($elements as $element) {
-            if ($index > 0) {
-                $result .= $separator;
-            }
+        $result = '';
 
-            $result .= $element->nodeValue;
-            $index++;
+        if (is_array($elements)) {
+            $index = 0;
+            foreach ($elements as $element) {
+                if ($index > 0) {
+                    $result .= $separator;
+                }
+
+                $result .= $element->nodeValue;
+                $index++;
+            }
         }
+
 
         return $result;
     }

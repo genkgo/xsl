@@ -11,6 +11,10 @@ use Genkgo\Xsl\Xpath\Lexer;
 class ReturnXsScalarFunction implements FunctionInterface
 {
     /**
+     * @var FunctionInterface
+     */
+    private $parentFunction;
+    /**
      * @var bool
      */
     private $type = false;

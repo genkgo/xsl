@@ -82,6 +82,7 @@ final class Compiler
                 $namespace = $context->getNamespace(substr($token, 0, $functionName));
                 $token = $namespace . ':' . substr($token, $functionName + 1);
             } catch (UnknownNamespaceException $e) {
+                /** let the xsl processor throw this error  */
             }
         }
 
