@@ -65,7 +65,7 @@ $transpiler = new XsltProcessor($config);
 
 Depending on the complexity of your stylesheet, the transpiling process could slow down the processing of your
 document. Therefore, you probably want to cache the result stylesheet. By adding
-[`genkgo/cache`](https://github.com/genkg/cache) to your composer.json, you will add the possibility to enable caching.
+[`genkgo/cache`](https://github.com/genkgo/cache) to your composer.json, you will add the possibility to enable caching.
 See the example below, or the [integration test](https://github.com/genkgo/xsl/blob/master/tests/Integration/CacheTest.php)
 to see how it works.
 
