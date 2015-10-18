@@ -5,7 +5,6 @@ use Genkgo\Xsl\Schema\XmlSchema;
 
 class ConfigTest extends AbstractTestCase
 {
-
     public function testDefaultUpgrade()
     {
         $config = new Config();
@@ -28,6 +27,4 @@ class ConfigTest extends AbstractTestCase
         $config->setUpgradeToXsl2(false);
         $this->assertFalse($config->shouldUpgradeToXsl2());
     }
-
-
 }

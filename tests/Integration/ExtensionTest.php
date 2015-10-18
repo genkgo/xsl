@@ -6,9 +6,10 @@ use Genkgo\Xsl\Config;
 use Genkgo\Xsl\Stubs\Extension\MyExtension;
 use Genkgo\Xsl\XsltProcessor;
 
-class ExtensionTest extends AbstractIntegrationTestCase {
-
-    public function testXpathFunction () {
+class ExtensionTest extends AbstractIntegrationTestCase
+{
+    public function testXpathFunction()
+    {
         $extension = new MyExtension();
 
         $config = new Config();
@@ -26,5 +27,4 @@ class ExtensionTest extends AbstractIntegrationTestCase {
 
         $this->assertEquals('Hello World was called and received 20 arguments!', trim($processorResult));
     }
-
 }

@@ -1,6 +1,7 @@
 <?php
 namespace Genkgo\Xsl\Xpath;
 
+use Genkgo\Xsl\Xpath\Functions\Aggregation;
 use Genkgo\Xsl\Xpath\Functions\Date;
 use Genkgo\Xsl\Xpath\Functions\Math;
 use Genkgo\Xsl\Xpath\Functions\Text;
@@ -11,6 +12,7 @@ use Genkgo\Xsl\Xpath\Functions\Text;
  */
 class Functions
 {
+    use Aggregation;
     use Math;
     use Text;
     use Date;

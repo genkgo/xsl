@@ -6,8 +6,8 @@ use Genkgo\Xsl\Transpiler;
 use Genkgo\Xsl\XmlNamespaceInterface;
 use Genkgo\Xsl\Xpath\Compiler;
 
-class MyExtension implements XmlNamespaceInterface {
-
+class MyExtension implements XmlNamespaceInterface
+{
     /**
      * @param Compiler $compiler
      * @return void
@@ -28,7 +28,8 @@ class MyExtension implements XmlNamespaceInterface {
         ;
     }
 
-    public static function helloWorld (...$args) {
+    public static function helloWorld(...$args)
+    {
         return 'Hello World was called and received ' . count($args) . ' arguments!';
     }
 }

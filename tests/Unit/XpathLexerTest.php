@@ -124,5 +124,4 @@ class XpathLexerTest extends AbstractTestCase
         $this->assertEquals($expectedTokens[8], $resultLexer->peek(8));
         $this->assertEquals($expectedTokens[9], $resultLexer->peek(9));
     }
-
 }

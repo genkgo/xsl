@@ -19,6 +19,9 @@ abstract class AbstractXpathTest extends AbstractIntegrationTestCase
             $processor->setParameter('', $key, $value);
         }
 
-        return trim($processor->transformToXml($styleSheet));
+        $document = new DOMDocument();
+        $document->load('Stubs/collection.xml');
+
+        return trim($processor->transformToXml($document));
     }
 }
