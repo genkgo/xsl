@@ -1,10 +1,14 @@
 <?php
-namespace Genkgo\Xsl;
+namespace Genkgo\Xsl\Unit;
 
 use DOMDocument;
+use Genkgo\Xsl\AbstractTestCase;
+use Genkgo\Xsl\Config;
+use Genkgo\Xsl\XsltProcessor;
 
 class XsltProcessorTest extends AbstractTestCase
 {
+
     public function testConstruct()
     {
         $decorator = new XsltProcessor();
