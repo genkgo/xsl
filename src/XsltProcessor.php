@@ -33,7 +33,8 @@ class XsltProcessor extends PhpXsltProcessor
     /**
      * @param Config $config
      */
-    public function __construct (Config $config = null) {
+    public function __construct(Config $config = null)
+    {
         if ($config === null) {
             $config = Config::fromDefault();
         }
@@ -104,7 +105,11 @@ class XsltProcessor extends PhpXsltProcessor
         return $result;
     }
 
-    public function registerPHPFunctions ($restrict = null) {
+    /**
+     * @param null $restrict
+     */
+    public function registerPHPFunctions($restrict = null)
+    {
         if (is_string($restrict)) {
             $this->phpFunctions = [$restrict];
         }
@@ -130,7 +135,8 @@ class XsltProcessor extends PhpXsltProcessor
     /**
      *
      */
-    private function boot () {
+    private function boot()
+    {
         if (self::$booted === false) {
             stream_wrapper_register('gxsl', Stream::class);
             self::$booted = true;
@@ -141,7 +147,8 @@ class XsltProcessor extends PhpXsltProcessor
      * @param DOMDocument $styleSheet
      * @return Transpiler
      */
-    private function createTranspiler (DOMDocument $styleSheet) {
+    private function createTranspiler(DOMDocument $styleSheet)
+    {
         $phpFunctions = $this->phpFunctions;
 
         if ($phpFunctions === null) {
@@ -168,7 +175,8 @@ class XsltProcessor extends PhpXsltProcessor
     /**
      * @return XmlNamespaceInterface[]
      */
-    private function getNamespaces () {
+    private function getNamespaces()
+    {
         if ($this->config->shouldUpgradeToXsl2()) {
             $namespaces = [
                 new Schema\XmlSchema(),
@@ -188,14 +196,8 @@ class XsltProcessor extends PhpXsltProcessor
      */
     private function createTranspiledDocument(DOMDocument $styleSheet)
     {
-        if (is_file($styleSheet->documentURI)) {
-            $home = $styleSheet->documentURI . '_';
-        } else {
-            $home = $styleSheet->documentURI . '/~';
-        }
-
         $transpiledStyleSheet = new DOMDocument('1.0', 'UTF-8');
-        $transpiledStyleSheet->load('gxsl://' . $home);
+        $transpiledStyleSheet->load('gxsl://' . $styleSheet->documentURI . '~~');
         return $transpiledStyleSheet;
     }
 

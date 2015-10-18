@@ -62,7 +62,12 @@ trait DateFormatter
         return self::formatEvaluatedDateTime($date, $picture, Functions::FLAG_DATE + Functions::FLAG_TIME);
     }
 
-    private static function assertArray ($value) {
+    /**
+     * @param $value
+     * @throws InvalidArgumentException
+     */
+    private static function assertArray($value)
+    {
         if (is_array($value) === false) {
             throw new InvalidArgumentException("Expected a date object, got scalar");
         }
@@ -73,7 +78,8 @@ trait DateFormatter
      * @param $name
      * @throws InvalidArgumentException
      */
-    private static function assertSchema(DOMElement $element, $name) {
+    private static function assertSchema(DOMElement $element, $name)
+    {
         if ($element->namespaceURI !== XmlSchema::URI || $element->localName !== $name) {
             $nsSchema = XmlSchema::URI;
             throw new InvalidArgumentException("Expected a {$nsSchema}:{$name} object, got {$element->nodeName}");

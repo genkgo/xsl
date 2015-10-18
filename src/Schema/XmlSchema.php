@@ -2,7 +2,7 @@
 namespace Genkgo\Xsl\Schema;
 
 use Genkgo\Xsl\Callback\ObjectFunction;
-use Genkgo\Xsl\Callback\ReturnXsFunction;
+use Genkgo\Xsl\Callback\ReturnXsScalarFunction;
 use Genkgo\Xsl\Transpiler;
 use Genkgo\Xsl\XmlNamespaceInterface;
 use Genkgo\Xsl\Xpath\Compiler;
@@ -11,8 +11,8 @@ use Genkgo\Xsl\Xpath\Compiler;
  * Class XmlSchema
  * @package Genkgo\Xsl\Schema
  */
-class XmlSchema implements XmlNamespaceInterface{
-
+class XmlSchema implements XmlNamespaceInterface
+{
     /**
      *
      */
@@ -21,11 +21,12 @@ class XmlSchema implements XmlNamespaceInterface{
     /**
      * @param Compiler $compiler
      */
-    public function registerXpathFunctions (Compiler $compiler) {
+    public function registerXpathFunctions(Compiler $compiler)
+    {
         $compiler->addNsFunctions([
-            new ReturnXsFunction(new ObjectFunction('xsDate', Functions::class, 'date'), 'date'),
-            new ReturnXsFunction(new ObjectFunction('xsTime', Functions::class, 'time'), 'time'),
-            new ReturnXsFunction(new ObjectFunction('xsDateTime', Functions::class, 'dateTime'), 'dateTime')
+            new ReturnXsScalarFunction(new ObjectFunction('xsDate', Functions::class, 'date'), 'date'),
+            new ReturnXsScalarFunction(new ObjectFunction('xsTime', Functions::class, 'time'), 'time'),
+            new ReturnXsScalarFunction(new ObjectFunction('xsDateTime', Functions::class, 'dateTime'), 'dateTime')
         ], self::URI);
     }
 

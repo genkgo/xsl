@@ -27,60 +27,96 @@ class Stream
 
     /**
      * @param $path
-     * @param $mode
-     * @param $options
-     * @param $opened_path
      * @return bool
      * @throws StreamException
      */
-    public function stream_open($path, $mode, $options, &$opened_path)
+    public function stream_open($path)
     {
         $filename = str_replace('gxsl://', '', $path);
-
         $streamContext = stream_context_get_options($this->context);
-        if (!isset($streamContext['gxsl']['transpiler']) || $streamContext['gxsl']['transpiler'] instanceof Transpiler === false) {
-            throw new StreamException('A gxsl stream should have a transpiler, no transpiler given');
-        }
+        $this->verifyTranspiler($streamContext);
 
         /** @var Transpiler $transpiler */
         $transpiler = $streamContext['gxsl']['transpiler'];
-        $specialDocument = substr($filename, -1, 1);
+        $rootDocument = substr($filename, -2)  === '~~';
 
-        if ($specialDocument === '~') {
-            $this->template = $this->documentToTemplate($transpiler, $transpiler->context->getDocument());
+        if ($rootDocument) {
+            $this->template = $this->rootToTemplate($transpiler, $filename, $streamContext);
             return true;
         }
 
+        $this->template = $this->cacheToTemplate($transpiler, $filename, $streamContext);
+        return true;
+    }
+
+    /**
+     * @param $streamContext
+     * @throws StreamException
+     */
+    private function verifyTranspiler($streamContext)
+    {
+        if (!isset($streamContext['gxsl']['transpiler']) || $streamContext['gxsl']['transpiler'] instanceof Transpiler === false) {
+            throw new StreamException('A gxsl stream should have a transpiler, no transpiler given');
+        }
+    }
+
+    /**
+     * @param Transpiler $transpiler
+     * @param $filename
+     * @param $streamContext
+     * @return mixed|string
+     */
+    private function cacheToTemplate(Transpiler $transpiler, $filename, $streamContext)
+    {
         if (isset($streamContext['gxsl']['cache']) && $streamContext['gxsl']['cache'] instanceof CallbackCacheInterface === true) {
             /** @var CallbackCacheInterface $cacheAdapter */
             $cacheAdapter = $streamContext['gxsl']['cache'];
 
-            $this->template = $cacheAdapter->get($filename, function () use ($transpiler, $filename) {
+            return $cacheAdapter->get($filename, function () use ($transpiler, $filename) {
                 return $this->pathToTemplate($transpiler, $filename);
             });
-
-            return true;
         }
 
-        $this->template = $this->pathToTemplate($transpiler, $filename);
-
-        return true;
+        return $this->pathToTemplate($transpiler, $filename);
     }
 
-    private function pathToTemplate (Transpiler $transpiler, $path) {
-        $specialDocument = substr($path, -1, 1);
-        if ($specialDocument === '_') {
-            $document = $transpiler->context->getDocument();
-        } else {
-            $document = new DOMDocument();
-            $document->load($path);
+    /**
+     * @param Transpiler $transpiler
+     * @param $filename
+     * @param $streamContext
+     * @return mixed|string
+     */
+    private function rootToTemplate(Transpiler $transpiler, $filename, $streamContext)
+    {
+        $filename = substr($filename, 0, -2);
+
+        if (is_file($filename) === false) {
+            return $this->documentToTemplate($transpiler, $transpiler->context->getDocument());
         }
 
+        return $this->cacheToTemplate($transpiler, $filename, $streamContext);
+    }
+
+    /**
+     * @param Transpiler $transpiler
+     * @param $path
+     * @return string
+     */
+    private function pathToTemplate(Transpiler $transpiler, $path)
+    {
+        $document = new DOMDocument();
+        $document->load($path);
         return $this->documentToTemplate($transpiler, $document);
     }
 
 
-    private function documentToTemplate (Transpiler $transpiler, DOMDocument $document) {
+    /**
+     * @param Transpiler $transpiler
+     * @param DOMDocument $document
+     * @return string
+     */
+    private function documentToTemplate(Transpiler $transpiler, DOMDocument $document)
+    {
         return $transpiler->transpile($document)->saveXML();
     }
 
@@ -116,13 +152,12 @@ class Stream
 
     /**
      * @param $path
-     * @param $flags
      * @return array
      */
-    public function url_stat($path, $flags)
+    public function url_stat($path)
     {
         $filename = str_replace('gxsl://', '', $path);
-        if (in_array(substr($filename, -1, 1), ['~', '_'])) {
+        if (substr($filename, -2, 2) === '~~') {
             return [];
         }
 

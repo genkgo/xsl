@@ -1,24 +1,57 @@
 <?php
 namespace Genkgo\Xsl\Xpath;
 
-class FunctionBuilder {
-
+/**
+ * Class FunctionBuilder
+ * @package Genkgo\Xsl\Xpath
+ */
+class FunctionBuilder
+{
+    /**
+     * @var
+     */
     private $name;
+    /**
+     * @var array
+     */
     private $arguments = [];
 
-    public function __construct ($name) {
+    /**
+     * @param $name
+     */
+    public function __construct($name)
+    {
         $this->name = $name;
     }
 
-    public function addArgument ($argument, $quote = true) {
-        $this->arguments[] = [$argument, $quote];
+    /**
+     * @param $argument
+     * @return $this
+     */
+    public function addArgument($argument)
+    {
+        $this->arguments[] = [$argument, true];
         return $this;
     }
 
-    public function build() {
+    /**
+     * @param $expression
+     * @return $this
+     */
+    public function addExpression($expression)
+    {
+        $this->arguments[] = [$expression, false];
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function build()
+    {
         $argumentList = [];
         foreach ($this->arguments as $argumentSettings) {
-            list ($argument, $quote) = $argumentSettings;
+            list($argument, $quote) = $argumentSettings;
 
             if ($quote) {
                 $argumentList[] = '\'' . $argument . '\'';
@@ -29,5 +62,4 @@ class FunctionBuilder {
 
         return $this->name . '(' . implode(',', $argumentList) . ')';
     }
-
 }

@@ -15,6 +15,9 @@ final class XsDate extends AbstractXsElement
      */
     const FORMAT = 'Y-m-dP';
 
+    /**
+     * @return string
+     */
     protected function getElementName()
     {
         return 'date';
@@ -24,7 +27,7 @@ final class XsDate extends AbstractXsElement
      * @param DateTimeImmutable $date
      * @return XsDate
      */
-    public static function fromDateTime (DateTimeImmutable $date)
+    public static function fromDateTime(DateTimeImmutable $date)
     {
         return new static($date->format(self::FORMAT));
     }

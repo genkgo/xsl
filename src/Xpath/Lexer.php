@@ -107,7 +107,8 @@ class Lexer implements Iterator, SeekableIterator, Countable
      * @param array|string[] $tokens
      * @param int $position
      */
-    public function insert (array $tokens, $position) {
+    public function insert(array $tokens, $position)
+    {
         array_splice($this->tokens, $position, 0, $tokens);
     }
 

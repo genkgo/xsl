@@ -7,8 +7,8 @@ use Genkgo\Xsl\TransformationContext;
  * Class PhpCallback
  * @package Genkgo\Xsl\Callback
  */
-class PhpCallback {
-
+class PhpCallback
+{
     /**
      * @var TransformationContext[]
      */
@@ -17,14 +17,16 @@ class PhpCallback {
     /**
      * @param TransformationContext $context
      */
-    public static function attach (TransformationContext $context) {
+    public static function attach(TransformationContext $context)
+    {
         self::$context[spl_object_hash($context)] = $context;
     }
 
     /**
      * @param TransformationContext $context
      */
-    public static function detach (TransformationContext $context) {
+    public static function detach(TransformationContext $context)
+    {
         unset(self::$context[spl_object_hash($context)]);
     }
 
@@ -34,7 +36,8 @@ class PhpCallback {
      * @param ...$arguments
      * @return mixed
      */
-    public static function call ($class, $method, ...$arguments) {
+    public static function call($class, $method, ...$arguments)
+    {
         return call_user_func_array([$class, $method], $arguments);
     }
 
@@ -45,10 +48,10 @@ class PhpCallback {
      * @param ...$arguments
      * @return mixed
      */
-    public static function callContext ($objectHash, $class, $method, ...$arguments) {
+    public static function callContext($objectHash, $class, $method, ...$arguments)
+    {
         array_unshift($arguments, self::$context[$objectHash]);
 
         return call_user_func_array([$class, $method], $arguments);
     }
-
 }

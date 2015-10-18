@@ -30,7 +30,7 @@ final class Transpiler
     /**
      * @param TransformerInterface $transformer
      */
-    public function registerTransformer (TransformerInterface $transformer)
+    public function registerTransformer(TransformerInterface $transformer)
     {
         $this->transformers[] = $transformer;
     }

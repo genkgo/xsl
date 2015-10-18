@@ -7,9 +7,10 @@ use Genkgo\Cache\Adapters\SimpleCallbackAdapter;
 use Genkgo\Xsl\Config;
 use Genkgo\Xsl\XsltProcessor;
 
-class CacheTest extends AbstractIntegrationTestCase {
-
-    public function testCache () {
+class CacheTest extends AbstractIntegrationTestCase
+{
+    public function testCache()
+    {
         $arrayCache = new ArrayAdapter();
 
         $config = new Config();
@@ -25,7 +26,7 @@ class CacheTest extends AbstractIntegrationTestCase {
         $processor->importStylesheet($xslDoc);
         $processorResult = $processor->transformToXML($xmlDoc);
 
-        $cacheKey = dirname(__DIR__).'/Stubs/combine-multiple-functions.xsl_';
+        $cacheKey = dirname(__DIR__).'/Stubs/combine-multiple-functions.xsl';
         $cache = $arrayCache->get($cacheKey);
 
         $this->assertEquals(157, trim($processorResult));
@@ -36,5 +37,4 @@ class CacheTest extends AbstractIntegrationTestCase {
 
         $this->assertEquals(158, trim($processor->transformToXML($xmlDoc)));
     }
-
 }

@@ -5,23 +5,17 @@ use Genkgo\Xsl\DocumentContext;
 use Genkgo\Xsl\Xpath\Lexer;
 
 /**
- * Class SequenceFunction
+ * Class ReturnXsSequenceFunction
  * @package Genkgo\Xsl\Callback
  */
-class ReturnXsFunction implements FunctionInterface
+class ReturnXsSequenceFunction implements FunctionInterface
 {
     /**
-     * @var bool
-     */
-    private $type = false;
-
-    /**
      * @param FunctionInterface $parentFunction
-     * @param $type
      */
-    public function __construct (FunctionInterface $parentFunction, $type) {
+    public function __construct(FunctionInterface $parentFunction)
+    {
         $this->parentFunction = $parentFunction;
-        $this->type = $type;
     }
 
     /**
@@ -59,12 +53,7 @@ class ReturnXsFunction implements FunctionInterface
                 $level--;
 
                 if ($level === 0) {
-                    if ($this->type !== null) {
-                        $lexer->insert(['/', 'xs:' . $this->type], $currentKey + 2);
-                        break;
-                    }
-
-                    $lexer->insert(['/', 'xs:*'], $currentKey + 2);
+                    $lexer->insert(['/', 'xs:sequence', '/', '*'], $currentKey + 2);
                     break;
                 }
             }
@@ -74,5 +63,4 @@ class ReturnXsFunction implements FunctionInterface
 
         return $resultTokens;
     }
-
 }

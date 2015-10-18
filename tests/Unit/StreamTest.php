@@ -24,7 +24,7 @@ class StreamTest extends AbstractTestCase
                 )
             ]
         ]);
-        $stream->stream_open('gxsl://~', 'r', 0, $openedPath);
+        $stream->stream_open('gxsl://~~', 'r', 0, $openedPath);
         $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>', trim($stream->stream_read(9999)));
     }
 

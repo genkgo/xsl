@@ -2,13 +2,14 @@
 namespace Genkgo\Xsl\Xpath;
 
 use Genkgo\Xsl\Callback\ObjectFunction;
-use Genkgo\Xsl\Callback\ReturnXsFunction;
+use Genkgo\Xsl\Callback\ReturnXsScalarFunction;
+use Genkgo\Xsl\Callback\ReturnXsSequenceFunction;
 use Genkgo\Xsl\Callback\StringFunction;
 use Genkgo\Xsl\Transpiler;
 use Genkgo\Xsl\XmlNamespaceInterface;
 
-class XmlPath implements XmlNamespaceInterface {
-
+class XmlPath implements XmlNamespaceInterface
+{
     const URI = '';
 
     /**
@@ -33,10 +34,10 @@ class XmlPath implements XmlNamespaceInterface {
             new StringFunction('substringBefore', Functions::class),
             new StringFunction('replace', Functions::class),
             new ObjectFunction('stringJoin', Functions::class),
-            new ObjectFunction('currentTime', Functions::class),
-            new ObjectFunction('currentDate', Functions::class),
-            new ObjectFunction('currentDateTime', Functions::class, 'current-dateTime'),
-            new ReturnXsFunction(new ObjectFunction('tokenize', Functions::class), 'sequence'),
+            new ReturnXsScalarFunction(new ObjectFunction('currentTime', Functions::class), 'time'),
+            new ReturnXsScalarFunction(new ObjectFunction('currentDate', Functions::class), 'date'),
+            new ReturnXsScalarFunction(new ObjectFunction('currentDateTime', Functions::class, 'current-dateTime'), 'dateTime'),
+            new ReturnXsSequenceFunction(new ObjectFunction('tokenize', Functions::class)),
         ]);
     }
 

@@ -1,60 +1,62 @@
 <?php
 namespace Genkgo\Xsl\Xsl\Node;
 
-use DOMDocument;
 use DOMElement;
 use Genkgo\Xsl\Callback\PhpCallback;
 use Genkgo\Xsl\DocumentContext;
-use Genkgo\Xsl\Schema\XmlSchema;
 use Genkgo\Xsl\Xpath\FunctionBuilder;
 use Genkgo\Xsl\Xsl\ElementTransformerInterface;
 
-class ElementValueOf implements ElementTransformerInterface {
-
+/**
+ * Class ElementValueOf
+ * @package Genkgo\Xsl\Xsl\Node
+ */
+class ElementValueOf implements ElementTransformerInterface
+{
+    /**
+     * @param DOMElement $element
+     * @param DocumentContext $context
+     * @return void
+     */
     public function transform(DOMElement $element, DocumentContext $context)
     {
-        if ($element->nodeName === 'xsl:value-of' && $element->hasAttribute('separator')) {
+        if ($element->nodeName === 'xsl:value-of') {
             $select = $element->getAttribute('select');
-            $separator = $element->getAttribute('separator');
+            $separator = $element->hasAttribute('separator') ? $element->getAttribute('separator') : ' ';
 
-            $endsWith = '/xs:sequence';
-            if (substr($select, strlen($endsWith) * -1) === $endsWith) {
-                $callback = (new FunctionBuilder('php:function'))
-                    ->addArgument(PhpCallback::class . '::call')
-                    ->addArgument(static::class)
-                    ->addArgument('valueOfSeparate')
-                    ->addArgument($select, false)
-                    ->addArgument($separator);
+            $callback = (new FunctionBuilder('php:function'))
+                ->addArgument(PhpCallback::class . '::call')
+                ->addArgument(static::class)
+                ->addArgument('valueOf')
+                ->addExpression($select)
+                ->addArgument($separator);
 
-                $element->setAttribute('select', $callback->build());
-            }
-
+            $element->setAttribute('select', $callback->build());
             $element->removeAttribute('separator');
         }
     }
 
     /**
-     * @param DOMElement[] $elements
+     * @param mixed $elements
      * @param $separator
      * @return string
      */
-    public static function valueOfSeparate($elements, $separator)
+    public static function valueOf($elements, $separator)
     {
         $result = '';
 
+        if (is_scalar($elements)) {
+            return $elements;
+        }
+
         $index = 0;
-        foreach ($elements as $sequence) {
-            $itemsXpath = new \DOMXPath($sequence->ownerDocument);
-            $items = $itemsXpath->query('xs:*', $sequence);
-
-            foreach ($items as $node) {
-                if ($index > 0) {
-                    $result .= $separator;
-                }
-
-                $result .= $node->nodeValue;
-                $index++;
+        foreach ($elements as $element) {
+            if ($index > 0) {
+                $result .= $separator;
             }
+
+            $result .= $element->nodeValue;
+            $index++;
         }
 
         return $result;

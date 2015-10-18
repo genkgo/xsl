@@ -13,8 +13,16 @@ use Genkgo\Xsl\Xsl\ElementTransformerInterface;
 use Genkgo\Xsl\Xsl\Transformer;
 use Genkgo\Xsl\Xsl\XslTransformations;
 
-class ElementForEachGroup implements ElementTransformerInterface {
-
+/**
+ * Class ElementForEachGroup
+ * @package Genkgo\Xsl\Xsl\Node
+ */
+class ElementForEachGroup implements ElementTransformerInterface
+{
+    /**
+     * @param DOMElement $element
+     * @param DocumentContext $context
+     */
     public function transform(DOMElement $element, DocumentContext $context)
     {
         if ($element->nodeName === 'xsl:for-each-group') {
@@ -26,7 +34,7 @@ class ElementForEachGroup implements ElementTransformerInterface {
                 ->addArgument(spl_object_hash($context->getTransformationContext()))
                 ->addArgument(static::class)
                 ->addArgument('groupBy')
-                ->addArgument($select, false)
+                ->addExpression($select)
                 ->addArgument(base64_encode($groupBy))
             ;
 

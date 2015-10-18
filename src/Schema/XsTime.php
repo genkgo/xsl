@@ -15,12 +15,19 @@ final class XsTime extends AbstractXsElement
      */
     const FORMAT = 'H:i:sP';
 
+    /**
+     * @return string
+     */
     protected function getElementName()
     {
         return 'time';
     }
 
-    public static function fromDateTime (DateTimeImmutable $date)
+    /**
+     * @param DateTimeImmutable $date
+     * @return static
+     */
+    public static function fromDateTime(DateTimeImmutable $date)
     {
         return new static($date->format(self::FORMAT));
     }

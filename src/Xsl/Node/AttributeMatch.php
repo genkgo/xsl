@@ -10,8 +10,8 @@ use Genkgo\Xsl\Xsl\ElementTransformerInterface;
  * Class AttributeMatch
  * @package Genkgo\Xsl\Xsl\Element
  */
-class AttributeMatch implements ElementTransformerInterface {
-
+class AttributeMatch implements ElementTransformerInterface
+{
     /**
      * @var Compiler
      */
@@ -20,7 +20,8 @@ class AttributeMatch implements ElementTransformerInterface {
     /**
      * @param Compiler $compiler
      */
-    public function __construct (Compiler $compiler) {
+    public function __construct(Compiler $compiler)
+    {
         $this->xpathCompiler = $compiler;
     }
 
@@ -40,5 +41,4 @@ class AttributeMatch implements ElementTransformerInterface {
             );
         }
     }
-
 }

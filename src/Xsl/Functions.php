@@ -22,5 +22,4 @@ class Functions
 
     use DateFormatter;
     use GroupBy;
-
 }

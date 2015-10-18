@@ -162,18 +162,13 @@ trait Text
         $result = '';
 
         $index = 0;
-        foreach ($elements as $sequence) {
-            $itemsXpath = new \DOMXPath($sequence->ownerDocument);
-            $items = $itemsXpath->query('xs:*', $sequence);
-
-            foreach ($items as $node) {
-                if ($index > 0) {
-                    $result .= $separator;
-                }
-
-                $result .= $node->nodeValue;
-                $index++;
+        foreach ($elements as $element) {
+            if ($index > 0) {
+                $result .= $separator;
             }
+
+            $result .= $element->nodeValue;
+            $index++;
         }
 
         return $result;

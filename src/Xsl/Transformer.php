@@ -38,7 +38,6 @@ class Transformer implements TransformerInterface
             new AttributeSelect($xpathCompiler),
             new ElementValueOf(),
             new ElementForEachGroup(),
-            new ElementIteration(),
         ];
     }
 

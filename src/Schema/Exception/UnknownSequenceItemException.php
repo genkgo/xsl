@@ -3,6 +3,10 @@ namespace Genkgo\Xsl\Schema\Exception;
 
 use Exception;
 
-class UnknownSequenceItemException extends Exception {
-
+/**
+ * Class UnknownSequenceItemException
+ * @package Genkgo\Xsl\Schema\Exception
+ */
+class UnknownSequenceItemException extends Exception
+{
 }

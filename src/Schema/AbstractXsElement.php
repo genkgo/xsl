@@ -7,12 +7,13 @@ use DOMDocument;
  * Class AbstractXsElement
  * @package Genkgo\Xsl\Schema
  */
-abstract class AbstractXsElement extends DOMDocument {
-
+abstract class AbstractXsElement extends DOMDocument
+{
     /**
      * @param null $value
      */
-    final public function __construct ($value = null) {
+    final public function __construct($value = null)
+    {
         parent::__construct('1.0', 'UTF-8');
 
         $root = $this->createElementNS(XmlSchema::URI, 'xs:' . $this->getElementName());

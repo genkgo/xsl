@@ -7,8 +7,8 @@ use Genkgo\Xsl\Exception\UnknownNamespaceException;
  * Class DocumentContext
  * @package Genkgo\Xsl
  */
-class DocumentContext {
-
+class DocumentContext
+{
     /**
      * @var TransformationContext
      */
@@ -21,7 +21,7 @@ class DocumentContext {
     /**
      * @param TransformationContext $context
      */
-    public function __construct (TransformationContext $context)
+    public function __construct(TransformationContext $context)
     {
         $this->transformationContext = $context;
     }
@@ -55,5 +55,4 @@ class DocumentContext {
 
         throw new UnknownNamespaceException();
     }
-
 }

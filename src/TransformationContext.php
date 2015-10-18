@@ -63,6 +63,10 @@ class TransformationContext
         return $this->phpFunctions;
     }
 
+    /**
+     * @param DOMElement $element
+     * @param array $context
+     */
     public function setElementContext(DOMElement $element, array $context)
     {
         $objectHash = spl_object_hash($element);
@@ -85,5 +89,4 @@ class TransformationContext
 
         return null;
     }
-
 }

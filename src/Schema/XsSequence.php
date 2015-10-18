@@ -23,7 +23,8 @@ final class XsSequence extends AbstractXsElement
 
         foreach ($list as $item) {
             if (is_scalar($item)) {
-                $child = $sequence->createElementNs(XmlSchema::URI, 'xs:string', $item);
+                $child = $sequence->createElementNs(XmlSchema::URI, 'xs:item', $item);
+                $child->setAttribute('type', gettype($item));
                 $sequence->documentElement->appendChild($child);
             } elseif ($item instanceof DOMNode) {
                 $child = $sequence->importNode($item, true);
@@ -47,5 +48,4 @@ final class XsSequence extends AbstractXsElement
     {
         return 'sequence';
     }
-
 }

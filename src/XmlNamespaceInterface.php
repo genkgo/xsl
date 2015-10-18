@@ -7,8 +7,8 @@ use Genkgo\Xsl\Xpath\Compiler;
  * Interface XmlNamespaceInterface
  * @package Genkgo\Xsl
  */
-interface XmlNamespaceInterface {
-
+interface XmlNamespaceInterface
+{
     /**
      * @param Compiler $compiler
      * @return void
@@ -20,5 +20,4 @@ interface XmlNamespaceInterface {
      * @param Compiler $compiler
      */
     public function registerTransformers(Transpiler $transpiler, Compiler $compiler);
-
 }

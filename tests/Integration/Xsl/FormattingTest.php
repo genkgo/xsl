@@ -157,7 +157,7 @@ class FormattingTest extends AbstractXslTest
 
     public function testInvalidSequence()
     {
-        $this->setExpectedException(InvalidArgumentException::class, 'Expected a http://www.w3.org/2001/XMLSchema:date object, got xs:sequence');
+        $this->setExpectedException(InvalidArgumentException::class, 'Expected a http://www.w3.org/2001/XMLSchema:dateTime object, got xs:item');
 
         $phpDate = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2015-10-16 15:37:00');
         $xsDateTime = XsDateTime::fromDateTime($phpDate);
@@ -309,5 +309,12 @@ class FormattingTest extends AbstractXslTest
             'time' => (string) $xsTime,
             'picture' => '[F]'
         ]);
+    }
+
+    public function testFormatCurrent()
+    {
+        $this->assertContains('+', $this->transformFile('Stubs/Xsl/Formatting/format-current.xsl', [
+            'picture' => '[F]'
+        ]));
     }
 }
