@@ -61,6 +61,30 @@ $config->setExtensions(new MyExtensions());
 $transpiler = new XsltProcessor($config);
 ```
 
+## Caching: transpile once
+
+Depending on the complexity of your stylesheet, the transpiling process could slow down the processing of your
+document. Therefore, you probably want to cache the result stylesheet. By adding
+[`genkgo/cache`](https://github.com/genkg/cache) to your composer.json, you will add the possibility to enable caching.
+See the example below, or the [integration test](https://github.com/genkgo/xsl/blob/master/tests/Integration/CacheTest.php)
+to see how it works.
+
+
+```php
+<?php
+use Genkgo\Cache\Adapters\ArrayAdapter;
+use Genkgo\Cache\Adapters\SimpleCallbackAdapter;
+use Genkgo\Xsl\Config;
+use Genkgo\Xsl\XsltProcessor;
+
+$arrayCache = new ArrayAdapter();
+
+$config = new Config();
+$config->setCacheAdapter(new SimpleCallbackAdapter($arrayCache));
+
+$transpiler = new XsltProcessor($config);
+```
+
 ## Contributing
 
 - Found a bug? Please try to solve it yourself first and issue a pull request. If you are not able to fix it, at least
