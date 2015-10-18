@@ -41,6 +41,10 @@ class XmlPath implements XmlNamespaceInterface
             new ReturnXsScalarFunction(new ObjectFunction('currentDate', Functions::class), 'date'),
             new ReturnXsScalarFunction(new ObjectFunction('currentDateTime', Functions::class, 'current-dateTime'), 'dateTime'),
             new ReturnXsSequenceFunction(new ObjectFunction('tokenize', Functions::class)),
+            new ReturnXsSequenceFunction(new ObjectFunction('reverse', Functions::class)),
+            new ReturnXsSequenceFunction(new ObjectFunction('insertBefore', Functions::class)),
+            new ReturnXsSequenceFunction(new ObjectFunction('remove', Functions::class)),
+            new ReturnXsSequenceFunction(new ObjectFunction('subsequence', Functions::class)),
         ]);
     }
 

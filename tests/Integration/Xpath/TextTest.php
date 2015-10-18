@@ -162,4 +162,11 @@ class TextTest extends AbstractXpathTest
             'param2' => 'test'
         ]));
     }
+
+    public function testNormalizeSpace()
+    {
+        $this->assertEquals('Hello World!', $this->transformFile('Stubs/Xpath/Text/normalize-space.xsl', [
+            'param1' => '   Hello  World!  '
+        ]));
+    }
 }

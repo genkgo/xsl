@@ -8,6 +8,11 @@ class AggregationTest extends AbstractXpathTest
         $this->assertEquals(1995 + 1997, $this->transformFile('Stubs/Xpath/Aggregation/sum.xsl'));
     }
 
+    public function testCount()
+    {
+        $this->assertEquals(2, $this->transformFile('Stubs/Xpath/Aggregation/count.xsl'));
+    }
+
     public function testAvg()
     {
         $this->assertEquals(1996, $this->transformFile('Stubs/Xpath/Aggregation/avg.xsl'));
