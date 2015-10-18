@@ -22,7 +22,7 @@ you notice compliance oversights, please send a patch via pull request.
 
 ## Getting Started
 
-Just replace `XSLTProcessor` with `Genkgo\Xsl\XsltProcessor` and you are done!
+Replace `XSLTProcessor` with `Genkgo\Xsl\XsltProcessor`, change `version="1.0"` in `version="2.0"` and you are done!
 
 ```php
 <?php
