@@ -34,6 +34,16 @@ final class Config
     }
 
     /**
+     * @param XmlNamespaceInterface $extension
+     * @return Config
+     */
+    public function addExtension (XmlNamespaceInterface $extension)
+    {
+        $this->extensions[] = $extension;
+        return $this;
+    }
+
+    /**
      * @return XmlNamespaceInterface[]
      */
     public function getExtensions()
