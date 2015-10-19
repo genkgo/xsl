@@ -48,12 +48,7 @@ test](https://github.com/genkgo/xsl/blob/master/tests/Integration/ExtensionTest.
 
 ```php
 <?php
-use Genkgo\Xsl\Callback\StringFunction;
-use Genkgo\Xsl\Config;
-use Genkgo\Xsl\Util\FunctionMap;
-use Genkgo\Xsl\Util\TransformerCollection;
-use Genkgo\Xsl\XmlNamespaceInterface;
-use Genkgo\Xsl\XsltProcessor;
+// use omitted for readability
 
 class MyExtensions implements XmlNamespaceInterface {
 
