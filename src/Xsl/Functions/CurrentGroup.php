@@ -9,17 +9,19 @@ use Genkgo\Xsl\Schema\XsSequence;
 use Genkgo\Xsl\Xpath\Lexer;
 use Genkgo\Xsl\Xsl\Functions;
 
-class CurrentGroup implements FunctionInterface, InvokableInterface {
-
+class CurrentGroup implements FunctionInterface, InvokableInterface
+{
     private $parentFunction;
 
     private $groups;
 
-    public function __construct () {
+    public function __construct()
+    {
         $this->parentFunction =  new ReturnXsSequenceFunction(new ContextFunction('current-group'));
     }
 
-    public function setForElement (\DOMElement $element, $group) {
+    public function setForElement(\DOMElement $element, $group)
+    {
         $objectHash = spl_object_hash($element);
         $element->setAttribute('data-current-group-hash', $objectHash);
         $this->groups[$objectHash] = $group;

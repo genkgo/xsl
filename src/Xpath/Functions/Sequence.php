@@ -7,14 +7,15 @@ use Genkgo\Xsl\Schema\XsSequence;
  * Class Sequence
  * @package Genkgo\Xsl\Xpath\Functions
  */
-trait Sequence {
-
+trait Sequence
+{
     /**
      * @param $elements
      * @return XsSequence
      * @throws \Genkgo\Xsl\Schema\Exception\UnknownSequenceItemException
      */
-    public static function reverse ($elements) {
+    public static function reverse($elements)
+    {
         return XsSequence::fromArray(array_reverse($elements));
     }
 
@@ -24,7 +25,8 @@ trait Sequence {
      * @param $element
      * @return XsSequence
      */
-    public static function insertBefore ($elements, $position, $element) {
+    public static function insertBefore($elements, $position, $element)
+    {
         array_splice($elements, $position - 1, 0, $element);
         return XsSequence::fromArray($elements);
     }
@@ -34,7 +36,8 @@ trait Sequence {
      * @param $position
      * @return XsSequence
      */
-    public static function remove ($elements, $position) {
+    public static function remove($elements, $position)
+    {
         unset($elements[$position - 1]);
         return XsSequence::fromArray($elements);
     }
@@ -46,8 +49,8 @@ trait Sequence {
      * @return XsSequence
      * @throws \Genkgo\Xsl\Schema\Exception\UnknownSequenceItemException
      */
-    public static function subsequence ($elements, $position, $length = null) {
+    public static function subsequence($elements, $position, $length = null)
+    {
         return XsSequence::fromArray(array_slice($elements, $position - 1, $length));
     }
-
 }

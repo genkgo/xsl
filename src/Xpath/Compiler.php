@@ -17,7 +17,8 @@ final class Compiler
     /**
      * @param FunctionMap $functions
      */
-    public function __construct(FunctionMap $functions) {
+    public function __construct(FunctionMap $functions)
+    {
         $this->functions = $functions;
     }
 

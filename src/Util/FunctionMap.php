@@ -7,8 +7,8 @@ use Genkgo\Xsl\Callback\FunctionInterface;
  * Class FunctionMap
  * @package Genkgo\Xsl\Util
  */
-final class FunctionMap {
-
+final class FunctionMap
+{
     /**
      * @var array|FunctionInterface[]
      */
@@ -20,7 +20,8 @@ final class FunctionMap {
      * @param null $namespace
      * @return FunctionMap
      */
-    public function set($name, FunctionInterface $function, $namespace = null) {
+    public function set($name, FunctionInterface $function, $namespace = null)
+    {
         return $this->setRaw($this->dasherize($name), $function, $namespace);
     }
 
@@ -30,7 +31,8 @@ final class FunctionMap {
      * @param null $namespace
      * @return FunctionMap
      */
-    public function setRaw($name, FunctionInterface $function, $namespace = null) {
+    public function setRaw($name, FunctionInterface $function, $namespace = null)
+    {
         if ($namespace !== null) {
             $name = $namespace . ':' . $name;
         }
@@ -42,7 +44,8 @@ final class FunctionMap {
      * @param $name
      * @return FunctionInterface|null
      */
-    public function get($name) {
+    public function get($name)
+    {
         if (isset($this->functions[$name])) {
             return $this->functions[$name];
         }
@@ -54,7 +57,8 @@ final class FunctionMap {
      * @param $name
      * @return bool
      */
-    public function has ($name) {
+    public function has($name)
+    {
         return $this->get($name) !== null;
     }
 
@@ -71,5 +75,4 @@ final class FunctionMap {
 
         return $methodName;
     }
-
 }

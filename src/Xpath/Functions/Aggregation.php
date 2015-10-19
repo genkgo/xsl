@@ -7,13 +7,14 @@ use DOMElement;
  * Class Aggregation
  * @package Genkgo\Xsl\Xpath\Functions
  */
-trait Aggregation {
-
+trait Aggregation
+{
     /**
      * @param DOMElement[] $elements
      * @return float
      */
-    public static function avg ($elements) {
+    public static function avg($elements)
+    {
         $total = 0;
 
         foreach ($elements as $element) {
@@ -27,7 +28,8 @@ trait Aggregation {
      * @param DOMElement[] $elements
      * @return number
      */
-    public static function max ($elements) {
+    public static function max($elements)
+    {
         $items = [];
 
         foreach ($elements as $element) {
@@ -41,7 +43,8 @@ trait Aggregation {
      * @param DOMElement[] $elements
      * @return number
      */
-    public static function min ($elements) {
+    public static function min($elements)
+    {
         $items = [];
 
         foreach ($elements as $element) {
@@ -50,5 +53,4 @@ trait Aggregation {
 
         return min($items);
     }
-
 }

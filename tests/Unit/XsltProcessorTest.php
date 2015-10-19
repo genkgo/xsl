@@ -8,7 +8,6 @@ use Genkgo\Xsl\XsltProcessor;
 
 class XsltProcessorTest extends AbstractTestCase
 {
-
     public function testConstruct()
     {
         $decorator = new XsltProcessor();

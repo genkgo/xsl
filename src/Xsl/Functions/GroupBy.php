@@ -11,11 +11,12 @@ use Genkgo\Xsl\Util\FetchNamespacesFromDocument;
 use Genkgo\Xsl\Xpath\Compiler;
 use Genkgo\Xsl\Xpath\Lexer;
 
-class GroupBy implements FunctionInterface, InvokableInterface {
-
+class GroupBy implements FunctionInterface, InvokableInterface
+{
     private $compiler;
 
-    public function __construct (Compiler $compiler) {
+    public function __construct(Compiler $compiler)
+    {
         $this->compiler = $compiler;
     }
 

@@ -4,8 +4,12 @@ namespace Genkgo\Xsl\Util;
 use DOMDocument;
 use DOMXPath;
 
-class FetchNamespacesFromDocument {
-
+/**
+ * Class FetchNamespacesFromDocument
+ * @package Genkgo\Xsl\Util
+ */
+class FetchNamespacesFromDocument
+{
     /**
      * @param DOMDocument $document
      * @return array
@@ -21,5 +25,4 @@ class FetchNamespacesFromDocument {
 
         return $namespaces;
     }
-
 }

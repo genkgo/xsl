@@ -37,5 +37,4 @@ class AggregationTest extends AbstractXpathTest
     {
         $this->assertEquals(1996, $this->transformFile('Stubs/Xpath/Aggregation/sequence-avg.xsl'));
     }
-
 }

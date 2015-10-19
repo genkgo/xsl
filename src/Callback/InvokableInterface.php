@@ -1,8 +1,15 @@
 <?php
 namespace Genkgo\Xsl\Callback;
 
-interface InvokableInterface {
-
+/**
+ * Interface InvokableInterface
+ * @package Genkgo\Xsl\Callback
+ */
+interface InvokableInterface
+{
+    /**
+     * @param $arguments
+     * @return mixed
+     */
     public function call($arguments);
-
 }

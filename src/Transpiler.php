@@ -27,7 +27,8 @@ final class Transpiler
     /**
      * @return DOMDocument
      */
-    public function transpileRoot () {
+    public function transpileRoot()
+    {
         return $this->transpile($this->context->getDocument());
     }
 
@@ -53,7 +54,8 @@ final class Transpiler
      * @param Closure $nativeTransformation
      * @return mixed
      */
-    public function transform (Closure $nativeTransformation) {
+    public function transform(Closure $nativeTransformation)
+    {
         PhpCallback::set($this->context);
 
         $result = $nativeTransformation();

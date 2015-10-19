@@ -7,18 +7,20 @@ use Genkgo\Xsl\Callback\InvokableInterface;
 use Genkgo\Xsl\Xpath\Lexer;
 use Genkgo\Xsl\Xsl\Functions;
 
-class CurrentGroupingKey implements FunctionInterface, InvokableInterface {
-
+class CurrentGroupingKey implements FunctionInterface, InvokableInterface
+{
     /**
      * @var ContextFunction
      */
     private $parentFunction;
 
-    public function __construct () {
+    public function __construct()
+    {
         $this->parentFunction =  new ContextFunction('current-grouping-key');
     }
 
-    public function setForElement (\DOMElement $element, $key) {
+    public function setForElement(\DOMElement $element, $key)
+    {
         $element->setAttribute('data-current-grouping-key', $key);
     }
 

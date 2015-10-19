@@ -2,7 +2,6 @@
 namespace Genkgo\Xsl\Xsl\Functions;
 
 use DateTimeImmutable;
-use DOMDocument;
 use DOMElement;
 use Genkgo\Xsl\Schema\XmlSchema;
 use Genkgo\Xsl\Schema\XsDate;
@@ -15,8 +14,17 @@ use Genkgo\Xsl\Xsl\Functions;
  * Class DateFormatter
  * @package Genkgo\Xsl\Xsl\Functions
  */
-trait DateFormatter
+class DateFormatting
 {
+    /**
+     *
+     */
+    const FLAG_DATE = 0x1;
+    /**
+     *
+     */
+    const FLAG_TIME = 0x2;
+
     /**
      * @param DOMElement[] $value
      * @param $picture
@@ -29,7 +37,7 @@ trait DateFormatter
         self::assertSchema($value[0], 'date');
 
         $date = DateTimeImmutable::createFromFormat(XsDate::FORMAT, $value[0]->nodeValue);
-        return self::formatEvaluatedDateTime($date, $picture, Functions::FLAG_DATE);
+        return self::formatEvaluatedDateTime($date, $picture, self::FLAG_DATE);
     }
 
     /**
@@ -44,7 +52,7 @@ trait DateFormatter
         self::assertSchema($value[0], 'time');
 
         $date = DateTimeImmutable::createFromFormat(XsTime::FORMAT, $value[0]->nodeValue);
-        return self::formatEvaluatedDateTime($date, $picture, Functions::FLAG_TIME);
+        return self::formatEvaluatedDateTime($date, $picture, self::FLAG_TIME);
     }
 
     /**
@@ -59,7 +67,7 @@ trait DateFormatter
         self::assertSchema($value[0], 'dateTime');
 
         $date = DateTimeImmutable::createFromFormat(XsDateTime::FORMAT, $value[0]->nodeValue);
-        return self::formatEvaluatedDateTime($date, $picture, Functions::FLAG_DATE + Functions::FLAG_TIME);
+        return self::formatEvaluatedDateTime($date, $picture, self::FLAG_DATE + self::FLAG_TIME);
     }
 
     /**
@@ -157,8 +165,8 @@ trait DateFormatter
             throw $exception;
         }
 
-        $ignoreDate = ($flags & Functions::FLAG_DATE) === 0;
-        $ignoreTime = ($flags & Functions::FLAG_TIME) === 0;
+        $ignoreDate = ($flags & self::FLAG_DATE) === 0;
+        $ignoreTime = ($flags & self::FLAG_TIME) === 0;
 
         $component = $groups[1][0];
 

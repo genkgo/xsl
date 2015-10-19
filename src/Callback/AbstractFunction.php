@@ -25,5 +25,4 @@ abstract class AbstractFunction
         $this->name = $name;
         $this->class = $class;
     }
-
 }

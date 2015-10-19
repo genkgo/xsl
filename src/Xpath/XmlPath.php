@@ -32,9 +32,9 @@ class XmlPath implements XmlNamespaceInterface
         $functions->set('subsequence', new ReturnXsSequenceFunction(new ObjectFunction('subsequence', Functions::class)));
         $functions->set('reverse', new ReturnXsSequenceFunction(new ObjectFunction('reverse', Functions::class)));
         $functions->set('insertBefore', new ReturnXsSequenceFunction(new ObjectFunction('insertBefore', Functions::class)));
-        $functions->set('currentTime',new ReturnXsScalarFunction(new ObjectFunction('currentTime', Functions::class), 'time'));
-        $functions->set('currentDate',new ReturnXsScalarFunction(new ObjectFunction('currentDate', Functions::class), 'date'));
-        $functions->setRaw('current-dateTime',new ReturnXsScalarFunction(new ObjectFunction('currentDateTime', Functions::class), 'dateTime'));
+        $functions->set('currentTime', new ReturnXsScalarFunction(new ObjectFunction('currentTime', Functions::class), 'time'));
+        $functions->set('currentDate', new ReturnXsScalarFunction(new ObjectFunction('currentDate', Functions::class), 'date'));
+        $functions->setRaw('current-dateTime', new ReturnXsScalarFunction(new ObjectFunction('currentDateTime', Functions::class), 'dateTime'));
     }
 
     private function registerStringFunctions(array $list, FunctionMap $functions)

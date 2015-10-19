@@ -10,12 +10,10 @@ use Genkgo\Xsl\Util\TransformerCollection;
  */
 interface XmlNamespaceInterface
 {
-
     /**
      * @param TransformerCollection $transformers
      * @param FunctionMap $functions
      * @return void
      */
     public function register(TransformerCollection $transformers, FunctionMap $functions);
-
 }
