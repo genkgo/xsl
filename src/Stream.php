@@ -91,7 +91,7 @@ class Stream
         $filename = substr($filename, 0, -2);
 
         if (is_file($filename) === false) {
-            return $this->documentToTemplate($transpiler, $transpiler->context->getDocument());
+            return $this->documentToTemplate($transpiler, $transpiler->transpileRoot());
         }
 
         return $this->cacheToTemplate($transpiler, $filename, $streamContext);

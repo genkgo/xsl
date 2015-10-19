@@ -2,34 +2,30 @@
 namespace Genkgo\Xsl\Stubs\Extension;
 
 use Genkgo\Xsl\Callback\StringFunction;
-use Genkgo\Xsl\Transpiler;
+use Genkgo\Xsl\Util\FunctionMap;
+use Genkgo\Xsl\Util\TransformerCollection;
 use Genkgo\Xsl\XmlNamespaceInterface;
-use Genkgo\Xsl\Xpath\Compiler;
 
 class MyExtension implements XmlNamespaceInterface
 {
-    /**
-     * @param Compiler $compiler
-     * @return void
-     */
-    public function registerXpathFunctions(Compiler $compiler)
-    {
-        $compiler->addNsFunctions([
-            new StringFunction('helloWorld', static::class)
-        ], 'https://github.com/genkgo/xsl/tree/master/tests/Stubs/Extension/MyExtension');
-    }
+    const URI = 'https://github.com/genkgo/xsl/tree/master/tests/Stubs/Extension/MyExtension';
 
     /**
-     * @param Transpiler $transpiler
-     * @param Compiler $compiler
+     * @param ...$args
+     * @return string
      */
-    public function registerTransformers(Transpiler $transpiler, Compiler $compiler)
-    {
-        ;
-    }
-
     public static function helloWorld(...$args)
     {
         return 'Hello World was called and received ' . count($args) . ' arguments!';
+    }
+
+    /**
+     * @param TransformerCollection $transformers
+     * @param FunctionMap $functions
+     * @return void
+     */
+    public function register(TransformerCollection $transformers, FunctionMap $functions)
+    {
+        $functions->setUndashed('helloWorld', new StringFunction('helloWorld', static::class), self::URI);
     }
 }

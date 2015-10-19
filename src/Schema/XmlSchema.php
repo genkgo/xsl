@@ -3,9 +3,9 @@ namespace Genkgo\Xsl\Schema;
 
 use Genkgo\Xsl\Callback\ObjectFunction;
 use Genkgo\Xsl\Callback\ReturnXsScalarFunction;
-use Genkgo\Xsl\Transpiler;
+use Genkgo\Xsl\Util\FunctionMap;
+use Genkgo\Xsl\Util\TransformerCollection;
 use Genkgo\Xsl\XmlNamespaceInterface;
-use Genkgo\Xsl\Xpath\Compiler;
 
 /**
  * Class XmlSchema
@@ -19,23 +19,14 @@ class XmlSchema implements XmlNamespaceInterface
     const URI = 'http://www.w3.org/2001/XMLSchema';
 
     /**
-     * @param Compiler $compiler
+     * @param TransformerCollection $transformers
+     * @param FunctionMap $functions
+     * @return void
      */
-    public function registerXpathFunctions(Compiler $compiler)
+    public function register(TransformerCollection $transformers, FunctionMap $functions)
     {
-        $compiler->addNsFunctions([
-            new ReturnXsScalarFunction(new ObjectFunction('xsDate', Functions::class, 'date'), 'date'),
-            new ReturnXsScalarFunction(new ObjectFunction('xsTime', Functions::class, 'time'), 'time'),
-            new ReturnXsScalarFunction(new ObjectFunction('xsDateTime', Functions::class, 'dateTime'), 'dateTime')
-        ], self::URI);
-    }
-
-    /**
-     * @param Transpiler $transpiler
-     * @param Compiler $compiler
-     */
-    public function registerTransformers(Transpiler $transpiler, Compiler $compiler)
-    {
-        ;
+        $functions->setUndashed('date', new ReturnXsScalarFunction(new ObjectFunction('xsDate', Functions::class), 'date'), self::URI);
+        $functions->setUndashed('time', new ReturnXsScalarFunction(new ObjectFunction('xsTime', Functions::class), 'time'), self::URI);
+        $functions->set('dateTime', new ReturnXsScalarFunction(new ObjectFunction('xsDateTime', Functions::class), 'dateTime'), self::URI);
     }
 }

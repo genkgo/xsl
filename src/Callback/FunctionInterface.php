@@ -1,7 +1,6 @@
 <?php
 namespace Genkgo\Xsl\Callback;
 
-use Genkgo\Xsl\DocumentContext;
 use Genkgo\Xsl\Xpath\Lexer;
 
 /**
@@ -11,14 +10,8 @@ use Genkgo\Xsl\Xpath\Lexer;
 interface FunctionInterface
 {
     /**
-     * @return string
-     */
-    public function getXpathMethod();
-
-    /**
      * @param Lexer $lexer
-     * @param DocumentContext $context
      * @return array|\string[]
      */
-    public function replace(Lexer $lexer, DocumentContext $context);
+    public function replace(Lexer $lexer);
 }

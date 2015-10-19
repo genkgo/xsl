@@ -2,7 +2,8 @@
 namespace Genkgo\Xsl;
 
 use DOMDocument;
-use DOMElement;
+use Genkgo\Xsl\Util\FunctionMap;
+use Genkgo\Xsl\Util\TransformerCollection;
 
 /**
  * Class Context
@@ -15,27 +16,33 @@ class TransformationContext
      */
     private $document;
     /**
-     * @var Xpath\Compiler
-     */
-    private $xpathCompiler;
-    /**
      * @var array|null
      */
     private $phpFunctions;
     /**
-     * @var array
+     * @var TransformerCollection
      */
-    private $elementContext = [];
+    private $transformers;
+    /**
+     * @var FunctionMap
+     */
+    private $functions;
 
     /**
      * @param DOMDocument $document
-     * @param Xpath\Compiler $compiler
-     * @param array $phpFunctions
+     * @param TransformerCollection $transformers
+     * @param FunctionMap $functions
+     * @param array|null $phpFunctions
      */
-    public function __construct(DOMDocument $document, Xpath\Compiler $compiler, array $phpFunctions = null)
-    {
+    public function __construct(
+        DOMDocument $document,
+        TransformerCollection $transformers,
+        FunctionMap $functions,
+        array $phpFunctions = null
+    ) {
         $this->document = $document;
-        $this->xpathCompiler = $compiler;
+        $this->transformers = $transformers;
+        $this->functions = $functions;
         $this->phpFunctions = $phpFunctions;
     }
 
@@ -48,14 +55,6 @@ class TransformationContext
     }
 
     /**
-     * @return Xpath\Compiler
-     */
-    public function getXpathCompiler()
-    {
-        return $this->xpathCompiler;
-    }
-
-    /**
      * @return array|null
      */
     public function getPhpFunctions()
@@ -64,29 +63,18 @@ class TransformationContext
     }
 
     /**
-     * @param DOMElement $element
-     * @param array $context
+     * @return FunctionMap
      */
-    public function setElementContext(DOMElement $element, array $context)
+    public function getFunctions()
     {
-        $objectHash = spl_object_hash($element);
-        $this->elementContext[$objectHash] = $context;
-
-        $element->setAttribute('data-object-hash', $objectHash);
+        return $this->functions;
     }
 
     /**
-     * @param DOMElement $element
-     * @return array
+     * @return TransformerCollection|TransformerInterface[]
      */
-    public function getElementContextFor(DOMElement $element)
+    public function getTransformers()
     {
-        $objectHash = $element->getAttribute('data-object-hash');
-
-        if (isset($this->elementContext[$objectHash])) {
-            return $this->elementContext[$objectHash];
-        }
-
-        return null;
+        return $this->transformers;
     }
 }

@@ -1,9 +1,7 @@
 <?php
 namespace Genkgo\Xsl\Xpath;
 
-use Genkgo\Xsl\Callback\FunctionInterface;
-use Genkgo\Xsl\DocumentContext;
-use Genkgo\Xsl\Exception\UnknownNamespaceException;
+use Genkgo\Xsl\Util\FunctionMap;
 
 /**
  * Class Compiler
@@ -12,52 +10,34 @@ use Genkgo\Xsl\Exception\UnknownNamespaceException;
 final class Compiler
 {
     /**
-     * @var FunctionInterface[]
+     * @var FunctionMap
      */
-    private $functions = [];
+    private $functions;
 
     /**
-     * @param FunctionInterface[] $functions
-     * @return $this
+     * @param FunctionMap $functions
      */
-    public function addFunctions($functions)
-    {
-        foreach ($functions as $function) {
-            $this->functions[$function->getXpathMethod()] = $function;
-        }
-        return $this;
-    }
-
-    /**
-     * @param FunctionInterface[] $functions
-     * @param $namespace
-     * @return $this
-     */
-    public function addNsFunctions(array $functions, $namespace)
-    {
-        foreach ($functions as $function) {
-            $this->functions[$namespace . ':' . $function->getXpathMethod()] = $function;
-        }
-        return $this;
+    public function __construct(FunctionMap $functions) {
+        $this->functions = $functions;
     }
 
     /**
      * @param $xpathExpression
-     * @param DocumentContext $context
+     * @param $namespaces
      * @return string
      */
-    public function compile($xpathExpression, DocumentContext $context)
+    public function compile($xpathExpression, $namespaces)
     {
         $resultTokens = [];
         $lexer = Lexer::tokenize($xpathExpression);
         foreach ($lexer as $token) {
             $nextToken = $lexer->peek($lexer->key() + 1);
             if ($nextToken === '(') {
-                $functionName = $this->convertTokenToFunctionName($token, $context);
+                $functionName = $this->convertTokenToFunctionName($token, $namespaces);
 
-                if (isset($this->functions[$functionName])) {
-                    $function = $this->functions[$functionName];
-                    $resultTokens = array_merge($resultTokens, $function->replace($lexer, $context));
+                if ($this->functions->has($functionName)) {
+                    $function = $this->functions->get($functionName);
+                    $resultTokens = array_merge($resultTokens, $function->replace($lexer));
                     continue;
                 }
             }
@@ -70,19 +50,17 @@ final class Compiler
 
     /**
      * @param $token
-     * @param DocumentContext $context
+     * @param array $namespaces
      * @return string
      */
-    private function convertTokenToFunctionName($token, DocumentContext $context)
+    private function convertTokenToFunctionName($token, array $namespaces)
     {
         $functionName = strpos($token, ':');
 
         if ($functionName !== false) {
-            try {
-                $namespace = $context->getNamespace(substr($token, 0, $functionName));
-                $token = $namespace . ':' . substr($token, $functionName + 1);
-            } catch (UnknownNamespaceException $e) {
-                /** let the xsl processor throw this error  */
+            $prefix = substr($token, 0, $functionName);
+            if (isset($namespaces[$prefix])) {
+                $token = $namespaces[$prefix] . ':' . substr($token, $functionName + 1);
             }
         }
 

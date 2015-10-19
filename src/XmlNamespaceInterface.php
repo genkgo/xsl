@@ -1,7 +1,8 @@
 <?php
 namespace Genkgo\Xsl;
 
-use Genkgo\Xsl\Xpath\Compiler;
+use Genkgo\Xsl\Util\FunctionMap;
+use Genkgo\Xsl\Util\TransformerCollection;
 
 /**
  * Interface XmlNamespaceInterface
@@ -9,15 +10,12 @@ use Genkgo\Xsl\Xpath\Compiler;
  */
 interface XmlNamespaceInterface
 {
-    /**
-     * @param Compiler $compiler
-     * @return void
-     */
-    public function registerXpathFunctions(Compiler $compiler);
 
     /**
-     * @param Transpiler $transpiler
-     * @param Compiler $compiler
+     * @param TransformerCollection $transformers
+     * @param FunctionMap $functions
+     * @return void
      */
-    public function registerTransformers(Transpiler $transpiler, Compiler $compiler);
+    public function register(TransformerCollection $transformers, FunctionMap $functions);
+
 }

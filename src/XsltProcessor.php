@@ -4,6 +4,8 @@ namespace Genkgo\Xsl;
 use DOMDocument;
 use Genkgo\Xsl\Callback\PhpCallback;
 use Genkgo\Xsl\Exception\CacheDisabledException;
+use Genkgo\Xsl\Util\FunctionMap;
+use Genkgo\Xsl\Util\TransformerCollection;
 use SimpleXMLElement;
 use XSLTProcessor as PhpXsltProcessor;
 
@@ -61,11 +63,9 @@ class XsltProcessor extends PhpXsltProcessor
         $transpiler = $this->createTranspiler($styleSheet);
         parent::importStylesheet($this->getTranspiledStyleSheet($transpiler, $styleSheet));
 
-        $this->startTransformation($transpiler);
-        $result = parent::transformToXml($doc);
-        $this->stopTransformation($transpiler);
-
-        return $result;
+        return $transpiler->transform(function () use ($doc) {
+            return parent::transformToXml($doc);
+        });
     }
 
     /**
@@ -79,11 +79,9 @@ class XsltProcessor extends PhpXsltProcessor
         $transpiler = $this->createTranspiler($styleSheet);
         parent::importStylesheet($this->getTranspiledStyleSheet($transpiler, $styleSheet));
 
-        $this->startTransformation($transpiler);
-        $result = parent::transformToDoc($doc);
-        $this->stopTransformation($transpiler);
-
-        return $result;
+        return $transpiler->transform(function () use ($doc) {
+            return parent::transformToDoc($doc);
+        });
     }
 
     /**
@@ -98,11 +96,9 @@ class XsltProcessor extends PhpXsltProcessor
         $transpiler = $this->createTranspiler($styleSheet);
         parent::importStylesheet($this->getTranspiledStyleSheet($transpiler, $styleSheet));
 
-        $this->startTransformation($transpiler);
-        $result = parent::transformToUri($doc, $uri);
-        $this->stopTransformation($transpiler);
-
-        return $result;
+        return $transpiler->transform(function () use ($doc, $uri) {
+            return parent::transformToUri($doc, $uri);
+        });
     }
 
     /**
@@ -159,29 +155,30 @@ class XsltProcessor extends PhpXsltProcessor
             parent::registerPHPFunctions($phpFunctions);
         }
 
-        $xpathCompiler = new Xpath\Compiler();
-        $context = new TransformationContext($styleSheet, $xpathCompiler, $phpFunctions);
-        $transpiler = new Transpiler($context);
+        $transformers = new TransformerCollection();
+        $functions = new FunctionMap();
 
-        $namespaces = $this->getNamespaces();
+        $xpathCompiler = new Xpath\Compiler($functions);
+        $context = new TransformationContext($styleSheet, $transformers, $functions, $phpFunctions);
+
+        $namespaces = $this->getNamespaces($xpathCompiler);
         foreach ($namespaces as $namespace) {
-            $namespace->registerXpathFunctions($xpathCompiler);
-            $namespace->registerTransformers($transpiler, $xpathCompiler);
+            $namespace->register($transformers, $functions);
         }
 
-        return $transpiler;
+        return new Transpiler($context);
     }
 
     /**
      * @return XmlNamespaceInterface[]
      */
-    private function getNamespaces()
+    private function getNamespaces($xpathCompiler)
     {
         if ($this->config->shouldUpgradeToXsl2()) {
             $namespaces = [
-                new Schema\XmlSchema(),
-                new Xsl\XslTransformations(),
-                new Xpath\XmlPath()
+                new Xsl\XslTransformations($xpathCompiler),
+                new Xpath\XmlPath(),
+                new Schema\XmlSchema()
             ];
         } else {
             $namespaces = [];
@@ -211,22 +208,6 @@ class XsltProcessor extends PhpXsltProcessor
         }
 
         return $this->styleSheet;
-    }
-
-    /**
-     * @param Transpiler $transpiler
-     */
-    private function startTransformation(Transpiler $transpiler)
-    {
-        PhpCallback::attach($transpiler->context);
-    }
-
-    /**
-     * @param Transpiler $transpiler
-     */
-    private function stopTransformation(Transpiler $transpiler)
-    {
-        PhpCallback::detach($transpiler->context);
     }
 
     /**

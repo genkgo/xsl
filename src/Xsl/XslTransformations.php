@@ -3,9 +3,9 @@ namespace Genkgo\Xsl\Xsl;
 
 use Genkgo\Xsl\Callback\ContextFunction;
 use Genkgo\Xsl\Callback\ObjectFunction;
-use Genkgo\Xsl\Callback\ReturnXsScalarFunction;
 use Genkgo\Xsl\Callback\ReturnXsSequenceFunction;
-use Genkgo\Xsl\Transpiler;
+use Genkgo\Xsl\Util\FunctionMap;
+use Genkgo\Xsl\Util\TransformerCollection;
 use Genkgo\Xsl\XmlNamespaceInterface;
 use Genkgo\Xsl\Xpath\Compiler;
 
@@ -21,25 +21,32 @@ class XslTransformations implements XmlNamespaceInterface
     const URI = 'http://www.w3.org/1999/XSL/Transform';
 
     /**
-     * @param Compiler $compiler
+     * @var Compiler
      */
-    public function registerXpathFunctions(Compiler $compiler)
+    private $xpathCompiler;
+
+    /**
+     * XslTransformations constructor.
+     * @param Compiler $xpathCompiler
+     */
+    public function __construct(Compiler $xpathCompiler)
     {
-        $compiler->addFunctions([
-            new ObjectFunction('formatDate', Functions::class),
-            new ObjectFunction('formatTime', Functions::class),
-            new ObjectFunction('formatDateTime', Functions::class, 'format-dateTime'),
-            new ContextFunction('currentGroupingKey', Functions::class),
-            new ReturnXsSequenceFunction(new ContextFunction('currentGroup', Functions::class))
-        ]);
+        $this->xpathCompiler = $xpathCompiler;
     }
 
     /**
-     * @param Transpiler $transpiler
-     * @param Compiler $compiler
+     * @param TransformerCollection $transformers
+     * @param FunctionMap $functions
+     * @return void
      */
-    public function registerTransformers(Transpiler $transpiler, Compiler $compiler)
+    public function register(TransformerCollection $transformers, FunctionMap $functions)
     {
-        $transpiler->registerTransformer(new Transformer($compiler));
+        $transformers->attach(new Transformer($this->xpathCompiler));
+
+        $functions->set('format-dateTime', new ObjectFunction('formatDateTime', Functions::class));
+        $functions->setUndashed('formatDate', new ObjectFunction('formatDate', Functions::class));
+        $functions->setUndashed('formatTime', new ObjectFunction('formatTime', Functions::class));
+        $functions->setUndashed('currentGroupingKey', new ContextFunction('currentGroupingKey', Functions::class));
+        $functions->setUndashed('currentGroup', new ReturnXsSequenceFunction(new ContextFunction('currentGroup', Functions::class)));
     }
 }

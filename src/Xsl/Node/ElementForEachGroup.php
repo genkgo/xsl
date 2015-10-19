@@ -5,12 +5,12 @@ use DOMDocument;
 use DOMElement;
 use DOMXPath;
 use Genkgo\Xsl\Callback\PhpCallback;
-use Genkgo\Xsl\DocumentContext;
 use Genkgo\Xsl\Schema\XsSequence;
 use Genkgo\Xsl\TransformationContext;
+use Genkgo\Xsl\Util\FetchNamespacesFromDocument;
+use Genkgo\Xsl\Xpath\Compiler;
 use Genkgo\Xsl\Xpath\FunctionBuilder;
 use Genkgo\Xsl\Xsl\ElementTransformerInterface;
-use Genkgo\Xsl\Xsl\Transformer;
 use Genkgo\Xsl\Xsl\XslTransformations;
 
 /**
@@ -20,10 +20,21 @@ use Genkgo\Xsl\Xsl\XslTransformations;
 class ElementForEachGroup implements ElementTransformerInterface
 {
     /**
-     * @param DOMElement $element
-     * @param DocumentContext $context
+     * @var Compiler
      */
-    public function transform(DOMElement $element, DocumentContext $context)
+    private $xpathCompiler;
+    /**
+     * @param Compiler $compiler
+     */
+    public function __construct(Compiler $compiler)
+    {
+        $this->xpathCompiler = $compiler;
+    }
+
+    /**
+     * @param DOMElement $element
+     */
+    public function transform(DOMElement $element)
     {
         if ($element->nodeName === 'xsl:for-each-group') {
             $select = $element->getAttribute('select');
@@ -31,7 +42,6 @@ class ElementForEachGroup implements ElementTransformerInterface
 
             $callback = (new FunctionBuilder('php:function'))
                 ->addArgument(PhpCallback::class . '::callContext')
-                ->addArgument(spl_object_hash($context->getTransformationContext()))
                 ->addArgument(static::class)
                 ->addArgument('groupBy')
                 ->addExpression($select)
@@ -66,15 +76,14 @@ class ElementForEachGroup implements ElementTransformerInterface
         $groups = [];
         $currentGroup = [];
 
-        $documentContext = new DocumentContext($context);
-        $documentContext->setNamespaces(Transformer::retrieveNamespacesFromDocument($elements[0]->ownerDocument));
+        $namespaces = FetchNamespacesFromDocument::fetch($elements[0]->ownerDocument);
 
         foreach ($elements as $key => $element) {
             $xpath = new DOMXPath($element->ownerDocument);
             $xpath->registerPhpFunctions($context->getPhpFunctions());
 
             $groupingKey = $xpath->evaluate(
-                $context->getXpathCompiler()->compile('string(' . $groupBy . ')', $documentContext),
+                self::$xpathCompiler->compile('string(' . $groupBy . ')', $namespaces),
                 $element
             );
 

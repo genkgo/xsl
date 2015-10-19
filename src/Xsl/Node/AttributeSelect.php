@@ -2,7 +2,7 @@
 namespace Genkgo\Xsl\Xsl\Node;
 
 use DOMElement;
-use Genkgo\Xsl\DocumentContext;
+use Genkgo\Xsl\Util\FetchNamespacesFromDocument;
 use Genkgo\Xsl\Xpath\Compiler;
 use Genkgo\Xsl\Xsl\ElementTransformerInterface;
 
@@ -27,16 +27,15 @@ class AttributeSelect implements ElementTransformerInterface
 
     /**
      * @param DOMElement $element
-     * @param DocumentContext $context
      */
-    public function transform(DOMElement $element, DocumentContext $context)
+    public function transform(DOMElement $element)
     {
         if ($element->hasAttribute('select')) {
             $element->setAttribute(
                 'select',
                 $this->xpathCompiler->compile(
                     $element->getAttribute('select'),
-                    $context
+                    FetchNamespacesFromDocument::fetch($element->ownerDocument)
                 )
             );
         }

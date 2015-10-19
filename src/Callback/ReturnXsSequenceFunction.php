@@ -1,7 +1,6 @@
 <?php
 namespace Genkgo\Xsl\Callback;
 
-use Genkgo\Xsl\DocumentContext;
 use Genkgo\Xsl\Xpath\Lexer;
 
 /**
@@ -23,21 +22,12 @@ class ReturnXsSequenceFunction implements FunctionInterface
     }
 
     /**
-     * @return string
-     */
-    public function getXpathMethod()
-    {
-        return $this->parentFunction->getXpathMethod();
-    }
-
-    /**
      * @param Lexer $lexer
-     * @param DocumentContext $context
      * @return array
      */
-    public function replace(Lexer $lexer, DocumentContext $context)
+    public function replace(Lexer $lexer)
     {
-        $resultTokens = $this->parentFunction->replace($lexer, $context);
+        $resultTokens = $this->parentFunction->replace($lexer);
 
         $currentKey = $lexer->key();
         $level = 1;

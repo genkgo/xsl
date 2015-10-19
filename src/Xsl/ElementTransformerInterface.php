@@ -2,7 +2,6 @@
 namespace Genkgo\Xsl\Xsl;
 
 use DOMElement;
-use Genkgo\Xsl\DocumentContext;
 
 /**
  * Interface ElementTransformerInterface
@@ -12,8 +11,7 @@ interface ElementTransformerInterface
 {
     /**
      * @param DOMElement $element
-     * @param DocumentContext $context
      * @return void
      */
-    public function transform(DOMElement $element, DocumentContext $context);
+    public function transform(DOMElement $element);
 }

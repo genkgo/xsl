@@ -1,7 +1,9 @@
 <?php
 namespace Genkgo\Xsl;
 
+use Closure;
 use DOMDocument;
+use Genkgo\Xsl\Callback\PhpCallback;
 
 /**
  * Class Transpiler
@@ -12,12 +14,7 @@ final class Transpiler
     /**
      * @var TransformationContext
      */
-    public $context;
-
-    /**
-     * @var array|TransformerInterface[]
-     */
-    private $transformers = [];
+    private $context;
 
     /**
      * @param TransformationContext $context
@@ -28,11 +25,10 @@ final class Transpiler
     }
 
     /**
-     * @param TransformerInterface $transformer
+     * @return DOMDocument
      */
-    public function registerTransformer(TransformerInterface $transformer)
-    {
-        $this->transformers[] = $transformer;
+    public function transpileRoot () {
+        return $this->transpile($this->context->getDocument());
     }
 
     /**
@@ -44,11 +40,25 @@ final class Transpiler
         if ($document->documentElement && $document->documentElement->getAttribute('version') === '2.0') {
             $document->documentElement->setAttribute('version', '1.0');
 
-            foreach ($this->transformers as $transformer) {
+            $transformers = $this->context->getTransformers();
+            foreach ($transformers as $transformer) {
                 $transformer->transform($document, $this->context);
             }
         }
 
         return $document;
+    }
+
+    /**
+     * @param Closure $nativeTransformation
+     * @return mixed
+     */
+    public function transform (Closure $nativeTransformation) {
+        PhpCallback::attach($this->context);
+
+        $result = $nativeTransformation();
+
+        PhpCallback::detach($this->context);
+        return $result;
     }
 }

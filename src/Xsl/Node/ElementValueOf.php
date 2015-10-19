@@ -3,7 +3,6 @@ namespace Genkgo\Xsl\Xsl\Node;
 
 use DOMElement;
 use Genkgo\Xsl\Callback\PhpCallback;
-use Genkgo\Xsl\DocumentContext;
 use Genkgo\Xsl\Xpath\FunctionBuilder;
 use Genkgo\Xsl\Xsl\ElementTransformerInterface;
 
@@ -15,10 +14,9 @@ class ElementValueOf implements ElementTransformerInterface
 {
     /**
      * @param DOMElement $element
-     * @param DocumentContext $context
      * @return void
      */
-    public function transform(DOMElement $element, DocumentContext $context)
+    public function transform(DOMElement $element)
     {
         if ($element->nodeName === 'xsl:value-of') {
             $select = $element->getAttribute('select');

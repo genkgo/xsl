@@ -5,7 +5,8 @@ use Genkgo\Xsl\Callback\ObjectFunction;
 use Genkgo\Xsl\Callback\ReturnXsScalarFunction;
 use Genkgo\Xsl\Callback\ReturnXsSequenceFunction;
 use Genkgo\Xsl\Callback\StringFunction;
-use Genkgo\Xsl\Transpiler;
+use Genkgo\Xsl\Util\FunctionMap;
+use Genkgo\Xsl\Util\TransformerCollection;
 use Genkgo\Xsl\XmlNamespaceInterface;
 
 class XmlPath implements XmlNamespaceInterface
@@ -13,47 +14,51 @@ class XmlPath implements XmlNamespaceInterface
     const URI = '';
 
     /**
-     * @param Compiler $compiler
+     * @param TransformerCollection $transformers
+     * @param FunctionMap $functions
+     * @return void
      */
-    public function registerXpathFunctions(Compiler $compiler)
+    public function register(TransformerCollection $transformers, FunctionMap $functions)
     {
-        $compiler->addFunctions([
-            new StringFunction('abs', Functions::class),
-            new StringFunction('ceiling', Functions::class),
-            new StringFunction('floor', Functions::class),
-            new StringFunction('round', Functions::class),
-            new StringFunction('roundHalfToEven', Functions::class),
-            new StringFunction('startsWith', Functions::class),
-            new StringFunction('endsWith', Functions::class),
-            new StringFunction('indexOf', Functions::class),
-            new StringFunction('matches', Functions::class),
-            new StringFunction('lowerCase', Functions::class),
-            new StringFunction('upperCase', Functions::class),
-            new StringFunction('translate', Functions::class),
-            new StringFunction('substringAfter', Functions::class),
-            new StringFunction('substringBefore', Functions::class),
-            new StringFunction('replace', Functions::class),
-            new ObjectFunction('stringJoin', Functions::class),
-            new ObjectFunction('avg', Functions::class),
-            new ObjectFunction('max', Functions::class),
-            new ObjectFunction('min', Functions::class),
-            new ReturnXsScalarFunction(new ObjectFunction('currentTime', Functions::class), 'time'),
-            new ReturnXsScalarFunction(new ObjectFunction('currentDate', Functions::class), 'date'),
-            new ReturnXsScalarFunction(new ObjectFunction('currentDateTime', Functions::class, 'current-dateTime'), 'dateTime'),
-            new ReturnXsSequenceFunction(new ObjectFunction('tokenize', Functions::class)),
-            new ReturnXsSequenceFunction(new ObjectFunction('reverse', Functions::class)),
-            new ReturnXsSequenceFunction(new ObjectFunction('insertBefore', Functions::class)),
-            new ReturnXsSequenceFunction(new ObjectFunction('remove', Functions::class)),
-            new ReturnXsSequenceFunction(new ObjectFunction('subsequence', Functions::class)),
-        ]);
+        $this->registerStringFunctions([
+            'abs', 'ceiling', 'floor', 'round', 'roundHalfToEven', 'startsWith', 'endsWith', 'indexOf', 'matches', 'lowerCase',
+            'upperCase', 'translate', 'substringAfter', 'substringBefore', 'replace'
+        ], $functions);
+
+        $this->registerObjectFunctions(['stringJoin', 'avg', 'max', 'min'], $functions);
+
+        $functions->set('tokenize', new ReturnXsSequenceFunction(new ObjectFunction('tokenize', Functions::class)));
+        $functions->set('remove', new ReturnXsSequenceFunction(new ObjectFunction('remove', Functions::class)));
+        $functions->set('subsequence', new ReturnXsSequenceFunction(new ObjectFunction('subsequence', Functions::class)));
+        $functions->set('reverse', new ReturnXsSequenceFunction(new ObjectFunction('reverse', Functions::class)));
+
+        $functions->setUndashed('insertBefore', new ReturnXsSequenceFunction(new ObjectFunction('insertBefore', Functions::class)));
+
+        $functions->setUndashed(
+            'currentTime',
+            new ReturnXsScalarFunction(new ObjectFunction('currentTime', Functions::class), 'time')
+        );
+        $functions->setUndashed(
+            'currentDate',
+            new ReturnXsScalarFunction(new ObjectFunction('currentDate', Functions::class), 'date')
+        );
+        $functions->set(
+            'current-dateTime',
+            new ReturnXsScalarFunction(new ObjectFunction('currentDateTime', Functions::class), 'dateTime')
+        );
     }
 
-    /**
-     * @param Transpiler $transpiler
-     * @param Compiler $compiler
-     */
-    public function registerTransformers(Transpiler $transpiler, Compiler $compiler)
+    private function registerStringFunctions(array $list, FunctionMap $functions)
     {
-        ;
+        foreach ($list as $functionName) {
+            $functions->setUndashed($functionName, new StringFunction($functionName, Functions::class));
+        }
+    }
+
+    private function registerObjectFunctions(array $list, FunctionMap $functions)
+    {
+        foreach ($list as $functionName) {
+            $functions->setUndashed($functionName, new ObjectFunction($functionName, Functions::class));
+        }
     }
 }

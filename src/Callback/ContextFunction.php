@@ -1,7 +1,6 @@
 <?php
 namespace Genkgo\Xsl\Callback;
 
-use Genkgo\Xsl\DocumentContext;
 use Genkgo\Xsl\Xpath\Lexer;
 
 /**
@@ -12,20 +11,15 @@ class ContextFunction extends AbstractFunction implements FunctionInterface
 {
     /**
      * @param Lexer $lexer
-     * @param DocumentContext $context
      * @return array
      */
-    public function replace(Lexer $lexer, DocumentContext $context)
+    public function replace(Lexer $lexer)
     {
         $resultTokens = [];
         $resultTokens[] = 'php:function';
         $resultTokens[] = '(';
         $resultTokens[] = '\'';
         $resultTokens[] = PhpCallback::class.'::callContext';
-        $resultTokens[] = '\'';
-        $resultTokens[] = ',';
-        $resultTokens[] = '\'';
-        $resultTokens[] = spl_object_hash($context->getTransformationContext());
         $resultTokens[] = '\'';
         $resultTokens[] = ',';
         $resultTokens[] = '\'';

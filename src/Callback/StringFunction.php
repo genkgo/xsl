@@ -1,7 +1,6 @@
 <?php
 namespace Genkgo\Xsl\Callback;
 
-use Genkgo\Xsl\DocumentContext;
 use Genkgo\Xsl\Xpath\Lexer;
 
 /**
@@ -12,10 +11,9 @@ class StringFunction extends AbstractFunction implements FunctionInterface
 {
     /**
      * @param Lexer $lexer
-     * @param DocumentContext $context
      * @return array
      */
-    public function replace(Lexer $lexer, DocumentContext $context)
+    public function replace(Lexer $lexer)
     {
         $resultTokens = [];
         $resultTokens[] = 'php:functionString';
