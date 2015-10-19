@@ -67,7 +67,7 @@ class MyExtensions implements XmlNamespaceInterface {
 $config = new Config();
 $config->setExtensions(new MyExtensions());
 
-$transpiler = new XsltProcessor($config);
+$processor = new XsltProcessor($config);
 ```
 
 and then call the function in your style sheet.
@@ -85,6 +85,8 @@ and then call the function in your style sheet.
 
 </xsl:stylesheet>
 ```
+
+will yield: `Hello World was called and received 20 arguments!`.
 
 ## Caching: transpile once
 
