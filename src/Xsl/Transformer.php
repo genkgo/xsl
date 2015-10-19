@@ -9,6 +9,7 @@ use Genkgo\Xsl\Schema\XmlSchema;
 use Genkgo\Xsl\TransformationContext;
 use Genkgo\Xsl\TransformerInterface;
 use Genkgo\Xsl\Xpath\Compiler;
+use Genkgo\Xsl\Xsl\Node\AttributeBraces;
 use Genkgo\Xsl\Xsl\Node\AttributeMatch;
 use Genkgo\Xsl\Xsl\Node\AttributeSelect;
 use Genkgo\Xsl\Xsl\Node\ElementForEachGroup;
@@ -26,6 +27,11 @@ class Transformer implements TransformerInterface
     private $elementTransformers = [];
 
     /**
+     * @var AttributeTransformerInterface[]
+     */
+    private $attributeTransformers = [];
+
+    /**
      * Transformer constructor.
      * @param Compiler $xpathCompiler
      */
@@ -37,25 +43,51 @@ class Transformer implements TransformerInterface
             new ElementValueOf(),
             new ElementForEachGroup($xpathCompiler),
         ];
+
+        $this->attributeTransformers = [
+            new AttributeBraces($xpathCompiler)
+        ];
     }
 
 
     /**
      * @param DOMDocument $document
-     * @param TransformationContext $transformationContext
      */
-    public function transform(DOMDocument $document, TransformationContext $transformationContext)
+    public function transform(DOMDocument $document)
     {
         $document->documentElement->setAttribute('xmlns:php', 'http://php.net/xsl');
         $document->documentElement->setAttribute('xmlns:xs', XmlSchema::URI);
 
-        $matchAndSelectElements = new DOMXPath($document);
+        $this->transformElements($document);
+        $this->transformAttributes($document);
+    }
 
+    /**
+     * @param DOMDocument $document
+     */
+    private function transformElements (DOMDocument $document) {
+        $matchAndSelectElements = new DOMXPath($document);
         /** @var DOMNodeList|DOMElement[] $list */
         $list = $matchAndSelectElements->query('//xsl:*[@match|@select]');
         foreach ($list as $element) {
             foreach ($this->elementTransformers as $elementTransformer) {
-                $elementTransformer->transform($element, $transformationContext);
+                $elementTransformer->transform($element);
+            }
+        }
+    }
+
+    /**
+     * @param DOMDocument $document
+     */
+    private function transformAttributes (DOMDocument $document) {
+        $matchAndSelectElements = new DOMXPath($document);
+        /** @var DOMNodeList|DOMElement[] $list */
+        $expression = '//@*[substring(., 1, 1) = "{" and substring(., 1, 2) != "{{" and substring(., string-length(.)) = "}"]';
+
+        $list = $matchAndSelectElements->query($expression);
+        foreach ($list as $attribute) {
+            foreach ($this->attributeTransformers as $attributeTransformer) {
+                $attributeTransformer->transform($attribute);
             }
         }
     }
