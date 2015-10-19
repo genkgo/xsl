@@ -5,7 +5,7 @@ namespace Genkgo\Xsl\Xpath\Functions;
  * Class Math
  * @package Genkgo\Xsl\Xpath\Functions
  */
-trait Math
+class Math
 {
     /**
      * @param $number

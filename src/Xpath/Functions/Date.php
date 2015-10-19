@@ -10,7 +10,7 @@ use Genkgo\Xsl\Schema\XsTime;
  * Class Date
  * @package Genkgo\Xsl\Xpath\Functions
  */
-trait Date
+class Date
 {
     /**
      * @return XsTime

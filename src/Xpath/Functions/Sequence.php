@@ -7,7 +7,7 @@ use Genkgo\Xsl\Schema\XsSequence;
  * Class Sequence
  * @package Genkgo\Xsl\Xpath\Functions
  */
-trait Sequence
+class Sequence
 {
     /**
      * @param $elements

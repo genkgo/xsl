@@ -7,7 +7,7 @@ use DOMElement;
  * Class Aggregation
  * @package Genkgo\Xsl\Xpath\Functions
  */
-trait Aggregation
+class Aggregation
 {
     /**
      * @param DOMElement[] $elements

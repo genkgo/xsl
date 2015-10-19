@@ -3,14 +3,13 @@ namespace Genkgo\Xsl\Xpath\Functions;
 
 use DOMDocument;
 use DOMElement;
-use DOMXPath;
 use Genkgo\Xsl\Schema\XsSequence;
 
 /**
  * Class Text
  * @package Genkgo\Xsl\Xpath\Functions
  */
-trait Text
+class Text
 {
     /**
      * @param $haystack
