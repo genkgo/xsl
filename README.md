@@ -52,13 +52,37 @@ use Genkgo\Xsl\Config;
 use Genkgo\Xsl\XsltProcessor;
 
 class MyExtensions implements XmlNamespaceInterface {
-    // implementation here
+
+    public function register(TransformerCollection $transformers, FunctionMap $functions) {
+        $functions->setUndashed('helloWorld', new StringFunction('helloWorld', static::class), self::URI);
+    }
+
+    public static function helloWorld(...$args) {
+        return 'Hello World was called and received ' . count($args) . ' arguments!';
+    }
+
 }
 
 $config = new Config();
 $config->setExtensions(new MyExtensions());
 
 $transpiler = new XsltProcessor($config);
+```
+
+and then call the function in your style sheet.
+
+```xsl
+<xsl:stylesheet version="2.0"
+        xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+        xmlns:my="https://github.com/genkgo/xsl/tree/master/tests/Stubs/Extension/MyExtension">
+
+    <xsl:output omit-xml-declaration="yes" />
+
+    <xsl:template match="/">
+        <xsl:value-of select="my:hello-world(1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)" />
+    </xsl:template>
+
+</xsl:stylesheet>
 ```
 
 ## Caching: transpile once
