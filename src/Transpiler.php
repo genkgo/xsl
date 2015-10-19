@@ -38,13 +38,13 @@ final class Transpiler
      */
     public function transpile(DOMDocument $document)
     {
+        $transformers = $this->context->getTransformers();
+        foreach ($transformers as $transformer) {
+            $transformer->transform($document, $this->context);
+        }
+
         if ($document->documentElement && $document->documentElement->getAttribute('version') === '2.0') {
             $document->documentElement->setAttribute('version', '1.0');
-
-            $transformers = $this->context->getTransformers();
-            foreach ($transformers as $transformer) {
-                $transformer->transform($document, $this->context);
-            }
         }
 
         return $document;

@@ -55,6 +55,10 @@ class Transformer implements TransformerInterface
      */
     public function transform(DOMDocument $document)
     {
+        if ($document->documentElement && $document->documentElement->getAttribute('version') === '1.0') {
+            return;
+        }
+
         $document->documentElement->setAttribute('xmlns:php', 'http://php.net/xsl');
         $document->documentElement->setAttribute('xmlns:xs', XmlSchema::URI);
 
