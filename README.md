@@ -48,10 +48,16 @@ test](https://github.com/genkgo/xsl/blob/master/tests/Integration/ExtensionTest.
 
 ```php
 <?php
+use Genkgo\Xsl\Callback\StringFunction;
 use Genkgo\Xsl\Config;
+use Genkgo\Xsl\Util\FunctionMap;
+use Genkgo\Xsl\Util\TransformerCollection;
+use Genkgo\Xsl\XmlNamespaceInterface;
 use Genkgo\Xsl\XsltProcessor;
 
 class MyExtensions implements XmlNamespaceInterface {
+
+    const URI = 'https://github.com/genkgo/xsl/tree/master/tests/Stubs/Extension/MyExtension';
 
     public function register(TransformerCollection $transformers, FunctionMap $functions) {
         $functions->setUndashed('helloWorld', new StringFunction('helloWorld', static::class), self::URI);
