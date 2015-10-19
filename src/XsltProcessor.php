@@ -196,7 +196,7 @@ class XsltProcessor extends PhpXsltProcessor
     private function createTranspiledDocument(DOMDocument $styleSheet)
     {
         $transpiledStyleSheet = new DOMDocument('1.0', 'UTF-8');
-        $transpiledStyleSheet->load('gxsl://' . $styleSheet->documentURI . '~~');
+        $transpiledStyleSheet->load('gxsl://' . $styleSheet->documentURI . '#root');
         return $transpiledStyleSheet;
     }
 

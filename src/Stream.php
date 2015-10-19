@@ -38,9 +38,8 @@ class Stream
 
         /** @var Transpiler $transpiler */
         $transpiler = $streamContext['gxsl']['transpiler'];
-        $rootDocument = substr($filename, -2)  === '~~';
 
-        if ($rootDocument) {
+        if ($this->isRoot($filename)) {
             $this->template = $this->rootToTemplate($transpiler, $filename, $streamContext);
             return true;
         }
@@ -88,7 +87,7 @@ class Stream
      */
     private function rootToTemplate(Transpiler $transpiler, $filename, $streamContext)
     {
-        $filename = substr($filename, 0, -2);
+        $filename = substr($filename, 0, -5);
 
         if (is_file($filename) === false) {
             return $this->documentToTemplate($transpiler, $transpiler->transpileRoot());
@@ -157,7 +156,7 @@ class Stream
     public function url_stat($path)
     {
         $filename = str_replace('gxsl://', '', $path);
-        if (substr($filename, -2, 2) === '~~') {
+        if ($this->isRoot($filename)) {
             return [];
         }
 
@@ -170,5 +169,13 @@ class Stream
     public function stream_eof()
     {
         return true;
+    }
+
+    /**
+     * @param $filename
+     * @return bool
+     */
+    private function isRoot ($filename) {
+        return substr($filename, -5) === '#root';
     }
 }
