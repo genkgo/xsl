@@ -18,16 +18,24 @@ final class FunctionMap {
      * @param $name
      * @param FunctionInterface $function
      * @param null $namespace
+     * @return FunctionMap
      */
     public function set($name, FunctionInterface $function, $namespace = null) {
+        return $this->setRaw($this->dasherize($name), $function, $namespace);
+    }
+
+    /**
+     * @param $name
+     * @param FunctionInterface $function
+     * @param null $namespace
+     * @return FunctionMap
+     */
+    public function setRaw($name, FunctionInterface $function, $namespace = null) {
         if ($namespace !== null) {
             $name = $namespace . ':' . $name;
         }
         $this->functions[$name] = $function;
-    }
-
-    public function setUndashed($name, FunctionInterface $function, $namespace = null) {
-        $this->set($this->dasherize($name), $function, $namespace);
+        return $this;
     }
 
     /**

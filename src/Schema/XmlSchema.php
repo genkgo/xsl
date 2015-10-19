@@ -25,8 +25,8 @@ class XmlSchema implements XmlNamespaceInterface
      */
     public function register(TransformerCollection $transformers, FunctionMap $functions)
     {
-        $functions->setUndashed('date', new ReturnXsScalarFunction(new ObjectFunction('xsDate', Functions::class), 'date'), self::URI);
-        $functions->setUndashed('time', new ReturnXsScalarFunction(new ObjectFunction('xsTime', Functions::class), 'time'), self::URI);
-        $functions->set('dateTime', new ReturnXsScalarFunction(new ObjectFunction('xsDateTime', Functions::class), 'dateTime'), self::URI);
+        $functions->set('date', new ReturnXsScalarFunction(new ObjectFunction('xsDate', Functions::class), 'date'), self::URI);
+        $functions->set('time', new ReturnXsScalarFunction(new ObjectFunction('xsTime', Functions::class), 'time'), self::URI);
+        $functions->setRaw('dateTime', new ReturnXsScalarFunction(new ObjectFunction('xsDateTime', Functions::class), 'dateTime'), self::URI);
     }
 }

@@ -1,9 +1,7 @@
 <?php
 namespace Genkgo\Xsl\Xsl;
 
-use Genkgo\Xsl\Callback\ContextFunction;
 use Genkgo\Xsl\Callback\ObjectFunction;
-use Genkgo\Xsl\Callback\ReturnXsSequenceFunction;
 use Genkgo\Xsl\Util\FunctionMap;
 use Genkgo\Xsl\Util\TransformerCollection;
 use Genkgo\Xsl\XmlNamespaceInterface;
@@ -46,13 +44,13 @@ class XslTransformations implements XmlNamespaceInterface
     {
         $transformers->attach(new Transformer($this->xpathCompiler));
 
-        $functions->set('format-dateTime', new ObjectFunction('formatDateTime', Functions::class));
         $functions->set('group-by', new GroupBy($this->xpathCompiler), self::URI);
 
-        $functions->setUndashed('formatDate', new ObjectFunction('formatDate', Functions::class));
-        $functions->setUndashed('formatTime', new ObjectFunction('formatTime', Functions::class));
+        $functions->setRaw('format-dateTime', new ObjectFunction('formatDateTime', Functions::class));
+        $functions->set('formatDate', new ObjectFunction('formatDate', Functions::class));
+        $functions->set('formatTime', new ObjectFunction('formatTime', Functions::class));
 
-        $functions->setUndashed('currentGroupingKey', new CurrentGroupingKey());
-        $functions->setUndashed('currentGroup', new CurrentGroup());
+        $functions->set('currentGroupingKey', new CurrentGroupingKey());
+        $functions->set('currentGroup', new CurrentGroup());
     }
 }

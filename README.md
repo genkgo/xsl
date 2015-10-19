@@ -55,7 +55,7 @@ class MyExtensions implements XmlNamespaceInterface {
     const URI = 'https://github.com/genkgo/xsl/tree/master/tests/Stubs/Extension/MyExtension';
 
     public function register(TransformerCollection $transformers, FunctionMap $functions) {
-        $functions->setUndashed('helloWorld', new StringFunction('helloWorld', static::class), self::URI);
+        $functions->set('helloWorld', new StringFunction('helloWorld', static::class), self::URI);
     }
 
     public static function helloWorld(...$args) {

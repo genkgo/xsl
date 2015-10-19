@@ -26,6 +26,6 @@ class MyExtension implements XmlNamespaceInterface
      */
     public function register(TransformerCollection $transformers, FunctionMap $functions)
     {
-        $functions->setUndashed('helloWorld', new StringFunction('helloWorld', static::class), self::URI);
+        $functions->set('helloWorld', new StringFunction('helloWorld', static::class), self::URI);
     }
 }
