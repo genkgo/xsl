@@ -54,11 +54,11 @@ final class Transpiler
      * @return mixed
      */
     public function transform (Closure $nativeTransformation) {
-        PhpCallback::attach($this->context);
+        PhpCallback::set($this->context);
 
         $result = $nativeTransformation();
 
-        PhpCallback::detach($this->context);
+        PhpCallback::reset();
         return $result;
     }
 }

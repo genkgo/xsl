@@ -21,5 +21,4 @@ class Functions
     const FLAG_TIME = 0x2;
 
     use DateFormatter;
-    use GroupBy;
 }

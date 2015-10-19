@@ -3,6 +3,7 @@ namespace Genkgo\Xsl\Xsl\Node;
 
 use DOMElement;
 use Genkgo\Xsl\Callback\PhpCallback;
+use Genkgo\Xsl\TransformationContext;
 use Genkgo\Xsl\Xpath\FunctionBuilder;
 use Genkgo\Xsl\Xsl\ElementTransformerInterface;
 
@@ -14,7 +15,6 @@ class ElementValueOf implements ElementTransformerInterface
 {
     /**
      * @param DOMElement $element
-     * @return void
      */
     public function transform(DOMElement $element)
     {
@@ -23,7 +23,7 @@ class ElementValueOf implements ElementTransformerInterface
             $separator = $element->hasAttribute('separator') ? $element->getAttribute('separator') : ' ';
 
             $callback = (new FunctionBuilder('php:function'))
-                ->addArgument(PhpCallback::class . '::call')
+                ->addArgument(PhpCallback::class . '::callStatic')
                 ->addArgument(static::class)
                 ->addArgument('valueOf')
                 ->addExpression($select)

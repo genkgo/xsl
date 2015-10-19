@@ -7,8 +7,20 @@ use Genkgo\Xsl\Xpath\Lexer;
  * Class ContextFunction
  * @package Genkgo\Xsl\Callback
  */
-class ContextFunction extends AbstractFunction implements FunctionInterface
+class ContextFunction implements FunctionInterface
 {
+    /**
+     * @var string
+     */
+    private $name;
+
+    /**
+     * @param $name
+     */
+    public function __construct ($name) {
+        $this->name = $name;
+    }
+
     /**
      * @param Lexer $lexer
      * @return array
@@ -19,11 +31,7 @@ class ContextFunction extends AbstractFunction implements FunctionInterface
         $resultTokens[] = 'php:function';
         $resultTokens[] = '(';
         $resultTokens[] = '\'';
-        $resultTokens[] = PhpCallback::class.'::callContext';
-        $resultTokens[] = '\'';
-        $resultTokens[] = ',';
-        $resultTokens[] = '\'';
-        $resultTokens[] = $this->class;
+        $resultTokens[] = PhpCallback::class.'::call';
         $resultTokens[] = '\'';
         $resultTokens[] = ',';
         $resultTokens[] = '\'';

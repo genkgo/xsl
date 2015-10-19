@@ -10,24 +10,38 @@ use Genkgo\Xsl\TransformationContext;
 class PhpCallback
 {
     /**
-     * @var TransformationContext[]
+     * @var TransformationContext
      */
-    private static $context = [];
+    private static $context;
 
     /**
      * @param TransformationContext $context
      */
-    public static function attach(TransformationContext $context)
+    public static function set(TransformationContext $context)
     {
-        self::$context[spl_object_hash($context)] = $context;
+        self::$context = $context;
     }
 
     /**
-     * @param TransformationContext $context
+     *
      */
-    public static function detach(TransformationContext $context)
+    public static function reset()
     {
-        unset(self::$context[spl_object_hash($context)]);
+        self::$context = null;
+    }
+
+    /**
+     * @param $functionName
+     * @param ...$arguments
+     * @return mixed
+     */
+    public static function call($functionName, ...$arguments)
+    {
+        $context = self::$context;
+        $function = $context->getFunctions()->get($functionName);
+
+        array_unshift($arguments, $context);
+        return call_user_func([$function, 'call'], $arguments);
     }
 
     /**
@@ -36,22 +50,8 @@ class PhpCallback
      * @param ...$arguments
      * @return mixed
      */
-    public static function call($class, $method, ...$arguments)
+    public static function callStatic($class, $method, ...$arguments)
     {
-        return call_user_func_array([$class, $method], $arguments);
-    }
-
-    /**
-     * @param $objectHash
-     * @param $class
-     * @param $method
-     * @param ...$arguments
-     * @return mixed
-     */
-    public static function callContext($objectHash, $class, $method, ...$arguments)
-    {
-        array_unshift($arguments, self::$context[$objectHash]);
-
         return call_user_func_array([$class, $method], $arguments);
     }
 }

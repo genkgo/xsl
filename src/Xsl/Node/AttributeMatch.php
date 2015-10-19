@@ -2,6 +2,7 @@
 namespace Genkgo\Xsl\Xsl\Node;
 
 use DOMElement;
+use Genkgo\Xsl\TransformationContext;
 use Genkgo\Xsl\Util\FetchNamespacesFromDocument;
 use Genkgo\Xsl\Xpath\Compiler;
 use Genkgo\Xsl\Xsl\ElementTransformerInterface;

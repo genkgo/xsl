@@ -55,7 +55,7 @@ class Transformer implements TransformerInterface
         $list = $matchAndSelectElements->query('//xsl:*[@match|@select]');
         foreach ($list as $element) {
             foreach ($this->elementTransformers as $elementTransformer) {
-                $elementTransformer->transform($element);
+                $elementTransformer->transform($element, $transformationContext);
             }
         }
     }

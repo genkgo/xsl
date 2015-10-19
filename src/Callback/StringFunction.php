@@ -19,7 +19,7 @@ class StringFunction extends AbstractFunction implements FunctionInterface
         $resultTokens[] = 'php:functionString';
         $resultTokens[] = '(';
         $resultTokens[] = '\'';
-        $resultTokens[] = PhpCallback::class.'::call';
+        $resultTokens[] = PhpCallback::class.'::callStatic';
         $resultTokens[] = '\'';
         $resultTokens[] = ',';
         $resultTokens[] = '\'';

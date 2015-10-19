@@ -19,7 +19,7 @@ class ObjectFunction extends AbstractFunction implements FunctionInterface
         $resultTokens[] = 'php:function';
         $resultTokens[] = '(';
         $resultTokens[] = '\'';
-        $resultTokens[] = PhpCallback::class.'::call';
+        $resultTokens[] = PhpCallback::class.'::callStatic';
         $resultTokens[] = '\'';
         $resultTokens[] = ',';
         $resultTokens[] = '\'';

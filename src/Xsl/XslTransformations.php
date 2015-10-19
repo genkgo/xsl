@@ -8,6 +8,9 @@ use Genkgo\Xsl\Util\FunctionMap;
 use Genkgo\Xsl\Util\TransformerCollection;
 use Genkgo\Xsl\XmlNamespaceInterface;
 use Genkgo\Xsl\Xpath\Compiler;
+use Genkgo\Xsl\Xsl\Functions\CurrentGroup;
+use Genkgo\Xsl\Xsl\Functions\CurrentGroupingKey;
+use Genkgo\Xsl\Xsl\Functions\GroupBy;
 
 /**
  * Class XslTransformations
@@ -44,9 +47,12 @@ class XslTransformations implements XmlNamespaceInterface
         $transformers->attach(new Transformer($this->xpathCompiler));
 
         $functions->set('format-dateTime', new ObjectFunction('formatDateTime', Functions::class));
+        $functions->set('group-by', new GroupBy($this->xpathCompiler), self::URI);
+
         $functions->setUndashed('formatDate', new ObjectFunction('formatDate', Functions::class));
         $functions->setUndashed('formatTime', new ObjectFunction('formatTime', Functions::class));
-        $functions->setUndashed('currentGroupingKey', new ContextFunction('currentGroupingKey', Functions::class));
-        $functions->setUndashed('currentGroup', new ReturnXsSequenceFunction(new ContextFunction('currentGroup', Functions::class)));
+
+        $functions->setUndashed('currentGroupingKey', new CurrentGroupingKey());
+        $functions->setUndashed('currentGroup', new CurrentGroup());
     }
 }

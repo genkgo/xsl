@@ -151,6 +151,7 @@ class XsltProcessor extends PhpXsltProcessor
             parent::registerPHPFunctions();
         } else {
             $phpFunctions[] = PhpCallback::class . '::call';
+            $phpFunctions[] = PhpCallback::class . '::callStatic';
             $phpFunctions[] = PhpCallback::class . '::callContext';
             parent::registerPHPFunctions($phpFunctions);
         }
@@ -170,6 +171,7 @@ class XsltProcessor extends PhpXsltProcessor
     }
 
     /**
+     * @param Xpath\Compiler $xpathCompiler
      * @return XmlNamespaceInterface[]
      */
     private function getNamespaces($xpathCompiler)
