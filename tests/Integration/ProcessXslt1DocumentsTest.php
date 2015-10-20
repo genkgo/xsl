@@ -148,4 +148,25 @@ class ProcessXslt1DocumentsTest extends AbstractIntegrationTestCase
         $this->assertEquals('false', $nativeResult);
         $this->assertEquals($nativeResult, $transpilerResult);
     }
+
+    public function testOperators()
+    {
+        $xslDoc = new DOMDocument();
+        $xslDoc->load('Stubs/operators.xsl');
+
+        $xmlDoc = new DOMDocument();
+        $xmlDoc->load('Stubs/collection.xml');
+
+        $native = new \XSLTProcessor();
+        $native->importStylesheet($xslDoc);
+        $native->registerPHPFunctions();
+        $nativeResult = trim($native->transformToXML($xmlDoc));
+
+        $transpiler = new XsltProcessor();
+        $transpiler->importStylesheet($xslDoc);
+        $transpiler->registerPHPFunctions();
+        $transpilerResult = trim($transpiler->transformToXML($xmlDoc));
+
+        $this->assertEquals($nativeResult, $transpilerResult);
+    }
 }

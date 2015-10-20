@@ -14,6 +14,8 @@ final class Compiler
      */
     private $functions;
 
+    private static $operators = ['except', 'intersect', 'and', 'or', 'for', 'to', 'if', 'some', 'every', 'div', 'idiv', 'mod', 'union'];
+
     /**
      * @param FunctionMap $functions
      */
@@ -32,6 +34,14 @@ final class Compiler
         $resultTokens = [];
         $lexer = Lexer::tokenize($xpathExpression);
         foreach ($lexer as $token) {
+            if (in_array($token, self::$operators)) {
+                $resultTokens[] = ' ';
+                $resultTokens[] = $token;
+                $resultTokens[] = ' ';
+                continue;
+            }
+
+
             $nextToken = $lexer->peek($lexer->key() + 1);
             if ($nextToken === '(') {
                 $functionName = $this->convertTokenToFunctionName($token, $namespaces);
@@ -46,7 +56,7 @@ final class Compiler
             $resultTokens[] = $token;
         }
 
-        return implode('', $resultTokens);
+        return trim(implode('', $resultTokens));
     }
 
     /**
