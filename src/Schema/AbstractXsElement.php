@@ -2,6 +2,8 @@
 namespace Genkgo\Xsl\Schema;
 
 use DOMDocument;
+use DOMElement;
+use Genkgo\Xsl\Exception\CastException;
 
 /**
  * Class AbstractXsElement
@@ -33,4 +35,21 @@ abstract class AbstractXsElement extends DOMDocument
      * @return string
      */
     abstract protected function getElementName();
+
+    /**
+     * @param DOMElement[] $elements
+     * @return string
+     * @throws CastException
+     */
+    public static function castToNodeValue ($elements) {
+        if (is_scalar($elements)) {
+            return (string) $elements;
+        }
+
+        if (is_array($elements) && count($elements) === 1) {
+            return $elements[0]->nodeValue;
+        }
+
+        throw new CastException('Cannot convert list of elements to string');
+    }
 }

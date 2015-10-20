@@ -3,10 +3,12 @@
         <title>Fight for your mind</title>
         <artist>Ben Harper</artist>
         <year>1995</year>
+        <publishedAt time="12:00:00+00:00">1995-05-10+00:00</publishedAt>
     </cd>
     <cd>
         <title>Electric Ladyland</title>
         <artist>Jimi Hendrix</artist>
         <year>1997</year>
+        <publishedAt time="09:00:00+00:00">1997-05-10+00:00</publishedAt>
     </cd>
 </collection>

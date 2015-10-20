@@ -17,7 +17,7 @@ class Date
      */
     public static function currentTime()
     {
-        return XsTime::fromDateTime(new DateTimeImmutable());
+        return XsTime::now();
     }
 
     /**
@@ -25,7 +25,7 @@ class Date
      */
     public static function currentDate()
     {
-        return XsDate::fromDateTime(new DateTimeImmutable());
+        return XsDate::now();
     }
 
     /**
@@ -33,6 +33,6 @@ class Date
      */
     public static function currentDateTime()
     {
-        return XsDateTime::fromDateTime(new DateTimeImmutable());
+        return XsDateTime::now();
     }
 }

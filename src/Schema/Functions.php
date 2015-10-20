@@ -15,7 +15,8 @@ class Functions
      */
     public static function xsDate($value)
     {
-        return XsDate::fromDateTime(DateTimeImmutable::createFromFormat(XsDate::FORMAT, $value));
+        $value = XsDate::castToNodeValue($value);
+        return XsDate::fromString($value);
     }
 
     /**
@@ -24,7 +25,8 @@ class Functions
      */
     public static function xsTime($value)
     {
-        return XsTime::fromDateTime(DateTimeImmutable::createFromFormat(XsTime::FORMAT, $value));
+        $value = XsTime::castToNodeValue($value);
+        return XsTime::fromString($value);
     }
 
     /**
@@ -33,6 +35,7 @@ class Functions
      */
     public static function xsDateTime($value)
     {
-        return XsDateTime::fromDateTime(DateTimeImmutable::createFromFormat(XsDateTime::FORMAT, $value));
+        $value = XsDateTime::castToNodeValue($value);
+        return XsDateTime::fromString($value);
     }
 }

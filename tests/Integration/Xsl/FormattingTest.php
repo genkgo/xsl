@@ -11,15 +11,14 @@ class FormattingTest extends AbstractXslTest
 {
     public function testFormatDate()
     {
-        $phpDate = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2015-10-16 09:37:00');
-        $xsDate = XsDate::fromDateTime($phpDate);
+        $xsDate = XsDate::fromString('2015-10-16');
 
         $this->assertEquals('2015-10-16', $this->transformFile('Stubs/Xsl/Formatting/format-date.xsl', [
             'date' => (string) $xsDate,
             'picture' => '[Y]-[M]-[D]'
         ]));
 
-        $this->assertEquals($phpDate->format('W'), $this->transformFile('Stubs/Xsl/Formatting/format-date.xsl', [
+        $this->assertEquals('42', $this->transformFile('Stubs/Xsl/Formatting/format-date.xsl', [
             'date' => (string) $xsDate,
             'picture' => '[W]'
         ]));
@@ -28,8 +27,7 @@ class FormattingTest extends AbstractXslTest
     public function testExceptionCode()
     {
         try {
-            $phpDate = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2015-10-16 09:37:00');
-            $xsDate = XsDate::fromDateTime($phpDate);
+            $xsDate = XsDate::fromString('2015-10-16');
 
             $this->transformFile('Stubs/Xsl/Formatting/format-date.xsl', [
                 'date' => (string) $xsDate,
@@ -42,8 +40,7 @@ class FormattingTest extends AbstractXslTest
 
     public function testFormatTime()
     {
-        $phpDate = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2015-10-16 09:37:00');
-        $xsTime = XsTime::fromDateTime($phpDate);
+        $xsTime = XsTime::fromString('09:37:00');
 
         $this->assertEquals('09:37:00', $this->transformFile('Stubs/Xsl/Formatting/format-time.xsl', [
             'time' => (string) $xsTime,
@@ -58,8 +55,7 @@ class FormattingTest extends AbstractXslTest
 
     public function testFormatDateTime()
     {
-        $phpDate = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2015-10-16 15:37:00');
-        $xsDateTime = XsDateTime::fromDateTime($phpDate);
+        $xsDateTime = XsDateTime::fromString('2015-10-16 15:37:00');
 
         $this->assertEquals('2015-10-16 15:37:00 +02:00', $this->transformFile('Stubs/Xsl/Formatting/format-dateTime.xsl', [
             'dateTime' => (string) $xsDateTime,
@@ -80,8 +76,7 @@ class FormattingTest extends AbstractXslTest
     public function testInvalidPicture()
     {
         try {
-            $phpDate = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2015-10-16 09:37:00');
-            $xsDate = XsDate::fromDateTime($phpDate);
+            $xsDate = XsDate::fromString('2015-10-16');
 
             $this->transformFile('Stubs/Xsl/Formatting/format-date.xsl', [
                 'date' => (string) $xsDate,
@@ -96,8 +91,7 @@ class FormattingTest extends AbstractXslTest
     {
         $this->setExpectedException(InvalidArgumentException::class, 'No valid components found');
 
-        $phpDate = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2015-10-16 09:37:00');
-        $xsDate = XsDate::fromDateTime($phpDate);
+        $xsDate = XsDate::fromString('2015-10-16');
 
         $this->transformFile('Stubs/Xsl/Formatting/format-date.xsl', [
             'date' => (string) $xsDate,
@@ -109,19 +103,17 @@ class FormattingTest extends AbstractXslTest
     {
         $this->setExpectedException(InvalidArgumentException::class, 'Component [E] is not supported');
 
-        $phpDate = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2015-10-16 09:37:00');
-        $xsDate = XsDate::fromDateTime($phpDate);
+        $xsDate = XsDate::fromString('2015-10-16');
 
-        var_dumP($this->transformFile('Stubs/Xsl/Formatting/format-date.xsl', [
+        $this->transformFile('Stubs/Xsl/Formatting/format-date.xsl', [
             'date' => (string) $xsDate,
             'picture' => '[E]'
-        ]));
+        ]);
     }
 
     public function testEscapeBrackets()
     {
-        $phpDate = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2015-10-16 15:37:00');
-        $xsDateTime = XsDateTime::fromDateTime($phpDate);
+        $xsDateTime = XsDateTime::fromString('2015-10-16 15:37:00');
 
         $this->assertEquals('[Date:] 2015-10-16 03:37:00 PM', $this->transformFile('Stubs/Xsl/Formatting/format-dateTime.xsl', [
             'dateTime' => (string) $xsDateTime,
@@ -133,8 +125,7 @@ class FormattingTest extends AbstractXslTest
     {
         $this->setExpectedException(InvalidArgumentException::class, 'Wrong formatted date, missing ]');
 
-        $phpDate = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2015-10-16 15:37:00');
-        $xsDateTime = XsDateTime::fromDateTime($phpDate);
+        $xsDateTime = XsDateTime::fromString('2015-10-16 15:37:00');
 
         $this->transformFile('Stubs/Xsl/Formatting/format-dateTime.xsl', [
             'dateTime' => (string) $xsDateTime,
@@ -146,8 +137,7 @@ class FormattingTest extends AbstractXslTest
     {
         $this->setExpectedException(InvalidArgumentException::class, 'Expected a date object, got scalar');
 
-        $phpDate = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2015-10-16 15:37:00');
-        $xsDateTime = XsDateTime::fromDateTime($phpDate);
+        $xsDateTime = XsDateTime::fromString('2015-10-16 15:37:00');
 
         $this->transformFile('Stubs/Xsl/Formatting/format-invalid-dataType.xsl', [
             'dateTime' => (string) $xsDateTime,
@@ -159,8 +149,7 @@ class FormattingTest extends AbstractXslTest
     {
         $this->setExpectedException(InvalidArgumentException::class, 'Expected a http://www.w3.org/2001/XMLSchema:dateTime object, got xs:item');
 
-        $phpDate = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2015-10-16 15:37:00');
-        $xsDateTime = XsDateTime::fromDateTime($phpDate);
+        $xsDateTime = XsDateTime::fromString('2015-10-16 15:37:00');
 
         $this->transformFile('Stubs/Xsl/Formatting/format-invalid-sequence.xsl', [
             'dateTime' => (string) $xsDateTime,
@@ -172,8 +161,7 @@ class FormattingTest extends AbstractXslTest
     {
         $this->setExpectedException(InvalidArgumentException::class);
 
-        $phpDate = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2015-10-16 09:37:00');
-        $xsDate = XsDate::fromDateTime($phpDate);
+        $xsDate = XsDate::fromString('2015-10-16');
 
         $this->transformFile('Stubs/Xsl/Formatting/format-date.xsl', [
             'date' => (string) $xsDate,
@@ -185,8 +173,7 @@ class FormattingTest extends AbstractXslTest
     {
         $this->setExpectedException(InvalidArgumentException::class);
 
-        $phpDate = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2015-10-16 09:37:00');
-        $xsDate = XsDate::fromDateTime($phpDate);
+        $xsDate = XsDate::fromString('2015-10-16');
 
         $this->transformFile('Stubs/Xsl/Formatting/format-date.xsl', [
             'date' => (string) $xsDate,
@@ -198,8 +185,7 @@ class FormattingTest extends AbstractXslTest
     {
         $this->setExpectedException(InvalidArgumentException::class);
 
-        $phpDate = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2015-10-16 09:37:00');
-        $xsDate = XsDate::fromDateTime($phpDate);
+        $xsDate = XsDate::fromString('2015-10-16');
 
         $this->transformFile('Stubs/Xsl/Formatting/format-date.xsl', [
             'date' => (string) $xsDate,
@@ -211,8 +197,7 @@ class FormattingTest extends AbstractXslTest
     {
         $this->setExpectedException(InvalidArgumentException::class);
 
-        $phpDate = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2015-10-16 09:37:00');
-        $xsDate = XsDate::fromDateTime($phpDate);
+        $xsDate = XsDate::fromString('2015-10-16');
 
         $this->transformFile('Stubs/Xsl/Formatting/format-date.xsl', [
             'date' => (string) $xsDate,
@@ -224,8 +209,7 @@ class FormattingTest extends AbstractXslTest
     {
         $this->setExpectedException(InvalidArgumentException::class);
 
-        $phpDate = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2015-10-16 09:37:00');
-        $xsDate = XsDate::fromDateTime($phpDate);
+        $xsDate = XsDate::fromString('2015-10-16');
 
         $this->transformFile('Stubs/Xsl/Formatting/format-date.xsl', [
             'date' => (string) $xsDate,
@@ -237,8 +221,7 @@ class FormattingTest extends AbstractXslTest
     {
         $this->setExpectedException(InvalidArgumentException::class);
 
-        $phpDate = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2015-10-16 09:37:00');
-        $xsTime = XsTime::fromDateTime($phpDate);
+        $xsTime = XsTime::fromString('09:37:00');
 
         $this->transformFile('Stubs/Xsl/Formatting/format-time.xsl', [
             'time' => (string) $xsTime,
@@ -250,8 +233,7 @@ class FormattingTest extends AbstractXslTest
     {
         $this->setExpectedException(InvalidArgumentException::class);
 
-        $phpDate = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2015-10-16 09:37:00');
-        $xsTime = XsTime::fromDateTime($phpDate);
+        $xsTime = XsTime::fromString('09:37:00');
 
         $this->transformFile('Stubs/Xsl/Formatting/format-time.xsl', [
             'time' => (string) $xsTime,
@@ -263,8 +245,7 @@ class FormattingTest extends AbstractXslTest
     {
         $this->setExpectedException(InvalidArgumentException::class);
 
-        $phpDate = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2015-10-16 09:37:00');
-        $xsTime = XsTime::fromDateTime($phpDate);
+        $xsTime = XsTime::fromString('09:37:00');
 
         $this->transformFile('Stubs/Xsl/Formatting/format-time.xsl', [
             'time' => (string) $xsTime,
@@ -276,8 +257,7 @@ class FormattingTest extends AbstractXslTest
     {
         $this->setExpectedException(InvalidArgumentException::class);
 
-        $phpDate = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2015-10-16 09:37:00');
-        $xsTime = XsTime::fromDateTime($phpDate);
+        $xsTime = XsTime::fromString('09:37:00');
 
         $this->transformFile('Stubs/Xsl/Formatting/format-time.xsl', [
             'time' => (string) $xsTime,
@@ -289,8 +269,7 @@ class FormattingTest extends AbstractXslTest
     {
         $this->setExpectedException(InvalidArgumentException::class);
 
-        $phpDate = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2015-10-16 09:37:00');
-        $xsTime = XsTime::fromDateTime($phpDate);
+        $xsTime = XsTime::fromString('09:37:00');
 
         $this->transformFile('Stubs/Xsl/Formatting/format-time.xsl', [
             'time' => (string) $xsTime,
@@ -302,8 +281,7 @@ class FormattingTest extends AbstractXslTest
     {
         $this->setExpectedException(InvalidArgumentException::class);
 
-        $phpDate = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2015-10-16 09:37:00');
-        $xsTime = XsTime::fromDateTime($phpDate);
+        $xsTime = XsTime::fromString('09:37:00');
 
         $this->transformFile('Stubs/Xsl/Formatting/format-time.xsl', [
             'time' => (string) $xsTime,

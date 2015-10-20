@@ -3,6 +3,7 @@ namespace Genkgo\Xsl\Schema;
 
 use DateTimeImmutable;
 use DOMDocument;
+use Genkgo\Xsl\Exception\CastException;
 
 /**
  * Class XsTime
@@ -16,6 +17,11 @@ final class XsTime extends AbstractXsElement
     const FORMAT = 'H:i:sP';
 
     /**
+     * @var array
+     */
+    private static $formats = [self::FORMAT, 'H:i:s'];
+
+    /**
      * @return string
      */
     protected function getElementName()
@@ -24,11 +30,27 @@ final class XsTime extends AbstractXsElement
     }
 
     /**
-     * @param DateTimeImmutable $date
-     * @return static
+     * @param string $date
+     * @return XsTime
+     * @throws CastException
      */
-    public static function fromDateTime(DateTimeImmutable $date)
+    public static function fromString($date)
     {
-        return new static($date->format(self::FORMAT));
+        foreach (static::$formats as $format) {
+            $value = DateTimeImmutable::createFromFormat($format, $date);
+            if ($value) {
+                return new static($value->format(self::FORMAT));
+            }
+        }
+
+        throw new CastException('Cannot create time from ' . $date);
+    }
+
+    /**
+     * @return XsTime
+     */
+    public static function now()
+    {
+        return new static((new DateTimeImmutable())->format(self::FORMAT));
     }
 }
