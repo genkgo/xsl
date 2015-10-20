@@ -87,16 +87,16 @@ class Lexer implements Iterator, SeekableIterator, Countable
     private static function compileTokenRegEx()
     {
         $tokens = [
-            '\\$?(?:(?![0-9-])[\\w-]+:)?(?![0-9-])[\\w-]+', // Nodename (possibly with namespace) or variable.
-            '\\/\\/', // Double slash.
-            '\\.\\.', // Double dot.
+            '\$?(?:(?![0-9-])[\w-]+:)?(?![0-9-])[\w-]+', // Nodename (possibly with namespace) or variable.
+            '\/\/', // Double slash.
+            '\.\.', // Double dot.
             '::', // Double colon.
-            '\\d+(?:\\.\\d*)?', // Number starting with digit.
-            '\\.\\d+', // Number starting with decimal point.
+            '\d+(?:\.\d*)?', // Number starting with digit.
+            '\.\\d+', // Number starting with decimal point.
             '"[^"]*"', // Double quoted string.
             '\'[^\']*\'', // Single quoted string.
             '[!<>]=', // Operators
-            '\\s+', // Whitespaces.
+            '\s+', // Whitespaces.
             '.', // Any single character.
         ];
 
