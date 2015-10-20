@@ -29,25 +29,30 @@ final class Transpiler
      */
     public function transpileRoot()
     {
-        return $this->transpile($this->context->getDocument());
+        $document = $this->context->getDocument();
+        $this->transpile($document);
+        return $document;
     }
 
     /**
      * @param DOMDocument $document
-     * @return DOMDocument
      */
     public function transpile(DOMDocument $document)
     {
+        $root = $document->documentElement;
+        if ($root === null) {
+            return;
+        }
+
         $transformers = $this->context->getTransformers();
         foreach ($transformers as $transformer) {
             $transformer->transform($document, $this->context);
         }
 
-        if ($document->documentElement && $document->documentElement->getAttribute('version') === '2.0') {
-            $document->documentElement->setAttribute('version', '1.0');
-        }
 
-        return $document;
+        if ($root && $root->getAttribute('version') === '2.0') {
+            $root->setAttribute('version', '1.0');
+        }
     }
 
     /**

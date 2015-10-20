@@ -55,12 +55,11 @@ class Transformer implements TransformerInterface
      */
     public function transform(DOMDocument $document)
     {
-        if ($document->documentElement && $document->documentElement->getAttribute('version') === '1.0') {
-            return;
-        }
+        $root = $document->documentElement;
 
-        $document->documentElement->setAttribute('xmlns:php', 'http://php.net/xsl');
-        $document->documentElement->setAttribute('xmlns:xs', XmlSchema::URI);
+        $root->setAttribute('xmlns:php', 'http://php.net/xsl');
+        $root->setAttribute('xmlns:xs', XmlSchema::URI);
+        $root->setAttribute('exclude-result-prefixes', 'php xs');
 
         $this->transformElements($document);
         $this->transformAttributes($document);
@@ -75,7 +74,9 @@ class Transformer implements TransformerInterface
         $list = $matchAndSelectElements->query('//xsl:*[@match|@select]');
         foreach ($list as $element) {
             foreach ($this->elementTransformers as $elementTransformer) {
-                $elementTransformer->transform($element);
+                if ($elementTransformer->supports($document)) {
+                    $elementTransformer->transform($element);
+                }
             }
         }
     }
@@ -91,7 +92,9 @@ class Transformer implements TransformerInterface
         $list = $matchAndSelectElements->query($expression);
         foreach ($list as $attribute) {
             foreach ($this->attributeTransformers as $attributeTransformer) {
-                $attributeTransformer->transform($attribute);
+                if ($attributeTransformer->supports($document)) {
+                    $attributeTransformer->transform($attribute);
+                }
             }
         }
     }

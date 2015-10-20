@@ -2,8 +2,15 @@
 namespace Genkgo\Xsl\Xsl;
 
 use DOMAttr;
+use DOMDocument;
 
-interface AttributeTransformerInterface {
+interface AttributeTransformerInterface
+{
+    /**
+     * @param DOMDocument $document
+     * @return bool
+     */
+    public function supports (DOMDocument $document);
 
     /**
      * @param DOMAttr $attribute

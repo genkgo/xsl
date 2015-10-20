@@ -2,6 +2,7 @@
 namespace Genkgo\Xsl\Xsl\Node;
 
 use DOMAttr;
+use DOMDocument;
 use Genkgo\Xsl\Util\FetchNamespacesFromDocument;
 use Genkgo\Xsl\Xpath\Compiler;
 use Genkgo\Xsl\Xsl\AttributeTransformerInterface;
@@ -23,6 +24,15 @@ class AttributeBraces implements AttributeTransformerInterface
     public function __construct(Compiler $compiler)
     {
         $this->xpathCompiler = $compiler;
+    }
+
+    /**
+     * @param DOMDocument $document
+     * @return bool
+     */
+    public function supports(DOMDocument $document)
+    {
+        return true;
     }
 
     /**

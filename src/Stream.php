@@ -116,7 +116,8 @@ class Stream
      */
     private function documentToTemplate(Transpiler $transpiler, DOMDocument $document)
     {
-        return $transpiler->transpile($document)->saveXML();
+        $transpiler->transpile($document);
+        return $document->saveXML();
     }
 
     /**

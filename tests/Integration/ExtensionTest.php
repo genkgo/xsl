@@ -27,4 +27,25 @@ class ExtensionTest extends AbstractIntegrationTestCase
 
         $this->assertEquals('Hello World was called and received 20 arguments!', trim($processorResult));
     }
+
+    public function testXpathFunctionXsl1()
+    {
+        $extension = new MyExtension();
+
+        $config = new Config();
+        $config->setExtensions([$extension]);
+
+        $xslDoc = new DOMDocument();
+        $xslDoc->load('Stubs/my-extension.xsl');
+        $xslDoc->documentElement->setAttribute('version', '1.0');
+
+        $xmlDoc = new DOMDocument();
+        $xmlDoc->load('Stubs/collection.xml');
+
+        $processor = new XsltProcessor($config);
+        $processor->importStylesheet($xslDoc);
+        $processorResult = $processor->transformToXML($xmlDoc);
+
+        $this->assertEquals('Hello World was called and received 20 arguments!', trim($processorResult));
+    }
 }

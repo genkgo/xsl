@@ -1,6 +1,7 @@
 <?php
 namespace Genkgo\Xsl\Xsl\Node;
 
+use DOMDocument;
 use DOMElement;
 use Genkgo\Xsl\TransformationContext;
 use Genkgo\Xsl\Util\FetchNamespacesFromDocument;
@@ -24,6 +25,15 @@ class AttributeSelect implements ElementTransformerInterface
     public function __construct(Compiler $compiler)
     {
         $this->xpathCompiler = $compiler;
+    }
+
+    /**
+     * @param DOMDocument $document
+     * @return bool
+     */
+    public function supports(DOMDocument $document)
+    {
+        return true;
     }
 
     /**

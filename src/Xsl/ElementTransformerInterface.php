@@ -1,6 +1,7 @@
 <?php
 namespace Genkgo\Xsl\Xsl;
 
+use DOMDocument;
 use DOMElement;
 use Genkgo\Xsl\TransformationContext;
 
@@ -10,6 +11,11 @@ use Genkgo\Xsl\TransformationContext;
  */
 interface ElementTransformerInterface
 {
+    /**
+     * @param DOMDocument $document
+     * @return bool
+     */
+    public function supports (DOMDocument $document);
     /**
      * @param DOMElement $element
      */
