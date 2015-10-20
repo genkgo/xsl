@@ -22,7 +22,7 @@ class DateTest extends AbstractXpathTest
     public function testCurrentDateTime()
     {
         $this->assertEquals(1, preg_match(
-            '/[0-9]{4}\-[0-9]{2}\-[0-9]{2} [0-9]{2}\:[0-9]{2}\:[0-9]{2}\+[0-9]{2}\:[0-9]{2}/',
+            '/[0-9]{4}\-[0-9]{2}\-[0-9]{2}T[0-9]{2}\:[0-9]{2}\:[0-9]{2}\+[0-9]{2}\:[0-9]{2}/',
             $this->transformFile('Stubs/Xpath/Date/current-dateTime.xsl')
         ));
     }

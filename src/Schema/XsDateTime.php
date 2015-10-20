@@ -14,12 +14,12 @@ final class XsDateTime extends AbstractXsElement
     /**
      *
      */
-    const FORMAT = 'Y-m-d H:i:sP';
+    const FORMAT = DATE_W3C;
 
     /**
      * @var array
      */
-    private static $formats = [self::FORMAT, 'Y-m-d H:i:s', 'Y-m-d P|', 'Y-m-d|'];
+    private static $formats = [self::FORMAT, 'Y-m-d H:i:sP', 'Y-m-d H:i:s', 'Y-m-d P|', 'Y-m-d|'];
 
     /**
      * @return string
