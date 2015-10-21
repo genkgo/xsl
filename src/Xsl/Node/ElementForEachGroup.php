@@ -29,12 +29,12 @@ class ElementForEachGroup implements ElementTransformerInterface
     }
 
     /**
-     * @param DOMDocument $document
+     * @param DOMElement $element
      * @return bool
      */
-    public function supports(DOMDocument $document)
+    public function supports(DOMElement $element)
     {
-        return $document->documentElement->getAttribute('version') !== '1.0';
+        return $element->ownerDocument->documentElement->getAttribute('version') !== '1.0' && $element->localName === 'for-each-group';
     }
 
     /**
@@ -42,26 +42,24 @@ class ElementForEachGroup implements ElementTransformerInterface
      */
     public function transform(DOMElement $element)
     {
-        if ($element->nodeName === 'xsl:for-each-group') {
-            $select = $element->getAttribute('select');
-            $groupBy = $element->getAttribute('group-by');
+        $select = $element->getAttribute('select');
+        $groupBy = $element->getAttribute('group-by');
 
-            $callback = (new FunctionBuilder('php:function'))
-                ->addArgument(PhpCallback::class . '::call')
-                ->addArgument(XslTransformations::URI . ':group-by')
-                ->addExpression($select)
-                ->addArgument(base64_encode($groupBy))
-            ;
+        $callback = (new FunctionBuilder('php:function'))
+            ->addArgument(PhpCallback::class . '::call')
+            ->addArgument(XslTransformations::URI . ':group-by')
+            ->addExpression($select)
+            ->addArgument(base64_encode($groupBy))
+        ;
 
-            $xslForEach = $element->ownerDocument->createElementNS(XslTransformations::URI, 'xsl:for-each');
-            $xslForEach->setAttribute('select', $callback->build() . '/xs:sequence/*');
+        $xslForEach = $element->ownerDocument->createElementNS(XslTransformations::URI, 'xsl:for-each');
+        $xslForEach->setAttribute('select', $callback->build() . '/xs:sequence/*');
 
-            while ($element->childNodes->length > 0) {
-                $xslForEach->appendChild($element->childNodes->item(0));
-            }
-
-            $element->parentNode->insertBefore($xslForEach, $element);
-            $element->parentNode->removeChild($element);
+        while ($element->childNodes->length > 0) {
+            $xslForEach->appendChild($element->childNodes->item(0));
         }
+
+        $element->parentNode->insertBefore($xslForEach, $element);
+        $element->parentNode->removeChild($element);
     }
 }

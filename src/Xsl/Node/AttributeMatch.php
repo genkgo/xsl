@@ -28,12 +28,12 @@ class AttributeMatch implements ElementTransformerInterface
     }
 
     /**
-     * @param DOMDocument $document
+     * @param DOMElement $element
      * @return bool
      */
-    public function supports(DOMDocument $document)
+    public function supports(DOMElement $element)
     {
-        return true;
+        return $element->hasAttribute('match');
     }
 
     /**
@@ -41,14 +41,12 @@ class AttributeMatch implements ElementTransformerInterface
      */
     public function transform(DOMElement $element)
     {
-        if ($element->hasAttribute('match')) {
-            $element->setAttribute(
-                'match',
-                $this->xpathCompiler->compile(
-                    $element->getAttribute('match'),
-                    FetchNamespacesFromDocument::fetch($element->ownerDocument)
-                )
-            );
-        }
+        $element->setAttribute(
+            'match',
+            $this->xpathCompiler->compile(
+                $element->getAttribute('match'),
+                FetchNamespacesFromDocument::fetch($element->ownerDocument)
+            )
+        );
     }
 }

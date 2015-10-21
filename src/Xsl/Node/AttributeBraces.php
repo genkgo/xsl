@@ -27,10 +27,10 @@ class AttributeBraces implements AttributeTransformerInterface
     }
 
     /**
-     * @param DOMDocument $document
+     * @param DOMAttr $attribute
      * @return bool
      */
-    public function supports(DOMDocument $document)
+    public function supports(DOMAttr $attribute)
     {
         return true;
     }

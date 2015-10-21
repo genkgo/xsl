@@ -1,13 +1,14 @@
 <?php
 namespace Genkgo\Xsl\Xsl;
 
+use DOMAttr;
 use DOMDocument;
 use DOMElement;
 use DOMNodeList;
 use DOMXPath;
 use Genkgo\Xsl\Schema\XmlSchema;
-use Genkgo\Xsl\TransformationContext;
 use Genkgo\Xsl\TransformerInterface;
+use Genkgo\Xsl\Util\FetchNamespacesFromDocument;
 use Genkgo\Xsl\Xpath\Compiler;
 use Genkgo\Xsl\Xsl\Node\AttributeBraces;
 use Genkgo\Xsl\Xsl\Node\AttributeMatch;
@@ -71,12 +72,18 @@ class Transformer implements TransformerInterface
      * @param DOMDocument $document
      */
     private function transformElements (DOMDocument $document) {
-        $matchAndSelectElements = new DOMXPath($document);
+        $namespaces = FetchNamespacesFromDocument::fetch($document);
+        $xslNamespace = array_search(XslTransformations::URI, $namespaces);
+        if ($xslNamespace === false) {
+            return;
+        }
+
         /** @var DOMNodeList|DOMElement[] $list */
-        $list = $matchAndSelectElements->query('//xsl:*[@match|@select]');
+        $matchAndSelectElements = new DOMXPath($document);
+        $list = $matchAndSelectElements->query('//' . $xslNamespace . ':*');
         foreach ($list as $element) {
             foreach ($this->elementTransformers as $elementTransformer) {
-                if ($elementTransformer->supports($document)) {
+                if ($elementTransformer->supports($element)) {
                     $elementTransformer->transform($element);
                 }
             }
@@ -87,14 +94,14 @@ class Transformer implements TransformerInterface
      * @param DOMDocument $document
      */
     private function transformAttributes (DOMDocument $document) {
+        /** @var DOMNodeList|DOMAttr[] $list */
         $matchAndSelectElements = new DOMXPath($document);
-        /** @var DOMNodeList|DOMElement[] $list */
         $expression = '//@*[substring(., 1, 1) = "{" and substring(., 1, 2) != "{{" and substring(., string-length(.)) = "}"]';
 
         $list = $matchAndSelectElements->query($expression);
         foreach ($list as $attribute) {
             foreach ($this->attributeTransformers as $attributeTransformer) {
-                if ($attributeTransformer->supports($document)) {
+                if ($attributeTransformer->supports($attribute)) {
                     $attributeTransformer->transform($attribute);
                 }
             }

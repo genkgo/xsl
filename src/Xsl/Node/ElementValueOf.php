@@ -1,10 +1,8 @@
 <?php
 namespace Genkgo\Xsl\Xsl\Node;
 
-use DOMDocument;
 use DOMElement;
 use Genkgo\Xsl\Callback\PhpCallback;
-use Genkgo\Xsl\TransformationContext;
 use Genkgo\Xsl\Xpath\FunctionBuilder;
 use Genkgo\Xsl\Xsl\ElementTransformerInterface;
 
@@ -16,12 +14,12 @@ class ElementValueOf implements ElementTransformerInterface
 {
 
     /**
-     * @param DOMDocument $document
+     * @param DOMElement $element
      * @return bool
      */
-    public function supports(DOMDocument $document)
+    public function supports(DOMElement $element)
     {
-        return $document->documentElement->getAttribute('version') !== '1.0';
+        return $element->ownerDocument->documentElement->getAttribute('version') !== '1.0' && $element->localName === 'value-of';
     }
 
     /**
@@ -29,20 +27,18 @@ class ElementValueOf implements ElementTransformerInterface
      */
     public function transform(DOMElement $element)
     {
-        if ($element->nodeName === 'xsl:value-of') {
-            $select = $element->getAttribute('select');
-            $separator = $element->hasAttribute('separator') ? $element->getAttribute('separator') : ' ';
+        $select = $element->getAttribute('select');
+        $separator = $element->hasAttribute('separator') ? $element->getAttribute('separator') : ' ';
 
-            $callback = (new FunctionBuilder('php:function'))
-                ->addArgument(PhpCallback::class . '::callStatic')
-                ->addArgument(static::class)
-                ->addArgument('valueOf')
-                ->addExpression($select)
-                ->addArgument($separator);
+        $callback = (new FunctionBuilder('php:function'))
+            ->addArgument(PhpCallback::class . '::callStatic')
+            ->addArgument(static::class)
+            ->addArgument('valueOf')
+            ->addExpression($select)
+            ->addArgument($separator);
 
-            $element->setAttribute('select', $callback->build());
-            $element->removeAttribute('separator');
-        }
+        $element->setAttribute('select', $callback->build());
+        $element->removeAttribute('separator');
     }
 
     /**

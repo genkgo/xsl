@@ -28,12 +28,12 @@ class AttributeSelect implements ElementTransformerInterface
     }
 
     /**
-     * @param DOMDocument $document
+     * @param DOMElement $element
      * @return bool
      */
-    public function supports(DOMDocument $document)
+    public function supports(DOMElement $element)
     {
-        return true;
+        return $element->hasAttribute('select');
     }
 
     /**
@@ -41,14 +41,12 @@ class AttributeSelect implements ElementTransformerInterface
      */
     public function transform(DOMElement $element)
     {
-        if ($element->hasAttribute('select')) {
-            $element->setAttribute(
-                'select',
-                $this->xpathCompiler->compile(
-                    $element->getAttribute('select'),
-                    FetchNamespacesFromDocument::fetch($element->ownerDocument)
-                )
-            );
-        }
+        $element->setAttribute(
+            'select',
+            $this->xpathCompiler->compile(
+                $element->getAttribute('select'),
+                FetchNamespacesFromDocument::fetch($element->ownerDocument)
+            )
+        );
     }
 }

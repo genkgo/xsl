@@ -28,12 +28,12 @@ class AttributeTest implements ElementTransformerInterface
     }
 
     /**
-     * @param DOMDocument $document
+     * @param DOMElement $element
      * @return bool
      */
-    public function supports(DOMDocument $document)
+    public function supports(DOMElement $element)
     {
-        return true;
+        return $element->hasAttribute('test');
     }
 
     /**
@@ -41,14 +41,12 @@ class AttributeTest implements ElementTransformerInterface
      */
     public function transform(DOMElement $element)
     {
-        if ($element->hasAttribute('test')) {
-            $element->setAttribute(
-                'test',
-                $this->xpathCompiler->compile(
-                    $element->getAttribute('test'),
-                    FetchNamespacesFromDocument::fetch($element->ownerDocument)
-                )
-            );
-        }
+        $element->setAttribute(
+            'test',
+            $this->xpathCompiler->compile(
+                $element->getAttribute('test'),
+                FetchNamespacesFromDocument::fetch($element->ownerDocument)
+            )
+        );
     }
 }
