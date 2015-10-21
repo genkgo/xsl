@@ -10,6 +10,7 @@ abstract class AbstractXslTest extends AbstractIntegrationTestCase
     protected function transformFile($path, array $parameters = [])
     {
         $styleSheet = new DOMDocument();
+        $styleSheet->preserveWhiteSpace = true;
         $styleSheet->load($path);
 
         $processor = new XsltProcessor();

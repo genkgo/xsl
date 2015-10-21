@@ -12,6 +12,7 @@ use Genkgo\Xsl\Xpath\Compiler;
 use Genkgo\Xsl\Xsl\Node\AttributeBraces;
 use Genkgo\Xsl\Xsl\Node\AttributeMatch;
 use Genkgo\Xsl\Xsl\Node\AttributeSelect;
+use Genkgo\Xsl\Xsl\Node\AttributeTest;
 use Genkgo\Xsl\Xsl\Node\ElementForEachGroup;
 use Genkgo\Xsl\Xsl\Node\ElementValueOf;
 
@@ -40,6 +41,7 @@ class Transformer implements TransformerInterface
         $this->elementTransformers = [
             new AttributeMatch($xpathCompiler),
             new AttributeSelect($xpathCompiler),
+            new AttributeTest($xpathCompiler),
             new ElementValueOf(),
             new ElementForEachGroup($xpathCompiler),
         ];
