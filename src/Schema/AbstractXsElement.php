@@ -41,7 +41,8 @@ abstract class AbstractXsElement extends DOMDocument
      * @return string
      * @throws CastException
      */
-    public static function castToNodeValue ($elements) {
+    public static function castToNodeValue($elements)
+    {
         if (is_scalar($elements)) {
             return (string) $elements;
         }

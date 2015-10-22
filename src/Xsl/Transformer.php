@@ -78,7 +78,8 @@ class Transformer implements TransformerInterface
      * @param DOMDocument $document
      * @param $xslPrefix
      */
-    private function transformElements (DOMDocument $document, $xslPrefix) {
+    private function transformElements(DOMDocument $document, $xslPrefix)
+    {
         /** @var DOMNodeList|DOMElement[] $list */
         $matchAndSelectElements = new DOMXPath($document);
         $list = $matchAndSelectElements->query('//' . $xslPrefix . ':*');
@@ -95,7 +96,8 @@ class Transformer implements TransformerInterface
      * @param DOMDocument $document
      * @param $xslPrefix
      */
-    private function transformAttributes (DOMDocument $document, $xslPrefix) {
+    private function transformAttributes(DOMDocument $document, $xslPrefix)
+    {
         /** @var DOMNodeList|DOMAttr[] $list */
         $matchAndSelectElements = new DOMXPath($document);
         $lengthPrefix = strlen($xslPrefix);

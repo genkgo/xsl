@@ -176,7 +176,8 @@ class Stream
      * @param $filename
      * @return bool
      */
-    private function isRoot ($filename) {
+    private function isRoot($filename)
+    {
         return substr($filename, -5) === '#root';
     }
 }

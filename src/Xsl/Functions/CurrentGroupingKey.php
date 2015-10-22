@@ -16,7 +16,6 @@ use Genkgo\Xsl\Xsl\Functions;
  */
 class CurrentGroupingKey implements ReplaceFunctionInterface, FunctionInterface, MethodCallInterface
 {
-
     const NAME = 'current-grouping-key';
 
     /**
@@ -27,7 +26,8 @@ class CurrentGroupingKey implements ReplaceFunctionInterface, FunctionInterface,
     /**
      *
      */
-    public function __construct () {
+    public function __construct()
+    {
         $this->replacer = new ContextFunction(self::NAME);
     }
 
@@ -67,5 +67,4 @@ class CurrentGroupingKey implements ReplaceFunctionInterface, FunctionInterface,
         $elements = $arguments[0];
         return $elements[0]->getAttribute('data-current-grouping-key');
     }
-
 }

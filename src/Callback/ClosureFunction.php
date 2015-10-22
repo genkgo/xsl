@@ -12,12 +12,12 @@ use Genkgo\Xsl\Xpath\Lexer;
  */
 final class ClosureFunction implements FunctionInterface, ReplaceFunctionInterface, MethodCallInterface
 {
-
     private $name;
     private $replacer;
     private $callback;
 
-    public function __construct ($name, ReplaceFunctionInterface $replacer, Closure $callback) {
+    public function __construct($name, ReplaceFunctionInterface $replacer, Closure $callback)
+    {
         $this->name = $name;
         $this->replacer = $replacer;
         $this->callback = $callback;
@@ -28,7 +28,8 @@ final class ClosureFunction implements FunctionInterface, ReplaceFunctionInterfa
      * @param FunctionMap $functionMap
      * @return void
      */
-    public function register (FunctionMap $functionMap) {
+    public function register(FunctionMap $functionMap)
+    {
         $functionMap->set($this->name, $this);
     }
 

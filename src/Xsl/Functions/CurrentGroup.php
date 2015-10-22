@@ -18,7 +18,6 @@ use Genkgo\Xsl\Xsl\Functions;
  */
 class CurrentGroup implements ReplaceFunctionInterface, FunctionInterface, MethodCallInterface
 {
-
     const NAME = 'current-group';
 
     /**
@@ -33,7 +32,8 @@ class CurrentGroup implements ReplaceFunctionInterface, FunctionInterface, Metho
     /**
      *
      */
-    public function __construct () {
+    public function __construct()
+    {
         $this->replacer = new ReturnXsSequenceFunction(new ContextFunction(self::NAME));
     }
 
@@ -77,5 +77,4 @@ class CurrentGroup implements ReplaceFunctionInterface, FunctionInterface, Metho
         $objectHash = $elements[0]->getAttribute('data-current-group-hash');
         return XsSequence::fromArray($this->groups[$objectHash]);
     }
-
 }

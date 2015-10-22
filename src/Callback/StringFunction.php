@@ -3,8 +3,8 @@ namespace Genkgo\Xsl\Callback;
 
 use Genkgo\Xsl\Xpath\Lexer;
 
-final class StringFunction implements ReplaceFunctionInterface {
-
+final class StringFunction implements ReplaceFunctionInterface
+{
     /**
      * @var bool
      */
@@ -18,7 +18,8 @@ final class StringFunction implements ReplaceFunctionInterface {
      * @param array $callback
      * @param bool $camelize
      */
-    public function __construct (array $callback, $camelize = false) {
+    public function __construct(array $callback, $camelize = false)
+    {
         $this->callback = $callback;
         $this->camelize = $camelize;
     }
@@ -70,5 +71,4 @@ final class StringFunction implements ReplaceFunctionInterface {
 
         return $methodName;
     }
-
 }

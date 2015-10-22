@@ -11,12 +11,12 @@ use Genkgo\Xsl\Xpath\Lexer;
  */
 final class MethodFunction implements FunctionInterface, ReplaceFunctionInterface, MethodCallInterface
 {
-
     private $name;
     private $replacer;
     private $caller;
 
-    public function __construct ($name, ReplaceFunctionInterface $replacer, MethodCallInterface $caller) {
+    public function __construct($name, ReplaceFunctionInterface $replacer, MethodCallInterface $caller)
+    {
         $this->name = $name;
         $this->replacer = $replacer;
         $this->caller = $caller;
@@ -27,7 +27,8 @@ final class MethodFunction implements FunctionInterface, ReplaceFunctionInterfac
      * @param FunctionMap $functionMap
      * @return void
      */
-    public function register (FunctionMap $functionMap) {
+    public function register(FunctionMap $functionMap)
+    {
         $functionMap->set($this->name, $this);
     }
 

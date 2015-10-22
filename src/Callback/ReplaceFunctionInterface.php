@@ -1,5 +1,6 @@
 <?php
 namespace Genkgo\Xsl\Callback;
+
 use Genkgo\Xsl\TransformationContext;
 use Genkgo\Xsl\Xpath\Lexer;
 

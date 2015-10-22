@@ -9,7 +9,6 @@ use Genkgo\Xsl\Xpath\Lexer;
  */
 final class ContextFunction implements ReplaceFunctionInterface
 {
-
     /**
      * @var string
      */
@@ -50,5 +49,4 @@ final class ContextFunction implements ReplaceFunctionInterface
 
         return $resultTokens;
     }
-
 }

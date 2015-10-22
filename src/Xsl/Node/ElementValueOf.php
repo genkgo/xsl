@@ -12,7 +12,6 @@ use Genkgo\Xsl\Xsl\ElementTransformerInterface;
  */
 class ElementValueOf implements ElementTransformerInterface
 {
-
     /**
      * @param DOMElement $element
      * @return bool

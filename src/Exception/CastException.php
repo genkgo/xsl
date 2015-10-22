@@ -3,6 +3,6 @@ namespace Genkgo\Xsl\Exception;
 
 use Exception;
 
-class CastException extends Exception {
-
+class CastException extends Exception
+{
 }

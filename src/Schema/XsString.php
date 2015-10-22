@@ -1,8 +1,8 @@
 <?php
 namespace Genkgo\Xsl\Schema;
 
-class XsString extends AbstractXsElement {
-
+class XsString extends AbstractXsElement
+{
     /**
      * @return string
      */
@@ -10,5 +10,4 @@ class XsString extends AbstractXsElement {
     {
         return 'string';
     }
-
 }

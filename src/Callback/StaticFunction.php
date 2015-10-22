@@ -10,11 +10,11 @@ use Genkgo\Xsl\Xpath\Lexer;
  */
 final class StaticFunction implements FunctionInterface, ReplaceFunctionInterface
 {
-
     private $name;
     private $replacer;
 
-    public function __construct ($name, ReplaceFunctionInterface $replacer) {
+    public function __construct($name, ReplaceFunctionInterface $replacer)
+    {
         $this->name = $name;
         $this->replacer = $replacer;
     }
@@ -24,7 +24,8 @@ final class StaticFunction implements FunctionInterface, ReplaceFunctionInterfac
      * @param FunctionMap $functionMap
      * @return void
      */
-    public function register (FunctionMap $functionMap) {
+    public function register(FunctionMap $functionMap)
+    {
         $functionMap->set($this->name, $this);
     }
 

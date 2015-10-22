@@ -5,7 +5,6 @@ use Genkgo\Xsl\Schema\XmlSchema;
 
 class ConfigTest extends AbstractTestCase
 {
-
     public function testSetExtensions()
     {
         $config = new Config();

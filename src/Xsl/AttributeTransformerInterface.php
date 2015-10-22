@@ -9,7 +9,7 @@ interface AttributeTransformerInterface
      * @param DOMAttr $attribute
      * @return bool
      */
-    public function supports (DOMAttr $attribute);
+    public function supports(DOMAttr $attribute);
 
     /**
      * @param DOMAttr $attribute

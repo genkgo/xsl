@@ -13,7 +13,7 @@ interface ElementTransformerInterface
      * @param DOMElement $document
      * @return bool
      */
-    public function supports (DOMElement $document);
+    public function supports(DOMElement $document);
     /**
      * @param DOMElement $element
      */

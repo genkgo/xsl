@@ -46,5 +46,4 @@ final class FunctionMap
     {
         return $this->get($name) !== null;
     }
-
 }
