@@ -39,6 +39,7 @@ class AttributeValueTemplates implements AttributeTransformerInterface
     /**
      * @param DOMAttr $attribute
      * @throws InvalidArgumentException
+     * @credits https://github.com/Saxonica/Saxon-CE/ https://github.com/Saxonica/Saxon-CE/blob/master/notices/MOZILLA.txt
      */
     public function transform(DOMAttr $attribute)
     {
