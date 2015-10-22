@@ -37,4 +37,18 @@ class AttributeValueTemplatesTest extends AbstractXslTest
         $this->setExpectedException(InvalidArgumentException::class);
         $this->transformFile('Stubs/Xsl/AttributeValueTemplates/invalid-escaped.xsl');
     }
+
+    public function testExpressionWithContent()
+    {
+        $result = $this->transformFile('Stubs/Xsl/AttributeValueTemplates/expression-with-content.xsl');
+
+        $this->assertContains('#Ladyland#', $result);
+    }
+
+    public function testExpressionAndEscaping()
+    {
+        $result = $this->transformFile('Stubs/Xsl/AttributeValueTemplates/expression-and-escaping.xsl');
+
+        $this->assertContains('#Ladyland}', $result);
+    }
 }
