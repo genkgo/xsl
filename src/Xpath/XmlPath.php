@@ -2,8 +2,10 @@
 namespace Genkgo\Xsl\Xpath;
 
 use Genkgo\Xsl\Callback\ObjectFunction;
+use Genkgo\Xsl\Callback\ReturnPhpScalarFunction;
 use Genkgo\Xsl\Callback\ReturnXsScalarFunction;
 use Genkgo\Xsl\Callback\ReturnXsSequenceFunction;
+use Genkgo\Xsl\Callback\StaticFunction;
 use Genkgo\Xsl\Callback\StringFunction;
 use Genkgo\Xsl\Util\FunctionMap;
 use Genkgo\Xsl\Util\TransformerCollection;
@@ -26,40 +28,74 @@ class XmlPath implements XmlNamespaceInterface
     public function register(TransformerCollection $transformers, FunctionMap $functions)
     {
         $this->registerStringFunctions([
-            'abs', 'ceiling', 'floor', 'round', 'roundHalfToEven'
+            'abs', 'ceiling', 'floor', 'round', 'round-half-to-even'
         ], $functions, Math::class);
 
         $this->registerStringFunctions([
-            'startsWith', 'endsWith', 'indexOf', 'matches', 'lowerCase',
-            'upperCase', 'translate', 'substringAfter', 'substringBefore', 'replace'
+            'starts-with', 'ends-with', 'index-of', 'matches', 'lower-case',
+            'upper-case', 'translate', 'substring-after', 'substring-before', 'replace'
         ], $functions, Text::class);
 
         $this->registerAggregationFunctions(['avg', 'max', 'min'], $functions);
 
-        $functions->set('tokenize', new ReturnXsSequenceFunction(new ObjectFunction('tokenize', Text::class)));
-        $functions->set('stringJoin', new ObjectFunction('stringJoin', Text::class));
+        (new StaticFunction(
+            'string-join',
+            new ObjectFunction([Text::class, 'stringJoin'])
+        ))->register($functions);
 
-        $functions->set('remove', new ReturnXsSequenceFunction(new ObjectFunction('remove', Sequence::class)));
-        $functions->set('subsequence', new ReturnXsSequenceFunction(new ObjectFunction('subsequence', Sequence::class)));
-        $functions->set('reverse', new ReturnXsSequenceFunction(new ObjectFunction('reverse', Sequence::class)));
-        $functions->set('insertBefore', new ReturnXsSequenceFunction(new ObjectFunction('insertBefore', Sequence::class)));
+        (new StaticFunction(
+            'tokenize',
+            new ReturnXsSequenceFunction(new ObjectFunction([Text::class, 'tokenize']))
+        ))->register($functions);
 
-        $functions->set('currentTime', new ReturnXsScalarFunction(new ObjectFunction('currentTime', Date::class), 'time'));
-        $functions->set('currentDate', new ReturnXsScalarFunction(new ObjectFunction('currentDate', Date::class), 'date'));
-        $functions->setRaw('current-dateTime', new ReturnXsScalarFunction(new ObjectFunction('currentDateTime', Date::class), 'dateTime'));
+        (new StaticFunction(
+            'remove',
+            new ReturnXsSequenceFunction(new ObjectFunction([Sequence::class, 'remove']))
+        ))->register($functions);
+        (new StaticFunction(
+            'subsequence',
+            new ReturnXsSequenceFunction(new ObjectFunction([Sequence::class, 'subsequence']))
+        ))->register($functions);
+        (new StaticFunction(
+            'reverse',
+            new ReturnXsSequenceFunction(new ObjectFunction([Sequence::class, 'reverse']))
+        ))->register($functions);
+        (new StaticFunction(
+            'insert-before',
+            new ReturnXsSequenceFunction(new ObjectFunction([Sequence::class, 'insertBefore']))
+        ))->register($functions);
+
+        (new StaticFunction(
+            'current-time',
+            new ReturnXsScalarFunction(new ObjectFunction([Date::class, 'currentTime']), 'time')
+        ))->register($functions);
+        (new StaticFunction(
+            'current-date',
+            new ReturnXsScalarFunction(new ObjectFunction([Date::class, 'currentDate']), 'date')
+        ))->register($functions);
+        (new StaticFunction(
+            'current-dateTime',
+            new ReturnXsScalarFunction(new ObjectFunction([Date::class, 'currentDateTime']), 'dateTime')
+        ))->register($functions);
     }
 
     private function registerStringFunctions(array $list, FunctionMap $functions, $className)
     {
         foreach ($list as $functionName) {
-            $functions->set($functionName, new StringFunction($functionName, $className));
+            (new StaticFunction(
+                $functionName,
+                new StringFunction([$className, $functionName], true)
+            ))->register($functions);
         }
     }
 
     private function registerAggregationFunctions(array $list, FunctionMap $functions)
     {
         foreach ($list as $functionName) {
-            $functions->set($functionName, new ObjectFunction($functionName, Aggregation::class));
+            (new StaticFunction(
+                $functionName,
+                new ObjectFunction([Aggregation::class, $functionName], true)
+            ))->register($functions);
         }
     }
 }

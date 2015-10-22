@@ -7,16 +7,17 @@ use Genkgo\Xsl\Xpath\Lexer;
  * Class ReturnXsSequenceFunction
  * @package Genkgo\Xsl\Callback
  */
-class ReturnXsSequenceFunction implements FunctionInterface
+class ReturnXsSequenceFunction implements ReplaceFunctionInterface
 {
     /**
      * @var FunctionInterface
      */
     private $parentFunction;
+
     /**
-     * @param FunctionInterface $parentFunction
+     * @param ReplaceFunctionInterface $parentFunction
      */
-    public function __construct(FunctionInterface $parentFunction)
+    public function __construct(ReplaceFunctionInterface $parentFunction)
     {
         $this->parentFunction = $parentFunction;
     }

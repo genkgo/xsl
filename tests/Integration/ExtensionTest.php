@@ -48,4 +48,25 @@ class ExtensionTest extends AbstractIntegrationTestCase
 
         $this->assertEquals('Hello World was called and received 20 arguments!', trim($processorResult));
     }
+
+    public function testClosure()
+    {
+        $extension = new MyExtension();
+
+        $config = new Config();
+        $config->setExtensions([$extension]);
+
+        $xslDoc = new DOMDocument();
+        $xslDoc->load('Stubs/closure.xsl');
+        $xslDoc->documentElement->setAttribute('version', '1.0');
+
+        $xmlDoc = new DOMDocument();
+        $xmlDoc->load('Stubs/collection.xml');
+
+        $processor = new XsltProcessor($config);
+        $processor->importStylesheet($xslDoc);
+        $processorResult = $processor->transformToXML($xmlDoc);
+
+        $this->assertEquals('21', trim($processorResult));
+    }
 }

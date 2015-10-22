@@ -4,18 +4,19 @@ namespace Genkgo\Xsl\Callback;
 use Genkgo\Xsl\Xpath\Lexer;
 
 /**
- * Class ContextFunction
+ * Class AbstractContextFunction
  * @package Genkgo\Xsl\Callback
  */
-class ContextFunction implements FunctionInterface
+final class ContextFunction implements ReplaceFunctionInterface
 {
+
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
-     * @param $name
+     * @param string $name
      */
     public function __construct($name)
     {
@@ -49,4 +50,5 @@ class ContextFunction implements FunctionInterface
 
         return $resultTokens;
     }
+
 }

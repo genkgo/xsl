@@ -3,6 +3,7 @@ namespace Genkgo\Xsl\Schema;
 
 use Genkgo\Xsl\Callback\ObjectFunction;
 use Genkgo\Xsl\Callback\ReturnXsScalarFunction;
+use Genkgo\Xsl\Callback\StaticFunction;
 use Genkgo\Xsl\Util\FunctionMap;
 use Genkgo\Xsl\Util\TransformerCollection;
 use Genkgo\Xsl\XmlNamespaceInterface;
@@ -25,8 +26,16 @@ class XmlSchema implements XmlNamespaceInterface
      */
     public function register(TransformerCollection $transformers, FunctionMap $functions)
     {
-        $functions->set('date', new ReturnXsScalarFunction(new ObjectFunction('xsDate', Functions::class), 'date'), self::URI);
-        $functions->set('time', new ReturnXsScalarFunction(new ObjectFunction('xsTime', Functions::class), 'time'), self::URI);
-        $functions->setRaw('dateTime', new ReturnXsScalarFunction(new ObjectFunction('xsDateTime', Functions::class), 'dateTime'), self::URI);
+        (new StaticFunction(
+            self::URI.':date', new ReturnXsScalarFunction(new ObjectFunction([Functions::class, 'xsDate']), 'date'))
+        )->register($functions);
+
+        (new StaticFunction(
+            self::URI.':time', new ReturnXsScalarFunction(new ObjectFunction([Functions::class, 'xsTime']), 'time'))
+        )->register($functions);
+
+        (new StaticFunction(
+            self::URI.':dateTime', new ReturnXsScalarFunction(new ObjectFunction([Functions::class, 'xsDateTime']), 'dateTime'))
+        )->register($functions);
     }
 }

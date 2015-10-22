@@ -1,17 +1,14 @@
 <?php
 namespace Genkgo\Xsl\Callback;
 
-use Genkgo\Xsl\Xpath\Lexer;
+use Genkgo\Xsl\Util\FunctionMap;
 
-/**
- * Interface FunctionInterface
- * @package Genkgo\Xsl\Callback
- */
-interface FunctionInterface
-{
+interface FunctionInterface {
+
     /**
-     * @param Lexer $lexer
-     * @return array|\string[]
+     * @param FunctionMap $functionMap
+     * @return void
      */
-    public function replace(Lexer $lexer);
+    public function register (FunctionMap $functionMap);
+
 }

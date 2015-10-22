@@ -17,25 +17,10 @@ final class FunctionMap
     /**
      * @param $name
      * @param FunctionInterface $function
-     * @param null $namespace
      * @return FunctionMap
      */
-    public function set($name, FunctionInterface $function, $namespace = null)
+    public function set($name, FunctionInterface $function)
     {
-        return $this->setRaw($this->dasherize($name), $function, $namespace);
-    }
-
-    /**
-     * @param $name
-     * @param FunctionInterface $function
-     * @param null $namespace
-     * @return FunctionMap
-     */
-    public function setRaw($name, FunctionInterface $function, $namespace = null)
-    {
-        if ($namespace !== null) {
-            $name = $namespace . ':' . $name;
-        }
         $this->functions[$name] = $function;
         return $this;
     }
@@ -62,17 +47,4 @@ final class FunctionMap
         return $this->get($name) !== null;
     }
 
-    /**
-     * @param string $methodName
-     * @return string
-     */
-    private static function dasherize($methodName)
-    {
-        if (ctype_lower($methodName) === false) {
-            $methodName = strtolower(preg_replace('/(.)(?=[A-Z])/', '$1'.'-', $methodName));
-            $methodName = preg_replace('/\s+/', '', $methodName);
-        }
-
-        return $methodName;
-    }
 }

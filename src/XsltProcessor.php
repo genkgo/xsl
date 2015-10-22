@@ -176,15 +176,11 @@ class XsltProcessor extends PhpXsltProcessor
      */
     private function getNamespaces($xpathCompiler)
     {
-        if ($this->config->shouldUpgradeToXsl2()) {
-            $namespaces = [
-                new Xsl\XslTransformations($xpathCompiler),
-                new Xpath\XmlPath(),
-                new Schema\XmlSchema()
-            ];
-        } else {
-            $namespaces = [];
-        }
+        $namespaces = [
+            new Xsl\XslTransformations($xpathCompiler),
+            new Xpath\XmlPath(),
+            new Schema\XmlSchema()
+        ];
 
         return array_merge($namespaces, $this->config->getExtensions());
     }

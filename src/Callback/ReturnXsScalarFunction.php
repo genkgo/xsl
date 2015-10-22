@@ -4,25 +4,25 @@ namespace Genkgo\Xsl\Callback;
 use Genkgo\Xsl\Xpath\Lexer;
 
 /**
- * Class SequenceFunction
+ * Class ReturnXsScalarFunction
  * @package Genkgo\Xsl\Callback
  */
-class ReturnXsScalarFunction implements FunctionInterface
+class ReturnXsScalarFunction implements ReplaceFunctionInterface
 {
     /**
      * @var FunctionInterface
      */
     private $parentFunction;
     /**
-     * @var bool
+     * @var string
      */
-    private $type = false;
+    private $type;
 
     /**
-     * @param FunctionInterface $parentFunction
+     * @param ReplaceFunctionInterface $parentFunction
      * @param $type
      */
-    public function __construct(FunctionInterface $parentFunction, $type)
+    public function __construct(ReplaceFunctionInterface $parentFunction, $type)
     {
         $this->parentFunction = $parentFunction;
         $this->type = $type;

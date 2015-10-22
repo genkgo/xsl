@@ -40,8 +40,7 @@ class PhpCallback
         $context = self::$context;
         $function = $context->getFunctions()->get($functionName);
 
-        array_unshift($arguments, $context);
-        return call_user_func([$function, 'call'], $arguments);
+        return call_user_func([$function, 'call'], $arguments, $context);
     }
 
     /**
