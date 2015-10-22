@@ -9,7 +9,7 @@ use Genkgo\Xsl\Util\TransformerCollection;
  * Class Context
  * @package Genkgo\Xsl
  */
-class TransformationContext
+final class TransformationContext
 {
     /**
      * @var DOMDocument

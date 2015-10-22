@@ -21,7 +21,7 @@ use Genkgo\Xsl\Xsl\Node\ElementValueOf;
  * Class Transformer
  * @package Genkgo\Xsl\Xsl
  */
-class Transformer implements TransformerInterface
+final class Transformer implements TransformerInterface
 {
     /**
      * @var ElementTransformerInterface[]

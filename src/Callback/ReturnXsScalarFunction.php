@@ -7,7 +7,7 @@ use Genkgo\Xsl\Xpath\Lexer;
  * Class ReturnXsScalarFunction
  * @package Genkgo\Xsl\Callback
  */
-class ReturnXsScalarFunction implements ReplaceFunctionInterface
+final class ReturnXsScalarFunction implements ReplaceFunctionInterface
 {
     /**
      * @var FunctionInterface

@@ -6,7 +6,7 @@ use Genkgo\Xsl\Util\FunctionMap;
 use Genkgo\Xsl\Xpath\Lexer;
 
 /**
- * Interface FunctionCall
+ * Interface MethodFunction
  * @package Genkgo\Xsl\Callback
  */
 final class MethodFunction implements FunctionInterface, ReplaceFunctionInterface, MethodCallInterface

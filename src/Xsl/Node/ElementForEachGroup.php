@@ -1,10 +1,8 @@
 <?php
 namespace Genkgo\Xsl\Xsl\Node;
 
-use DOMDocument;
 use DOMElement;
 use Genkgo\Xsl\Callback\PhpCallback;
-use Genkgo\Xsl\TransformationContext;
 use Genkgo\Xsl\Xpath\Compiler;
 use Genkgo\Xsl\Xpath\FunctionBuilder;
 use Genkgo\Xsl\Xsl\ElementTransformerInterface;
@@ -14,7 +12,7 @@ use Genkgo\Xsl\Xsl\XslTransformations;
  * Class ElementForEachGroup
  * @package Genkgo\Xsl\Xsl\Node
  */
-class ElementForEachGroup implements ElementTransformerInterface
+final class ElementForEachGroup implements ElementTransformerInterface
 {
     /**
      * @var Compiler

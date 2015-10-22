@@ -10,7 +10,7 @@ use Genkgo\Xsl\Xsl\ElementTransformerInterface;
  * Class ElementValueOf
  * @package Genkgo\Xsl\Xsl\Node
  */
-class ElementValueOf implements ElementTransformerInterface
+final class ElementValueOf implements ElementTransformerInterface
 {
     /**
      * @param DOMElement $element

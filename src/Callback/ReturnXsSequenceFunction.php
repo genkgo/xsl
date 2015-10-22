@@ -7,7 +7,7 @@ use Genkgo\Xsl\Xpath\Lexer;
  * Class ReturnXsSequenceFunction
  * @package Genkgo\Xsl\Callback
  */
-class ReturnXsSequenceFunction implements ReplaceFunctionInterface
+final class ReturnXsSequenceFunction implements ReplaceFunctionInterface
 {
     /**
      * @var FunctionInterface

@@ -4,7 +4,7 @@ namespace Genkgo\Xsl\Callback;
 use Genkgo\Xsl\TransformationContext;
 
 /**
- * Interface InvokableInterface
+ * Interface MethodCallInterface
  * @package Genkgo\Xsl\Callback
  */
 interface MethodCallInterface

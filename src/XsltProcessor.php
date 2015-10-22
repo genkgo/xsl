@@ -13,7 +13,7 @@ use XSLTProcessor as PhpXsltProcessor;
  * Class XsltProcessor
  * @package Genkgo\Xsl
  */
-class XsltProcessor extends PhpXsltProcessor
+final class XsltProcessor extends PhpXsltProcessor
 {
     /**
      * @var bool

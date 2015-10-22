@@ -9,10 +9,10 @@ use Genkgo\Xsl\Xsl\AttributeTransformerInterface;
 use RuntimeException;
 
 /**
- * Class AttributeMatch
+ * Class AttributeValueTemplates
  * @package Genkgo\Xsl\Xsl\Element
  */
-class AttributeValueTemplates implements AttributeTransformerInterface
+final class AttributeValueTemplates implements AttributeTransformerInterface
 {
     /**
      * @var Compiler

@@ -10,7 +10,7 @@ use Genkgo\Xsl\Exception\StreamException;
  * Class Stream
  * @package Genkgo\Xsl
  */
-class Stream
+final class Stream
 {
     /**
      * @var string

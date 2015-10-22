@@ -8,7 +8,7 @@ use DOMXPath;
  * Class FetchNamespacesFromDocument
  * @package Genkgo\Xsl\Util
  */
-class FetchNamespacesFromDocument
+final class FetchNamespacesFromDocument
 {
     /**
      * @param DOMDocument $document

@@ -3,6 +3,10 @@ namespace Genkgo\Xsl\Callback;
 
 use Genkgo\Xsl\Xpath\Lexer;
 
+/**
+ * Class StringFunction
+ * @package Genkgo\Xsl\Callback
+ */
 final class StringFunction implements ReplaceFunctionInterface
 {
     /**

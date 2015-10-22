@@ -4,7 +4,7 @@ namespace Genkgo\Xsl\Callback;
 use Genkgo\Xsl\Xpath\Lexer;
 
 /**
- * Class AbstractContextFunction
+ * Class ContextFunction
  * @package Genkgo\Xsl\Callback
  */
 final class ContextFunction implements ReplaceFunctionInterface

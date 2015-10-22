@@ -37,7 +37,7 @@ use SeekableIterator;
  * Class Lexer
  * @package Genkgo\Xsl\Xpath
  */
-class Lexer implements Iterator, SeekableIterator, Countable
+final class Lexer implements Iterator, SeekableIterator, Countable
 {
     /**
      * @var array|string[]

@@ -2,7 +2,6 @@
 namespace Genkgo\Xsl\Xpath;
 
 use Genkgo\Xsl\Callback\ObjectFunction;
-use Genkgo\Xsl\Callback\ReturnPhpScalarFunction;
 use Genkgo\Xsl\Callback\ReturnXsScalarFunction;
 use Genkgo\Xsl\Callback\ReturnXsSequenceFunction;
 use Genkgo\Xsl\Callback\StaticFunction;
@@ -16,7 +15,7 @@ use Genkgo\Xsl\Xpath\Functions\Math;
 use Genkgo\Xsl\Xpath\Functions\Sequence;
 use Genkgo\Xsl\Xpath\Functions\Text;
 
-class XmlPath implements XmlNamespaceInterface
+final class XmlPath implements XmlNamespaceInterface
 {
     const URI = '';
 
