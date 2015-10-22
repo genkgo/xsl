@@ -46,7 +46,7 @@ final class Transpiler
 
         $transformers = $this->context->getTransformers();
         foreach ($transformers as $transformer) {
-            $transformer->transform($document, $this->context);
+            $transformer->transform($document);
         }
 
 
