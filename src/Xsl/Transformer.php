@@ -10,7 +10,7 @@ use Genkgo\Xsl\Schema\XmlSchema;
 use Genkgo\Xsl\TransformerInterface;
 use Genkgo\Xsl\Util\FetchNamespacesFromDocument;
 use Genkgo\Xsl\Xpath\Compiler;
-use Genkgo\Xsl\Xsl\Node\AttributeBraces;
+use Genkgo\Xsl\Xsl\Node\AttributeValueTemplates;
 use Genkgo\Xsl\Xsl\Node\AttributeMatch;
 use Genkgo\Xsl\Xsl\Node\AttributeSelect;
 use Genkgo\Xsl\Xsl\Node\AttributeTest;
@@ -48,7 +48,7 @@ class Transformer implements TransformerInterface
         ];
 
         $this->attributeTransformers = [
-            new AttributeBraces($xpathCompiler)
+            new AttributeValueTemplates($xpathCompiler)
         ];
     }
 
@@ -64,23 +64,24 @@ class Transformer implements TransformerInterface
         $root->setAttribute('xmlns:xs', XmlSchema::URI);
         $root->setAttribute('exclude-result-prefixes', 'php xs');
 
-        $this->transformElements($document);
-        $this->transformAttributes($document);
+        $namespaces = FetchNamespacesFromDocument::fetch($document);
+        $xslPrefix = array_search(XslTransformations::URI, $namespaces);
+        if ($xslPrefix === false) {
+            return;
+        }
+
+        $this->transformElements($document, $xslPrefix);
+        $this->transformAttributes($document, $xslPrefix);
     }
 
     /**
      * @param DOMDocument $document
+     * @param $xslPrefix
      */
-    private function transformElements (DOMDocument $document) {
-        $namespaces = FetchNamespacesFromDocument::fetch($document);
-        $xslNamespace = array_search(XslTransformations::URI, $namespaces);
-        if ($xslNamespace === false) {
-            return;
-        }
-
+    private function transformElements (DOMDocument $document, $xslPrefix) {
         /** @var DOMNodeList|DOMElement[] $list */
         $matchAndSelectElements = new DOMXPath($document);
-        $list = $matchAndSelectElements->query('//' . $xslNamespace . ':*');
+        $list = $matchAndSelectElements->query('//' . $xslPrefix . ':*');
         foreach ($list as $element) {
             foreach ($this->elementTransformers as $elementTransformer) {
                 if ($elementTransformer->supports($element)) {
@@ -92,11 +93,13 @@ class Transformer implements TransformerInterface
 
     /**
      * @param DOMDocument $document
+     * @param $xslPrefix
      */
-    private function transformAttributes (DOMDocument $document) {
+    private function transformAttributes (DOMDocument $document, $xslPrefix) {
         /** @var DOMNodeList|DOMAttr[] $list */
         $matchAndSelectElements = new DOMXPath($document);
-        $expression = '//@*[substring(., 1, 1) = "{" and substring(., 1, 2) != "{{" and substring(., string-length(.)) = "}"]';
+        $lengthPrefix = strlen($xslPrefix);
+        $expression = '//*[substring(name(), 1, ' . $lengthPrefix . ') != "' . $xslPrefix . '"]/@*[contains(., "{") or contains(., "}")]';
 
         $list = $matchAndSelectElements->query($expression);
         foreach ($list as $attribute) {

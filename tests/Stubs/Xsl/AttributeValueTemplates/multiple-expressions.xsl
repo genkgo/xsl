@@ -5,8 +5,7 @@
     </xsl:template>
 
     <xsl:template match="cd[substring-after(title, 'Electric ') = 'Ladyland']">
-        <a href="#{substring-after(title, 'Electric ')}">matched</a>
-        <a href="#{{substring-after(title, 'Electric ')}}">matched</a>
+        <a href="{substring-after(title, 'Electric ')}/{artist}">matched</a>
     </xsl:template>
 
 </xsl:stylesheet>
