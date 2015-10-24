@@ -28,7 +28,7 @@ final class XsltProcessor extends PhpXsltProcessor
      */
     private $config;
     /**
-     * @var array
+     * @var array|null
      */
     private $phpFunctions = [];
 

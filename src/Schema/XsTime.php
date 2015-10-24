@@ -39,7 +39,7 @@ final class XsTime extends AbstractXsElement
         foreach (static::$formats as $format) {
             $value = DateTimeImmutable::createFromFormat($format, $date);
             if ($value) {
-                return new static($value->format(self::FORMAT));
+                return new self($value->format(self::FORMAT));
             }
         }
 
