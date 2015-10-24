@@ -223,6 +223,7 @@ final class XsltProcessor extends PhpXsltProcessor
         try {
             $contextOptions['gxsl']['cache'] = $this->config->getCacheAdapter();
         } catch (CacheDisabledException $e) {
+            // caching adapter is not required for the processor to run
         }
 
         return $contextOptions;

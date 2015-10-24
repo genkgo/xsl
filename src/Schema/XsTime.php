@@ -51,6 +51,6 @@ final class XsTime extends AbstractXsElement
      */
     public static function now()
     {
-        return new static((new DateTimeImmutable())->format(self::FORMAT));
+        return new self((new DateTimeImmutable())->format(self::FORMAT));
     }
 }

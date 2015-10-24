@@ -14,8 +14,6 @@ final class Compiler
      */
     private $functions;
 
-    private static $operators = ['except', 'intersect', 'and', 'or', 'for', 'to', 'if', 'some', 'every', 'div', 'idiv', 'mod', 'union'];
-
     /**
      * @param FunctionMap $functions
      */

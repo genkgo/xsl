@@ -10,7 +10,7 @@ use Genkgo\Xsl\Xpath\Lexer;
 final class ReturnXsScalarFunction implements ReplaceFunctionInterface
 {
     /**
-     * @var FunctionInterface
+     * @var ReplaceFunctionInterface
      */
     private $parentFunction;
     /**

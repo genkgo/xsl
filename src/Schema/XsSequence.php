@@ -19,7 +19,7 @@ final class XsSequence extends AbstractXsElement
     public static function fromArray(array $list)
     {
         /** @var DOMDocument $sequence */
-        $sequence = new static;
+        $sequence = new self;
 
         foreach ($list as $item) {
             if (is_scalar($item)) {
