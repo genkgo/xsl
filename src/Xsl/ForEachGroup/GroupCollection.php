@@ -8,8 +8,8 @@ use IteratorAggregate;
  * Class GroupCollection
  * @package Genkgo\Xsl\Xsl\ForEachGroup
  */
-class GroupCollection implements IteratorAggregate {
-
+class GroupCollection implements IteratorAggregate
+{
     /**
      * @var array|Group[]
      */
@@ -30,8 +30,8 @@ class GroupCollection implements IteratorAggregate {
     /**
      * @return ArrayIterator|Group[]
      */
-    public function getIterator () {
+    public function getIterator()
+    {
         return new ArrayIterator($this->items);
     }
-
 }

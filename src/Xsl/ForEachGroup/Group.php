@@ -5,8 +5,8 @@ namespace Genkgo\Xsl\Xsl\ForEachGroup;
  * Class Group
  * @package Genkgo\Xsl\Xsl\ForEachGroup
  */
-class Group {
-
+class Group
+{
     /**
      * @var
      */
@@ -47,5 +47,4 @@ class Group {
     {
         $this->ids[] = $id;
     }
-
 }

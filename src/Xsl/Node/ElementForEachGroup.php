@@ -72,7 +72,8 @@ final class ElementForEachGroup implements ElementTransformerInterface
      * @param $groupId
      * @return DOMElement
      */
-    private function createForEachStatement (DOMElement $element, $groupId) {
+    private function createForEachStatement(DOMElement $element, $groupId)
+    {
         $select = $element->getAttribute('select');
         $groupBy = $element->getAttribute('group-by');
 
@@ -105,7 +106,8 @@ final class ElementForEachGroup implements ElementTransformerInterface
      * @param $select
      * @return DOMElement
      */
-    private function createUnGroupedVariable (DOMDocument $document, $groupId, $select) {
+    private function createUnGroupedVariable(DOMDocument $document, $groupId, $select)
+    {
         $variable = $document->createElementNS(XslTransformations::URI, 'xsl:variable');
         $variable->setAttribute('name', 'current-un-grouped-' . $groupId);
         $variable->setAttribute('select', $select);
@@ -116,7 +118,8 @@ final class ElementForEachGroup implements ElementTransformerInterface
      * @param DOMElement $xslForEach
      * @param $groupId
      */
-    private function replaceCurrentGroup (DOMElement $xslForEach, $groupId) {
+    private function replaceCurrentGroup(DOMElement $xslForEach, $groupId)
+    {
         $document = $xslForEach->ownerDocument;
 
         $findCurrentGroup = new DOMXPath($document);
