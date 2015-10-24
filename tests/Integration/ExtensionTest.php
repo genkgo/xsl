@@ -54,7 +54,7 @@ class ExtensionTest extends AbstractIntegrationTestCase
         $extension = new MyExtension();
 
         $config = new Config();
-        $config->setExtensions([$extension]);
+        $config->addExtension($extension);
 
         $xslDoc = new DOMDocument();
         $xslDoc->load('Stubs/closure.xsl');
@@ -67,6 +67,27 @@ class ExtensionTest extends AbstractIntegrationTestCase
         $processor->importStylesheet($xslDoc);
         $processorResult = $processor->transformToXML($xmlDoc);
 
-        $this->assertEquals('21', trim($processorResult));
+        $this->assertEquals('20', trim($processorResult));
+    }
+
+    public function testMethod()
+    {
+        $extension = new MyExtension();
+
+        $config = new Config();
+        $config->addExtension($extension);
+
+        $xslDoc = new DOMDocument();
+        $xslDoc->load('Stubs/method.xsl');
+        $xslDoc->documentElement->setAttribute('version', '1.0');
+
+        $xmlDoc = new DOMDocument();
+        $xmlDoc->load('Stubs/collection.xml');
+
+        $processor = new XsltProcessor($config);
+        $processor->importStylesheet($xslDoc);
+        $processorResult = $processor->transformToXML($xmlDoc);
+
+        $this->assertEquals('24', trim($processorResult));
     }
 }

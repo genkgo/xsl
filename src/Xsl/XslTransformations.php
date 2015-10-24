@@ -11,6 +11,7 @@ use Genkgo\Xsl\Xsl\Functions\CurrentGroup;
 use Genkgo\Xsl\Xsl\Functions\CurrentGroupingKey;
 use Genkgo\Xsl\Xsl\Functions\DateFormatting;
 use Genkgo\Xsl\Xsl\Functions\GroupBy;
+use Genkgo\Xsl\Xsl\Functions\GroupIterate;
 
 /**
  * Class XslTransformations
@@ -59,7 +60,9 @@ final class XslTransformations implements XmlNamespaceInterface
             new ObjectFunction([DateFormatting::class, 'formatTime'])
         ))->register($functions);
 
-        (new GroupBy($this->xpathCompiler))->register($functions);
+        $groupMap = new ForEachGroup\Map();
+        (new GroupBy($this->xpathCompiler, $groupMap))->register($functions);
+        (new GroupIterate($groupMap))->register($functions);
         (new CurrentGroupingKey())->register($functions);
         (new CurrentGroup())->register($functions);
     }

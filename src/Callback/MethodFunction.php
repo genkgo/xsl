@@ -9,16 +9,14 @@ use Genkgo\Xsl\Xpath\Lexer;
  * Interface MethodFunction
  * @package Genkgo\Xsl\Callback
  */
-final class MethodFunction implements FunctionInterface, ReplaceFunctionInterface, MethodCallInterface
+final class MethodFunction implements FunctionInterface, MethodCallInterface, ReplaceFunctionInterface
 {
     private $name;
-    private $replacer;
     private $caller;
 
-    public function __construct($name, ReplaceFunctionInterface $replacer, MethodCallInterface $caller)
+    public function __construct($name, MethodCallInterface $caller)
     {
         $this->name = $name;
-        $this->replacer = $replacer;
         $this->caller = $caller;
     }
 
@@ -48,6 +46,23 @@ final class MethodFunction implements FunctionInterface, ReplaceFunctionInterfac
      */
     public function replace(Lexer $lexer)
     {
-        return $this->replacer->replace($lexer);
+        $resultTokens = [];
+        $resultTokens[] = 'php:function';
+        $resultTokens[] = '(';
+        $resultTokens[] = '\'';
+        $resultTokens[] = PhpCallback::class.'::call';
+        $resultTokens[] = '\'';
+        $resultTokens[] = ',';
+        $resultTokens[] = '\'';
+        $resultTokens[] = $this->name;
+        $resultTokens[] = '\'';
+
+        $lexer->next();
+
+        if ($lexer->peek($lexer->key() + 1) !== ')') {
+            $resultTokens[] = ',';
+        }
+
+        return $resultTokens;
     }
 }

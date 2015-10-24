@@ -40,11 +40,11 @@ final class Transformer implements TransformerInterface
     public function __construct(Compiler $xpathCompiler)
     {
         $this->elementTransformers = [
+            new ElementForEachGroup($xpathCompiler),
             new AttributeMatch($xpathCompiler),
             new AttributeSelect($xpathCompiler),
             new AttributeTest($xpathCompiler),
             new ElementValueOf(),
-            new ElementForEachGroup($xpathCompiler),
         ];
 
         $this->attributeTransformers = [
@@ -66,9 +66,6 @@ final class Transformer implements TransformerInterface
 
         $namespaces = FetchNamespacesFromDocument::fetch($document);
         $xslPrefix = array_search(XslTransformations::URI, $namespaces);
-        if ($xslPrefix === false) {
-            return;
-        }
 
         $this->transformElements($document, $xslPrefix);
         $this->transformAttributes($document, $xslPrefix);

@@ -104,4 +104,32 @@ class ForEachGroupTest extends AbstractIntegrationTestCase
 
         $this->assertEquals('20116044', trim($processor->transformToXml($data)));
     }
+
+    public function testByAncestor()
+    {
+        $styleSheet = new DOMDocument();
+        $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-ancestor.xsl');
+
+        $processor = new XsltProcessor();
+        $processor->importStyleSheet($styleSheet);
+
+        $data = new DOMDocument();
+        $data->load('Stubs/packages.xml');
+
+        $this->assertEquals('2015-10-24 16:13:122015-10-24 16:13:12', trim($processor->transformToXml($data)));
+    }
+
+    public function testByTest()
+    {
+        $styleSheet = new DOMDocument();
+        $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-test.xsl');
+
+        $processor = new XsltProcessor();
+        $processor->importStyleSheet($styleSheet);
+
+        $data = new DOMDocument();
+        $data->load('Stubs/packages.xml');
+
+        $this->assertEquals('1 CAMT packages', trim($processor->transformToXml($data)));
+    }
 }

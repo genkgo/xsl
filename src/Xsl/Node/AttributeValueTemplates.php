@@ -88,7 +88,9 @@ final class AttributeValueTemplates implements AttributeTransformerInterface
                 $components[] = '}';
                 $last = $i8 + 1;
             } else {
+                // @codeCoverageIgnoreStart
                 throw new RuntimeException("Internal error parsing Attribute Value Template");
+                // @codeCoverageIgnoreEnd
             }
         }
 

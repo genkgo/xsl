@@ -17,23 +17,17 @@ final class ClosureFunction implements FunctionInterface, ReplaceFunctionInterfa
      */
     private $name;
     /**
-     * @var ReplaceFunctionInterface
-     */
-    private $replacer;
-    /**
      * @var Closure
      */
     private $callback;
 
     /**
      * @param string $name
-     * @param ReplaceFunctionInterface $replacer
      * @param Closure $callback
      */
-    public function __construct($name, ReplaceFunctionInterface $replacer, Closure $callback)
+    public function __construct($name, Closure $callback)
     {
         $this->name = $name;
-        $this->replacer = $replacer;
         $this->callback = $callback;
     }
 
@@ -53,7 +47,24 @@ final class ClosureFunction implements FunctionInterface, ReplaceFunctionInterfa
      */
     public function replace(Lexer $lexer)
     {
-        return $this->replacer->replace($lexer);
+        $resultTokens = [];
+        $resultTokens[] = 'php:function';
+        $resultTokens[] = '(';
+        $resultTokens[] = '\'';
+        $resultTokens[] = PhpCallback::class.'::call';
+        $resultTokens[] = '\'';
+        $resultTokens[] = ',';
+        $resultTokens[] = '\'';
+        $resultTokens[] = $this->name;
+        $resultTokens[] = '\'';
+
+        $lexer->next();
+
+        if ($lexer->peek($lexer->key() + 1) !== ')') {
+            $resultTokens[] = ',';
+        }
+
+        return $resultTokens;
     }
 
     /**

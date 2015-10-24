@@ -107,7 +107,7 @@ final class XsltProcessor extends PhpXsltProcessor
     public function registerPHPFunctions($restrict = null)
     {
         if (is_string($restrict)) {
-            $this->phpFunctions = [$restrict];
+            $restrict = [$restrict];
         }
 
         $this->phpFunctions = $restrict;
