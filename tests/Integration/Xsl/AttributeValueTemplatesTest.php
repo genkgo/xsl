@@ -51,4 +51,18 @@ class AttributeValueTemplatesTest extends AbstractXslTest
 
         $this->assertContains('#Ladyland}', $result);
     }
+
+    public function testAmpersandEscaped()
+    {
+        $result = $this->transformFile('Stubs/Xsl/AttributeValueTemplates/ampersand-escaped.xsl');
+
+        $this->assertContains('link?x=y&amp;a=b', $result);
+    }
+
+    public function testAmpersandGreaterThan()
+    {
+        $result = $this->transformFile('Stubs/Xsl/AttributeValueTemplates/ampersand-greater-than.xsl');
+
+        $this->assertContains('link?x=y&amp;year=1997', $result);
+    }
 }

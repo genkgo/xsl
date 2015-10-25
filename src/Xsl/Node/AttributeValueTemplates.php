@@ -94,6 +94,6 @@ final class AttributeValueTemplates implements AttributeTransformerInterface
             }
         }
 
-        $attribute->nodeValue = implode('', $components);
+        $attribute->nodeValue = htmlentities(implode('', $components), ENT_XML1);
     }
 }

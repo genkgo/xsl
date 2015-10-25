@@ -190,4 +190,25 @@ class ProcessXslt1DocumentsTest extends AbstractIntegrationTestCase
 
         $this->assertEquals($nativeResult, $transpilerResult);
     }
+
+    public function testAmpersandEscaped()
+    {
+        $xslDoc = new DOMDocument();
+        $xslDoc->load('Stubs/ampersand-escaped.xsl');
+
+        $xmlDoc = new DOMDocument();
+        $xmlDoc->load('Stubs/collection.xml');
+
+        $native = new \XSLTProcessor();
+        $native->importStylesheet($xslDoc);
+        $native->registerPHPFunctions();
+        $nativeResult = trim($native->transformToXML($xmlDoc));
+
+        $transpiler = new XsltProcessor();
+        $transpiler->importStylesheet($xslDoc);
+        $transpiler->registerPHPFunctions();
+        $transpilerResult = trim($transpiler->transformToXML($xmlDoc));
+
+        $this->assertEquals($nativeResult, $transpilerResult);
+    }
 }
