@@ -103,17 +103,6 @@ class XpathLexerTest extends AbstractTestCase
         }
     }
 
-    public function testWhiteSpace()
-    {
-        $source = "\nconcat(a, b)";
-        $expectedTokens = ['concat', '(', 'a', ',', 'b', ')'];
-
-        $resultLexer = Xpath\Lexer::tokenize($source);
-        foreach ($resultLexer as $resultToken) {
-            $this->assertEquals($expectedTokens[$resultLexer->key()], $resultToken);
-        }
-    }
-
     public function testInsert()
     {
         $expectedTokens = ['//', '*', '[', '@', 'id', '=', '"i"', ']', '/', 'book'];

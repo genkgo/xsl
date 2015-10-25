@@ -49,11 +49,6 @@ final class Lexer implements Iterator, SeekableIterator, Countable
     private $position = 0;
 
     /**
-     *
-     */
-    const LEADING_WHITESPACE = ' /^\s/';
-
-    /**
      * @param $tokens
      */
     public function __construct(array $tokens)
@@ -71,13 +66,6 @@ final class Lexer implements Iterator, SeekableIterator, Countable
         preg_match_all(self::compileTokenRegEx(), $source, $tokens);
         $tokens = $tokens[0];
 
-        // Removes tokens starting with whitespace from the array.
-        for ($i = 0; $i < count($tokens); $i++) {
-            if (preg_match(self::LEADING_WHITESPACE, $tokens[$i]) === 1) {
-                array_splice($tokens, $i, 1);
-            }
-        }
-
         return new static($tokens);
     }
 
@@ -92,7 +80,7 @@ final class Lexer implements Iterator, SeekableIterator, Countable
             '\.\.', // Double dot.
             '::', // Double colon.
             '\d+(?:\.\d*)?', // Number starting with digit.
-            '\.\\d+', // Number starting with decimal point.
+            '\.\d+', // Number starting with decimal point.
             '"[^"]*"', // Double quoted string.
             '\'[^\']*\'', // Single quoted string.
             '[!<>]=', // Operators
@@ -100,7 +88,7 @@ final class Lexer implements Iterator, SeekableIterator, Countable
             '.', // Any single character.
         ];
 
-        return '/'.implode('|', $tokens).'/';
+        return '/' . implode('|', $tokens) . '/';
     }
 
     /**
