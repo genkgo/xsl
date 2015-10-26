@@ -12,7 +12,7 @@ interface ReplaceFunctionInterface
 {
     /**
      * @param Lexer $lexer
-     * @return array|string[]
+     * @return string[]
      */
     public function replace(Lexer $lexer, DOMNode $currentElement);
 }

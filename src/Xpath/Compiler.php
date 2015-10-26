@@ -34,25 +34,36 @@ final class Compiler
     {
         $resultTokens = [];
         $lexer = Lexer::tokenize($xpathExpression);
-        $namespaces = FetchNamespacesFromDocument::fetch($currentElement->ownerDocument);
         foreach ($lexer as $token) {
             $nextToken = $lexer->peek($lexer->key() + 1);
             if ($nextToken === '(') {
-                $functionName = $this->convertTokenToFunctionName($token, $namespaces);
-
-                if ($this->functions->has($functionName)) {
-                    $function = $this->functions->get($functionName);
-                    if ($function instanceof ReplaceFunctionInterface) {
-                        $resultTokens = array_merge($resultTokens, $function->replace($lexer, $currentElement));
-                    }
-                    continue;
-                }
+               $resultTokens = array_merge($resultTokens, $this->createFunctionTokens($lexer, $token, $currentElement));
+            } else {
+                $resultTokens[] = $token;
             }
-
-            $resultTokens[] = $token;
         }
 
         return trim(implode('', $resultTokens));
+    }
+
+    /**
+     * @param Lexer $lexer
+     * @param $token
+     * @param $currentElement
+     * @return string[]
+     */
+    private function createFunctionTokens (Lexer $lexer, $token, $currentElement) {
+        $namespaces = FetchNamespacesFromDocument::fetch($currentElement->ownerDocument);
+        $functionName = $this->convertTokenToFunctionName($token, $namespaces);
+
+        if ($this->functions->has($functionName)) {
+            $function = $this->functions->get($functionName);
+            if ($function instanceof ReplaceFunctionInterface) {
+                return $function->replace($lexer, $currentElement);
+            }
+        }
+
+        return [$token];
     }
 
     /**
