@@ -26,16 +26,15 @@ class CurrentGroupingKey implements ReplaceFunctionInterface, FunctionInterface
     /**
      * @param Lexer $lexer
      * @param DOMNode $currentElement
-     * @return array|\string[]
+     * @return string[]
      */
     public function replace(Lexer $lexer, DOMNode $currentElement)
     {
-        $groupId = null;
-
-        /** @var DOMElement $xslForEach */
         $xslForEach = $currentElement->parentNode;
-        while ($this->isForEachGroupElement($xslForEach) === false && $currentElement->ownerDocument !== $xslForEach) {
-            $xslForEach = $xslForEach->parentNode;
+        if ($xslForEach instanceof DOMElement) {
+            while ($this->isForEachGroupElement($xslForEach) === false && $currentElement->ownerDocument !== $xslForEach) {
+                $xslForEach = $xslForEach->parentNode;
+            }
         }
 
         if ($this->isForEachGroupElement($xslForEach) === false) {
