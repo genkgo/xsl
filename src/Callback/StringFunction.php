@@ -1,6 +1,7 @@
 <?php
 namespace Genkgo\Xsl\Callback;
 
+use DOMNode;
 use Genkgo\Xsl\Xpath\Lexer;
 
 /**
@@ -30,9 +31,10 @@ final class StringFunction implements ReplaceFunctionInterface
 
     /**
      * @param Lexer $lexer
+     * @param DOMNode $currentElement
      * @return array|\string[]
      */
-    public function replace(Lexer $lexer)
+    public function replace(Lexer $lexer, DOMNode $currentElement)
     {
         if ($this->camelize === true) {
             $methodName = $this->convertToCamel($this->callback[1]);

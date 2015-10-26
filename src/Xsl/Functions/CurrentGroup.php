@@ -1,6 +1,8 @@
 <?php
 namespace Genkgo\Xsl\Xsl\Functions;
 
+use DOMElement;
+use DOMNode;
 use Genkgo\Xsl\Callback\FunctionInterface;
 use Genkgo\Xsl\Callback\ReplaceFunctionInterface;
 use Genkgo\Xsl\Util\FunctionMap;
@@ -23,11 +25,24 @@ class CurrentGroup implements ReplaceFunctionInterface, FunctionInterface
 
     /**
      * @param Lexer $lexer
-     * @return array|string[]
+     * @param DOMNode $currentElement
+     * @return array|\string[]
      */
-    public function replace(Lexer $lexer)
+    public function replace(Lexer $lexer, DOMNode $currentElement)
     {
-        $groupId = substr($lexer->peek($lexer->key() + 2), 1, -1);
+        $groupId = null;
+
+        /** @var DOMElement $xslForEach */
+        $xslForEach = $currentElement->parentNode;
+        while ($this->isForEachGroupElement($xslForEach) === false && $currentElement->ownerDocument !== $xslForEach) {
+            $xslForEach = $xslForEach->parentNode;
+        }
+
+        if ($this->isForEachGroupElement($xslForEach) === false) {
+            throw new \RuntimeException('Feature not implemented. "At other times, it will be an empty sequence."');
+        }
+
+        $groupId = $xslForEach->getAttribute('group-id');
 
         $resultTokens = [];
         $resultTokens[] = '$current-un-grouped-' . $groupId;
@@ -42,7 +57,12 @@ class CurrentGroup implements ReplaceFunctionInterface, FunctionInterface
         $resultTokens[] = 'xsl:element-id';
         $resultTokens[] = ']';
 
-        $lexer->seek($lexer->key() + 3);
+        $lexer->seek($lexer->key() + 2);
         return $resultTokens;
+    }
+
+    private function isForEachGroupElement(DOMElement $element)
+    {
+        return $element->nodeName === 'xsl:for-each' && $element->getAttribute('group-id');
     }
 }

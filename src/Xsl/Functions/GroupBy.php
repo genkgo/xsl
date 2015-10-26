@@ -6,17 +6,30 @@ use DOMXPath;
 use Genkgo\Xsl\Callback\FunctionInterface;
 use Genkgo\Xsl\Callback\MethodCallInterface;
 use Genkgo\Xsl\TransformationContext;
-use Genkgo\Xsl\Util\FetchNamespacesFromDocument;
 use Genkgo\Xsl\Util\FunctionMap;
 use Genkgo\Xsl\Xpath\Compiler;
 use Genkgo\Xsl\Xsl\ForEachGroup\Map as ForEachGroupMap;
 use Genkgo\Xsl\Xsl\XslTransformations;
 
+/**
+ * Class GroupBy
+ * @package Genkgo\Xsl\Xsl\Functions
+ */
 class GroupBy implements FunctionInterface, MethodCallInterface
 {
+    /**
+     * @var Compiler
+     */
     private $compiler;
+    /**
+     * @var ForEachGroupMap
+     */
     private $groups;
 
+    /**
+     * @param Compiler $compiler
+     * @param ForEachGroupMap $groups
+     */
     public function __construct(Compiler $compiler, ForEachGroupMap $groups)
     {
         $this->compiler = $compiler;
@@ -50,14 +63,13 @@ class GroupBy implements FunctionInterface, MethodCallInterface
         $groupBy = base64_decode($arguments[3]);
 
         $collection = $this->groups->get($groupId);
-        $namespaces = FetchNamespacesFromDocument::fetch($elements[0]->ownerDocument);
 
         foreach ($elements as $key => $element) {
             $xpath = new DOMXPath($element->ownerDocument);
             $xpath->registerPhpFunctions($context->getPhpFunctions());
 
             $groupingKey = $xpath->evaluate(
-                $this->compiler->compile('string(' . $groupBy . ')', $namespaces),
+                $this->compiler->compile('string(' . $groupBy . ')', $element),
                 $element
             );
 

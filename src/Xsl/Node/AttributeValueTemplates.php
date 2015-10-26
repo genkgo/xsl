@@ -2,7 +2,6 @@
 namespace Genkgo\Xsl\Xsl\Node;
 
 use DOMAttr;
-use Genkgo\Xsl\Util\FetchNamespacesFromDocument;
 use Genkgo\Xsl\Xpath\Compiler;
 use Genkgo\Xsl\Xpath\Exception\InvalidArgumentException;
 use Genkgo\Xsl\Xsl\AttributeTransformerInterface;
@@ -43,7 +42,6 @@ final class AttributeValueTemplates implements AttributeTransformerInterface
      */
     public function transform(DOMAttr $attribute)
     {
-        $namespaces = FetchNamespacesFromDocument::fetch($attribute->ownerDocument);
         $expression = $attribute->nodeValue;
         $components = [];
 
@@ -84,7 +82,7 @@ final class AttributeValueTemplates implements AttributeTransformerInterface
                 $compileUntil = $i8 - $compileFrom;
 
                 $components[] = '{';
-                $components[] = $this->xpathCompiler->compile(substr($expression, $compileFrom, $compileUntil), $namespaces);
+                $components[] = $this->xpathCompiler->compile(substr($expression, $compileFrom, $compileUntil), $attribute);
                 $components[] = '}';
                 $last = $i8 + 1;
             } else {

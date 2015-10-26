@@ -1,6 +1,7 @@
 <?php
 namespace Genkgo\Xsl\Callback;
 
+use DOMNode;
 use Genkgo\Xsl\TransformationContext;
 use Genkgo\Xsl\Util\FunctionMap;
 use Genkgo\Xsl\Xpath\Lexer;
@@ -42,9 +43,10 @@ final class MethodFunction implements FunctionInterface, MethodCallInterface, Re
 
     /**
      * @param Lexer $lexer
-     * @return array|string[]
+     * @param DOMNode $currentElement
+     * @return array|\string[]
      */
-    public function replace(Lexer $lexer)
+    public function replace(Lexer $lexer, DOMNode $currentElement)
     {
         $resultTokens = [];
         $resultTokens[] = 'php:function';

@@ -61,6 +61,7 @@ final class XsltProcessor extends PhpXsltProcessor
         $styleSheet = $this->styleSheetToDomDocument();
 
         $transpiler = $this->createTranspiler($styleSheet);
+        libxml_use_internal_errors();
         parent::importStylesheet($this->getTranspiledStyleSheet($transpiler, $styleSheet));
 
         return $transpiler->transform(function () use ($doc) {

@@ -2,7 +2,6 @@
 namespace Genkgo\Xsl\Xsl\Node;
 
 use DOMElement;
-use Genkgo\Xsl\Util\FetchNamespacesFromDocument;
 use Genkgo\Xsl\Xpath\Compiler;
 use Genkgo\Xsl\Xsl\ElementTransformerInterface;
 
@@ -43,7 +42,7 @@ final class AttributeTest implements ElementTransformerInterface
             'test',
             $this->xpathCompiler->compile(
                 $element->getAttribute('test'),
-                FetchNamespacesFromDocument::fetch($element->ownerDocument)
+                $element
             )
         );
     }

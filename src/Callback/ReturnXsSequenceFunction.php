@@ -1,6 +1,7 @@
 <?php
 namespace Genkgo\Xsl\Callback;
 
+use DOMNode;
 use Genkgo\Xsl\Xpath\Lexer;
 
 /**
@@ -24,11 +25,12 @@ final class ReturnXsSequenceFunction implements ReplaceFunctionInterface
 
     /**
      * @param Lexer $lexer
+     * @param DOMNode $currentElement
      * @return array
      */
-    public function replace(Lexer $lexer)
+    public function replace(Lexer $lexer, DOMNode $currentElement)
     {
-        $resultTokens = $this->parentFunction->replace($lexer);
+        $resultTokens = $this->parentFunction->replace($lexer, $currentElement);
 
         $currentKey = $lexer->key();
         $level = 1;

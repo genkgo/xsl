@@ -45,7 +45,12 @@ final class XslTransformations implements XmlNamespaceInterface
      */
     public function register(TransformerCollection $transformers, FunctionMap $functions)
     {
-        $transformers->attach(new Transformer($this->xpathCompiler));
+        $groupMap = new ForEachGroup\Map();
+
+        (new GroupBy($this->xpathCompiler, $groupMap))->register($functions);
+        (new GroupIterate($groupMap))->register($functions);
+        (new CurrentGroupingKey())->register($functions);
+        (new CurrentGroup())->register($functions);
 
         (new StaticFunction(
             'format-dateTime',
@@ -60,10 +65,6 @@ final class XslTransformations implements XmlNamespaceInterface
             new ObjectFunction([DateFormatting::class, 'formatTime'])
         ))->register($functions);
 
-        $groupMap = new ForEachGroup\Map();
-        (new GroupBy($this->xpathCompiler, $groupMap))->register($functions);
-        (new GroupIterate($groupMap))->register($functions);
-        (new CurrentGroupingKey())->register($functions);
-        (new CurrentGroup())->register($functions);
+        $transformers->attach(new Transformer($this->xpathCompiler, $groupMap));
     }
 }

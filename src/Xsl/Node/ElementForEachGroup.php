@@ -3,8 +3,6 @@ namespace Genkgo\Xsl\Xsl\Node;
 
 use DOMDocument;
 use DOMElement;
-use DOMNodeList;
-use DOMXPath;
 use Genkgo\Xsl\Callback\PhpCallback;
 use Genkgo\Xsl\Xpath\Compiler;
 use Genkgo\Xsl\Xpath\FunctionBuilder;
@@ -63,8 +61,6 @@ final class ElementForEachGroup implements ElementTransformerInterface
         $element->parentNode->insertBefore($xslForEach, $element);
         $element->parentNode->insertBefore($unGroupedVariable, $xslForEach);
         $element->parentNode->removeChild($element);
-
-        $this->replaceCurrentGroup($xslForEach, $groupId);
     }
 
     /**
@@ -97,6 +93,7 @@ final class ElementForEachGroup implements ElementTransformerInterface
 
         $xslForEach = $element->ownerDocument->createElementNS(XslTransformations::URI, 'xsl:for-each');
         $xslForEach->setAttribute('select', $createGroupFunction->build() . '//xsl:group');
+        $xslForEach->setAttribute('group-id', $groupId);
         return $xslForEach;
     }
 
@@ -112,41 +109,6 @@ final class ElementForEachGroup implements ElementTransformerInterface
         $variable->setAttribute('name', 'current-un-grouped-' . $groupId);
         $variable->setAttribute('select', $select);
         return $variable;
-    }
-
-    /**
-     * @param DOMElement $xslForEach
-     * @param $groupId
-     */
-    private function replaceCurrentGroup(DOMElement $xslForEach, $groupId)
-    {
-        $document = $xslForEach->ownerDocument;
-
-        $findCurrentGroup = new DOMXPath($document);
-        $findCurrentGroup->registerNamespace('xsl', XslTransformations::URI);
-
-        /** @var DOMNodeList|DOMElement[] $currentGroupElements */
-        $currentGroupElements = $findCurrentGroup->query(
-            './/xsl:*[contains(@select, "current-group()") or contains(@test, "current-group()") or contains(@select, "current-grouping-key()") or contains(@test, "current-grouping-key()")]',
-            $xslForEach
-        );
-
-        $searchReplace = [
-            ['current-group()', 'current-grouping-key()'],
-            ['current-group("' . $groupId . '")','current-grouping-key("' . $groupId . '")']
-        ];
-
-        foreach ($currentGroupElements as $currentGroupElement) {
-            if ($currentGroupElement->hasAttribute('select')) {
-                $select = str_replace($searchReplace[0], $searchReplace[1], $currentGroupElement->getAttribute('select'));
-                $currentGroupElement->setAttribute('select', $select);
-            }
-
-            if ($currentGroupElement->hasAttribute('test')) {
-                $test = str_replace($searchReplace[0], $searchReplace[1], $currentGroupElement->getAttribute('test'));
-                $currentGroupElement->setAttribute('test', $test);
-            }
-        }
     }
 
     /**
