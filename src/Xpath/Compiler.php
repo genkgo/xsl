@@ -3,7 +3,7 @@ namespace Genkgo\Xsl\Xpath;
 
 use DOMNode;
 use Genkgo\Xsl\Callback\ReplaceFunctionInterface;
-use Genkgo\Xsl\Util\FetchNamespacesFromDocument;
+use Genkgo\Xsl\Util\FetchNamespacesFromNode;
 use Genkgo\Xsl\Util\FunctionMap;
 
 /**
@@ -53,7 +53,7 @@ final class Compiler
      * @return string[]
      */
     private function createFunctionTokens (Lexer $lexer, $token, $currentElement) {
-        $namespaces = FetchNamespacesFromDocument::fetch($currentElement->ownerDocument);
+        $namespaces = FetchNamespacesFromNode::fetch($currentElement);
         $functionName = $this->convertTokenToFunctionName($token, $namespaces);
 
         if ($this->functions->has($functionName)) {

@@ -46,6 +46,10 @@ final class XmlPath implements XmlNamespaceInterface
             'tokenize',
             new ReturnXsSequenceFunction(new ObjectFunction([Text::class, 'tokenize']))
         ))->register($functions);
+        (new StaticFunction(
+            'in-scope-prefixes',
+            new ReturnXsSequenceFunction(new ObjectFunction([Text::class, 'inScopePrefixes']))
+        ))->register($functions);
 
         (new StaticFunction(
             'remove',

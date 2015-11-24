@@ -1,25 +1,25 @@
 <?php
 namespace Genkgo\Xsl\Util;
 
-use DOMDocument;
+use DOMNode;
 use DOMXPath;
 
 /**
  * Class FetchNamespacesFromDocument
  * @package Genkgo\Xsl\Util
  */
-final class FetchNamespacesFromDocument
+final class FetchNamespacesFromNode
 {
     /**
-     * @param DOMDocument $document
+     * @param DOMNode $element
      * @return array
      */
-    public static function fetch(DOMDocument $document)
+    public static function fetch(DOMNode $element)
     {
         $namespaces = [];
 
-        $listOfNamespaces = new DOMXPath($document);
-        foreach ($listOfNamespaces->query('namespace::*') as $node) {
+        $listOfNamespaces = new DOMXPath($element->ownerDocument);
+        foreach ($listOfNamespaces->query('namespace::*', $element) as $node) {
             $namespaces[$node->localName] = $node->namespaceURI;
         }
 

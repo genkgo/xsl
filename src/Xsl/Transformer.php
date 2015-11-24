@@ -8,7 +8,7 @@ use DOMNodeList;
 use DOMXPath;
 use Genkgo\Xsl\Schema\XmlSchema;
 use Genkgo\Xsl\TransformerInterface;
-use Genkgo\Xsl\Util\FetchNamespacesFromDocument;
+use Genkgo\Xsl\Util\FetchNamespacesFromNode;
 use Genkgo\Xsl\Xpath\Compiler;
 use Genkgo\Xsl\Xsl\Node\AttributeValueTemplates;
 use Genkgo\Xsl\Xsl\Node\AttributeMatch;
@@ -64,7 +64,7 @@ final class Transformer implements TransformerInterface
         $root->setAttribute('xmlns:xs', XmlSchema::URI);
         $root->setAttribute('exclude-result-prefixes', 'php xs');
 
-        $namespaces = FetchNamespacesFromDocument::fetch($document);
+        $namespaces = FetchNamespacesFromNode::fetch($document->documentElement);
         $xslPrefix = array_search(XslTransformations::URI, $namespaces);
 
         $this->transformElements($document, $xslPrefix);

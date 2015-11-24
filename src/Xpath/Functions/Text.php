@@ -4,6 +4,8 @@ namespace Genkgo\Xsl\Xpath\Functions;
 use DOMDocument;
 use DOMElement;
 use Genkgo\Xsl\Schema\XsSequence;
+use Genkgo\Xsl\Util\Assert;
+use Genkgo\Xsl\Util\FetchNamespacesFromNode;
 
 /**
  * Class Text
@@ -138,6 +140,23 @@ class Text
     public static function tokenize($input, $pattern, $flags = '')
     {
         return XsSequence::fromArray(preg_split('/'.$pattern.'/'.$flags, $input));
+    }
+
+    /**
+     * @param $elements
+     * @return DOMDocument
+     */
+    public static function inScopePrefixes($elements)
+    {
+        Assert::assertArray($elements);
+        $listOfPrefixes = [];
+        foreach ($elements as $element) {
+            $listOfPrefixes = array_merge(
+                $listOfPrefixes,
+                array_keys(FetchNamespacesFromNode::fetch($element))
+            );
+        }
+        return XsSequence::fromArray($listOfPrefixes);
     }
 
     /**
