@@ -2,7 +2,6 @@
 namespace Genkgo\Xsl\Schema;
 
 use DateTimeImmutable;
-use DOMDocument;
 use Genkgo\Xsl\Exception\CastException;
 
 /**

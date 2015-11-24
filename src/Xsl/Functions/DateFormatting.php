@@ -3,10 +3,10 @@ namespace Genkgo\Xsl\Xsl\Functions;
 
 use DateTimeImmutable;
 use DOMElement;
-use Genkgo\Xsl\Schema\XmlSchema;
 use Genkgo\Xsl\Schema\XsDate;
 use Genkgo\Xsl\Schema\XsDateTime;
 use Genkgo\Xsl\Schema\XsTime;
+use Genkgo\Xsl\Util\Assert;
 use Genkgo\Xsl\Xpath\Exception\InvalidArgumentException;
 use Genkgo\Xsl\Xsl\Functions;
 
@@ -33,8 +33,8 @@ class DateFormatting
      */
     public static function formatDate($value, $picture)
     {
-        self::assertArray($value);
-        self::assertSchema($value[0], 'date');
+        Assert::assertArray($value);
+        Assert::assertSchema($value[0], 'date');
 
         $date = DateTimeImmutable::createFromFormat(XsDate::FORMAT, $value[0]->nodeValue);
         return self::formatEvaluatedDateTime($date, $picture, self::FLAG_DATE);
@@ -48,8 +48,8 @@ class DateFormatting
      */
     public static function formatTime($value, $picture)
     {
-        self::assertArray($value);
-        self::assertSchema($value[0], 'time');
+        Assert::assertArray($value);
+        Assert::assertSchema($value[0], 'time');
 
         $date = DateTimeImmutable::createFromFormat(XsTime::FORMAT, $value[0]->nodeValue);
         return self::formatEvaluatedDateTime($date, $picture, self::FLAG_TIME);
@@ -63,35 +63,11 @@ class DateFormatting
      */
     public static function formatDateTime($value, $picture)
     {
-        self::assertArray($value);
-        self::assertSchema($value[0], 'dateTime');
+        Assert::assertArray($value);
+        Assert::assertSchema($value[0], 'dateTime');
 
         $date = DateTimeImmutable::createFromFormat(XsDateTime::FORMAT, $value[0]->nodeValue);
         return self::formatEvaluatedDateTime($date, $picture, self::FLAG_DATE + self::FLAG_TIME);
-    }
-
-    /**
-     * @param $value
-     * @throws InvalidArgumentException
-     */
-    private static function assertArray($value)
-    {
-        if (is_array($value) === false) {
-            throw new InvalidArgumentException("Expected a date object, got scalar");
-        }
-    }
-
-    /**
-     * @param DOMElement $element
-     * @param $name
-     * @throws InvalidArgumentException
-     */
-    private static function assertSchema(DOMElement $element, $name)
-    {
-        if ($element->namespaceURI !== XmlSchema::URI || $element->localName !== $name) {
-            $nsSchema = XmlSchema::URI;
-            throw new InvalidArgumentException("Expected a {$nsSchema}:{$name} object, got {$element->nodeName}");
-        }
     }
 
     /**

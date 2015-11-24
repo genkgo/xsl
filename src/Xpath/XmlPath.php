@@ -76,6 +76,54 @@ final class XmlPath implements XmlNamespaceInterface
             'current-dateTime',
             new ReturnXsScalarFunction(new ObjectFunction([Date::class, 'currentDateTime']), 'dateTime')
         ))->register($functions);
+        (new StaticFunction(
+            'year-from-date',
+            new ReturnXsScalarFunction(new ObjectFunction([Date::class, 'yearFromDate']), 'integer')
+        ))->register($functions);
+        (new StaticFunction(
+            'year-from-dateTime',
+            new ReturnXsScalarFunction(new ObjectFunction([Date::class, 'yearFromDateTime']), 'integer')
+        ))->register($functions);
+        (new StaticFunction(
+            'month-from-date',
+            new ReturnXsScalarFunction(new ObjectFunction([Date::class, 'monthFromDate']), 'integer')
+        ))->register($functions);
+        (new StaticFunction(
+            'month-from-dateTime',
+            new ReturnXsScalarFunction(new ObjectFunction([Date::class, 'monthFromDateTime']), 'integer')
+        ))->register($functions);
+        (new StaticFunction(
+            'day-from-date',
+            new ReturnXsScalarFunction(new ObjectFunction([Date::class, 'dayFromDate']), 'integer')
+        ))->register($functions);
+        (new StaticFunction(
+            'day-from-dateTime',
+            new ReturnXsScalarFunction(new ObjectFunction([Date::class, 'dayFromDateTime']), 'integer')
+        ))->register($functions);
+        (new StaticFunction(
+            'hours-from-time',
+            new ReturnXsScalarFunction(new ObjectFunction([Date::class, 'hoursFromTime']), 'integer')
+        ))->register($functions);
+        (new StaticFunction(
+            'hours-from-dateTime',
+            new ReturnXsScalarFunction(new ObjectFunction([Date::class, 'hoursFromDateTime']), 'integer')
+        ))->register($functions);
+        (new StaticFunction(
+            'minutes-from-time',
+            new ReturnXsScalarFunction(new ObjectFunction([Date::class, 'minutesFromTime']), 'integer')
+        ))->register($functions);
+        (new StaticFunction(
+            'minutes-from-dateTime',
+            new ReturnXsScalarFunction(new ObjectFunction([Date::class, 'minutesFromDateTime']), 'integer')
+        ))->register($functions);
+        (new StaticFunction(
+            'seconds-from-time',
+            new ReturnXsScalarFunction(new ObjectFunction([Date::class, 'secondsFromTime']), 'integer')
+        ))->register($functions);
+        (new StaticFunction(
+            'seconds-from-dateTime',
+            new ReturnXsScalarFunction(new ObjectFunction([Date::class, 'secondsFromDateTime']), 'integer')
+        ))->register($functions);
     }
 
     private function registerStringFunctions(array $list, FunctionMap $functions, $className)
