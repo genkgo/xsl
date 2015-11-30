@@ -3,6 +3,18 @@ namespace Genkgo\Xsl\Integration\Xpath;
 
 class SequenceTest extends AbstractXpathTest
 {
+    public function testConstructorString()
+    {
+        $result = $this->transformFile('Stubs/Xpath/Sequence/constructor-string.xsl');
+        $this->assertContains('a b c', $result);
+    }
+
+    public function testConstructorInteger()
+    {
+        $result = $this->transformFile('Stubs/Xpath/Sequence/constructor-integer.xsl');
+        $this->assertContains('1 2 3', $result);
+    }
+
     public function testReverse()
     {
         $this->assertEquals(

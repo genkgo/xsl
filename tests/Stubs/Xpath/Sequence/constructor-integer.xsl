@@ -2,8 +2,10 @@
 
     <xsl:output omit-xml-declaration="yes" />
 
-    <xsl:template match="/">
-        <xsl:value-of select="reverse(('xsl2','is','transpiled','by','genkgo/xsl'))" />
+    <xsl:template match="collection">
+
+        <xsl:value-of select="(1, 2, 3)" />
+
     </xsl:template>
 
 </xsl:stylesheet>

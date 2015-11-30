@@ -18,9 +18,13 @@ final class Compiler
      */
     private $functions;
     /**
-     * @var SequenceConstructor
+     * @var ReturnXsSequenceFunction
      */
     private $sequenceConstructor;
+    /**
+     * @var ReturnXsSequenceFunction
+     */
+    private $forLoopConstructor;
 
     /**
      * @param FunctionMap $functions
@@ -29,6 +33,7 @@ final class Compiler
     {
         $this->functions = $functions;
         $this->sequenceConstructor = new ReturnXsSequenceFunction(new SequenceConstructor());
+        $this->forLoopConstructor = new ForLoopConstructor();
     }
 
     /**
@@ -43,12 +48,19 @@ final class Compiler
         foreach ($lexer as $token) {
             $nextToken = $lexer->peek($lexer->key() + 1);
             if ($nextToken === '(') {
-                $resultTokens = array_merge($resultTokens, $this->createFunctionTokens($lexer, $token, $currentElement));
+                $resultTokens = array_merge($resultTokens, $this->createFunctionTokens($lexer, $currentElement));
                 continue;
             }
 
             if ($this->isSequence($lexer)) {
                 $resultTokens = array_merge($resultTokens, $this->createSequenceTokens($lexer, $currentElement));
+                continue;
+            }
+
+            if ($this->isForLoop($lexer)) {
+                array_pop($resultTokens);
+                array_pop($resultTokens);
+                $resultTokens = array_merge($resultTokens, $this->createForLoop($lexer, $currentElement));
                 continue;
             }
 
@@ -60,11 +72,11 @@ final class Compiler
 
     /**
      * @param Lexer $lexer
-     * @param $token
-     * @param $currentElement
+     * @param DOMNode $currentElement
      * @return string[]
      */
-    private function createFunctionTokens (Lexer $lexer, $token, $currentElement) {
+    private function createFunctionTokens (Lexer $lexer, DOMNode $currentElement) {
+        $token = $lexer->current();
         $namespaces = FetchNamespacesFromNode::fetch($currentElement);
         $functionName = $this->convertTokenToFunctionName($token, $namespaces);
 
@@ -109,18 +121,27 @@ final class Compiler
         if ($lexer->key() === 0) {
             return true;
         } else {
-//            $prevToken = $lexer->peek($lexer->key() - 1);
-//            return preg_match('/[\i-[:]][\c-[:]]*/', $prevToken) === 0;
-            return false;
+            $prevToken = $lexer->peek($lexer->key() - 1);
+            return $prevToken === '(' || preg_match('/\s/', $prevToken) === 1;
         }
     }
 
     /**
      * @param Lexer $lexer
-     * @param $currentElement
+     * @param DOMNode $currentElement
      * @return string[]
      */
-    private function createSequenceTokens (Lexer $lexer, $currentElement) {
+    private function createSequenceTokens (Lexer $lexer, DOMNode $currentElement) {
         return $this->sequenceConstructor->replace($lexer, $currentElement);
+    }
+
+    private function isForLoop(Lexer $lexer)
+    {
+        return ($lexer->current() === 'to' && preg_match('/\s/', $lexer->peek($lexer->key() - 1)) === 1);
+    }
+
+    private function createForLoop(Lexer $lexer, DOMNode $currentElement)
+    {
+        return $this->forLoopConstructor->replace($lexer, $currentElement);
     }
 }
