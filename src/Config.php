@@ -18,6 +18,10 @@ final class Config
      * @var CallbackCacheInterface
      */
     private $cacheAdapter;
+    /**
+     * @var bool
+     */
+    private $excludeResultPrefixes = false;
 
     /**
      * @param XmlNamespaceInterface[] $extensions
@@ -49,10 +53,12 @@ final class Config
 
     /**
      * @param CallbackCacheInterface $cacheAdapter
+     * @return Config
      */
     public function setCacheAdapter(CallbackCacheInterface $cacheAdapter)
     {
         $this->cacheAdapter = $cacheAdapter;
+        return $this;
     }
 
     /**
@@ -71,8 +77,26 @@ final class Config
     /**
      * @return Config
      */
+    public function excludeResultPrefixes () {
+        $this->excludeResultPrefixes = true;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function shouldExcludeResultPrefixes()
+    {
+        return $this->excludeResultPrefixes;
+    }
+
+    /**
+     * @return Config
+     */
     public static function fromDefault()
     {
         return new static();
     }
+
+
 }

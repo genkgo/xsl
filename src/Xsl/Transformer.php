@@ -6,6 +6,7 @@ use DOMDocument;
 use DOMElement;
 use DOMNodeList;
 use DOMXPath;
+use Genkgo\Xsl\Config;
 use Genkgo\Xsl\Schema\XmlSchema;
 use Genkgo\Xsl\TransformerInterface;
 use Genkgo\Xsl\Util\FetchNamespacesFromNode;
@@ -32,13 +33,20 @@ final class Transformer implements TransformerInterface
      * @var AttributeTransformerInterface[]
      */
     private $attributeTransformers = [];
+    /**
+     * @var Config
+     */
+    private $config;
 
     /**
      * Transformer constructor.
      * @param Compiler $xpathCompiler
+     * @param Config $config
      */
-    public function __construct(Compiler $xpathCompiler)
+    public function __construct(Compiler $xpathCompiler, Config $config)
     {
+        $this->config = $config;
+
         $this->elementTransformers = [
             new ElementForEachGroup($xpathCompiler),
             new AttributeMatch($xpathCompiler),
@@ -60,12 +68,22 @@ final class Transformer implements TransformerInterface
     {
         $root = $document->documentElement;
 
-        $root->setAttribute('xmlns:php', 'http://php.net/xsl');
-        $root->setAttribute('xmlns:xs', XmlSchema::URI);
-        $root->setAttribute('exclude-result-prefixes', 'php xs');
-
         $namespaces = FetchNamespacesFromNode::fetch($document->documentElement);
         $xslPrefix = array_search(XslTransformations::URI, $namespaces);
+
+        $excludePrefixes = preg_split('/\s/', $root->getAttribute('exclude-result-prefixes'));
+        $excludePrefixes[] = 'php';
+        $excludePrefixes[] = 'xs';
+
+        if ($excludePrefixes === '#all' || $this->config->shouldExcludeResultPrefixes()) {
+            $excludePrefixes = array_merge($excludePrefixes, array_keys($namespaces));
+        }
+
+        $excludePrefixes = array_unique($excludePrefixes);
+
+        $root->setAttribute('xmlns:php', 'http://php.net/xsl');
+        $root->setAttribute('xmlns:xs', XmlSchema::URI);
+        $root->setAttribute('exclude-result-prefixes', implode(' ', $excludePrefixes));
 
         $this->transformElements($document, $xslPrefix);
         $this->transformAttributes($document, $xslPrefix);
