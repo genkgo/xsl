@@ -5,6 +5,7 @@ use DOMNode;
 use Genkgo\Xsl\Callback\ReturnXsSequenceFunction;
 use Genkgo\Xsl\Xpath\ExpressionInterface;
 use Genkgo\Xsl\Xpath\Lexer;
+use Genkgo\Xsl\Xpath\MatchingIterator;
 use Genkgo\Xsl\Xpath\SequenceConstructor;
 
 final class SequenceExpression implements ExpressionInterface {
@@ -31,7 +32,23 @@ final class SequenceExpression implements ExpressionInterface {
             return false;
         }
 
-        $key = $lexer->key();
+        if ($lexer->key() > 0) {
+            $whiteSpaceOrOpeningParenthesis = new MatchingIterator($lexer, '/\s|\(/', MatchingIterator::DIRECTION_DOWN);
+
+            for ($i = 0, $j = 2; $i < $j; $i++) {
+                if ($whiteSpaceOrOpeningParenthesis->valid() === false) {
+                    return false;
+                }
+
+                if ($whiteSpaceOrOpeningParenthesis->key() < $lexer->key() - $i) {
+                    return false;
+                }
+
+                $whiteSpaceOrOpeningParenthesis->next();
+            }
+        }
+
+        $key = $lexer->key() + 1;
         $commaFound = false;
 
         while ($nextToken = $lexer->peek($key)) {
@@ -46,6 +63,8 @@ final class SequenceExpression implements ExpressionInterface {
             if ($nextToken === ')') {
                 return $commaFound;
             }
+
+            $key++;
         }
 
         return false;
