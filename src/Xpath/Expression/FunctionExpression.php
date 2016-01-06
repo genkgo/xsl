@@ -46,7 +46,8 @@ class FunctionExpression implements ExpressionInterface {
      */
     private function createFunctionTokens (Lexer $lexer, DOMNode $currentElement) {
         $token = $lexer->current();
-        $namespaces = FetchNamespacesFromNode::fetch($currentElement);
+        $documentElement = $currentElement->ownerDocument->documentElement;
+        $namespaces = FetchNamespacesFromNode::fetch($documentElement);
         $functionName = $this->convertTokenToFunctionName($token, $namespaces);
 
         if ($this->functions->has($functionName)) {
