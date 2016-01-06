@@ -5,7 +5,7 @@
                 encoding="UTF-8"/>
 
     <xsl:template match="collection">
-        <xsl:apply-templates select="cd[substring(artist, 1, 3) = 'Ben' and substring(artist, 5) = 'Harper']"/>
+        <xsl:apply-templates select="cd[(substring(artist, 1, 3) = 'Ben' and substring(artist, 5) = 'Harper')]"/>
     </xsl:template>
 
     <xsl:template match="cd">
