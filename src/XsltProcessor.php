@@ -178,7 +178,7 @@ final class XsltProcessor extends PhpXsltProcessor
     private function getNamespaces($xpathCompiler)
     {
         $namespaces = [
-            new Xsl\XslTransformations($xpathCompiler),
+            new Xsl\XslTransformations($xpathCompiler, $this->config),
             new Xpath\XmlPath(),
             new Schema\XmlSchema()
         ];
