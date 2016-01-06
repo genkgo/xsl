@@ -31,12 +31,24 @@ final class SequenceExpression implements ExpressionInterface {
             return false;
         }
 
-        if ($lexer->key() === 0) {
-            return true;
-        } else {
-            $prevToken = $lexer->peek($lexer->key() - 1);
-            return $prevToken === '(' || preg_match('/\s/', $prevToken) === 1;
+        $key = $lexer->key();
+        $commaFound = false;
+
+        while ($nextToken = $lexer->peek($key)) {
+            if ($nextToken === '(') {
+                return false;
+            }
+
+            if ($nextToken === ',') {
+                $commaFound = true;
+            }
+
+            if ($nextToken === ')') {
+                return $commaFound;
+            }
         }
+
+        return false;
     }
 
     /**
