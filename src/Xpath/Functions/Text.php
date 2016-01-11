@@ -191,4 +191,13 @@ class Text
 
         return $result;
     }
+
+    /**
+     * @param $uriPart
+     * @return string
+     */
+    public static function encodeForUri ($uriPart)
+    {
+        return rawurlencode($uriPart);
+    }
 }

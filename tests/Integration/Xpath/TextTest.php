@@ -174,4 +174,26 @@ class TextTest extends AbstractXpathTest
             'param1' => '   Hello  World!  '
         ]));
     }
+
+    public function testEncodeForUri()
+    {
+        $this->assertEquals(
+            'http%3A%2F%2Fwww.example.com%2F00%2FWeather%2FCA%2FLos%2520Angeles%23ocean',
+            $this->transformFile('Stubs/Xpath/Text/encode-for-uri.xsl', [
+                'param1' => 'http://www.example.com/00/Weather/CA/Los%20Angeles#ocean'
+            ])
+        );
+        $this->assertEquals(
+            '~b%C3%A9b%C3%A9',
+            $this->transformFile('Stubs/Xpath/Text/encode-for-uri.xsl', [
+                'param1' => '~bébé'
+            ])
+        );
+        $this->assertEquals(
+            '100%25%20organic',
+            $this->transformFile('Stubs/Xpath/Text/encode-for-uri.xsl', [
+                'param1' => '100% organic'
+            ])
+        );
+    }
 }
