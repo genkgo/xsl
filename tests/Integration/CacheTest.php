@@ -26,7 +26,7 @@ class CacheTest extends AbstractIntegrationTestCase
         $processor->importStylesheet($xslDoc);
         $processorResult = $processor->transformToXML($xmlDoc);
 
-        $cacheKey = dirname(__DIR__).'/Stubs/combine-multiple-functions.xsl';
+        $cacheKey = str_replace('\\', '/', dirname(__DIR__).'/Stubs/combine-multiple-functions.xsl');
         $cache = $arrayCache->get($cacheKey);
 
         $this->assertEquals(157, trim($processorResult));
