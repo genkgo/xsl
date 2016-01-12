@@ -44,7 +44,7 @@ final class Stream
      */
     public function stream_open($path)
     {
-        $filename = str_replace(self::PROTOCOL . self::HOST, '', $path);
+        $filename = $this->uriToPath($path);
         $streamContext = stream_context_get_options($this->context);
         $this->verifyTranspiler($streamContext);
 
@@ -153,8 +153,6 @@ final class Stream
     }
 
     /**
-     * @param $data
-     * @return int
      * @throws ReadOnlyStreamException
      */
     public function stream_write()
@@ -168,7 +166,8 @@ final class Stream
      */
     public function url_stat($path)
     {
-        $filename = str_replace(self::PROTOCOL . self::HOST, '', $path);
+        $filename = $this->uriToPath($path);
+
         if ($this->isRoot($filename)) {
             return [];
         }
@@ -191,5 +190,19 @@ final class Stream
     private function isRoot($filename)
     {
         return substr($filename, strlen(self::ROOT) * -1) === self::ROOT;
+    }
+
+    /**
+     * @param string $uri
+     * @return string
+     */
+    private function uriToPath ($uri) {
+        $filename = str_replace(self::PROTOCOL . self::HOST, '', $uri);
+
+        if (PHP_OS === 'WINNT') {
+            $filename = preg_replace('/^\/DISK([A-Z]{1})(.*?)/', '$1:$2', $filename);
+        }
+
+        return $filename;
     }
 }

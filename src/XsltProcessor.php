@@ -192,8 +192,15 @@ final class XsltProcessor extends PhpXsltProcessor
      */
     private function createTranspiledDocument(DOMDocument $styleSheet)
     {
+        $documentURI = $styleSheet->documentURI;
+
+        if (PHP_OS === 'WINNT') {
+            $documentURI = preg_replace('/file:\/([A-Z]){1}\:/', '/DISK$1', $documentURI);
+            $documentURI = str_replace('\\', '/', $documentURI);
+        }
+
         $transpiledStyleSheet = new DOMDocument('1.0', 'UTF-8');
-        $transpiledStyleSheet->load(Stream::PROTOCOL . Stream::HOST . $styleSheet->documentURI . Stream::ROOT);
+        $transpiledStyleSheet->load(Stream::PROTOCOL . Stream::HOST . $documentURI . Stream::ROOT);
         return $transpiledStyleSheet;
     }
 
