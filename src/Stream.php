@@ -13,6 +13,18 @@ use Genkgo\Xsl\Exception\StreamException;
 final class Stream
 {
     /**
+     *
+     */
+    const PROTOCOL = 'gxsl://';
+    /**
+     *
+     */
+    const HOST = 'localhost';
+    /**
+     *
+     */
+    const ROOT = '#root';
+    /**
      * @var string
      */
     private $template;
@@ -32,7 +44,7 @@ final class Stream
      */
     public function stream_open($path)
     {
-        $filename = str_replace('gxsl://', '', $path);
+        $filename = str_replace(self::PROTOCOL . self::HOST, '', $path);
         $streamContext = stream_context_get_options($this->context);
         $this->verifyTranspiler($streamContext);
 
@@ -87,7 +99,7 @@ final class Stream
      */
     private function rootToTemplate(Transpiler $transpiler, $filename, $streamContext)
     {
-        $filename = substr($filename, 0, -5);
+        $filename = substr($filename, 0, strlen(self::ROOT) * -1);
 
         if (is_file($filename) === false) {
             return $this->documentToTemplate($transpiler, $transpiler->transpileRoot());
@@ -156,7 +168,7 @@ final class Stream
      */
     public function url_stat($path)
     {
-        $filename = str_replace('gxsl://', '', $path);
+        $filename = str_replace(self::PROTOCOL . self::HOST, '', $path);
         if ($this->isRoot($filename)) {
             return [];
         }
@@ -178,6 +190,6 @@ final class Stream
      */
     private function isRoot($filename)
     {
-        return substr($filename, -5) === '#root';
+        return substr($filename, strlen(self::ROOT) * -1) === self::ROOT;
     }
 }

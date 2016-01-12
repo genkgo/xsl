@@ -193,7 +193,7 @@ final class XsltProcessor extends PhpXsltProcessor
     private function createTranspiledDocument(DOMDocument $styleSheet)
     {
         $transpiledStyleSheet = new DOMDocument('1.0', 'UTF-8');
-        $transpiledStyleSheet->load('gxsl://' . $styleSheet->documentURI . '#root');
+        $transpiledStyleSheet->load(Stream::PROTOCOL . Stream::HOST . $styleSheet->documentURI . Stream::ROOT);
         return $transpiledStyleSheet;
     }
 

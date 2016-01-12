@@ -23,7 +23,7 @@ class StreamTest extends AbstractTestCase
                 )
             ]
         ]);
-        $stream->stream_open('gxsl://#root');
+        $stream->stream_open(Stream::PROTOCOL . Stream::HOST . Stream::ROOT);
         $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>', trim($stream->stream_read(9999)));
     }
 
@@ -33,7 +33,7 @@ class StreamTest extends AbstractTestCase
 
         $stream = new Stream();
         $stream->context = stream_context_create();
-        $stream->stream_open('gxsl://~');
+        $stream->stream_open(Stream::PROTOCOL . Stream::HOST . Stream::ROOT);
     }
 
     public function testStreamWrite()
