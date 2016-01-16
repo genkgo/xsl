@@ -2,6 +2,7 @@ language: php
 php:
   - 5.6
   - 7
+  - hhvm
 script:
   - phpunit -c tests/phpunit.xml --coverage-clover=coverage.clover
 before_script:
