@@ -53,4 +53,21 @@ class Sequence
     {
         return XsSequence::fromArray(array_slice($elements, $position - 1, $length));
     }
+
+    /**
+     * @param $elements
+     * @return XsSequence
+     * @throws \Genkgo\Xsl\Schema\Exception\UnknownSequenceItemException
+     */
+    public static function distinctValues($elements)
+    {
+        $sequence = XsSequence::fromArray($elements);
+
+        $values = [];
+        foreach ($sequence->documentElement->childNodes as $childNode) {
+            $values[] = $childNode->nodeValue;
+        }
+
+        return XsSequence::fromArray(array_unique($values));
+    }
 }

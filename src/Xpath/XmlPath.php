@@ -68,6 +68,10 @@ final class XmlPath implements XmlNamespaceInterface
             'insert-before',
             new ReturnXsSequenceFunction(new ObjectFunction([Sequence::class, 'insertBefore']))
         ))->register($functions);
+        (new StaticFunction(
+            'distinct-values',
+            new ReturnXsSequenceFunction(new ObjectFunction([Sequence::class, 'distinctValues']))
+        ))->register($functions);
 
         (new StaticFunction(
             'current-time',

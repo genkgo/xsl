@@ -60,4 +60,28 @@ class SequenceTest extends AbstractXpathTest
             $this->transformFile('Stubs/Xpath/Sequence/subsequence-length.xsl')
         );
     }
+
+    public function testDistinctValuesElement()
+    {
+        $this->assertEquals(
+            'guitar',
+            $this->transformFile('Stubs/Xpath/Sequence/distinct-values-elements.xsl')
+        );
+    }
+
+    public function testDistinctValuesAttribute()
+    {
+        $this->assertEquals(
+            '12:00:00+00:00 09:00:00+00:00',
+            $this->transformFile('Stubs/Xpath/Sequence/distinct-values-attributes.xsl')
+        );
+    }
+
+    public function testDistinctValuesScalars()
+    {
+        $this->assertEquals(
+            '1 2 3 4',
+            $this->transformFile('Stubs/Xpath/Sequence/distinct-values-scalars.xsl')
+        );
+    }
 }
