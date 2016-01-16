@@ -6,6 +6,18 @@ use Genkgo\Xsl\XsltProcessor;
 
 class ProcessXslt1DocumentsTest extends AbstractIntegrationTestCase
 {
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        if(defined('HHVM_VERSION')) {
+            // this test should be skipped on hhvm
+            // https://github.com/facebook/hhvm/issues/2593
+            $this->markTestSkipped();
+        }
+    }
+
     public function testCollection()
     {
         $xslDoc = new DOMDocument();
