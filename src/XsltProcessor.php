@@ -168,7 +168,11 @@ final class XsltProcessor extends PhpXsltProcessor
             $namespace->register($transformers, $functions);
         }
 
-        return new Transpiler($context);
+        try {
+            return new Transpiler($context, $this->config->getCacheAdapter());
+        } catch (CacheDisabledException $e) {
+            return new Transpiler($context);
+        }
     }
 
     /**
@@ -195,8 +199,7 @@ final class XsltProcessor extends PhpXsltProcessor
         $documentURI = $styleSheet->documentURI;
 
         if (PHP_OS === 'WINNT') {
-            $documentURI = preg_replace('/file:\/([A-Z]){1}\:/', '/DISK$1', $documentURI);
-            $documentURI = str_replace('\\', '/', $documentURI);
+            $documentURI = str_replace('file:', '/', $documentURI);
         }
 
         $transpiledStyleSheet = new DOMDocument('1.0', 'UTF-8');
@@ -227,12 +230,6 @@ final class XsltProcessor extends PhpXsltProcessor
                 'transpiler' => $transpiler
             ]
         ];
-
-        try {
-            $contextOptions['gxsl']['cache'] = $this->config->getCacheAdapter();
-        } catch (CacheDisabledException $e) {
-            // caching adapter is not required for the processor to run
-        }
 
         return $contextOptions;
     }

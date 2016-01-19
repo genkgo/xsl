@@ -13,6 +13,7 @@ use Genkgo\Xsl\Xsl\Functions\CurrentGroupingKey;
 use Genkgo\Xsl\Xsl\Functions\DateFormatting;
 use Genkgo\Xsl\Xsl\Functions\GroupBy;
 use Genkgo\Xsl\Xsl\Functions\GroupIterate;
+use Genkgo\Xsl\Xsl\Node\IncludeWindowsTransformer;
 
 /**
  * Class XslTransformations

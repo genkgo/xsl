@@ -17,6 +17,7 @@ use Genkgo\Xsl\Xsl\Node\AttributeSelect;
 use Genkgo\Xsl\Xsl\Node\AttributeTest;
 use Genkgo\Xsl\Xsl\Node\ElementForEachGroup;
 use Genkgo\Xsl\Xsl\Node\ElementValueOf;
+use Genkgo\Xsl\Xsl\Node\IncludeWindowsTransformer;
 
 /**
  * Class Transformer
@@ -54,6 +55,10 @@ final class Transformer implements TransformerInterface
             new AttributeTest($xpathCompiler),
             new ElementValueOf(),
         ];
+
+        if (PHP_OS === 'WINNT') {
+            $this->elementTransformers[] = new IncludeWindowsTransformer();
+        }
 
         $this->attributeTransformers = [
             new AttributeValueTemplates($xpathCompiler)

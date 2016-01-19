@@ -1,0 +1,33 @@
+<?php
+namespace Genkgo\Xsl\Xsl\Node;
+
+use DOMElement;
+use Genkgo\Xsl\Stream;
+use Genkgo\Xsl\Xsl\ElementTransformerInterface;
+
+/**
+ * Class ElementValueOf
+ * @package Genkgo\Xsl\Xsl\Node
+ */
+final class IncludeWindowsTransformer implements ElementTransformerInterface
+{
+    /**
+     * @param DOMElement $element
+     * @return bool
+     */
+    public function supports(DOMElement $element)
+    {
+        return $element->localName === 'include';
+    }
+
+    /**
+     * @param DOMElement $element
+     */
+    public function transform(DOMElement $element)
+    {
+        $href = $element->getAttribute('href');
+        if (preg_match('~[A-Z]{1}\:\\\~', $href) === 1) {
+            $element->setAttribute('href', Stream::PROTOCOL . Stream::HOST . '/' . str_replace('\\', '/', $href));
+        }
+    }
+}

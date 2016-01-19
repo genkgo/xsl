@@ -3,7 +3,9 @@ namespace Genkgo\Xsl;
 
 use Closure;
 use DOMDocument;
+use Genkgo\Cache\CallbackCacheInterface;
 use Genkgo\Xsl\Callback\PhpCallback;
+use Genkgo\Xsl\Xsl\Node\IncludeWindowsTransformer;
 
 /**
  * Class Transpiler
@@ -15,13 +17,19 @@ final class Transpiler
      * @var TransformationContext
      */
     private $context;
+    /**
+     * @var CallbackCacheInterface
+     */
+    private $cacheAdapter;
 
     /**
      * @param TransformationContext $context
+     * @param CallbackCacheInterface $cacheAdapter
      */
-    public function __construct(TransformationContext $context)
+    public function __construct(TransformationContext $context, CallbackCacheInterface $cacheAdapter = null)
     {
         $this->context = $context;
+        $this->cacheAdapter = $cacheAdapter;
     }
 
     /**
@@ -30,8 +38,22 @@ final class Transpiler
     public function transpileRoot()
     {
         $document = $this->context->getDocument();
-        $this->transpile($document);
-        return $document;
+
+        $callback = function () use ($document) {
+            $this->transpile($document);
+            return $document->saveXML();
+        };
+
+        $documentURI = $document->documentURI;
+		if (PHP_OS === 'WINNT') {
+            $documentURI = ltrim(str_replace('file:', '', $documentURI), '/');
+        }
+		
+        if ($this->cacheAdapter !== null && is_file($documentURI)) {
+            return $this->cacheAdapter->get($documentURI, $callback);
+        }
+
+        return $callback();
     }
 
     /**
@@ -53,6 +75,26 @@ final class Transpiler
         if ($root && $root->getAttribute('version') === '2.0') {
             $root->setAttribute('version', '1.0');
         }
+    }
+
+    /**
+     * @param $path
+     * @return DOMDocument
+     */
+    public function transpileFile($path)
+    {
+        $callback = function () use ($path) {
+            $document = new DOMDocument();
+            $document->load($path);
+            $this->transpile($document);
+            return $document->saveXML();
+        };
+
+        if ($this->cacheAdapter !== null) {
+            $this->cacheAdapter->get($path, $callback);
+        }
+
+        return $callback();
     }
 
     /**
