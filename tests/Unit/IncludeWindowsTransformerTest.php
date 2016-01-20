@@ -7,8 +7,8 @@ use Genkgo\Xsl\AbstractTestCase;
 use Genkgo\Xsl\Stream;
 use Genkgo\Xsl\Xsl\Node\IncludeWindowsTransformer;
 
-class IncludeWindowsTransformerTest extends AbstractTestCase {
-
+class IncludeWindowsTransformerTest extends AbstractTestCase
+{
     public function testFullPath()
     {
         $document = new DOMDocument('1.0', 'UTF-8');
@@ -32,5 +32,4 @@ class IncludeWindowsTransformerTest extends AbstractTestCase {
 
         $this->assertEquals(1, $items);
     }
-
 }

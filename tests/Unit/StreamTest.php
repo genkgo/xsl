@@ -13,7 +13,6 @@ use Genkgo\Xsl\Util\TransformerCollection;
 
 class StreamTest extends AbstractTestCase
 {
-	
     public function testStreamOpenRead()
     {
         $stream = new Stream();
@@ -40,26 +39,26 @@ class StreamTest extends AbstractTestCase
         $stream->stream_write();
     }
 
-	public function testFullPath()
+    public function testFullPath()
     {
         $unregister = false;
         if (in_array('gxsl', stream_get_wrappers()) === false) {
             stream_wrapper_register('gxsl', Stream::class);
             $unregister = true;
-
         }
 
         $this->assertEquals(
-			file_get_contents('Stubs/include2.xsl'),
-			file_get_contents('gxsl://localhost/' . urlencode(getcwd() . '/Stubs/include2.xsl'))
-		);
+            file_get_contents('Stubs/include2.xsl'),
+            file_get_contents('gxsl://localhost/' . urlencode(getcwd() . '/Stubs/include2.xsl'))
+        );
 
         if ($unregister) {
             stream_wrapper_unregister('gxsl');
         }
     }
 
-	private function createContext() {
+    private function createContext()
+    {
         return stream_context_create([
             'gxsl' => [
                 'transpiler' => new Transpiler(
@@ -67,6 +66,5 @@ class StreamTest extends AbstractTestCase
                 )
             ]
         ]);
-	}
-
+    }
 }

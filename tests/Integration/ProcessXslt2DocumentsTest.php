@@ -20,8 +20,8 @@ class ProcessXslt2DocumentsTest extends AbstractIntegrationTestCase
 
         $this->assertEquals(157, trim($processorResult));
     }
-	
-	public function testInclude()
+    
+    public function testInclude()
     {
         $xslDoc = new DOMDocument();
         $xslDoc->load('Stubs/include2.xsl');
@@ -36,17 +36,17 @@ class ProcessXslt2DocumentsTest extends AbstractIntegrationTestCase
         $this->assertEquals(157, trim($transpilerResult));
     }
 
-	public function testIncludeFullPath()
+    public function testIncludeFullPath()
     {
-        $xslDoc = new DOMDocument ("1.0", "UTF-8");
+        $xslDoc = new DOMDocument("1.0", "UTF-8");
         $xslRoot = $xslDoc->createElementNS('http://www.w3.org/1999/XSL/Transform', 'xsl:stylesheet');
         $xslRoot->setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:php', 'http://php.net/xsl');
         $xslRoot->setAttribute('exclude-result-prefixes', 'php');
         $xslRoot->setAttribute('version', '1.0');
-		$xslDoc->appendChild($xslRoot);
+        $xslDoc->appendChild($xslRoot);
 
-		$include = $xslDoc->createElementNS('http://www.w3.org/1999/XSL/Transform', 'xsl:include');
-		$include->setAttribute('href', getcwd() . '/Stubs/include3.xsl');
+        $include = $xslDoc->createElementNS('http://www.w3.org/1999/XSL/Transform', 'xsl:include');
+        $include->setAttribute('href', getcwd() . '/Stubs/include3.xsl');
         $xslRoot->appendChild($include);
 
         $xmlDoc = new DOMDocument();

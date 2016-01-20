@@ -14,5 +14,4 @@ class ForLoopTest extends AbstractXpathTest
         $result = $this->transformFile('Stubs/Xpath/ForLoop/for-each.xsl');
         $this->assertContains('12345678910', $result);
     }
-
 }
