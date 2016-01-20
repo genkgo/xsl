@@ -77,7 +77,8 @@ final class Config
     /**
      * @return Config
      */
-    public function excludeResultPrefixes () {
+    public function excludeResultPrefixes()
+    {
         $this->excludeResultPrefixes = true;
         return $this;
     }
@@ -97,6 +98,4 @@ final class Config
     {
         return new static();
     }
-
-
 }

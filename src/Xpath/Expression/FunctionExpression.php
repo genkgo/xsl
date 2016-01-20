@@ -8,13 +8,15 @@ use Genkgo\Xsl\Util\FunctionMap;
 use Genkgo\Xsl\Xpath\ExpressionInterface;
 use Genkgo\Xsl\Xpath\Lexer;
 
-class FunctionExpression implements ExpressionInterface {
+class FunctionExpression implements ExpressionInterface
+{
     /**
      * @var FunctionMap
      */
     private $functions;
 
-    public function __construct (FunctionMap $functions) {
+    public function __construct(FunctionMap $functions)
+    {
         $this->functions = $functions;
     }
 
@@ -44,7 +46,8 @@ class FunctionExpression implements ExpressionInterface {
      * @param DOMNode $currentElement
      * @return string[]
      */
-    private function createFunctionTokens (Lexer $lexer, DOMNode $currentElement) {
+    private function createFunctionTokens(Lexer $lexer, DOMNode $currentElement)
+    {
         $token = $lexer->current();
         $documentElement = $currentElement->ownerDocument->documentElement;
         $namespaces = FetchNamespacesFromNode::fetch($documentElement);

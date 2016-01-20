@@ -6,8 +6,8 @@ use Genkgo\Xsl\Xpath\ExpressionInterface;
 use Genkgo\Xsl\Xpath\ForLoopConstructor;
 use Genkgo\Xsl\Xpath\Lexer;
 
-final class ForLoopExpression implements ExpressionInterface {
-
+final class ForLoopExpression implements ExpressionInterface
+{
     /**
      * @var ForLoopConstructor
      */
@@ -16,7 +16,8 @@ final class ForLoopExpression implements ExpressionInterface {
     /**
      *
      */
-    public function __construct () {
+    public function __construct()
+    {
         $this->forLoopConstructor = new ForLoopConstructor();
     }
 
@@ -39,6 +40,6 @@ final class ForLoopExpression implements ExpressionInterface {
     {
         array_pop($tokens);
         array_pop($tokens);
-        return array_merge($tokens ,$this->forLoopConstructor->replace($lexer, $currentElement));
+        return array_merge($tokens, $this->forLoopConstructor->replace($lexer, $currentElement));
     }
 }

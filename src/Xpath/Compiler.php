@@ -51,5 +51,4 @@ final class Compiler
 
         return trim(implode('', $resultTokens));
     }
-
 }

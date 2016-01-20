@@ -7,7 +7,6 @@ namespace Genkgo\Xsl\Schema;
  */
 final class XsInteger extends AbstractXsElement
 {
-
     /**
      * @return string
      */

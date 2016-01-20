@@ -8,8 +8,8 @@ use Genkgo\Xsl\Xpath\Lexer;
 use Genkgo\Xsl\Xpath\MatchingIterator;
 use Genkgo\Xsl\Xpath\SequenceConstructor;
 
-final class SequenceExpression implements ExpressionInterface {
-
+final class SequenceExpression implements ExpressionInterface
+{
     /**
      * @var ReturnXsSequenceFunction
      */
@@ -18,7 +18,8 @@ final class SequenceExpression implements ExpressionInterface {
     /**
      *
      */
-    public function __construct () {
+    public function __construct()
+    {
         $this->sequenceConstructor = new ReturnXsSequenceFunction(new SequenceConstructor());
     }
 

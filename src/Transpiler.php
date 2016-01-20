@@ -45,10 +45,10 @@ final class Transpiler
         };
 
         $documentURI = $document->documentURI;
-		if (PHP_OS === 'WINNT') {
+        if (PHP_OS === 'WINNT') {
             $documentURI = ltrim(str_replace('file:', '', $documentURI), '/');
         }
-		
+        
         if ($this->cacheAdapter !== null && is_file($documentURI)) {
             return $this->cacheAdapter->get($documentURI, $callback);
         }

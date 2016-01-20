@@ -7,13 +7,13 @@ use DOMNode;
  * Interface ExpressionInterface
  * @package Genkgo\Xsl\Xpath
  */
-interface ExpressionInterface {
-
+interface ExpressionInterface
+{
     /**
      * @param Lexer $lexer
      * @return bool
      */
-    public function supports (Lexer $lexer);
+    public function supports(Lexer $lexer);
 
     /**
      * @param Lexer $lexer
@@ -21,6 +21,5 @@ interface ExpressionInterface {
      * @param array $tokens
      * @return array
      */
-    public function merge (Lexer $lexer, DOMNode $currentElement, array $tokens);
-
+    public function merge(Lexer $lexer, DOMNode $currentElement, array $tokens);
 }

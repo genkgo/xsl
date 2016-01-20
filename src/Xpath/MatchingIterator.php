@@ -7,8 +7,8 @@ use Iterator;
  * Class MatchingIterator
  * @package Genkgo\Xsl\Xpath
  */
-class MatchingIterator implements Iterator {
-
+class MatchingIterator implements Iterator
+{
     const DIRECTION_UP = 1;
     const DIRECTION_DOWN = -1;
 
@@ -36,7 +36,8 @@ class MatchingIterator implements Iterator {
      * @param $regex
      * @param int $direction
      */
-    public function __construct (Lexer $lexer, $regex, $direction = self::DIRECTION_UP) {
+    public function __construct(Lexer $lexer, $regex, $direction = self::DIRECTION_UP)
+    {
         $this->lexer = $lexer;
         $this->regex = $regex;
         $this->direction = $direction;
@@ -97,7 +98,8 @@ class MatchingIterator implements Iterator {
     /**
      *
      */
-    private function start () {
+    private function start()
+    {
         $this->position = $this->lexer->key() + ($this->direction * -1);
         $this->next();
     }
@@ -107,8 +109,8 @@ class MatchingIterator implements Iterator {
      * @param $end
      * @return bool
      */
-    private function compare ($index, $end) {
+    private function compare($index, $end)
+    {
         return $this->direction === self::DIRECTION_UP ? $index < $end : $index >= $end;
     }
-
 }

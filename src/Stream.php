@@ -37,7 +37,7 @@ final class Stream
     /**
      * @var string
      */
-    private $path;
+    private $content;
 
     /**
      * @param $path
@@ -46,7 +46,28 @@ final class Stream
      */
     public function stream_open($path)
     {
-        $this->path = $this->uriToPath($path);
+        $path = $this->uriToPath($path);
+
+        $streamContext = stream_context_get_options($this->context);
+
+        /** @var Transpiler $transpiler */
+        if (isset($streamContext['gxsl']['transpiler'])) {
+            $transpiler = $streamContext['gxsl']['transpiler'];
+
+            if ($this->isRoot($path)) {
+                $this->content = $transpiler->transpileRoot();
+            } else {
+                $this->content = $transpiler->transpileFile($path);
+            }
+        } else {
+            if ($this->isRoot($path)) {
+                throw new StreamException(
+                    $path . ' does not exists without stream'
+                );
+            }
+            $this->content = file_get_contents($path);
+        }
+
         return true;
     }
 
@@ -58,6 +79,9 @@ final class Stream
         $this->template = null;
     }
 
+    /**
+     * @return array
+     */
     public function stream_stat()
     {
         return [];
@@ -70,27 +94,7 @@ final class Stream
      */
     public function stream_read($count)
     {
-        $streamContext = stream_context_get_options($this->context);
-
-        /** @var Transpiler $transpiler */
-        if (isset($streamContext['gxsl']['transpiler'])) {
-            $transpiler = $streamContext['gxsl']['transpiler'];
-
-            if ($this->isRoot($this->path)) {
-                $content = $transpiler->transpileRoot();
-            } else {
-                $content = $transpiler->transpileFile($this->path);
-            }
-        } else {
-            if ($this->isRoot($this->path)) {
-                throw new StreamException(
-                    $this->path . ' does not exists without stream'
-                );
-            }
-            $content = file_get_contents($this->path);
-        }
-
-        $bytes = substr($content, $this->position, $count);
+        $bytes = substr($this->content, $this->position, $count);
         $this->position += $count;
 
         return $bytes;
@@ -140,7 +144,8 @@ final class Stream
      * @param string $uri
      * @return string
      */
-    private function uriToPath ($uri) {
+    private function uriToPath($uri)
+    {
         $filename = urldecode(str_replace(self::PROTOCOL . self::HOST, '', $uri));
         if (PHP_OS === 'WINNT') {
             return ltrim($filename, '/');

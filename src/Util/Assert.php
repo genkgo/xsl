@@ -5,8 +5,8 @@ use DOMElement;
 use Genkgo\Xsl\Schema\XmlSchema;
 use Genkgo\Xsl\Xpath\Exception\InvalidArgumentException;
 
-final class Assert {
-
+final class Assert
+{
     /**
      * @param $value
      * @throws InvalidArgumentException
@@ -30,5 +30,4 @@ final class Assert {
             throw new InvalidArgumentException("Expected a {$nsSchema}:{$name} object, got {$element->nodeName}");
         }
     }
-
 }
