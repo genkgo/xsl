@@ -3,25 +3,26 @@ namespace Genkgo\Xsl\Xsl\Functions\Formatter;
 
 use DateTimeInterface;
 use Genkgo\Xsl\Xpath\Exception\InvalidArgumentException;
-use Genkgo\Xsl\Xsl\Functions\DateComponent\AmPmMarkerComponent;
-use Genkgo\Xsl\Xsl\Functions\DateComponent\DayInMonthComponent;
-use Genkgo\Xsl\Xsl\Functions\DateComponent\DayInYearComponent;
-use Genkgo\Xsl\Xsl\Functions\DateComponent\DayOfWeekComponent;
-use Genkgo\Xsl\Xsl\Functions\DateComponent\HourInDayComponent;
-use Genkgo\Xsl\Xsl\Functions\DateComponent\HourInHalfDayComponent;
-use Genkgo\Xsl\Xsl\Functions\DateComponent\MinutesComponent;
-use Genkgo\Xsl\Xsl\Functions\DateComponent\MonthComponent;
-use Genkgo\Xsl\Xsl\Functions\DateComponent\SecondsComponent;
-use Genkgo\Xsl\Xsl\Functions\DateComponent\TimezoneOffsetGmtComponent;
-use Genkgo\Xsl\Xsl\Functions\DateComponent\TimezoneOffsetUtcComponent;
-use Genkgo\Xsl\Xsl\Functions\DateComponent\WeekOfYearComponent;
-use Genkgo\Xsl\Xsl\Functions\DateComponent\YearComponent;
+use Genkgo\Xsl\Xsl\Functions\IntlDateComponent\AmPmMarkerComponent;
+use Genkgo\Xsl\Xsl\Functions\IntlDateComponent\DayInMonthComponent;
+use Genkgo\Xsl\Xsl\Functions\IntlDateComponent\DayInYearComponent;
+use Genkgo\Xsl\Xsl\Functions\IntlDateComponent\DayOfWeekComponent;
+use Genkgo\Xsl\Xsl\Functions\IntlDateComponent\HourInDayComponent;
+use Genkgo\Xsl\Xsl\Functions\IntlDateComponent\HourInHalfDayComponent;
+use Genkgo\Xsl\Xsl\Functions\IntlDateComponent\MinutesComponent;
+use Genkgo\Xsl\Xsl\Functions\IntlDateComponent\MonthComponent;
+use Genkgo\Xsl\Xsl\Functions\IntlDateComponent\SecondsComponent;
+use Genkgo\Xsl\Xsl\Functions\IntlDateComponent\TimezoneOffsetGmtComponent;
+use Genkgo\Xsl\Xsl\Functions\IntlDateComponent\TimezoneOffsetUtcComponent;
+use Genkgo\Xsl\Xsl\Functions\IntlDateComponent\WeekOfYearComponent;
+use Genkgo\Xsl\Xsl\Functions\IntlDateComponent\YearComponent;
+use IntlDateFormatter;
 
 /**
  * Class DateTimeFormatting
  * @package Genkgo\Xsl\Xsl\Functions\Formatter
  */
-class DateTimeFormatter implements FormatterInterface {
+class IntlDateTimeFormatter implements FormatterInterface {
 
     /**
      * @var array|ComponentInterface[]
@@ -52,8 +53,16 @@ class DateTimeFormatter implements FormatterInterface {
 
         $i = 0;
         while (true) {
+
+            $escaped = false;
             while ($i < strlen($picture) && substr($picture, $i, 1) != '[') {
-                $result[] = $this->escape(substr($picture, $i, 1));
+                if ($escaped === false) {
+                    $result[] = $this->escape(substr($picture, $i, 1));
+                } else {
+                    $result[] = substr($picture, $i, 1);
+                }
+                $escaped = true;
+
                 if (substr($picture, $i, 1) == ']') {
                     $i++;
                     if ($i == strlen($picture) || substr($picture, $i, 1) != ']') {
@@ -63,6 +72,10 @@ class DateTimeFormatter implements FormatterInterface {
                     }
                 }
                 $i++;
+            }
+
+            if ($escaped) {
+                $result[] = '\'';
             }
 
             if ($i == strlen($picture)) {
@@ -98,7 +111,16 @@ class DateTimeFormatter implements FormatterInterface {
             }
         }
 
-        return $date->format(implode('', $result));
+        return (
+            new IntlDateFormatter(
+                $locale,
+                IntlDateFormatter::FULL,
+                IntlDateFormatter::FULL,
+                date_default_timezone_get(),
+                IntlDateFormatter::GREGORIAN,
+                implode('', $result)
+            )
+        )->format($date);
     }
 
     /**
@@ -164,7 +186,7 @@ class DateTimeFormatter implements FormatterInterface {
 
     private function escape($char)
     {
-        return '\\' . $char;
+        return '\'' . $char;
     }
 
 

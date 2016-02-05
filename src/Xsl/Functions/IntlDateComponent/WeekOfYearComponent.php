@@ -1,15 +1,16 @@
 <?php
-namespace Genkgo\Xsl\Xsl\Functions\DateComponent;
+namespace Genkgo\Xsl\Xsl\Functions\IntlDateComponent;
 
 use DateTimeInterface;
+use Genkgo\Xsl\Xpath\Exception\InvalidArgumentException;
 use Genkgo\Xsl\Xsl\Functions\Formatter\ComponentInterface;
 use Genkgo\Xsl\Xsl\Functions\Formatter\PictureString;
 
 /**
- * Class DayInYearComponent
+ * Class WeekOfYearComponent
  * @package Genkgo\Xsl\Xsl\Functions\DateComponent
  */
-final class DayInYearComponent implements ComponentInterface {
+final class WeekOfYearComponent implements ComponentInterface {
 
     /**
      * @param PictureString $pictureString
@@ -18,7 +19,7 @@ final class DayInYearComponent implements ComponentInterface {
      */
     public function format(PictureString $pictureString, DateTimeInterface $date)
     {
-        return (string)((int)$date->format('z') + 1);
+        return 'w';
     }
 
     /**
@@ -26,6 +27,6 @@ final class DayInYearComponent implements ComponentInterface {
      */
     public function __toString()
     {
-        return 'd';
+        return 'W';
     }
 }

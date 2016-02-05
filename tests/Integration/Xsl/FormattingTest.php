@@ -62,12 +62,12 @@ class FormattingTest extends AbstractXslTest
             'picture' => '[Y]-[M]-[D] [H]:[m]:[s] [Z]'
         ]));
 
-        $this->assertEquals('2015-10-16 03:37:00 PM +0200', $this->transformFile('Stubs/Xsl/Formatting/format-dateTime.xsl', [
+        $this->assertEquals('2015-10-16 03:37:00 PM GMT+02:00', $this->transformFile('Stubs/Xsl/Formatting/format-dateTime.xsl', [
             'dateTime' => (string) $xsDateTime,
             'picture' => '[Y]-[M]-[D] [h]:[m]:[s] [P] [z]'
         ]));
 
-        $this->assertEquals('288 +0200', $this->transformFile('Stubs/Xsl/Formatting/format-dateTime.xsl', [
+        $this->assertEquals('289 Fri', $this->transformFile('Stubs/Xsl/Formatting/format-dateTime.xsl', [
             'dateTime' => (string) $xsDateTime,
             'picture' => '[d] [F]'
         ]));
@@ -291,8 +291,11 @@ class FormattingTest extends AbstractXslTest
 
     public function testFormatCurrent()
     {
-        $this->assertContains('+', $this->transformFile('Stubs/Xsl/Formatting/format-current.xsl', [
-            'picture' => '[F]'
-        ]));
+        $this->assertContains(
+            date('d'),
+            $this->transformFile('Stubs/Xsl/Formatting/format-current.xsl', [
+                'picture' => '[D]'
+            ])
+        );
     }
 }

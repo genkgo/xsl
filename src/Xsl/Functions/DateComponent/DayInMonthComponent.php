@@ -1,8 +1,8 @@
 <?php
 namespace Genkgo\Xsl\Xsl\Functions\DateComponent;
 
-use DateTimeImmutable;
-use Genkgo\Xsl\Xpath\Exception\InvalidArgumentException;
+use DateTimeInterface;
+use Genkgo\Xsl\Xsl\Functions\Formatter\ComponentInterface;
 use Genkgo\Xsl\Xsl\Functions\Formatter\PictureString;
 
 /**
@@ -12,16 +12,12 @@ use Genkgo\Xsl\Xsl\Functions\Formatter\PictureString;
 final class DayInMonthComponent implements ComponentInterface {
 
     /**
-     * @param DateTimeImmutable $date
      * @param PictureString $pictureString
-     * @param $language
-     * @param $calendar
-     * @param $country
      * @return string
      */
-    public function format(DateTimeImmutable $date, PictureString $pictureString, $language, $calendar, $country)
+    public function format(PictureString $pictureString, DateTimeInterface $date)
     {
-        return $date->format('d');
+        return 'd';
     }
 
     /**

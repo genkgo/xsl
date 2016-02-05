@@ -1,7 +1,8 @@
 <?php
 namespace Genkgo\Xsl\Xsl\Functions\DateComponent;
 
-use DateTimeImmutable;
+use DateTimeInterface;
+use Genkgo\Xsl\Xsl\Functions\Formatter\ComponentInterface;
 use Genkgo\Xsl\Xsl\Functions\Formatter\PictureString;
 
 /**
@@ -11,16 +12,13 @@ use Genkgo\Xsl\Xsl\Functions\Formatter\PictureString;
 final class YearComponent implements ComponentInterface {
 
     /**
-     * @param DateTimeImmutable $date
      * @param PictureString $pictureString
-     * @param $language
-     * @param $calendar
-     * @param $country
+     * @param DateTimeInterface $date
      * @return string
      */
-    public function format(DateTimeImmutable $date, PictureString $pictureString, $language, $calendar, $country)
+    public function format(PictureString $pictureString, DateTimeInterface $date)
     {
-        return $date->format('Y');
+        return 'Y';
     }
 
     /**

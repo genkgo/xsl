@@ -1,5 +1,5 @@
 <?php
-namespace Genkgo\Xsl\Xsl\Functions\DateComponent;
+namespace Genkgo\Xsl\Xsl\Functions\IntlDateComponent;
 
 use DateTimeInterface;
 use Genkgo\Xsl\Xsl\Functions\Formatter\ComponentInterface;
@@ -18,7 +18,7 @@ final class DayInYearComponent implements ComponentInterface {
      */
     public function format(PictureString $pictureString, DateTimeInterface $date)
     {
-        return (string)((int)$date->format('z') + 1);
+        return 'D';
     }
 
     /**

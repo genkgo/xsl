@@ -1,15 +1,15 @@
 <?php
-namespace Genkgo\Xsl\Xsl\Functions\DateComponent;
+namespace Genkgo\Xsl\Xsl\Functions\IntlDateComponent;
 
 use DateTimeInterface;
 use Genkgo\Xsl\Xsl\Functions\Formatter\ComponentInterface;
 use Genkgo\Xsl\Xsl\Functions\Formatter\PictureString;
 
 /**
- * Class DayInYearComponent
+ * Class HourInHalfDayComponent
  * @package Genkgo\Xsl\Xsl\Functions\DateComponent
  */
-final class DayInYearComponent implements ComponentInterface {
+final class HourInHalfDayComponent implements ComponentInterface {
 
     /**
      * @param PictureString $pictureString
@@ -18,7 +18,7 @@ final class DayInYearComponent implements ComponentInterface {
      */
     public function format(PictureString $pictureString, DateTimeInterface $date)
     {
-        return (string)((int)$date->format('z') + 1);
+        return 'hh';
     }
 
     /**
@@ -26,6 +26,6 @@ final class DayInYearComponent implements ComponentInterface {
      */
     public function __toString()
     {
-        return 'd';
+        return 'h';
     }
 }
