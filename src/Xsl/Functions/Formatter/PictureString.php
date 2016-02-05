@@ -49,7 +49,7 @@ final class PictureString {
 
             if ($dash = strpos($modifier, '-') !== false) {
                 $widthModifier = substr($modifier, $comma + 1, -1);
-                list($this->minWidth, $this->maxWidth) = explode('-', $widthModifier);
+                list($this->minWidth, $this->maxWidth) = array_map('intval', explode('-', $widthModifier));
                 if ($this->maxWidth === '*') {
                     $this->maxWidth = null;
                 }
@@ -57,7 +57,7 @@ final class PictureString {
                     $this->minWidth = null;
                 }
             } else {
-                $this->minWidth = substr($modifier, $dash, -1);
+                $this->minWidth = (int) substr($modifier, $dash, -1);
             }
         } else {
             $this->presentationModifier = substr($modifier, 0, -1);
