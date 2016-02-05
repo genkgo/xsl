@@ -17,7 +17,12 @@ final class DayInMonthComponent implements ComponentInterface {
      */
     public function format(PictureString $pictureString, DateTimeInterface $date)
     {
-        return 'dd';
+        $maxWidth = $pictureString->getMaxWidth();
+        if ($maxWidth > 1) {
+            return 'dd';
+        } else {
+            return 'd';
+        }
     }
 
     /**

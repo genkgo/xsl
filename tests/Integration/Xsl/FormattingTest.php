@@ -290,7 +290,7 @@ class FormattingTest extends AbstractXslTest
 
     public function testFormatCurrent()
     {
-        $this->assertContains(
+        $this->assertEquals(
             date('d'),
             $this->transformFile('Stubs/Xsl/Formatting/format-current.xsl', [
                 'picture' => '[D]'
@@ -359,6 +359,19 @@ class FormattingTest extends AbstractXslTest
             $this->transformFile('Stubs/Xsl/Formatting/format-dateTime.xsl', [
                 'dateTime' => (string)$xsDateTime,
                 'picture' => '[FN,*-3]'
+            ])
+        );
+    }
+
+    public function testFormatDayInMonthWithoutLeadingZero()
+    {
+        $xsDateTime = XsDateTime::fromString('2015-10-08 15:37:00');
+
+        $this->assertEquals(
+            '8',
+            $this->transformFile('Stubs/Xsl/Formatting/format-dateTime.xsl', [
+                'dateTime' => (string)$xsDateTime,
+                'picture' => '[D,1]'
             ])
         );
     }
