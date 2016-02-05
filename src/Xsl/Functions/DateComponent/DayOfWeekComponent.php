@@ -18,7 +18,7 @@ final class DayOfWeekComponent implements ComponentInterface {
      */
     public function format(PictureString $pictureString, DateTimeInterface $date)
     {
-        return 'D';
+        return 'l';
     }
 
     /**

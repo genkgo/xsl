@@ -56,15 +56,22 @@ class FormattingTest extends AbstractXslTest
     {
         $xsDateTime = XsDateTime::fromString('2015-10-16 15:37:00');
 
-        $this->assertEquals('2015-10-16 15:37:00 GMT+2', $this->transformFile('Stubs/Xsl/Formatting/format-dateTime.xsl', [
-            'dateTime' => (string) $xsDateTime,
-            'picture' => '[Y]-[M]-[D] [H]:[m]:[s] [Z]'
-        ]));
+        $this->assertThat(
+            $this->transformFile('Stubs/Xsl/Formatting/format-dateTime.xsl', [
+                'dateTime' => (string) $xsDateTime,
+                'picture' => '[Y]-[M]-[D] [H]:[m]:[s] [Z]'
+            ]),
+            $this->logicalOr(
+                '2015-10-16 15:37:00 GMT+2',
+                '2015-10-16 15:37:00 GMT+0200'
+            )
+        );
 
         $this->assertEquals('2015-10-16 03:37:00 PM GMT+02:00', $this->transformFile('Stubs/Xsl/Formatting/format-dateTime.xsl', [
             'dateTime' => (string) $xsDateTime,
             'picture' => '[Y]-[M]-[D] [h]:[m]:[s] [P] [z]'
         ]));
+
 
         $this->assertEquals('289 Friday', $this->transformFile('Stubs/Xsl/Formatting/format-dateTime.xsl', [
             'dateTime' => (string) $xsDateTime,
@@ -298,6 +305,9 @@ class FormattingTest extends AbstractXslTest
         );
     }
 
+    /**
+     * @requires extension intl
+     */
     public function testFormatMonthName()
     {
         $xsDateTime = XsDateTime::fromString('2015-10-16 15:37:00');
@@ -311,6 +321,9 @@ class FormattingTest extends AbstractXslTest
         );
     }
 
+    /**
+     * @requires extension intl
+     */
     public function testFormatMonthNameAbbreviated()
     {
         $xsDateTime = XsDateTime::fromString('2015-10-16 15:37:00');
@@ -324,6 +337,9 @@ class FormattingTest extends AbstractXslTest
         );
     }
 
+    /**
+     * @requires extension intl
+     */
     public function testFormatDayName()
     {
         $xsDateTime = XsDateTime::fromString('2015-10-16 15:37:00');
@@ -337,6 +353,9 @@ class FormattingTest extends AbstractXslTest
         );
     }
 
+    /**
+     * @requires extension intl
+     */
     public function testFormatDayNameAbbreviated()
     {
         $xsDateTime = XsDateTime::fromString('2015-10-16 15:37:00');
@@ -350,6 +369,9 @@ class FormattingTest extends AbstractXslTest
         );
     }
 
+    /**
+     * @requires extension intl
+     */
     public function testFormatDayNameAbbreviatedCapital()
     {
         $xsDateTime = XsDateTime::fromString('2015-10-16 15:37:00');
@@ -363,6 +385,9 @@ class FormattingTest extends AbstractXslTest
         );
     }
 
+    /**
+     * @requires extension intl
+     */
     public function testFormatDayNameAbbreviatedCapitalWithMonthCapital()
     {
         $xsDateTime = XsDateTime::fromString('2015-10-16 15:37:00');
@@ -376,6 +401,9 @@ class FormattingTest extends AbstractXslTest
         );
     }
 
+    /**
+     * @requires extension intl
+     */
     public function testFormatDayInMonthWithoutLeadingZero()
     {
         $xsDateTime = XsDateTime::fromString('2015-10-08 15:37:00');
