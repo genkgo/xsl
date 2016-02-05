@@ -18,6 +18,16 @@ final class DayOfWeekComponent implements ComponentInterface {
      */
     public function format(PictureString $pictureString, DateTimeInterface $date)
     {
+        $presentation = $pictureString->getPresentationModifier();
+        if ($presentation === 'Nn' || $presentation === 'N' || $presentation === 'n') {
+            $maxWidth = $pictureString->getMaxWidth();
+            if ($maxWidth !== null && $maxWidth <= 3) {
+                return 'EEE';
+            } else {
+                return 'EEEE';
+            }
+        }
+
         return 'EEEE';
     }
 

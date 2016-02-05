@@ -20,7 +20,12 @@ final class MonthComponent implements ComponentInterface {
     {
         $presentation = $pictureString->getPresentationModifier();
         if ($presentation === 'Nn' || $presentation === 'N' || $presentation === 'n') {
-            return 'MMMM';
+            $maxWidth = $pictureString->getMaxWidth();
+            if ($maxWidth !== null && $maxWidth <= 3) {
+                return 'MMM';
+            } else {
+                return 'MMMM';
+            }
         }
 
         return 'MM';

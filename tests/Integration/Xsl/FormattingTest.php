@@ -1,7 +1,6 @@
 <?php
 namespace Genkgo\Xsl\Integration\Xsl;
 
-use DateTimeImmutable;
 use Genkgo\Xsl\Schema\XsDate;
 use Genkgo\Xsl\Schema\XsDateTime;
 use Genkgo\Xsl\Schema\XsTime;
@@ -299,15 +298,54 @@ class FormattingTest extends AbstractXslTest
         );
     }
 
-    public function testFormatDayName()
+    public function testFormatMonthName()
     {
         $xsDateTime = XsDateTime::fromString('2015-10-16 15:37:00');
 
-        $this->assertContains(
+        $this->assertEquals(
             'October',
             $this->transformFile('Stubs/Xsl/Formatting/format-dateTime.xsl', [
                 'dateTime' => (string)$xsDateTime,
                 'picture' => '[MNn]'
+            ])
+        );
+    }
+
+    public function testFormatMonthNameAbbreviated()
+    {
+        $xsDateTime = XsDateTime::fromString('2015-10-16 15:37:00');
+
+        $this->assertEquals(
+            'Oct',
+            $this->transformFile('Stubs/Xsl/Formatting/format-dateTime.xsl', [
+                'dateTime' => (string)$xsDateTime,
+                'picture' => '[MNn,*-3]'
+            ])
+        );
+    }
+
+    public function testFormatDayName()
+    {
+        $xsDateTime = XsDateTime::fromString('2015-10-16 15:37:00');
+
+        $this->assertEquals(
+            'Friday',
+            $this->transformFile('Stubs/Xsl/Formatting/format-dateTime.xsl', [
+                'dateTime' => (string)$xsDateTime,
+                'picture' => '[FNn]'
+            ])
+        );
+    }
+
+    public function testFormatDayNameAbbreviated()
+    {
+        $xsDateTime = XsDateTime::fromString('2015-10-16 15:37:00');
+
+        $this->assertEquals(
+            'Fri',
+            $this->transformFile('Stubs/Xsl/Formatting/format-dateTime.xsl', [
+                'dateTime' => (string)$xsDateTime,
+                'picture' => '[FNn,*-3]'
             ])
         );
     }

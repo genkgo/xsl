@@ -20,9 +20,13 @@ final class PictureString {
     private $presentationModifier;
 
     /**
-     * @var string
+     * @var int
      */
-    private $widthModifier;
+    private $minWidth;
+    /**
+     * @var int
+     */
+    private $maxWidth;
 
     /**
      * @param string $picture
@@ -38,7 +42,25 @@ final class PictureString {
         }
 
         $this->componentSpecifier = $groups[1][0];
-        $this->presentationModifier = substr($groups[2][0], 0, -1);
+        if ($comma = strpos($groups[2][0], ',') !== false) {
+            $this->presentationModifier = substr($groups[2][0], 0, $comma + 1);
+
+            if ($dash = strpos($groups[2][0], '-') !== false) {
+                $widthModifier = substr($groups[2][0], $comma + 2, -1);
+                list($this->minWidth, $this->maxWidth) = explode('-', $widthModifier);
+                if ($this->maxWidth === '*') {
+                    $this->maxWidth = null;
+                }
+                if ($this->minWidth === '*') {
+                    $this->minWidth = null;
+                }
+            } else {
+                $this->minWidth = substr($groups[2][0], $dash, -1);
+            }
+        } else {
+            $this->presentationModifier = substr($groups[2][0], 0, -1);
+        }
+
     }
 
     /**
@@ -58,11 +80,19 @@ final class PictureString {
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getWidthModifier()
+    public function getMaxWidth()
     {
-        return $this->widthModifier;
+        return $this->maxWidth;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMinWidth()
+    {
+        return $this->minWidth;
     }
 
 }
