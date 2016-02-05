@@ -363,6 +363,19 @@ class FormattingTest extends AbstractXslTest
         );
     }
 
+    public function testFormatDayNameAbbreviatedCapitalWithMonthCapital()
+    {
+        $xsDateTime = XsDateTime::fromString('2015-10-16 15:37:00');
+
+        $this->assertEquals(
+            'OCTOBER FRI',
+            $this->transformFile('Stubs/Xsl/Formatting/format-dateTime.xsl', [
+                'dateTime' => (string)$xsDateTime,
+                'picture' => '[MN] [FN,*-3]'
+            ])
+        );
+    }
+
     public function testFormatDayInMonthWithoutLeadingZero()
     {
         $xsDateTime = XsDateTime::fromString('2015-10-08 15:37:00');

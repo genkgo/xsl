@@ -24,6 +24,8 @@ use IntlDateFormatter;
  */
 class IntlDateTimeFormatter implements FormatterInterface {
 
+    const ESCAPE = '\'';
+
     /**
      * @var array|ComponentInterface[]
      */
@@ -60,7 +62,7 @@ class IntlDateTimeFormatter implements FormatterInterface {
         while (true) {
 
             $escaped = false;
-            while ($i < strlen($picture) && substr($picture, $i, 1) != '[') {
+            while ($i < strlen($picture) && substr($picture, $i, 1) !== '[') {
                 if ($escaped === false) {
                     $result[] = $this->escape(substr($picture, $i, 1));
                 } else {
@@ -80,7 +82,7 @@ class IntlDateTimeFormatter implements FormatterInterface {
             }
 
             if ($escaped) {
-                $result[] = '\'';
+                $result[] = self::ESCAPE;
             }
 
             if ($i == strlen($picture)) {
@@ -105,22 +107,24 @@ class IntlDateTimeFormatter implements FormatterInterface {
                 $specifier = $pictureString->getComponentSpecifier();
 
                 if (isset($this->components[$specifier])) {
+
                     if ($pictureString->getPresentationModifier() === 'N') {
-                        $result[] = '\'' . strtoupper(
+                        $result[] = self::ESCAPE . strtoupper(
                             $this->formatPattern(
                                 $date,
                                 $locale,
                                 $this->components[$specifier]->format($pictureString, $date)
                             )
-                        ) . '\'';
+                        ) . self::ESCAPE;
+
                     } elseif ($pictureString->getPresentationModifier() === 'n') {
-                        $result[] = '\'' . strtolower(
+                        $result[] = self::ESCAPE . strtolower(
                             $this->formatPattern(
                                 $date,
                                 $locale,
                                 $this->components[$specifier]->format($pictureString, $date)
                             )
-                        ) . '\'';
+                        ) . self::ESCAPE;
                     } else {
                         $result[] = $this->components[$specifier]->format($pictureString, $date);
                     }
@@ -131,6 +135,13 @@ class IntlDateTimeFormatter implements FormatterInterface {
                 }
 
                 $i = $close + 1;
+            }
+        }
+
+        for ($i = 0, $j = count($result); $i < $j; $i++) {
+            if (isset($result[$i - 1]) && substr($result[$i], 1, 1) === self::ESCAPE && substr($result[$i - 1], -1) === self::ESCAPE) {
+                $result[$i - 1] = substr($result[$i - 1], 0, -1);
+                $result[$i] = substr($result[$i], 1);
             }
         }
 
@@ -213,7 +224,7 @@ class IntlDateTimeFormatter implements FormatterInterface {
 
     private function escape($char)
     {
-        return '\'' . $char;
+        return self::ESCAPE . $char;
     }
 
 
