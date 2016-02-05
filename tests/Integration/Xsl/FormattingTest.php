@@ -63,7 +63,8 @@ class FormattingTest extends AbstractXslTest
             ]),
             $this->logicalOr(
                 '2015-10-16 15:37:00 GMT+2',
-                '2015-10-16 15:37:00 GMT+0200'
+                '2015-10-16 15:37:00 GMT+0200',
+                '2015-10-16 15:37:00 GMT+02:00'
             )
         );
 
