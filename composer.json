@@ -6,6 +6,7 @@
         "ext-xsl" : "*"
     },
     "require-dev" : {
+        "ext-intl" : "*",
         "phpunit/phpunit" : "~4.0",
         "phpunit/phpunit-mock-objects" : "~2.3",
         "genkgo/cache" : "~0.2.0"

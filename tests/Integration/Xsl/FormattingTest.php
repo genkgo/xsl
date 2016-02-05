@@ -67,7 +67,7 @@ class FormattingTest extends AbstractXslTest
             'picture' => '[Y]-[M]-[D] [h]:[m]:[s] [P] [z]'
         ]));
 
-        $this->assertEquals('289 Fri', $this->transformFile('Stubs/Xsl/Formatting/format-dateTime.xsl', [
+        $this->assertEquals('289 Friday', $this->transformFile('Stubs/Xsl/Formatting/format-dateTime.xsl', [
             'dateTime' => (string) $xsDateTime,
             'picture' => '[d] [F]'
         ]));
@@ -295,6 +295,19 @@ class FormattingTest extends AbstractXslTest
             date('d'),
             $this->transformFile('Stubs/Xsl/Formatting/format-current.xsl', [
                 'picture' => '[D]'
+            ])
+        );
+    }
+
+    public function testFormatDayName()
+    {
+        $xsDateTime = XsDateTime::fromString('2015-10-16 15:37:00');
+
+        $this->assertContains(
+            'October',
+            $this->transformFile('Stubs/Xsl/Formatting/format-dateTime.xsl', [
+                'dateTime' => (string)$xsDateTime,
+                'picture' => '[MNn]'
             ])
         );
     }

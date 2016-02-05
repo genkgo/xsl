@@ -18,6 +18,11 @@ final class MonthComponent implements ComponentInterface {
      */
     public function format(PictureString $pictureString, DateTimeInterface $date)
     {
+        $presentation = $pictureString->getPresentationModifier();
+        if ($presentation === 'Nn' || $presentation === 'N' || $presentation === 'n') {
+            return 'MMMM';
+        }
+
         return 'MM';
     }
 

@@ -38,6 +38,7 @@ final class PictureString {
         }
 
         $this->componentSpecifier = $groups[1][0];
+        $this->presentationModifier = substr($groups[2][0], 0, -1);
     }
 
     /**
