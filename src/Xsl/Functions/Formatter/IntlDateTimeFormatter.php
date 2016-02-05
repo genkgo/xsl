@@ -28,6 +28,10 @@ class IntlDateTimeFormatter implements FormatterInterface {
      * @var array|ComponentInterface[]
      */
     private $components = [];
+    /**
+     * @var string
+     */
+    private $timezone;
 
     /**
      * @param array $components
@@ -36,6 +40,7 @@ class IntlDateTimeFormatter implements FormatterInterface {
         foreach ($components as $component) {
             $this->components[(string)$component] = $component;
         }
+        $this->timezone = date_default_timezone_get();
     }
 
     /**
@@ -100,7 +105,25 @@ class IntlDateTimeFormatter implements FormatterInterface {
                 $specifier = $pictureString->getComponentSpecifier();
 
                 if (isset($this->components[$specifier])) {
-                    $result[] = $this->components[$specifier]->format($pictureString, $date);
+                    if ($pictureString->getPresentationModifier() === 'N') {
+                        $result[] = '\'' . strtoupper(
+                            $this->formatPattern(
+                                $date,
+                                $locale,
+                                $this->components[$specifier]->format($pictureString, $date)
+                            )
+                        ) . '\'';
+                    } elseif ($pictureString->getPresentationModifier() === 'n') {
+                        $result[] = '\'' . strtolower(
+                            $this->formatPattern(
+                                $date,
+                                $locale,
+                                $this->components[$specifier]->format($pictureString, $date)
+                            )
+                        ) . '\'';
+                    } else {
+                        $result[] = $this->components[$specifier]->format($pictureString, $date);
+                    }
                 } else {
                     $exception = new InvalidArgumentException("Component [{$specifier}] is not supported");
                     $exception->setErrorCode('XTDE1340');
@@ -111,14 +134,18 @@ class IntlDateTimeFormatter implements FormatterInterface {
             }
         }
 
+        return $this->formatPattern($date, $locale, implode('', $result));
+    }
+
+    private function formatPattern (DateTimeInterface $date, $locale, $pattern) {
         return (
             new IntlDateFormatter(
                 $locale,
                 IntlDateFormatter::FULL,
                 IntlDateFormatter::FULL,
-                date_default_timezone_get(),
+                $this->timezone,
                 IntlDateFormatter::GREGORIAN,
-                implode('', $result)
+                $pattern
             )
         )->format($date);
     }

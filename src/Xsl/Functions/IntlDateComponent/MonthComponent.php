@@ -19,8 +19,9 @@ final class MonthComponent implements ComponentInterface {
     public function format(PictureString $pictureString, DateTimeInterface $date)
     {
         $presentation = $pictureString->getPresentationModifier();
+        $maxWidth = $pictureString->getMaxWidth();
+
         if ($presentation === 'Nn' || $presentation === 'N' || $presentation === 'n') {
-            $maxWidth = $pictureString->getMaxWidth();
             if ($maxWidth !== null && $maxWidth <= 3) {
                 return 'MMM';
             } else {
@@ -28,7 +29,11 @@ final class MonthComponent implements ComponentInterface {
             }
         }
 
-        return 'MM';
+        if ($maxWidth > 1) {
+            return 'MM';
+        } else {
+            return 'M';
+        }
     }
 
     /**

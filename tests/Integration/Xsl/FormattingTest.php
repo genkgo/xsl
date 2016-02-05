@@ -355,7 +355,7 @@ class FormattingTest extends AbstractXslTest
         $xsDateTime = XsDateTime::fromString('2015-10-16 15:37:00');
 
         $this->assertEquals(
-            'Fri',
+            'FRI',
             $this->transformFile('Stubs/Xsl/Formatting/format-dateTime.xsl', [
                 'dateTime' => (string)$xsDateTime,
                 'picture' => '[FN,*-3]'
