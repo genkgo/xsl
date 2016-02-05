@@ -59,18 +59,18 @@ class IntlDateTimeFormatter implements FormatterInterface {
         $result = [];
 
         $i = 0;
+        $escaped = false;
         while (true) {
 
-            $escaped = false;
             while ($i < strlen($picture) && substr($picture, $i, 1) !== '[') {
                 if ($escaped === false) {
-                    $result[] = $this->escape(substr($picture, $i, 1));
-                } else {
-                    $result[] = substr($picture, $i, 1);
+                    $result[] = self::ESCAPE;
+                    $escaped = true;
                 }
-                $escaped = true;
 
-                if (substr($picture, $i, 1) == ']') {
+                $result[] = substr($picture, $i, 1);
+
+                if (substr($picture, $i, 1) === ']') {
                     $i++;
                     if ($i == strlen($picture) || substr($picture, $i, 1) != ']') {
                         $exception = new InvalidArgumentException('Wrong formatted date, escape by doubling [[ and ]]');
@@ -81,18 +81,14 @@ class IntlDateTimeFormatter implements FormatterInterface {
                 $i++;
             }
 
-            if ($escaped) {
-                $result[] = self::ESCAPE;
-            }
-
-            if ($i == strlen($picture)) {
+            if ($i === strlen($picture)) {
                 break;
             }
 
             // look for '[['
             $i++;
 
-            if ($i < strlen($picture) && substr($picture, $i, 1) == '[') {
+            if ($i < strlen($picture) && substr($picture, $i, 1) === '[') {
                 $result[] = '[';
                 $i++;
             } else {
@@ -107,25 +103,39 @@ class IntlDateTimeFormatter implements FormatterInterface {
                 $specifier = $pictureString->getComponentSpecifier();
 
                 if (isset($this->components[$specifier])) {
-
                     if ($pictureString->getPresentationModifier() === 'N') {
-                        $result[] = self::ESCAPE . strtoupper(
+                        if ($escaped === false) {
+                            $result[] = self::ESCAPE;
+                            $escaped = true;
+                        }
+
+                        $result[] = strtoupper(
                             $this->formatPattern(
                                 $date,
                                 $locale,
                                 $this->components[$specifier]->format($pictureString, $date)
                             )
-                        ) . self::ESCAPE;
+                        );
 
                     } elseif ($pictureString->getPresentationModifier() === 'n') {
-                        $result[] = self::ESCAPE . strtolower(
+                        if ($escaped === false) {
+                            $result[] = self::ESCAPE;
+                            $escaped = true;
+                        }
+
+                        $result[] = strtolower(
                             $this->formatPattern(
                                 $date,
                                 $locale,
                                 $this->components[$specifier]->format($pictureString, $date)
                             )
-                        ) . self::ESCAPE;
+                        );
                     } else {
+                        if ($escaped) {
+                            $result[] = self::ESCAPE;
+                            $escaped = false;
+                        }
+
                         $result[] = $this->components[$specifier]->format($pictureString, $date);
                     }
                 } else {
@@ -138,11 +148,8 @@ class IntlDateTimeFormatter implements FormatterInterface {
             }
         }
 
-        for ($i = 0, $j = count($result); $i < $j; $i++) {
-            if (isset($result[$i - 1]) && substr($result[$i], 1, 1) === self::ESCAPE && substr($result[$i - 1], -1) === self::ESCAPE) {
-                $result[$i - 1] = substr($result[$i - 1], 0, -1);
-                $result[$i] = substr($result[$i], 1);
-            }
+        if ($escaped) {
+            $result[] = self::ESCAPE;
         }
 
         return $this->formatPattern($date, $locale, implode('', $result));
@@ -221,11 +228,4 @@ class IntlDateTimeFormatter implements FormatterInterface {
         ]);
         return $formatter;
     }
-
-    private function escape($char)
-    {
-        return self::ESCAPE . $char;
-    }
-
-
 }
