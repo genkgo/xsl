@@ -30,7 +30,7 @@ class DateFormatting
      */
     private static $timeFormatter;
     /**
-     * @var array
+     * @var string
      */
     private static $locale;
 
@@ -38,11 +38,10 @@ class DateFormatting
      * @param DOMElement[] $value
      * @param $picture
      * @param null $language
-     * @param null $calendar
      * @return string
      * @throws InvalidArgumentException
      */
-    public static function formatDate($value, $picture, $language = null, $calendar = null)
+    public static function formatDate($value, $picture, $language = null)
     {
         Assert::assertArray($value);
         Assert::assertSchema($value[0], 'date');
@@ -69,12 +68,10 @@ class DateFormatting
      * @param DOMElement[] $value
      * @param string $picture
      * @param null $language
-     * @param null $calendar
-     * @param null $country
      * @return string
      * @throws InvalidArgumentException
      */
-    public static function formatTime($value, $picture, $language = null, $calendar = null, $country = null)
+    public static function formatTime($value, $picture, $language = null)
     {
         Assert::assertArray($value);
         Assert::assertSchema($value[0], 'time');
@@ -101,12 +98,10 @@ class DateFormatting
      * @param DOMElement[] $value
      * @param string $picture
      * @param null $language
-     * @param null $calendar
-     * @param null $country
      * @return string
      * @throws InvalidArgumentException
      */
-    public static function formatDateTime($value, $picture, $language = null, $calendar = null, $country = null)
+    public static function formatDateTime($value, $picture, $language = null)
     {
         Assert::assertArray($value);
         Assert::assertSchema($value[0], 'dateTime');
@@ -129,6 +124,9 @@ class DateFormatting
         return self::$dateTimeFormatter->format($date, $picture, $locale, 'AD');
     }
 
+    /**
+     * @return string
+     */
     private static function detectSystemLocale()
     {
         if (self::$locale === null) {
