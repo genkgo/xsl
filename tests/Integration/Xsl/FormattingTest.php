@@ -349,4 +349,17 @@ class FormattingTest extends AbstractXslTest
             ])
         );
     }
+
+    public function testFormatDayNameAbbreviatedCapital()
+    {
+        $xsDateTime = XsDateTime::fromString('2015-10-16 15:37:00');
+
+        $this->assertEquals(
+            'Fri',
+            $this->transformFile('Stubs/Xsl/Formatting/format-dateTime.xsl', [
+                'dateTime' => (string)$xsDateTime,
+                'picture' => '[FN,*-3]'
+            ])
+        );
+    }
 }

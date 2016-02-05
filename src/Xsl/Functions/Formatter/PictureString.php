@@ -42,11 +42,13 @@ final class PictureString {
         }
 
         $this->componentSpecifier = $groups[1][0];
-        if ($comma = strpos($groups[2][0], ',') !== false) {
-            $this->presentationModifier = substr($groups[2][0], 0, $comma + 1);
+        $modifier = $groups[2][0];
 
-            if ($dash = strpos($groups[2][0], '-') !== false) {
-                $widthModifier = substr($groups[2][0], $comma + 2, -1);
+        if (($comma = strpos($modifier, ',')) !== false) {
+            $this->presentationModifier = substr($modifier, 0, $comma);
+
+            if ($dash = strpos($modifier, '-') !== false) {
+                $widthModifier = substr($modifier, $comma + 1, -1);
                 list($this->minWidth, $this->maxWidth) = explode('-', $widthModifier);
                 if ($this->maxWidth === '*') {
                     $this->maxWidth = null;
@@ -55,12 +57,11 @@ final class PictureString {
                     $this->minWidth = null;
                 }
             } else {
-                $this->minWidth = substr($groups[2][0], $dash, -1);
+                $this->minWidth = substr($modifier, $dash, -1);
             }
         } else {
-            $this->presentationModifier = substr($groups[2][0], 0, -1);
+            $this->presentationModifier = substr($modifier, 0, -1);
         }
-
     }
 
     /**

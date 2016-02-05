@@ -147,6 +147,6 @@ class DateFormatting
             return Locale::getDefault();
         }
 
-        return setlocale(LC_ALL, "0");
+        return setlocale(LC_ALL, 0);
     }
 }
