@@ -18,7 +18,7 @@ final class TimezoneOffsetUtcComponent implements ComponentInterface {
      */
     public function format(PictureString $pictureString, DateTimeInterface $date)
     {
-        return 'xxx';
+        return 'ZZZZZ';
     }
 
     /**
