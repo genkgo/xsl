@@ -56,7 +56,7 @@ class FormattingTest extends AbstractXslTest
     {
         $xsDateTime = XsDateTime::fromString('2015-10-16 15:37:00');
 
-        $this->assertEquals('2015-10-16 15:37:00 +02:00', $this->transformFile('Stubs/Xsl/Formatting/format-dateTime.xsl', [
+        $this->assertEquals('2015-10-16 15:37:00 GMT+2', $this->transformFile('Stubs/Xsl/Formatting/format-dateTime.xsl', [
             'dateTime' => (string) $xsDateTime,
             'picture' => '[Y]-[M]-[D] [H]:[m]:[s] [Z]'
         ]));
