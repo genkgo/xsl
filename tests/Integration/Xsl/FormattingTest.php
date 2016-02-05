@@ -34,7 +34,7 @@ class FormattingTest extends AbstractXslTest
                 'picture' => '[H]'
             ]);
         } catch (InvalidArgumentException $e) {
-            $this->assertEquals('XTDE1350', $e->getErrorCode());
+            $this->assertEquals('XTDE1340', $e->getErrorCode());
         }
     }
 
