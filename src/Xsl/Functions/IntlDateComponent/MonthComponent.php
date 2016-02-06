@@ -29,7 +29,7 @@ final class MonthComponent implements ComponentInterface {
             }
         }
 
-        if ($maxWidth > 1) {
+        if ($maxWidth === null || $maxWidth > 1) {
             return 'MM';
         } else {
             return 'M';

@@ -22,7 +22,10 @@ class IncludeWindowsTransformerTest extends AbstractTestCase
         $list = $xpath->query('//xsl:include');
         /** @var \DOMElement $element */
         foreach ($list as $element) {
+
+            $this->assertTrue($transformer->supports($element));
             $transformer->transform($element);
+
             $this->assertEquals(
                 Stream::PROTOCOL . Stream::HOST . '/C:/test/include2.xsl',
                 $element->getAttribute('href')

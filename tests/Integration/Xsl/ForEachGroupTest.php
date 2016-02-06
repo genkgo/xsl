@@ -91,6 +91,20 @@ class ForEachGroupTest extends AbstractIntegrationTestCase
         $this->assertEquals('Composer:-ComposerGenkgo:-CAMT-XSL-Migrations', trim($processor->transformToXml($data)));
     }
 
+    public function testCurrentGroupCurrentGroupingKeyWithForEach()
+    {
+        $styleSheet = new DOMDocument();
+        $styleSheet->load('Stubs/Xsl/ForEachGroup/current-group-without-for-each-group.xsl');
+
+        $processor = new XsltProcessor();
+        $processor->importStyleSheet($styleSheet);
+
+        $data = new DOMDocument();
+        $data->load('Stubs/packages.xml');
+
+        $this->assertEquals('', trim($processor->transformToXml($data)));
+    }
+
     public function testByAggregating()
     {
         $styleSheet = new DOMDocument();

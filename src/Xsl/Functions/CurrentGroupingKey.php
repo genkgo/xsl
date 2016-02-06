@@ -31,16 +31,18 @@ class CurrentGroupingKey implements ReplaceFunctionInterface, FunctionInterface
     public function replace(Lexer $lexer, DOMNode $currentElement)
     {
         $xslForEach = $currentElement->parentNode;
-        if ($xslForEach instanceof DOMElement) {
+        if ($xslForEach instanceof DOMNode) {
             while ($this->isForEachGroupElement($xslForEach) === false && $currentElement->ownerDocument !== $xslForEach) {
                 $xslForEach = $xslForEach->parentNode;
             }
         }
 
         if ($this->isForEachGroupElement($xslForEach) === false) {
-            throw new \RuntimeException('Feature not implemented. "At other times, it will be an empty sequence."');
+            $lexer->seek($lexer->key() + 2);
+            return ['/', 'xs:sequence', '/', '*'];
         }
 
+        /** @var DOMElement $xslForEach */
         $groupId = $xslForEach->getAttribute('group-id');
 
         $resultTokens = [];
@@ -53,10 +55,10 @@ class CurrentGroupingKey implements ReplaceFunctionInterface, FunctionInterface
     }
 
     /**
-     * @param DOMElement $element
+     * @param DOMNode|DOMElement $element
      * @return bool
      */
-    private function isForEachGroupElement(DOMElement $element)
+    private function isForEachGroupElement(DOMNode $element)
     {
         return $element->nodeName === 'xsl:for-each' && $element->getAttribute('group-id');
     }

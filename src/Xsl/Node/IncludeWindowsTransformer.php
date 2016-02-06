@@ -17,7 +17,8 @@ final class IncludeWindowsTransformer implements ElementTransformerInterface
      */
     public function supports(DOMElement $element)
     {
-        return $element->localName === 'include';
+        $href = $element->getAttribute('href');
+        return $element->localName === 'include' && preg_match('~[A-Z]{1}\:\\\~', $href) === 1;
     }
 
     /**
@@ -26,8 +27,6 @@ final class IncludeWindowsTransformer implements ElementTransformerInterface
     public function transform(DOMElement $element)
     {
         $href = $element->getAttribute('href');
-        if (preg_match('~[A-Z]{1}\:\\\~', $href) === 1) {
-            $element->setAttribute('href', Stream::PROTOCOL . Stream::HOST . '/' . str_replace('\\', '/', $href));
-        }
+        $element->setAttribute('href', Stream::PROTOCOL . Stream::HOST . '/' . str_replace('\\', '/', $href));
     }
 }

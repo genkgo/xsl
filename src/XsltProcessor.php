@@ -198,9 +198,11 @@ final class XsltProcessor extends PhpXsltProcessor
     {
         $documentURI = $styleSheet->documentURI;
 
+        // @codeCoverageIgnoreStart
         if (PHP_OS === 'WINNT') {
             $documentURI = str_replace('file:', '/', $documentURI);
         }
+        // @codeCoverageIgnoreEnd
 
         $transpiledStyleSheet = new DOMDocument('1.0', 'UTF-8');
         $transpiledStyleSheet->load(Stream::PROTOCOL . Stream::HOST . $documentURI . Stream::ROOT);

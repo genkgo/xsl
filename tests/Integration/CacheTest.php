@@ -9,7 +9,7 @@ use Genkgo\Xsl\XsltProcessor;
 
 class CacheTest extends AbstractIntegrationTestCase
 {
-    public function testCache()
+    public function testCacheRoot()
     {
         $arrayCache = new ArrayAdapter();
 
@@ -34,6 +34,38 @@ class CacheTest extends AbstractIntegrationTestCase
 
         $cache = str_replace('floor', 'ceiling', $cache);
         $arrayCache->set($cacheKey, $cache);
+
+        $this->assertEquals(158, trim($processor->transformToXML($xmlDoc)));
+    }
+
+    public function testCacheInclude()
+    {
+        $arrayCache = new ArrayAdapter();
+
+        $config = new Config();
+        $config->setCacheAdapter(new SimpleCallbackAdapter($arrayCache));
+
+        $xslDoc = new DOMDocument();
+        $xslDoc->load('Stubs/include2.xsl');
+
+        $xmlDoc = new DOMDocument();
+        $xmlDoc->load('Stubs/combine-multiple-functions.xml');
+
+        $processor = new XsltProcessor($config);
+        $processor->importStylesheet($xslDoc);
+        $processorResult = $processor->transformToXML($xmlDoc);
+
+        $cacheKeyIncluded = str_replace('\\', '/', dirname(__DIR__).'/Stubs/combine-multiple-functions.xsl');
+        $cacheKeyInclude = str_replace('\\', '/', dirname(__DIR__).'/Stubs/include2.xsl');
+        $cacheIncluded = $arrayCache->get($cacheKeyIncluded);
+        $cacheInclude = $arrayCache->get($cacheKeyInclude);
+
+        $this->assertEquals(157, trim($processorResult));
+        $this->assertNotNull($cacheIncluded);
+        $this->assertNotNull($cacheInclude);
+
+        $cacheIncluded = str_replace('floor', 'ceiling', $cacheIncluded);
+        $arrayCache->set($cacheKeyIncluded, $cacheIncluded);
 
         $this->assertEquals(158, trim($processor->transformToXML($xmlDoc)));
     }

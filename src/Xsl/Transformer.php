@@ -56,9 +56,11 @@ final class Transformer implements TransformerInterface
             new ElementValueOf(),
         ];
 
+        // @codeCoverageIgnoreStart
         if (PHP_OS === 'WINNT') {
             $this->elementTransformers[] = new IncludeWindowsTransformer();
         }
+        // @codeCoverageIgnoreEnd
 
         $this->attributeTransformers = [
             new AttributeValueTemplates($xpathCompiler)
@@ -80,8 +82,14 @@ final class Transformer implements TransformerInterface
         $excludePrefixes[] = 'php';
         $excludePrefixes[] = 'xs';
 
-        if ($excludePrefixes === '#all' || $this->config->shouldExcludeResultPrefixes()) {
+        if (in_array('#all', $excludePrefixes) === true || $this->config->shouldExcludeResultPrefixes()) {
             $excludePrefixes = array_merge($excludePrefixes, array_keys($namespaces));
+            $excludePrefixes = array_filter(
+                $excludePrefixes,
+                function ($prefix) {
+                    return $prefix !== '#all';
+                }
+            );
         }
 
         $excludePrefixes = array_unique($excludePrefixes);

@@ -5,7 +5,6 @@ use Closure;
 use DOMDocument;
 use Genkgo\Cache\CallbackCacheInterface;
 use Genkgo\Xsl\Callback\PhpCallback;
-use Genkgo\Xsl\Xsl\Node\IncludeWindowsTransformer;
 
 /**
  * Class Transpiler
@@ -45,9 +44,11 @@ final class Transpiler
         };
 
         $documentURI = $document->documentURI;
+        // @codeCoverageIgnoreStart
         if (PHP_OS === 'WINNT') {
             $documentURI = ltrim(str_replace('file:', '', $documentURI), '/');
         }
+        // @codeCoverageIgnoreEnd
         
         if ($this->cacheAdapter !== null && is_file($documentURI)) {
             return $this->cacheAdapter->get($documentURI, $callback);
@@ -91,7 +92,7 @@ final class Transpiler
         };
 
         if ($this->cacheAdapter !== null) {
-            $this->cacheAdapter->get($path, $callback);
+            return $this->cacheAdapter->get($path, $callback);
         }
 
         return $callback();

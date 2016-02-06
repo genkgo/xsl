@@ -147,9 +147,11 @@ final class Stream
     private function uriToPath($uri)
     {
         $filename = urldecode(str_replace(self::PROTOCOL . self::HOST, '', $uri));
+        // @codeCoverageIgnoreStart
         if (PHP_OS === 'WINNT') {
             return ltrim($filename, '/');
         }
+        // @codeCoverageIgnoreEnd
 
         return $filename;
     }

@@ -29,6 +29,13 @@ class DateTimeFormatter implements FormatterInterface {
     private $components = [];
 
     /**
+     *
+     */
+    private function __construct() {
+
+    }
+
+    /**
      * @param array $components
      */
     private function mapComponents(array $components) {

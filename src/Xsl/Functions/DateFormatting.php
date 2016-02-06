@@ -18,15 +18,15 @@ use Locale;
 class DateFormatting
 {
     /**
-     * @var Functions\Formatter\DateTimeFormatter
+     * @var Functions\Formatter\FormatterInterface
      */
     private static $dateTimeFormatter;
     /**
-     * @var Functions\Formatter\DateTimeFormatter
+     * @var Functions\Formatter\FormatterInterface
      */
     private static $dateFormatter;
     /**
-     * @var Functions\Formatter\DateTimeFormatter
+     * @var Functions\Formatter\FormatterInterface
      */
     private static $timeFormatter;
     /**
@@ -47,11 +47,13 @@ class DateFormatting
         Assert::assertSchema($value[0], 'date');
 
         if (self::$dateFormatter === null) {
+            // @codeCoverageIgnoreStart
             if (extension_loaded('intl')) {
                 self::$dateFormatter = Functions\Formatter\IntlDateTimeFormatter::createWithFlagDate();
             } else {
                 self::$dateFormatter = Functions\Formatter\DateTimeFormatter::createWithFlagDate();
             }
+            // @codeCoverageIgnoreEnd
         }
 
         if ($language === null) {
@@ -77,11 +79,13 @@ class DateFormatting
         Assert::assertSchema($value[0], 'time');
 
         if (self::$timeFormatter === null) {
+            // @codeCoverageIgnoreStart
             if (extension_loaded('intl')) {
                 self::$timeFormatter = Functions\Formatter\IntlDateTimeFormatter::createWithFlagTime();
             } else {
                 self::$timeFormatter = Functions\Formatter\DateTimeFormatter::createWithFlagTime();
             }
+            // @codeCoverageIgnoreEnd
         }
 
         if ($language === null) {
@@ -107,11 +111,13 @@ class DateFormatting
         Assert::assertSchema($value[0], 'dateTime');
 
         if (self::$dateTimeFormatter === null) {
+            // @codeCoverageIgnoreStart
             if (extension_loaded('intl')) {
                 self::$dateTimeFormatter = Functions\Formatter\IntlDateTimeFormatter::createWithFlagDateTime();
             } else {
                 self::$dateTimeFormatter = Functions\Formatter\DateTimeFormatter::createWithFlagDateTime();
             }
+            // @codeCoverageIgnoreEnd
         }
 
         if ($language === null) {
@@ -138,6 +144,7 @@ class DateFormatting
 
     /**
      * @return string
+     * @codeCoverageIgnore
      */
     private static function getSystemLocale()
     {
