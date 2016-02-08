@@ -52,6 +52,11 @@ final class ElementForEachGroup implements ElementTransformerInterface
         $unGroupedVariable = $this->createUnGroupedVariable($document, $groupId, $select);
         $groupVariable = $this->createGroupVariable($document, $groupId);
 
+        $sorts = $element->getElementsByTagNameNS(XslTransformations::URI, 'sort');
+        foreach ($sorts as $sort) {
+            $xslForEach->appendChild($this->convertSort($sort, $groupId));
+        }
+
         $xslForEach->appendChild($groupVariable);
 
         while ($element->childNodes->length > 0) {
@@ -94,6 +99,7 @@ final class ElementForEachGroup implements ElementTransformerInterface
         $xslForEach = $element->ownerDocument->createElementNS(XslTransformations::URI, 'xsl:for-each');
         $xslForEach->setAttribute('select', $createGroupFunction->build() . '//xsl:group');
         $xslForEach->setAttribute('group-id', $groupId);
+
         return $xslForEach;
     }
 
@@ -122,5 +128,18 @@ final class ElementForEachGroup implements ElementTransformerInterface
         $variable->setAttribute('name', 'current-group-' . $groupId);
         $variable->setAttribute('select', '.');
         return $variable;
+    }
+
+    private function convertSort(DOMElement $sort, $groupId)
+    {
+        $sort->setAttribute(
+            'select',
+            str_replace(
+                'current-group()',
+                '$current-un-grouped-' . $groupId . '[generate-id(.) = current()//xsl:element-id]',
+                $sort->getAttribute('select')
+            )
+        );
+        return $sort;
     }
 }
