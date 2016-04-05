@@ -222,4 +222,23 @@ class ProcessXslt1DocumentsTest extends AbstractIntegrationTestCase
 
         $this->assertEquals($nativeResult, $transpilerResult);
     }
+
+    public function testBug12()
+    {
+        $xslDoc = new DOMDocument();
+        $xslDoc->load('Stubs/item-types.xsl');
+
+        $xmlDoc = new DOMDocument();
+        $xmlDoc->load('Stubs/item-types.xml');
+
+        $native = new \XSLTProcessor();
+        $native->importStylesheet($xslDoc);
+        $nativeResult = $native->transformToXML($xmlDoc);
+
+        $transpiler = new XsltProcessor();
+        $transpiler->importStylesheet($xslDoc);
+        $transpilerResult = $transpiler->transformToXML($xmlDoc);
+
+        $this->assertEquals($nativeResult, $transpilerResult);
+    }
 }

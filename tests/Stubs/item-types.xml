@@ -1,0 +1,5 @@
+<ItemTypes>
+    <Item id="test">
+        <Requirement id="subtest" min="10"/>
+    </Item>
+</ItemTypes>
