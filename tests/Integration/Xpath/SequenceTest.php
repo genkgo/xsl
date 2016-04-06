@@ -84,4 +84,12 @@ class SequenceTest extends AbstractXpathTest
             $this->transformFile('Stubs/Xpath/Sequence/distinct-values-scalars.xsl')
         );
     }
+
+    public function testAmpersand()
+    {
+        $this->assertEquals(
+            'some string',
+            $this->transformFile('Stubs/Xpath/Sequence/ampersand.xsl')
+        );
+    }
 }

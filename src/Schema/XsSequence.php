@@ -24,8 +24,11 @@ final class XsSequence extends AbstractXsElement
 
         foreach ($list as $item) {
             if (is_scalar($item)) {
-                $child = $sequence->createElementNs(XmlSchema::URI, 'xs:item', $item);
+                // do not use nodeValue
+                // https://bugs.php.net/bug.php?id=31613
+                $child = $sequence->createElementNs(XmlSchema::URI, 'xs:item');
                 $child->setAttribute('type', gettype($item));
+                $child->textContent = $item;
                 $sequence->documentElement->appendChild($child);
             } elseif ($item instanceof DOMElement) {
                 $child = $sequence->importNode($item, true);
