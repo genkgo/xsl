@@ -152,4 +152,15 @@ class DateFormatterTest extends AbstractXslTest
             null
         );
     }
+
+    public function testMonthName()
+    {
+        $formatter = DateTimeFormatter::createWithFlagDate();
+        $this->assertEquals('16 10 2015', $formatter->format(
+            new DateTime('2015-10-16'),
+            '[D] [MNn] [Y]',
+            'en_US',
+            null
+        ));
+    }
 }

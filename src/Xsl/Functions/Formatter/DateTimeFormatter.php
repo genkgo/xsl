@@ -90,7 +90,7 @@ class DateTimeFormatter implements FormatterInterface {
                     throw $exception;
                 }
 
-                $pictureString = new PictureString(substr($picture, $i, $close));
+                $pictureString = new PictureString(substr($picture, $i, $close - $i));
                 $specifier = $pictureString->getComponentSpecifier();
 
                 if (isset($this->components[$specifier])) {

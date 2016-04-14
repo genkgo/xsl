@@ -293,4 +293,18 @@ class IntlDateFormatterTest extends AbstractXslTest
             )
         );
     }
+
+    public function testMonthName()
+    {
+        $formatter = IntlDateTimeFormatter::createWithFlagDate();
+        $this->assertSame(
+            '08 May 2015',
+            $formatter->format(
+                new DateTime('2015-05-08 15:37:00'),
+                '[D] [MNn] [Y]',
+                'en_US',
+                null
+            )
+        );
+    }
 }
