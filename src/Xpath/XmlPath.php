@@ -65,6 +65,10 @@ final class XmlPath implements XmlNamespaceInterface
             new ReturnXsSequenceFunction(new ObjectFunction([Sequence::class, 'reverse']))
         ))->register($functions);
         (new StaticFunction(
+            'unordered',
+            new ReturnXsSequenceFunction(new ObjectFunction([Sequence::class, 'unordered']))
+        ))->register($functions);
+        (new StaticFunction(
             'insert-before',
             new ReturnXsSequenceFunction(new ObjectFunction([Sequence::class, 'insertBefore']))
         ))->register($functions);

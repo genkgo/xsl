@@ -92,4 +92,14 @@ class SequenceTest extends AbstractXpathTest
             $this->transformFile('Stubs/Xpath/Sequence/ampersand.xsl')
         );
     }
+
+    public function testUnordered()
+    {
+        $expected = explode(' ', 'genkgo/xsl by transpiled is xsl2');
+        $items = explode(' ', $this->transformFile('Stubs/Xpath/Sequence/unordered.xsl'));
+
+        foreach ($items as $item) {
+            $this->assertTrue(in_array($item, $expected));
+        }
+    }
 }

@@ -70,4 +70,16 @@ class Sequence
 
         return XsSequence::fromArray(array_unique($values));
     }
+
+    /**
+     * @param $elements
+     * @return XsSequence
+     * @throws \Genkgo\Xsl\Schema\Exception\UnknownSequenceItemException
+     */
+    public static function unordered($elements)
+    {
+        shuffle($elements);
+
+        return XsSequence::fromArray($elements);
+    }
 }
