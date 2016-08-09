@@ -82,4 +82,34 @@ class Sequence
 
         return XsSequence::fromArray($elements);
     }
+
+    /**
+     * @param $haystack
+     * @param $needle
+     * @return bool|int
+     */
+    public static function indexOf($haystack, $needle)
+    {
+        if (is_string($haystack)) {
+            $position = strpos($haystack, $needle);
+            if ($position === false) {
+                return false;
+            }
+
+            return $position + 1;
+        }
+
+        $index = 1;
+        $sequence = XsSequence::fromArray($haystack);
+
+        foreach ($sequence->documentElement->childNodes as $childNode) {
+            if ($needle === $childNode->nodeValue) {
+                return $index;
+            }
+
+            $index++;
+        }
+
+        return false;
+    }
 }

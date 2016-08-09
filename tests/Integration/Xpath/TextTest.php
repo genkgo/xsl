@@ -58,19 +58,6 @@ class TextTest extends AbstractXpathTest
         ]));
     }
 
-    public function testIndexOf()
-    {
-        $this->assertEquals('false', $this->transformFile('Stubs/Xpath/Text/index-of.xsl', [
-            'param1' => 'Hello',
-            'param2' => 'World'
-        ]));
-
-        $this->assertEquals('7', $this->transformFile('Stubs/Xpath/Text/index-of.xsl', [
-            'param1' => 'Hello World',
-            'param2' => 'World'
-        ]));
-    }
-
     public function testLowerCase()
     {
         $this->assertEquals('php', $this->transformFile('Stubs/Xpath/Text/lower-case.xsl'));

@@ -31,7 +31,7 @@ final class XmlPath implements XmlNamespaceInterface
         ], $functions, Math::class);
 
         $this->registerStringFunctions([
-            'starts-with', 'ends-with', 'index-of', 'matches', 'lower-case',
+            'starts-with', 'ends-with', 'matches', 'lower-case',
             'upper-case', 'translate', 'substring-after', 'substring-before', 'replace',
             'encode-for-uri'
         ], $functions, Text::class);
@@ -41,6 +41,11 @@ final class XmlPath implements XmlNamespaceInterface
         (new StaticFunction(
             'string-join',
             new ObjectFunction([Text::class, 'stringJoin'])
+        ))->register($functions);
+
+        (new StaticFunction(
+            'index-of',
+            new ObjectFunction([Sequence::class, 'indexOf'])
         ))->register($functions);
 
         (new StaticFunction(

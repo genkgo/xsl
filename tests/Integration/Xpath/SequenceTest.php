@@ -102,4 +102,28 @@ class SequenceTest extends AbstractXpathTest
             $this->assertTrue(in_array($item, $expected));
         }
     }
+
+    public function testIndexOfText()
+    {
+        $this->assertEquals('false', $this->transformFile('Stubs/Xpath/Sequence/index-of-text.xsl', [
+            'param1' => 'Hello',
+            'param2' => 'World'
+        ]));
+
+        $this->assertEquals('7', $this->transformFile('Stubs/Xpath/Sequence/index-of-text.xsl', [
+            'param1' => 'Hello World',
+            'param2' => 'World'
+        ]));
+    }
+
+    public function testIndexOfSequence()
+    {
+        $this->assertEquals('2', $this->transformFile('Stubs/Xpath/Sequence/index-of-sequence.xsl', [
+            'param' => '1997',
+        ]));
+
+        $this->assertEquals('false', $this->transformFile('Stubs/Xpath/Sequence/index-of-sequence.xsl', [
+            'param' => '2000',
+        ]));
+    }
 }

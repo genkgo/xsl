@@ -39,21 +39,6 @@ class Text
     }
 
     /**
-     * @param $haystack
-     * @param $needle
-     * @return bool|int
-     */
-    public static function indexOf($haystack, $needle)
-    {
-        $position = strpos($haystack, $needle);
-        if ($position === false) {
-            return false;
-        } else {
-            return $position + 1;
-        }
-    }
-
-    /**
      * @param $input
      * @param $pattern
      * @param string $flags
