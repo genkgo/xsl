@@ -169,7 +169,7 @@ class IntlDateTimeFormatter implements FormatterInterface {
     }
 
     /**
-     * @return DateTimeFormatter
+     * @return IntlDateTimeFormatter
      */
     public static function createWithFlagDate()
     {
@@ -188,7 +188,7 @@ class IntlDateTimeFormatter implements FormatterInterface {
     }
 
     /**
-     * @return DateTimeFormatter
+     * @return IntlDateTimeFormatter
      */
     public static function createWithFlagDateTime()
     {
@@ -212,7 +212,7 @@ class IntlDateTimeFormatter implements FormatterInterface {
     }
 
     /**
-     * @return DateTimeFormatter
+     * @return IntlDateTimeFormatter
      */
     public static function createWithFlagTime()
     {
