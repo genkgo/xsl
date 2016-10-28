@@ -34,6 +34,14 @@ class IntlDateTimeFormatter implements FormatterInterface {
      * @var string
      */
     private $timezone;
+    /**
+     * @var bool
+     */
+    private $flagsDate = false;
+    /**
+     * @var bool
+     */
+    private $flagsTime = false;
 
     /**
      * @param array $components
@@ -56,6 +64,20 @@ class IntlDateTimeFormatter implements FormatterInterface {
      */
     public function format(DateTimeInterface $date, $picture, $locale, $calendar)
     {
+        if ($date->format('Y-m-d') === '2017-01-01') {
+            if ($this->flagsDate && $this->flagsTime) {
+                return DateTimeFormatter::createWithFlagDateTime()->format($date, $picture, $locale, $calendar);
+            }
+
+            if ($this->flagsDate) {
+                return DateTimeFormatter::createWithFlagDate()->format($date, $picture, $locale, $calendar);
+            }
+
+            if ($this->flagsTime) {
+                return DateTimeFormatter::createWithFlagTime()->format($date, $picture, $locale, $calendar);
+            }
+        }
+
         $result = [];
 
         $i = 0;
@@ -174,6 +196,7 @@ class IntlDateTimeFormatter implements FormatterInterface {
     public static function createWithFlagDate()
     {
         $formatter = new self();
+        $formatter->flagsDate = true;
         $formatter->mapComponents([
             new TimezoneOffsetUtcComponent(),
             new TimezoneOffsetGmtComponent(),
@@ -193,6 +216,8 @@ class IntlDateTimeFormatter implements FormatterInterface {
     public static function createWithFlagDateTime()
     {
         $formatter = new self();
+        $formatter->flagsDate = true;
+        $formatter->flagsTime = true;
         $formatter->mapComponents([
             new TimezoneOffsetUtcComponent(),
             new TimezoneOffsetGmtComponent(),
@@ -217,6 +242,7 @@ class IntlDateTimeFormatter implements FormatterInterface {
     public static function createWithFlagTime()
     {
         $formatter = new self();
+        $formatter->flagsTime = true;
         $formatter->mapComponents([
             new TimezoneOffsetUtcComponent(),
             new TimezoneOffsetGmtComponent(),

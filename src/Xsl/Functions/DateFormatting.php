@@ -49,12 +49,7 @@ class DateFormatting
         if (self::$dateFormatter === null) {
             // @codeCoverageIgnoreStart
             if (extension_loaded('intl')) {
-                // https://bugs.php.net/bug.php?id=73405
-                if (stripos($picture, 'N') !== false) {
-                    self::$dateFormatter = Functions\Formatter\IntlDateTimeFormatter::createWithFlagDate();
-                } else {
-                    self::$dateTimeFormatter = Functions\Formatter\DateTimeFormatter::createWithFlagDateTime();
-                }
+                self::$dateFormatter = Functions\Formatter\IntlDateTimeFormatter::createWithFlagDate();
             } else {
                 self::$dateFormatter = Functions\Formatter\DateTimeFormatter::createWithFlagDate();
             }
@@ -86,12 +81,7 @@ class DateFormatting
         if (self::$timeFormatter === null) {
             // @codeCoverageIgnoreStart
             if (extension_loaded('intl')) {
-                // https://bugs.php.net/bug.php?id=73405
-                if (stripos($picture, 'N') !== false) {
-                    self::$timeFormatter = Functions\Formatter\IntlDateTimeFormatter::createWithFlagTime();
-                } else {
-                    self::$timeFormatter = Functions\Formatter\DateTimeFormatter::createWithFlagTime();
-                }
+                self::$timeFormatter = Functions\Formatter\IntlDateTimeFormatter::createWithFlagTime();
             } else {
                 self::$timeFormatter = Functions\Formatter\DateTimeFormatter::createWithFlagTime();
             }
@@ -123,12 +113,7 @@ class DateFormatting
         if (self::$dateTimeFormatter === null) {
             // @codeCoverageIgnoreStart
             if (extension_loaded('intl')) {
-                // https://bugs.php.net/bug.php?id=73405
-                if (stripos($picture, 'N') !== false) {
-                    self::$dateTimeFormatter = Functions\Formatter\IntlDateTimeFormatter::createWithFlagDateTime();
-                } else {
-                    self::$dateTimeFormatter = Functions\Formatter\DateTimeFormatter::createWithFlagDateTime();
-                }
+                self::$dateTimeFormatter = Functions\Formatter\IntlDateTimeFormatter::createWithFlagDateTime();
             } else {
                 self::$dateTimeFormatter = Functions\Formatter\DateTimeFormatter::createWithFlagDateTime();
             }

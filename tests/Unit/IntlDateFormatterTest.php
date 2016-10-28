@@ -307,4 +307,32 @@ class IntlDateFormatterTest extends AbstractXslTest
             )
         );
     }
+
+    public function testJanuaryFirst2017()
+    {
+        $formatter = IntlDateTimeFormatter::createWithFlagDate();
+        $this->assertSame(
+            '01-01-2017',
+            $formatter->format(
+                new \DateTime('2017-01-01 18:42:34.000000', new \DateTimeZone('UTC')),
+                '[D]-[M]-[Y]',
+                'nl_NL',
+                null
+            )
+        );
+    }
+
+    public function testJanuaryFirst2017Name()
+    {
+        $formatter = IntlDateTimeFormatter::createWithFlagDate();
+        $this->assertSame(
+            '01-01-2017',
+            $formatter->format(
+                new \DateTime('2017-01-01 18:42:34.000000', new \DateTimeZone('UTC')),
+                '[D]-[MNn]-[Y]',
+                'nl_NL',
+                null
+            )
+        );
+    }
 }
