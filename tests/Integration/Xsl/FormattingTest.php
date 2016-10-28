@@ -89,6 +89,20 @@ class FormattingTest extends AbstractXslTest
         );
     }
 
+    public function testJanuaryFirst2017()
+    {
+        $xsDate = XsDate::fromString('2017-01-01');
+
+        $this->assertEquals(
+            '01-01-2017',
+            $this->transformFile('Stubs/Xsl/Formatting/format-date.xsl', [
+                'date' => (string) $xsDate,
+                'picture' => '[D]-[M]-[Y]',
+                'language' => 'nl'
+            ])
+        );
+    }
+
     public function testInvalidDataType()
     {
         $this->setExpectedException(InvalidArgumentException::class, 'Expected a date object, got scalar');
