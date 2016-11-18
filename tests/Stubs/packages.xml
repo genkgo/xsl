@@ -3,24 +3,24 @@
         <author>Composer</author>
         <name>Composer</name>
         <composer vendor="composer" name="composer">composer/composer</composer>
-        <year>2011</year>
+        <year value="2011-12-10 03:00:00">2011</year>
     </package>
     <package>
         <author>Genkgo</author>
         <name>CAMT</name>
         <composer vendor="genkgo" name="camt">genkgo/camt</composer>
-        <year>2015</year>
+        <year value="2015-12-10 03:00:00">2015</year>
     </package>
     <package>
         <author>Genkgo</author>
         <name>XSL</name>
         <composer vendor="genkgo" name="xsl">genkgo/xsl</composer>
-        <year>2015</year>
+        <year value="2015-12-10 03:00:00">2015</year>
     </package>
     <package>
         <author>Genkgo</author>
         <name>Migrations</name>
         <composer vendor="genkgo" name="migrations">genkgo/migrations</composer>
-        <year>2014</year>
+        <year value="2014-12-10 03:00:00">2014</year>
     </package>
 </packages>

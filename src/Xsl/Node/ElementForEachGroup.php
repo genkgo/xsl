@@ -4,6 +4,7 @@ namespace Genkgo\Xsl\Xsl\Node;
 use DOMDocument;
 use DOMElement;
 use Genkgo\Xsl\Callback\PhpCallback;
+use Genkgo\Xsl\Util\FetchNamespacesFromNode;
 use Genkgo\Xsl\Xpath\Compiler;
 use Genkgo\Xsl\Xpath\FunctionBuilder;
 use Genkgo\Xsl\Xsl\ElementTransformerInterface;
@@ -77,6 +78,7 @@ final class ElementForEachGroup implements ElementTransformerInterface
     {
         $select = $element->getAttribute('select');
         $groupBy = $element->getAttribute('group-by');
+        $namespaces = FetchNamespacesFromNode::fetch($element);
 
         $addGroupingItem = (new FunctionBuilder('php:function'))
             ->addArgument(PhpCallback::class . '::call')
@@ -85,6 +87,7 @@ final class ElementForEachGroup implements ElementTransformerInterface
             ->addExpression('.')
             ->addExpression('generate-id(.)')
             ->addArgument(base64_encode($groupBy))
+            ->addArgument(base64_encode(json_encode($namespaces)))
         ;
 
         $updatedSelect = $select.'[' . $addGroupingItem->build() . ']';

@@ -147,6 +147,20 @@ class ForEachGroupTest extends AbstractIntegrationTestCase
         $this->assertEquals('1 CAMT packages', trim($processor->transformToXml($data)));
     }
 
+    public function testWithNamespaceFunctions()
+    {
+        $styleSheet = new DOMDocument();
+        $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-namespace-functions.xsl');
+
+        $processor = new XsltProcessor();
+        $processor->importStyleSheet($styleSheet);
+
+        $data = new DOMDocument();
+        $data->load('Stubs/packages.xml');
+
+        $this->assertEquals('201120152014', trim($processor->transformToXml($data)));
+    }
+
     public function testByAttributeValueTemplates()
     {
         $styleSheet = new DOMDocument();

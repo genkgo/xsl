@@ -61,12 +61,21 @@ class GroupBy implements FunctionInterface, MethodCallInterface
         $elementId = $arguments[2];
         /** @var string $groupBy */
         $groupBy = base64_decode($arguments[3]);
+        /** @var string[] $namespaces */
+        $namespaces = json_decode(base64_decode($arguments[4]), true);
 
         $collection = $this->groups->get($groupId);
 
         foreach ($elements as $key => $element) {
             $xpath = new DOMXPath($element->ownerDocument);
-            $xpath->registerPhpFunctions($context->getPhpFunctions());
+            $xpath->registerNamespace('php', 'http://php.net/xpath');
+            $xpath->registerPhpFunctions();
+
+            $element->ownerDocument->documentElement->setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:php', 'http://php.net/xpath');
+            foreach ($namespaces as $prefix => $namespace) {
+                $element->ownerDocument->documentElement->setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:' . $prefix, $namespace);
+                $xpath->registerNamespace($prefix, $namespace);
+            }
 
             $groupingKey = $xpath->evaluate(
                 $this->compiler->compile('string(' . $groupBy . ')', $element),
