@@ -2,6 +2,7 @@
 namespace Genkgo\Xsl\Xpath\Functions;
 
 use DOMElement;
+use Genkgo\Xsl\Schema\XsSequence;
 
 /**
  * Class Aggregation
@@ -11,10 +12,14 @@ class Aggregation
 {
     /**
      * @param DOMElement[] $elements
-     * @return float
+     * @return float|XsSequence
      */
     public static function avg($elements)
     {
+        if (count($elements) === 0) {
+            return XsSequence::fromArray([]);
+        }
+
         $total = 0;
 
         foreach ($elements as $element) {
@@ -26,10 +31,14 @@ class Aggregation
 
     /**
      * @param DOMElement[] $elements
-     * @return number
+     * @return number|XsSequence
      */
     public static function max($elements)
     {
+        if (count($elements) === 0) {
+            return XsSequence::fromArray([]);
+        }
+
         $items = [];
 
         foreach ($elements as $element) {
@@ -41,10 +50,14 @@ class Aggregation
 
     /**
      * @param DOMElement[] $elements
-     * @return number
+     * @return number|XsSequence
      */
     public static function min($elements)
     {
+        if (count($elements) === 0) {
+            return XsSequence::fromArray([]);
+        }
+
         $items = [];
 
         foreach ($elements as $element) {
