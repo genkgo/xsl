@@ -44,6 +44,6 @@ final class FunctionMap
      */
     public function has($name)
     {
-        return $this->get($name) !== null;
+        return isset($this->functions[$name]);
     }
 }
