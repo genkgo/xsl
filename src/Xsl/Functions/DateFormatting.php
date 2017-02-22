@@ -44,6 +44,10 @@ class DateFormatting
     public static function formatDate($value, $picture, $language = null)
     {
         Assert::assertArray($value);
+        if (count($value) === 0) {
+            return '';
+        }
+
         Assert::assertSchema($value[0], 'date');
 
         if (self::$dateFormatter === null) {

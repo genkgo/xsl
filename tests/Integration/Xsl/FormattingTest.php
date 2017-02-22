@@ -136,4 +136,14 @@ class FormattingTest extends AbstractXslTest
             ])
         );
     }
+
+    public function testEmptySequence()
+    {
+        $this->assertEquals(
+            '',
+            $this->transformFile('Stubs/Xsl/Formatting/format-empty-sequence.xsl', [
+                'picture' => '[D]'
+            ])
+        );
+    }
 }
