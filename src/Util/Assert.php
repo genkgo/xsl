@@ -1,7 +1,7 @@
 <?php
 namespace Genkgo\Xsl\Util;
 
-use DOMElement;
+use DOMNode;
 use Genkgo\Xsl\Schema\XmlSchema;
 use Genkgo\Xsl\Xpath\Exception\InvalidArgumentException;
 
@@ -19,11 +19,11 @@ final class Assert
     }
 
     /**
-     * @param DOMElement $element
+     * @param DOMNode $element
      * @param $name
      * @throws InvalidArgumentException
      */
-    public static function assertSchema(DOMElement $element, $name)
+    public static function assertSchema(DOMNode $element, $name)
     {
         if ($element->namespaceURI !== XmlSchema::URI || $element->localName !== $name) {
             $nsSchema = XmlSchema::URI;
