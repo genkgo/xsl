@@ -73,7 +73,7 @@ final class Transpiler
         }
 
 
-        if ($root && $root->getAttribute('version') === '2.0') {
+        if ($root && $root->getAttribute('version') !== '1.0') {
             $root->setAttribute('version', '1.0');
         }
     }
