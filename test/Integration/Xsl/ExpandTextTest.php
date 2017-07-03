@@ -10,4 +10,12 @@ class ExpandTextTest extends AbstractXslTest
             $this->transformFile('Stubs/Xsl/TextValueTemplates/expand-text.xsl')
         );
     }
+
+    public function testExpandTextOverwrite()
+    {
+        $this->assertContains(
+            '{artist}',
+            $this->transformFile('Stubs/Xsl/TextValueTemplates/expand-text-overwrite.xsl')
+        );
+    }
 }
