@@ -23,7 +23,7 @@ class StreamTest extends AbstractTestCase
 
     public function testStreamOpenWithoutContext()
     {
-        $this->setExpectedException(StreamException::class);
+        $this->expectException(StreamException::class);
 
         $stream = new Stream();
         $stream->context = stream_context_create();
@@ -33,7 +33,7 @@ class StreamTest extends AbstractTestCase
 
     public function testStreamWrite()
     {
-        $this->setExpectedException(ReadOnlyStreamException::class);
+        $this->expectException(ReadOnlyStreamException::class);
 
         $stream = new Stream();
         $stream->stream_write();

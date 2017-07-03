@@ -75,7 +75,7 @@ class PictureStringTest extends AbstractTestCase
 
     public function testInvalidComponent()
     {
-        $this->setExpectedException(InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         new PictureString('G');
     }
 }

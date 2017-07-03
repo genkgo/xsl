@@ -87,7 +87,8 @@ class IntlDateFormatterTest extends AbstractXslTest
 
     public function testNoValidComponents()
     {
-        $this->setExpectedException(InvalidArgumentException::class, 'No valid components found');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('No valid components found');
 
         $formatter = IntlDateTimeFormatter::createWithFlagDate();
         $formatter->format(new DateTime('2015-10-16'), '[A]', 'en_US', null);
@@ -95,7 +96,8 @@ class IntlDateFormatterTest extends AbstractXslTest
 
     public function testNotSupportedComponent()
     {
-        $this->setExpectedException(InvalidArgumentException::class, 'Component [E] is not supported');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Component [E] is not supported');
 
         $formatter = IntlDateTimeFormatter::createWithFlagDate();
         $formatter->format(new DateTime('2015-10-16'), '[E]', 'en_US', null);
@@ -117,7 +119,8 @@ class IntlDateFormatterTest extends AbstractXslTest
 
     public function testUnclosedFormat()
     {
-        $this->setExpectedException(InvalidArgumentException::class, 'Wrong formatted date, missing ]');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Wrong formatted date, missing ]');
 
         $formatter = IntlDateTimeFormatter::createWithFlagDateTime();
         $formatter->format(
@@ -130,7 +133,7 @@ class IntlDateFormatterTest extends AbstractXslTest
 
     public function testFormatDateNo24Hour()
     {
-        $this->setExpectedException(InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $formatter = IntlDateTimeFormatter::createWithFlagDate();
         $formatter->format(
@@ -143,7 +146,8 @@ class IntlDateFormatterTest extends AbstractXslTest
 
     public function testWrongEscape()
     {
-        $this->setExpectedException(InvalidArgumentException::class, 'Wrong formatted date, escape by doubling [[ and ]]');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Wrong formatted date, escape by doubling [[ and ]]');
 
         $formatter = IntlDateTimeFormatter::createWithFlagDate();
         $formatter->format(

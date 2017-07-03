@@ -1,7 +1,9 @@
 <?php
 namespace Genkgo\Xsl;
 
-abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+abstract class AbstractTestCase extends TestCase
 {
     private $oldCwd;
 

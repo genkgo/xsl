@@ -28,13 +28,13 @@ class AttributeValueTemplatesTest extends AbstractXslTest
 
     public function testNotEscapedNotClosed()
     {
-        $this->setExpectedException(InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->transformFile('Stubs/Xsl/AttributeValueTemplates/not-escaped-not-closed.xsl');
     }
 
     public function testInvalidEscaped()
     {
-        $this->setExpectedException(InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->transformFile('Stubs/Xsl/AttributeValueTemplates/invalid-escaped.xsl');
     }
 

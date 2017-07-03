@@ -14,7 +14,7 @@ class XsDateTimeTest extends AbstractSchemaTest
 
     public function testWrongConstructor()
     {
-        $this->setExpectedException(CastException::class);
+        $this->expectException(CastException::class);
         $this->transformFile('Stubs/Schema/dateTime-wrong-constructor.xsl');
     }
 }

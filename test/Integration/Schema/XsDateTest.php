@@ -14,13 +14,17 @@ class XsDateTest extends AbstractSchemaTest
 
     public function testWrongConstructor()
     {
-        $this->setExpectedException(CastException::class, 'Cannot create date from 20');
+        $this->expectException(CastException::class);
+        $this->expectExceptionMessage('Cannot create date from 20');
+
         $this->transformFile('Stubs/Schema/date-wrong-constructor.xsl');
     }
 
     public function testTooManyElements()
     {
-        $this->setExpectedException(CastException::class, 'Cannot convert list of elements to string');
+        $this->expectException(CastException::class);
+        $this->expectExceptionMessage('Cannot convert list of elements to string');
+
         $this->transformFile('Stubs/Schema/date-too-many-elements.xsl');
     }
 }
