@@ -183,4 +183,22 @@ class TextTest extends AbstractXpathTest
             ])
         );
     }
+
+    public function testStringToCodePoints()
+    {
+        $this->assertEquals(
+            '104 101 108 108 111 32 119 111 114 108 100',
+            $this->transformFile('Stubs/Xpath/Text/string-to-codepoints.xsl', [
+                'param1' => 'hello world'
+            ])
+        );
+    }
+
+    public function testCodePointsToString()
+    {
+        $this->assertEquals(
+            'hello world',
+            $this->transformFile('Stubs/Xpath/Text/codepoints-to-string.xsl')
+        );
+    }
 }

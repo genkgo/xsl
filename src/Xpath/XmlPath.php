@@ -44,6 +44,16 @@ final class XmlPath implements XmlNamespaceInterface
         ))->register($functions);
 
         (new StaticFunction(
+            'codepoints-to-string',
+            new ObjectFunction([Text::class, 'codePointsToString'])
+        ))->register($functions);
+
+        (new StaticFunction(
+            'string-to-codepoints',
+            new ReturnXsSequenceFunction(new ObjectFunction([Text::class, 'stringToCodePoints']))
+        ))->register($functions);
+
+        (new StaticFunction(
             'index-of',
             new ObjectFunction([Sequence::class, 'indexOf'])
         ))->register($functions);

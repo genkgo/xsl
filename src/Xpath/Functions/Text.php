@@ -185,4 +185,37 @@ class Text
     {
         return rawurlencode($uriPart);
     }
+
+    /**
+     * @param $sequence
+     * @return string
+     */
+    public static function codePointsToString($sequence)
+    {
+        $result = '';
+
+        foreach ($sequence as $element) {
+            $result .= \IntlChar::chr((int)$element->nodeValue);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param $string
+     * @return string
+     */
+    public static function stringToCodePoints($string)
+    {
+        $result = [];
+
+        $iterator = \IntlBreakIterator::createCharacterInstance(\Locale::getDefault());
+        $iterator->setText($string);
+
+        foreach($iterator->getPartsIterator() as $char) {
+            $result[] = \IntlChar::ord($char);
+        }
+
+        return XsSequence::fromArray($result);
+    }
 }
