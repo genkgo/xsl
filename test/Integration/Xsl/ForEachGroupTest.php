@@ -147,6 +147,20 @@ class ForEachGroupTest extends AbstractIntegrationTestCase
         $this->assertEquals('1 CAMT packages', trim($processor->transformToXml($data)));
     }
 
+    public function testByPosition()
+    {
+        $styleSheet = new DOMDocument();
+        $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-position.xsl');
+
+        $processor = new XsltProcessor();
+        $processor->importStyleSheet($styleSheet);
+
+        $data = new DOMDocument();
+        $data->load('Stubs/packages.xml');
+
+        $this->assertEquals('22', trim($processor->transformToXml($data)));
+    }
+
     public function testWithNamespaceFunctions()
     {
         $styleSheet = new DOMDocument();

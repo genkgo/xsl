@@ -28,6 +28,20 @@ class GroupCollection implements IteratorAggregate
     }
 
     /**
+     * @return int
+     */
+    public function countGroupItems()
+    {
+        $count = 0;
+
+        foreach ($this->items as $item) {
+            $count += $item->count();
+        }
+
+        return $count;
+    }
+
+    /**
      * @return ArrayIterator|Group[]
      */
     public function getIterator()

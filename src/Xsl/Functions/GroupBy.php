@@ -77,8 +77,14 @@ class GroupBy implements FunctionInterface, MethodCallInterface
                 $xpath->registerNamespace($prefix, $namespace);
             }
 
+            $expression = str_replace(
+                'position()',
+                $collection->countGroupItems() + 1,
+                'string(' . $groupBy . ')'
+            );
+
             $groupingKey = $xpath->evaluate(
-                $this->compiler->compile('string(' . $groupBy . ')', $element),
+                $this->compiler->compile($expression, $element),
                 $element
             );
 

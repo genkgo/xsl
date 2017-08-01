@@ -5,7 +5,7 @@ namespace Genkgo\Xsl\Xsl\ForEachGroup;
  * Class Group
  * @package Genkgo\Xsl\Xsl\ForEachGroup
  */
-class Group
+class Group implements \Countable
 {
     /**
      * @var
@@ -46,5 +46,13 @@ class Group
     public function addId($id)
     {
         $this->ids[] = $id;
+    }
+
+    /**
+     * @return int
+     */
+    public function count()
+    {
+        return count($this->ids);
     }
 }
