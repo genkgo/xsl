@@ -64,20 +64,6 @@ class IntlDateTimeFormatter implements FormatterInterface {
      */
     public function format(DateTimeInterface $date, $picture, $locale, $calendar)
     {
-        if ($date->format('Y-m-d') === '2017-01-01') {
-            if ($this->flagsDate && $this->flagsTime) {
-                return DateTimeFormatter::createWithFlagDateTime()->format($date, $picture, $locale, $calendar);
-            }
-
-            if ($this->flagsDate) {
-                return DateTimeFormatter::createWithFlagDate()->format($date, $picture, $locale, $calendar);
-            }
-
-            if ($this->flagsTime) {
-                return DateTimeFormatter::createWithFlagTime()->format($date, $picture, $locale, $calendar);
-            }
-        }
-
         $result = [];
 
         $i = 0;
