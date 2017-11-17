@@ -194,6 +194,10 @@ class Text
     {
         $result = '';
 
+        if (is_numeric($sequence)) {
+            return \IntlChar::chr((int)$sequence);
+        }
+
         foreach ($sequence as $element) {
             $result .= \IntlChar::chr((int)$element->nodeValue);
         }

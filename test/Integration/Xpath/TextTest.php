@@ -197,7 +197,7 @@ class TextTest extends AbstractXpathTest
     public function testCodePointsToString()
     {
         $this->assertEquals(
-            'hello world',
+            'hello world hello',
             $this->transformFile('Stubs/Xpath/Text/codepoints-to-string.xsl')
         );
     }
