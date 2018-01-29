@@ -7,7 +7,7 @@ use Genkgo\Xsl\Callback\FunctionInterface;
 use Genkgo\Xsl\Callback\ReplaceFunctionInterface;
 use Genkgo\Xsl\Util\FunctionMap;
 use Genkgo\Xsl\Xpath\Lexer;
-use Genkgo\Xsl\Xsl\Functions;
+use Genkgo\Xsl\Xsl\XslTransformations;
 
 /**
  * Class CurrentGroupingKey
@@ -42,13 +42,13 @@ class CurrentGroupingKey implements ReplaceFunctionInterface, FunctionInterface
             return ['/', 'xs:sequence', '/', '*'];
         }
 
-        /** @var DOMElement $xslForEach */
-        $groupId = $xslForEach->getAttribute('group-id');
-
-        $resultTokens = [];
-        $resultTokens[] = '$current-group-' . $groupId;
-        $resultTokens[] = '/';
-        $resultTokens[] = '@key';
+        if ($currentElement->localName === 'sort' && $currentElement->namespaceURI === XslTransformations::URI) {
+            $resultTokens = ['current()', '/', '@key'];
+        } else {
+            /** @var DOMElement $xslForEach */
+            $groupId = $xslForEach->getAttribute('group-id');
+            $resultTokens = ['$current-group-' . $groupId, '/', '@key'];
+        }
 
         $lexer->seek($lexer->key() + 2);
         return $resultTokens;
