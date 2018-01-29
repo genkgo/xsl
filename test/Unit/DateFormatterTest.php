@@ -55,7 +55,8 @@ class DateFormatterTest extends AbstractXslTest
             $formatter->format(new DateTime('2015-10-16 15:37:00'), '[Y]-[M]-[D] [H]:[m]:[s] [Z]', 'en_US', null),
             $this->logicalOr(
                 '2015-10-16 15:37:00 GMT+02:00',
-                '2015-10-16 15:37:00 CEST'
+                '2015-10-16 15:37:00 CEST',
+                '2015-10-16 15:37:00 UTC'
             )
         );
 

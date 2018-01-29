@@ -54,15 +54,16 @@ class IntlDateFormatterTest extends AbstractXslTest
         $this->assertThat(
             $formatter->format(new DateTime('2015-10-16 15:37:00'), '[Y]-[M]-[D] [H]:[m]:[s] [Z]', 'en_US', null),
             $this->logicalOr(
+                '2015-10-16 15:37:00 GMT',
                 '2015-10-16 15:37:00 GMT+2',
                 '2015-10-16 15:37:00 GMT+02:00',
                 '2015-10-16 15:37:00 CEST'
             )
         );
 
-        $this->assertEquals(
-            '2015-10-16 03:37:00 PM GMT+02:00',
-            $formatter->format(new DateTime('2015-10-16 15:37:00'), '[Y]-[M]-[D] [h]:[m]:[s] [P] [z]', 'en_US', null)
+        $this->assertThat(
+            $formatter->format(new DateTime('2015-10-16 15:37:00'), '[Y]-[M]-[D] [h]:[m]:[s] [P] [z]', 'en_US', null),
+            $this->logicalOr('2015-10-16 03:37:00 PM GMT+02:00', '2015-10-16 03:37:00 PM GMT')
         );
 
         $this->assertEquals(
