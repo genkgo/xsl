@@ -20,25 +20,39 @@ final class Transpiler
      * @var CallbackCacheInterface
      */
     private $cacheAdapter;
+    /**
+     * @var bool
+     */
+    private $disableEntities;
 
     /**
      * @param TransformationContext $context
      * @param CallbackCacheInterface $cacheAdapter
+     * @param bool $disableEntities
      */
-    public function __construct(TransformationContext $context, CallbackCacheInterface $cacheAdapter = null)
+    public function __construct(
+        TransformationContext $context,
+        CallbackCacheInterface $cacheAdapter = null,
+        bool $disableEntities = true
+    )
     {
         $this->context = $context;
         $this->cacheAdapter = $cacheAdapter;
+        $this->disableEntities = $disableEntities;
     }
 
     /**
-     * @return DOMDocument
+     * @return string
      */
     public function transpileRoot()
     {
         $document = $this->context->getDocument();
 
         $callback = function () use ($document) {
+            if ($this->disableEntities && $document->doctype && $document->doctype->entities->length > 0) {
+                throw new \DOMException('Invalid document, contains entities');
+            }
+
             $this->transpile($document);
             return $document->saveXML();
         };
@@ -49,7 +63,7 @@ final class Transpiler
             $documentURI = ltrim(str_replace('file:', '', $documentURI), '/');
         }
         // @codeCoverageIgnoreEnd
-        
+
         if ($this->cacheAdapter !== null && is_file($documentURI)) {
             return $this->cacheAdapter->get($documentURI, $callback);
         }
@@ -72,7 +86,6 @@ final class Transpiler
             $transformer->transform($document);
         }
 
-
         if ($root && $root->getAttribute('version') !== '1.0') {
             $root->setAttribute('version', '1.0');
         }
@@ -80,14 +93,46 @@ final class Transpiler
 
     /**
      * @param $path
-     * @return DOMDocument
+     * @return string
      */
     public function transpileFile($path)
     {
         $callback = function () use ($path) {
+            if ($this->disableEntities) {
+                $previous = libxml_disable_entity_loader(true);
+            } else {
+                $previous = libxml_disable_entity_loader(false);
+            }
+
+            $content = file_get_contents($path);
             $document = new DOMDocument();
-            $document->load($path);
+            if ($this->disableEntities) {
+                $document->substituteEntities = false;
+                $document->resolveExternals = false;
+            }
+
+            $oldErrorHandler = set_error_handler(
+                function (int $number, string $message, string $file, int $line, array $context) {
+                    throw new \DOMException(
+                        sprintf(
+                            '%s in %s',
+                            $message,
+                            $context['path'] ?? $file
+                        )
+                    );
+                }
+            );
+
+            $document->loadXML($content);
+
+            set_error_handler($oldErrorHandler);
+
+            if ($this->disableEntities && $document->doctype && $document->doctype->entities->length > 0) {
+                throw new \DOMException('Invalid document, contains entities');
+            }
+
             $this->transpile($document);
+            libxml_disable_entity_loader($previous);
             return $document->saveXML();
         };
 
