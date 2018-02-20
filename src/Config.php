@@ -22,6 +22,10 @@ final class Config
      * @var bool
      */
     private $excludeResultPrefixes = false;
+    /**
+     * @var bool
+     */
+    private $disableEntities = true;
 
     /**
      * @param XmlNamespaceInterface[] $extensions
@@ -89,6 +93,23 @@ final class Config
     public function shouldExcludeResultPrefixes()
     {
         return $this->excludeResultPrefixes;
+    }
+
+    /**
+     * @return Config
+     */
+    public function enableEntities()
+    {
+        $this->disableEntities = false;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEntitiesDisabled()
+    {
+        return $this->disableEntities;
     }
 
     /**

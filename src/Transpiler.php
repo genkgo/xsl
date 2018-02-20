@@ -98,41 +98,16 @@ final class Transpiler
     public function transpileFile($path)
     {
         $callback = function () use ($path) {
-            if ($this->disableEntities) {
-                $previous = libxml_disable_entity_loader(true);
-            } else {
-                $previous = libxml_disable_entity_loader(false);
-            }
-
-            $content = file_get_contents($path);
             $document = new DOMDocument();
-            if ($this->disableEntities) {
-                $document->substituteEntities = false;
-                $document->resolveExternals = false;
-            }
-
-            $oldErrorHandler = set_error_handler(
-                function (int $number, string $message, string $file, int $line, array $context) {
-                    throw new \DOMException(
-                        sprintf(
-                            '%s in %s',
-                            $message,
-                            $context['path'] ?? $file
-                        )
-                    );
-                }
-            );
-
-            $document->loadXML($content);
-
-            set_error_handler($oldErrorHandler);
+            $document->substituteEntities = false;
+            $document->resolveExternals = false;
+            $document->load($path);
 
             if ($this->disableEntities && $document->doctype && $document->doctype->entities->length > 0) {
                 throw new \DOMException('Invalid document, contains entities');
             }
 
             $this->transpile($document);
-            libxml_disable_entity_loader($previous);
             return $document->saveXML();
         };
 

@@ -7,11 +7,6 @@ use Genkgo\Xsl\XsltProcessor;
 
 final class DisableEntitiesTest extends AbstractIntegrationTestCase
 {
-    public static function tearDownAfterClass()
-    {
-        libxml_disable_entity_loader(false);
-    }
-
     public function testDisableEntitiesWhenDocumentAlreadyLoaded()
     {
         $this->expectException(\DOMException::class);
@@ -24,8 +19,6 @@ final class DisableEntitiesTest extends AbstractIntegrationTestCase
 
         $xmlDoc = new DOMDocument();
         $xmlDoc->load('Stubs/collection.xml');
-
-        libxml_disable_entity_loader(true);
 
         $processor = new XsltProcessor($config);
         $processor->importStylesheet($xslDoc);
@@ -45,8 +38,6 @@ final class DisableEntitiesTest extends AbstractIntegrationTestCase
         $xmlDoc = new DOMDocument();
         $xmlDoc->load('Stubs/collection.xml');
 
-        libxml_disable_entity_loader(true);
-
         $processor = new XsltProcessor($config);
         $processor->importStylesheet($xslDoc);
         $processor->transformToXML($xmlDoc);
@@ -54,10 +45,9 @@ final class DisableEntitiesTest extends AbstractIntegrationTestCase
 
     public function testEntitiesEnabled()
     {
-        libxml_disable_entity_loader(false);
-
         file_put_contents(sys_get_temp_dir() . '/xsl-passwd', 'test');
         $config = new Config();
+        $config->enableEntities();
 
         $xslDoc = new DOMDocument();
         $xslDoc->substituteEntities = true;
@@ -77,10 +67,9 @@ final class DisableEntitiesTest extends AbstractIntegrationTestCase
 
     public function testEntitiesEnabledInclude()
     {
-        libxml_disable_entity_loader(false);
-
         file_put_contents(sys_get_temp_dir() . '/xsl-passwd', 'test');
         $config = new Config();
+        $config->enableEntities();
 
         $xslDoc = new DOMDocument();
         $xslDoc->load('Stubs/entities-include.xsl');

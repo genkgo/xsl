@@ -168,14 +168,12 @@ final class XsltProcessor extends PhpXsltProcessor
             $namespace->register($transformers, $functions);
         }
 
-        $entityLoader = libxml_disable_entity_loader(false);
-
         try {
-            return new Transpiler($context, $this->config->getCacheAdapter(), $entityLoader);
+            return new Transpiler($context, $this->config->getCacheAdapter(), $this->config->isEntitiesDisabled());
         } catch (CacheDisabledException $e) {
         }
 
-        return new Transpiler($context, null, $entityLoader);
+        return new Transpiler($context, null, $this->config->isEntitiesDisabled());
     }
 
     /**
