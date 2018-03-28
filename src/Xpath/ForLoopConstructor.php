@@ -19,33 +19,60 @@ final class ForLoopConstructor implements ReplaceFunctionInterface
      */
     public function replace(Lexer $lexer, DOMNode $currentElement)
     {
-        $resultTokens = [];
-        $resultTokens[] = 'php:function';
-        $resultTokens[] = '(';
-        $resultTokens[] = '\'';
-        $resultTokens[] = PhpCallback::class.'::callStatic';
-        $resultTokens[] = '\'';
-        $resultTokens[] = ',';
-        $resultTokens[] = '\'';
-        $resultTokens[] = static::class;
-        $resultTokens[] = '\'';
-        $resultTokens[] = ',';
-        $resultTokens[] = '\'';
-        $resultTokens[] = 'call';
-        $resultTokens[] = '\'';
-        $resultTokens[] = ',';
-        $resultTokens[] = $lexer->peek($lexer->key() - 2);
-        $resultTokens[] = ',';
-        $resultTokens[] = $lexer->peek($lexer->key() + 2);
-        $resultTokens[] = ')';
-        $resultTokens[] = '/';
-        $resultTokens[] = 'xs:sequence';
-        $resultTokens[] = '/';
-        $resultTokens[] = '*';
+        $prepend = [];
+        $prepend[] = 'php:function';
+        $prepend[] = '(';
+        $prepend[] = '\'';
+        $prepend[] = PhpCallback::class.'::callStatic';
+        $prepend[] = '\'';
+        $prepend[] = ',';
+        $prepend[] = '\'';
+        $prepend[] = static::class;
+        $prepend[] = '\'';
+        $prepend[] = ',';
+        $prepend[] = '\'';
+        $prepend[] = 'call';
+        $prepend[] = '\'';
+        $prepend[] = ',';
 
-        $lexer->seek($lexer->key() + 2);
+        $append = [];
+        $append[] = ')';
+        $append[] = '/';
+        $append[] = 'xs:sequence';
+        $append[] = '/';
+        $append[] = '*';
 
-        return $resultTokens;
+        $lexer->insert($append, $this->seekPositionUp($lexer, $lexer->key()));
+        return $prepend;
+    }
+
+    /**
+     * @param Lexer $lexer
+     * @param $position
+     * @return int
+     */
+    private function seekPositionUp(Lexer $lexer, $position)
+    {
+        $level = 0;
+        $position = $position + 2;
+        do {
+            $token = $lexer->peek($position);
+            if ($token === ']') {
+                break;
+            }
+
+            if ($token === '(') {
+                $level++;
+            }
+
+            if ($token === ')') {
+                $level--;
+            }
+
+            $position++;
+        } while ($level >= 0 && $lexer->peek($position) !== null);
+
+        return $position;
     }
 
     /**
@@ -56,6 +83,14 @@ final class ForLoopConstructor implements ReplaceFunctionInterface
      */
     public static function call($first, $last)
     {
+        if (isset($first[0]->textContent)) {
+            $first = trim($first[0]->textContent);
+        }
+
+        if (isset($last[0]->textContent)) {
+            $last = trim($last[0]->textContent);
+        }
+
         return XsSequence::fromArray(range($first, $last));
     }
 }

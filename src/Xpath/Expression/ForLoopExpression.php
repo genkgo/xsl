@@ -38,8 +38,47 @@ final class ForLoopExpression implements ExpressionInterface
      */
     public function merge(Lexer $lexer, DOMNode $currentElement, array $tokens)
     {
-        array_pop($tokens);
-        array_pop($tokens);
-        return array_merge($tokens, $this->forLoopConstructor->replace($lexer, $currentElement));
+        \array_splice(
+            $tokens,
+            $this->findStartExpression($tokens),
+            0,
+            $this->forLoopConstructor->replace($lexer, $currentElement)
+        );
+        $tokens[] = ',';
+        return $tokens;
+    }
+
+    /**
+     * @param array $tokens
+     * @return int
+     */
+    private function findStartExpression(array $tokens)
+    {
+        $breakTokens = [
+            '[' => true,
+            '=' => true,
+        ];
+
+        $level = 0;
+        $position = count($tokens);
+        do {
+            $token = $tokens[$position - 1];
+            if ($level === 0 && isset($breakTokens[$token])) {
+                return $position;
+            }
+
+            if ($token === ')') {
+                $level++;
+            }
+
+            if ($token === '(') {
+                $level--;
+            }
+
+            $tokens[] = $token;
+            $position--;
+        } while ($level >= 0 && isset($tokens[$position - 1]));
+
+        return $position;
     }
 }
