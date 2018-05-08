@@ -37,5 +37,9 @@ class XmlSchema implements XmlNamespaceInterface
         (new StaticFunction(
             self::URI.':dateTime', new ReturnXsScalarFunction(new ObjectFunction([Functions::class, 'xsDateTime']), 'dateTime'))
         )->register($functions);
+
+        (new StaticFunction(
+            self::URI.':integer', new ReturnXsScalarFunction(new ObjectFunction([Functions::class, 'xsInteger']), 'integer'))
+        )->register($functions);
     }
 }

@@ -1,7 +1,7 @@
 <?php
 namespace Genkgo\Xsl\Schema;
 
-use DateTimeImmutable;
+use Genkgo\Xsl\Exception\CastException;
 
 /**
  * Class Functions
@@ -37,5 +37,20 @@ class Functions
     {
         $value = XsDateTime::castToNodeValue($value);
         return XsDateTime::fromString($value);
+    }
+
+    /**
+     * @param $value
+     * @return XsInteger
+     */
+    public static function xsInteger($value)
+    {
+        $value = XsInteger::castToNodeValue($value);
+
+        if (!is_numeric($value)) {
+            throw new CastException('Cannot cast to integer');
+        }
+
+        return new XsInteger((int)$value);
     }
 }
