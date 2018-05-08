@@ -45,6 +45,10 @@ class Functions
      */
     public static function xsInteger($value)
     {
+        if (is_bool($value)) {
+            return new XsInteger((int)$value);
+        }
+
         $value = XsInteger::castToNodeValue($value);
 
         if (!is_numeric($value) && !is_bool($value)) {
