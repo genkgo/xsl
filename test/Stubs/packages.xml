@@ -4,23 +4,35 @@
         <name>Composer</name>
         <composer vendor="composer" name="composer">composer/composer</composer>
         <year value="2011-12-10 03:00:00">2011</year>
+        <dependency name="a" author="Author1"/>
+        <dependency name="b" author="Author1"/>
+        <dependency name="c" author="Author2"/>
     </package>
     <package>
         <author>Genkgo</author>
         <name>CAMT</name>
         <composer vendor="genkgo" name="camt">genkgo/camt</composer>
         <year value="2015-12-10 03:00:00">2015</year>
+        <dependency name="x" author="Author3"/>
+        <dependency name="y" author="Author4"/>
+        <dependency name="z" author="Author4"/>
     </package>
     <package>
         <author>Genkgo</author>
         <name>XSL</name>
         <composer vendor="genkgo" name="xsl">genkgo/xsl</composer>
         <year value="2015-12-10 03:00:00">2015</year>
+        <dependency name="h" author="Author5"/>
+        <dependency name="i" author="Author1"/>
+        <dependency name="j" author="Author2"/>
     </package>
     <package>
         <author>Genkgo</author>
         <name>Migrations</name>
         <composer vendor="genkgo" name="migrations">genkgo/migrations</composer>
         <year value="2014-12-10 03:00:00">2014</year>
+        <dependency name="g" author="Author3"/>
+        <dependency name="h" author="Author4"/>
+        <dependency name="i" author="Author1"/>
     </package>
 </packages>

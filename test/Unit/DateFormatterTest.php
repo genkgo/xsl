@@ -60,14 +60,16 @@ class DateFormatterTest extends AbstractXslTest
             )
         );
 
+        $date = new DateTime('2015-10-16 15:37:00');
+
         $this->assertEquals(
-            '2015-10-16 03:37:00 PM GMT+02:00',
-            $formatter->format(new DateTime('2015-10-16 15:37:00'), '[Y]-[M]-[D] [h]:[m]:[s] [P] [z]', 'en_US', null)
+            $date->format('Y-m-d h:i:s A \G\M\TP'),
+            $formatter->format($date, '[Y]-[M]-[D] [h]:[m]:[s] [P] [z]', 'en_US', null)
         );
 
         $this->assertEquals(
-            '289 Friday',
-            $formatter->format(new DateTime('2015-10-16 15:37:00'), '[d] [F]', 'en_US', null)
+            ((int)$date->format('z') + 1) . $date->format(' l'),
+            $formatter->format($date, '[d] [F]', 'en_US', null)
         );
     }
 

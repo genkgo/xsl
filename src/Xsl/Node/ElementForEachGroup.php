@@ -51,6 +51,7 @@ final class ElementForEachGroup implements ElementTransformerInterface
 
         $xslForEach = $this->createForEachStatement($element, $groupId);
         $unGroupedVariable = $this->createUnGroupedVariable($document, $groupId, $select);
+        $iterationId = $this->createIterationId($document, $groupId);
         $groupVariable = $this->createGroupVariable($document, $groupId);
 
         $sorts = $element->getElementsByTagNameNS(XslTransformations::URI, 'sort');
@@ -66,6 +67,7 @@ final class ElementForEachGroup implements ElementTransformerInterface
 
         $element->parentNode->insertBefore($xslForEach, $element);
         $element->parentNode->insertBefore($unGroupedVariable, $xslForEach);
+        $element->parentNode->insertBefore($iterationId, $unGroupedVariable);
         $element->parentNode->removeChild($element);
     }
 
@@ -84,6 +86,7 @@ final class ElementForEachGroup implements ElementTransformerInterface
             ->addArgument(PhpCallback::class . '::call')
             ->addArgument(XslTransformations::URI . ':group-by')
             ->addArgument($groupId)
+            ->addExpression('$iteration-' . $groupId)
             ->addExpression('.')
             ->addExpression('generate-id(.)')
             ->addArgument(base64_encode($groupBy))
@@ -96,6 +99,7 @@ final class ElementForEachGroup implements ElementTransformerInterface
             ->addArgument(PhpCallback::class . '::call')
             ->addArgument(XslTransformations::URI . ':group-iterate')
             ->addArgument($groupId)
+            ->addExpression('$iteration-' . $groupId)
             ->addExpression($updatedSelect)
         ;
 
@@ -117,6 +121,25 @@ final class ElementForEachGroup implements ElementTransformerInterface
         $variable = $document->createElementNS(XslTransformations::URI, 'xsl:variable');
         $variable->setAttribute('name', 'current-un-grouped-' . $groupId);
         $variable->setAttribute('select', $select);
+        return $variable;
+    }
+
+    /**
+     * @param DOMDocument $document
+     * @param $groupId
+     * @param $select
+     * @return DOMElement
+     */
+    private function createIterationId(DOMDocument $document, $groupId)
+    {
+        $createIterationId = (new FunctionBuilder('php:function'))
+            ->addArgument(PhpCallback::class . '::call')
+            ->addArgument(XslTransformations::URI . ':group-iteration-id')
+            ->addArgument($groupId);
+
+        $variable = $document->createElementNS(XslTransformations::URI, 'xsl:variable');
+        $variable->setAttribute('name', 'iteration-' . $groupId);
+        $variable->setAttribute('select', $createIterationId->build());
         return $variable;
     }
 

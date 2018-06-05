@@ -36,7 +36,7 @@ class GroupIterate implements FunctionInterface, MethodCallInterface
     public function call($arguments, TransformationContext $context)
     {
         /** @var Group[] $group */
-        $group = $this->groups->get($arguments[0]);
+        $group = $this->groups->get($arguments[0], $arguments[1]);
 
         $document = new DOMDocument();
         $groupElement = $document->createElementNS(XslTransformations::URI, 'xsl:groups');

@@ -13,6 +13,7 @@ use Genkgo\Xsl\Xsl\Functions\CurrentGroupingKey;
 use Genkgo\Xsl\Xsl\Functions\DateFormatting;
 use Genkgo\Xsl\Xsl\Functions\GroupBy;
 use Genkgo\Xsl\Xsl\Functions\GroupIterate;
+use Genkgo\Xsl\Xsl\Functions\GroupIterationId;
 use Genkgo\Xsl\Xsl\Node\IncludeWindowsTransformer;
 
 /**
@@ -64,6 +65,7 @@ final class XslTransformations implements XmlNamespaceInterface
 
         (new GroupBy($this->xpathCompiler, $groupMap))->register($functions);
         (new GroupIterate($groupMap))->register($functions);
+        (new GroupIterationId($groupMap))->register($functions);
         (new CurrentGroupingKey())->register($functions);
         (new CurrentGroup())->register($functions);
     }

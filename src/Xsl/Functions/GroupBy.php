@@ -55,16 +55,18 @@ class GroupBy implements FunctionInterface, MethodCallInterface
     {
         /** @var string $groupId */
         $groupId = $arguments[0];
+        /** @var string $groupId */
+        $iterationId = $arguments[1];
         /** @var DOMElement[] $elements */
-        $elements = $arguments[1];
+        $elements = $arguments[2];
         /** @var string $elementId */
-        $elementId = $arguments[2];
+        $elementId = $arguments[3];
         /** @var string $groupBy */
-        $groupBy = base64_decode($arguments[3]);
+        $groupBy = base64_decode($arguments[4]);
         /** @var string[] $namespaces */
-        $namespaces = json_decode(base64_decode($arguments[4]), true);
+        $namespaces = json_decode(base64_decode($arguments[5]), true);
 
-        $collection = $this->groups->get($groupId);
+        $collection = $this->groups->get($groupId, $iterationId);
 
         foreach ($elements as $key => $element) {
             $xpath = new DOMXPath($element->ownerDocument);

@@ -202,4 +202,21 @@ class ForEachGroupTest extends AbstractIntegrationTestCase
 
         $this->assertEquals('<span title="1 CAMT packages for key Genkgo">CAMT</span>', trim($processor->transformToXml($data)));
     }
+
+    public function testMultipleCalls()
+    {
+        $styleSheet = new DOMDocument();
+        $styleSheet->load('Stubs/Xsl/ForEachGroup/group-multiple.xsl');
+
+        $processor = new XsltProcessor();
+        $processor->importStyleSheet($styleSheet);
+
+        $data = new DOMDocument();
+        $data->load('Stubs/packages.xml');
+
+        $this->assertEquals(
+            'Author1Author2Author3Author4Author5Author1Author2Author3Author4Author1',
+            trim($processor->transformToXml($data))
+        );
+    }
 }
