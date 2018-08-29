@@ -55,6 +55,10 @@ class Functions
 
         $value = XsInteger::castToNodeValue($value);
 
+        if ($value === '') {
+            return new XsInteger(0);
+        }
+
         if (!is_numeric($value) && !is_bool($value)) {
             throw new CastException('Cannot cast to integer');
         }
