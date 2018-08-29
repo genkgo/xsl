@@ -41,12 +41,16 @@ class Functions
 
     /**
      * @param $value
-     * @return XsInteger
+     * @return XsInteger|XsSequence
      */
     public static function xsInteger($value)
     {
         if (is_bool($value)) {
             return new XsInteger((int)$value);
+        }
+
+        if (\is_array($value) && empty($value)) {
+            return XsSequence::fromArray([]);
         }
 
         $value = XsInteger::castToNodeValue($value);
