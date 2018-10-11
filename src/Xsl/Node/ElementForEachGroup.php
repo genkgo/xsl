@@ -55,8 +55,8 @@ final class ElementForEachGroup implements ElementTransformerInterface
         $groupVariable = $this->createGroupVariable($document, $groupId);
 
         $sorts = $element->getElementsByTagNameNS(XslTransformations::URI, 'sort');
-        foreach ($sorts as $sort) {
-            $xslForEach->appendChild($this->convertSort($sort, $groupId));
+        while ($sorts->length > 0) {
+            $xslForEach->appendChild($this->convertSort($sorts->item(0), $groupId));
         }
 
         $xslForEach->appendChild($groupVariable);
