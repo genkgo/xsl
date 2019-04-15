@@ -152,6 +152,30 @@ final class XmlPath implements XmlNamespaceInterface
             'seconds-from-dateTime',
             new ReturnXsScalarFunction(new ObjectFunction([Date::class, 'secondsFromDateTime']), 'integer')
         ))->register($functions);
+        (new StaticFunction(
+            'years-from-duration',
+            new ReturnXsScalarFunction(new ObjectFunction([Date::class, 'yearsFromDuration']), 'integer')
+        ))->register($functions);
+        (new StaticFunction(
+            'months-from-duration',
+            new ReturnXsScalarFunction(new ObjectFunction([Date::class, 'monthsFromDuration']), 'integer')
+        ))->register($functions);
+        (new StaticFunction(
+            'days-from-duration',
+            new ReturnXsScalarFunction(new ObjectFunction([Date::class, 'daysFromDuration']), 'integer')
+        ))->register($functions);
+        (new StaticFunction(
+            'hours-from-duration',
+            new ReturnXsScalarFunction(new ObjectFunction([Date::class, 'hoursFromDuration']), 'integer')
+        ))->register($functions);
+        (new StaticFunction(
+            'minutes-from-duration',
+            new ReturnXsScalarFunction(new ObjectFunction([Date::class, 'minutesFromDuration']), 'integer')
+        ))->register($functions);
+        (new StaticFunction(
+            'seconds-from-duration',
+            new ReturnXsScalarFunction(new ObjectFunction([Date::class, 'secondsFromDuration']), 'integer')
+        ))->register($functions);
     }
 
     private function registerStringFunctions(array $list, FunctionMap $functions, $className)

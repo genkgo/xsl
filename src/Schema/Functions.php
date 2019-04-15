@@ -41,6 +41,16 @@ class Functions
 
     /**
      * @param $value
+     * @return XsDayTimeDuration
+     */
+    public static function xsDayTimeDuration($value)
+    {
+        $value = XsDayTimeDuration::castToNodeValue($value);
+        return XsDayTimeDuration::fromString($value);
+    }
+
+    /**
+     * @param $value
      * @return XsInteger|XsSequence
      */
     public static function xsInteger($value)

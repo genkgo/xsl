@@ -1,6 +1,7 @@
 <?php
 namespace Genkgo\Xsl\Xpath\Functions;
 
+use DateInterval;
 use DateTimeImmutable;
 use Genkgo\Xsl\Schema\XsDate;
 use Genkgo\Xsl\Schema\XsDateTime;
@@ -192,5 +193,83 @@ class Date
         Assert::assertSchema($value[0], 'dateTime');
 
         return new XsInteger((int) (new DateTimeImmutable($value[0]->nodeValue))->format('s'));
+    }
+
+    /**
+     * @param $value
+     * @return XsInteger
+     * @throws \Genkgo\Xsl\Xpath\Exception\InvalidArgumentException
+     */
+    public static function yearsFromDuration($value)
+    {
+        Assert::assertArray($value);
+        Assert::assertSchema($value[0], 'dayTimeDuration');
+
+        return new XsInteger((int) (new DateInterval($value[0]->nodeValue))->format('%y'));
+    }
+
+    /**
+     * @param $value
+     * @return XsInteger
+     * @throws \Genkgo\Xsl\Xpath\Exception\InvalidArgumentException
+     */
+    public static function monthsFromDuration($value)
+    {
+        Assert::assertArray($value);
+        Assert::assertSchema($value[0], 'dayTimeDuration');
+
+        return new XsInteger((int) (new DateInterval($value[0]->nodeValue))->format('%m'));
+    }
+
+    /**
+     * @param $value
+     * @return XsInteger
+     * @throws \Genkgo\Xsl\Xpath\Exception\InvalidArgumentException
+     */
+    public static function daysFromDuration($value)
+    {
+        Assert::assertArray($value);
+        Assert::assertSchema($value[0], 'dayTimeDuration');
+
+        return new XsInteger((int) (new DateInterval($value[0]->nodeValue))->format('%d'));
+    }
+
+    /**
+     * @param $value
+     * @return XsInteger
+     * @throws \Genkgo\Xsl\Xpath\Exception\InvalidArgumentException
+     */
+    public static function hoursFromDuration($value)
+    {
+        Assert::assertArray($value);
+        Assert::assertSchema($value[0], 'dayTimeDuration');
+
+        return new XsInteger((int) (new DateInterval($value[0]->nodeValue))->format('%h'));
+    }
+
+    /**
+     * @param $value
+     * @return XsInteger
+     * @throws \Genkgo\Xsl\Xpath\Exception\InvalidArgumentException
+     */
+    public static function minutesFromDuration($value)
+    {
+        Assert::assertArray($value);
+        Assert::assertSchema($value[0], 'dayTimeDuration');
+
+        return new XsInteger((int) (new DateInterval($value[0]->nodeValue))->format('%i'));
+    }
+
+    /**
+     * @param $value
+     * @return XsInteger
+     * @throws \Genkgo\Xsl\Xpath\Exception\InvalidArgumentException
+     */
+    public static function secondsFromDuration($value)
+    {
+        Assert::assertArray($value);
+        Assert::assertSchema($value[0], 'dayTimeDuration');
+
+        return new XsInteger((int) (new DateTimeImmutable($value[0]->nodeValue))->format('%s'));
     }
 }

@@ -37,6 +37,11 @@ class DateTest extends AbstractXpathTest
         $this->assertEquals(date('Y'), $this->transformFile('Stubs/Xpath/Date/year-from-dateTime.xsl'));
     }
 
+    public function testYearsFromDurations()
+    {
+        $this->assertEquals(1, $this->transformFile('Stubs/Xpath/Date/years-from-duration.xsl'));
+    }
+
     public function testMonthFromDate()
     {
         $this->assertEquals(6, $this->transformFile('Stubs/Xpath/Date/month-from-date.xsl'));

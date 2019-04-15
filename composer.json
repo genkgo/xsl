@@ -3,7 +3,8 @@
     "description": "XSL 2.0 Transpiler in PHP",
     "require" : {
         "php" : ">=7.0",
-        "ext-xsl" : "*"
+        "ext-xsl" : "*",
+        "ext-dom" : "*"
     },
     "require-dev" : {
         "ext-intl" : "*",
