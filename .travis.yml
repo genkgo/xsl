@@ -1,8 +1,9 @@
 language: php
 php:
-  - 7.0
   - 7.1
   - 7.2
+  - 7.3
+  - 7.4snapshot
   - nightly
 matrix:
   include:
@@ -10,7 +11,12 @@ matrix:
       env: dependencies=lowest
     - php: 7.2
       env: dependencies=highest
+    - php: 7.3
+      env: dependencies=lowest
+    - php: 7.3
+      env: dependencies=highest
   allow_failures:
+    - php: 7.4snapshot
     - php: nightly
 before_script:
   - composer self-update
