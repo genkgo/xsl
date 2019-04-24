@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Integration;
 
 use DOMDocument;
@@ -6,7 +8,7 @@ use Genkgo\Xsl\Config;
 use Genkgo\Xsl\Stubs\Extension\MyExtension;
 use Genkgo\Xsl\XsltProcessor;
 
-class ExtensionTest extends AbstractIntegrationTestCase
+final class ExtensionTest extends AbstractIntegrationTestCase
 {
     public function testXpathFunction()
     {
@@ -25,7 +27,7 @@ class ExtensionTest extends AbstractIntegrationTestCase
         $processor->importStylesheet($xslDoc);
         $processorResult = $processor->transformToXML($xmlDoc);
 
-        $this->assertEquals('Hello World was called and received 20 arguments!', trim($processorResult));
+        $this->assertEquals('Hello World was called and received 20 arguments!', \trim($processorResult));
     }
 
     public function testXpathFunctionXsl1()
@@ -46,7 +48,7 @@ class ExtensionTest extends AbstractIntegrationTestCase
         $processor->importStylesheet($xslDoc);
         $processorResult = $processor->transformToXML($xmlDoc);
 
-        $this->assertEquals('Hello World was called and received 20 arguments!', trim($processorResult));
+        $this->assertEquals('Hello World was called and received 20 arguments!', \trim($processorResult));
     }
 
     public function testClosure()
@@ -67,7 +69,7 @@ class ExtensionTest extends AbstractIntegrationTestCase
         $processor->importStylesheet($xslDoc);
         $processorResult = $processor->transformToXML($xmlDoc);
 
-        $this->assertEquals('20', trim($processorResult));
+        $this->assertEquals('20', \trim($processorResult));
     }
 
     public function testMethod()
@@ -88,6 +90,6 @@ class ExtensionTest extends AbstractIntegrationTestCase
         $processor->importStylesheet($xslDoc);
         $processorResult = $processor->transformToXML($xmlDoc);
 
-        $this->assertEquals('24', trim($processorResult));
+        $this->assertEquals('24', \trim($processorResult));
     }
 }

@@ -1,11 +1,12 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl;
 
 use DOMDocument;
 
 /**
  * Interface TransformerInterface
- * @package Genkgo\Xsl
  */
 interface TransformerInterface
 {

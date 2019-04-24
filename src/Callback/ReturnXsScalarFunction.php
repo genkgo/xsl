@@ -1,19 +1,18 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Callback;
 
 use DOMNode;
 use Genkgo\Xsl\Xpath\Lexer;
 
-/**
- * Class ReturnXsScalarFunction
- * @package Genkgo\Xsl\Callback
- */
 final class ReturnXsScalarFunction implements ReplaceFunctionInterface
 {
     /**
      * @var ReplaceFunctionInterface
      */
     private $parentFunction;
+
     /**
      * @var string
      */
@@ -21,12 +20,12 @@ final class ReturnXsScalarFunction implements ReplaceFunctionInterface
 
     /**
      * @param ReplaceFunctionInterface $parentFunction
-     * @param $type
+     * @param string $type
      */
-    public function __construct(ReplaceFunctionInterface $parentFunction, $type)
+    public function __construct(ReplaceFunctionInterface $parentFunction, string $type)
     {
         $this->parentFunction = $parentFunction;
-        $this->type = $type;
+        $this->type = ($type === '' ? '*' : $type);
     }
 
     /**
@@ -44,7 +43,7 @@ final class ReturnXsScalarFunction implements ReplaceFunctionInterface
         while (true) {
             $item = $lexer->peek($currentKey + 1);
 
-            if ($item === null) {
+            if ($item === '') {
                 break;
             }
 
@@ -56,12 +55,7 @@ final class ReturnXsScalarFunction implements ReplaceFunctionInterface
                 $level--;
 
                 if ($level === 0) {
-                    if ($this->type !== null) {
-                        $lexer->insert(['/', 'xs:' . $this->type], $currentKey + 2);
-                        break;
-                    }
-
-                    $lexer->insert(['/', 'xs:*'], $currentKey + 2);
+                    $lexer->insert(['/', 'xs:' . $this->type], $currentKey + 2);
                     break;
                 }
             }

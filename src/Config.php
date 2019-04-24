@@ -1,27 +1,28 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl;
 
 use Genkgo\Cache\CallbackCacheInterface;
 use Genkgo\Xsl\Exception\CacheDisabledException;
 
-/**
- * Class Config
- * @package Genkgo\Xsl
- */
 final class Config
 {
     /**
      * @var array
      */
     private $extensions = [];
+
     /**
      * @var CallbackCacheInterface
      */
     private $cacheAdapter;
+
     /**
      * @var bool
      */
     private $excludeResultPrefixes = false;
+
     /**
      * @var bool
      */

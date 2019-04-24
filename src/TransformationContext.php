@@ -1,28 +1,29 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl;
 
 use DOMDocument;
 use Genkgo\Xsl\Util\FunctionMap;
 use Genkgo\Xsl\Util\TransformerCollection;
 
-/**
- * Class Context
- * @package Genkgo\Xsl
- */
 final class TransformationContext
 {
     /**
      * @var DOMDocument
      */
     private $document;
+
     /**
      * @var array|null
      */
     private $phpFunctions;
+
     /**
      * @var TransformerCollection
      */
     private $transformers;
+
     /**
      * @var FunctionMap
      */

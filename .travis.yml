@@ -1,6 +1,5 @@
 language: php
 php:
-  - 7.1
   - 7.2
   - 7.3
   - 7.4snapshot
@@ -23,7 +22,11 @@ before_script:
   - if [ -z "$dependencies" ]; then composer install; fi;
   - if [ "$dependencies" = "lowest" ]; then composer update --prefer-lowest -n; fi;
   - if [ "$dependencies" = "highest" ]; then composer update -n; fi;
+script:
+  - ./vendor/bin/phpunit -c phpunit.xml --coverage-clover=coverage.clover
+  - ./vendor/bin/phpstan analyse -l max src
+  - ./vendor/bin/phpstan analyse -l max test
+  - if [ "$TRAVIS_PHP_VERSION" != "nightly" ] && [ -z "$dependencies" ]; then ./vendor/bin/php-cs-fixer fix --dry-run --verbose --config .php_cs.dist ./src ./test ; fi
 after_script:
-  - vendor/bin/phpunit --coverage-clover=coverage.clover
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover coverage.clover

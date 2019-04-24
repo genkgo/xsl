@@ -1,6 +1,5 @@
 /.idea/
-/.settings/
 /vendor/
 /tests/build/
-.project
+.php_cs.cache
 composer.lock

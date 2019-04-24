@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl;
 
 use Genkgo\Xsl\Util\FunctionMap;
@@ -6,7 +8,6 @@ use Genkgo\Xsl\Util\TransformerCollection;
 
 /**
  * Interface XmlNamespaceInterface
- * @package Genkgo\Xsl
  */
 interface XmlNamespaceInterface
 {

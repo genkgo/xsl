@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Integration\Xsl;
 
 use DOMDocument;
@@ -23,6 +25,6 @@ abstract class AbstractXslTest extends AbstractIntegrationTestCase
         $document = new DOMDocument();
         $document->load('Stubs/collection.xml');
 
-        return trim($processor->transformToXml($document));
+        return \trim((string)$processor->transformToXml($document));
     }
 }

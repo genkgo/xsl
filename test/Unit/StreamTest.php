@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Unit;
 
 use DOMDocument;
@@ -18,7 +20,7 @@ class StreamTest extends AbstractTestCase
         $stream = new Stream();
         $stream->context = $this->createContext();
         $stream->stream_open(Stream::PROTOCOL . Stream::HOST . Stream::ROOT);
-        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>', trim($stream->stream_read(9999)));
+        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>', \trim($stream->stream_read(9999)));
     }
 
     public function testStreamOpenWithoutContext()
@@ -26,9 +28,9 @@ class StreamTest extends AbstractTestCase
         $this->expectException(StreamException::class);
 
         $stream = new Stream();
-        $stream->context = stream_context_create();
+        $stream->context = \stream_context_create();
         $stream->stream_open(Stream::PROTOCOL . Stream::HOST . Stream::ROOT);
-        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>', trim($stream->stream_read(9999)));
+        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>', \trim($stream->stream_read(9999)));
     }
 
     public function testStreamWrite()
@@ -42,24 +44,24 @@ class StreamTest extends AbstractTestCase
     public function testFullPath()
     {
         $unregister = false;
-        if (in_array('gxsl', stream_get_wrappers()) === false) {
-            stream_wrapper_register('gxsl', Stream::class);
+        if (\in_array('gxsl', \stream_get_wrappers()) === false) {
+            \stream_wrapper_register('gxsl', Stream::class);
             $unregister = true;
         }
 
         $this->assertEquals(
-            file_get_contents('Stubs/include2.xsl'),
-            file_get_contents('gxsl://localhost/' . urlencode(getcwd() . '/Stubs/include2.xsl'))
+            \file_get_contents('Stubs/include2.xsl'),
+            \file_get_contents('gxsl://localhost/' . \urlencode(\getcwd() . '/Stubs/include2.xsl'))
         );
 
         if ($unregister) {
-            stream_wrapper_unregister('gxsl');
+            \stream_wrapper_unregister('gxsl');
         }
     }
 
     private function createContext()
     {
-        return stream_context_create([
+        return \stream_context_create([
             'gxsl' => [
                 'transpiler' => new Transpiler(
                     new TransformationContext(new DOMDocument('1.0', 'UTF-8'), new TransformerCollection(), new FunctionMap())

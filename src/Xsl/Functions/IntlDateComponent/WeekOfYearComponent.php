@@ -1,17 +1,14 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xsl\Functions\IntlDateComponent;
 
 use DateTimeInterface;
-use Genkgo\Xsl\Xpath\Exception\InvalidArgumentException;
 use Genkgo\Xsl\Xsl\Functions\Formatter\ComponentInterface;
 use Genkgo\Xsl\Xsl\Functions\Formatter\PictureString;
 
-/**
- * Class WeekOfYearComponent
- * @package Genkgo\Xsl\Xsl\Functions\DateComponent
- */
-final class WeekOfYearComponent implements ComponentInterface {
-
+final class WeekOfYearComponent implements ComponentInterface
+{
     /**
      * @param PictureString $pictureString
      * @param DateTimeInterface $date

@@ -1,46 +1,36 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl;
 
 use Genkgo\Xsl\Exception\ReadOnlyStreamException;
 use Genkgo\Xsl\Exception\StreamException;
 
-/**
- * Class Stream
- * @package Genkgo\Xsl
- */
 final class Stream
 {
-    /**
-     *
-     */
     const PROTOCOL = 'gxsl://';
-    /**
-     *
-     */
+    
     const HOST = 'localhost';
-    /**
-     *
-     */
+    
     const ROOT = '#root';
-    /**
-     * @var string
-     */
-    private $template;
+
     /**
      * @var int
      */
     private $position = 0;
+
     /**
      * @var resource
      */
     public $context;
+
     /**
      * @var string
      */
     private $content;
 
     /**
-     * @param $path
+     * @param string $path
      * @return bool
      * @throws StreamException
      */
@@ -48,7 +38,7 @@ final class Stream
     {
         $path = $this->uriToPath($path);
 
-        $streamContext = stream_context_get_options($this->context);
+        $streamContext = \stream_context_get_options($this->context);
 
         /** @var Transpiler $transpiler */
         if (isset($streamContext['gxsl']['transpiler'])) {
@@ -65,18 +55,15 @@ final class Stream
                     $path . ' does not exists without stream'
                 );
             }
-            $this->content = file_get_contents($path);
+            $this->content = (string)\file_get_contents($path);
         }
 
         return true;
     }
-
-    /**
-     *
-     */
+    
     public function stream_close()
     {
-        $this->template = null;
+        $this->content = '';
     }
 
     /**
@@ -88,13 +75,12 @@ final class Stream
     }
 
     /**
-     * @param $count
+     * @param int $count
      * @return string
-     * @throws StreamException
      */
     public function stream_read($count)
     {
-        $bytes = substr($this->content, $this->position, $count);
+        $bytes = \substr($this->content, $this->position, $count);
         $this->position += $count;
 
         return $bytes;
@@ -109,7 +95,7 @@ final class Stream
     }
 
     /**
-     * @param $path
+     * @param string $path
      * @return array
      */
     public function url_stat($path)
@@ -120,7 +106,12 @@ final class Stream
             return [];
         }
 
-        return stat($filename);
+        $result = \stat($filename);
+        if ($result === false) {
+            return [];
+        }
+
+        return $result;
     }
 
     /**
@@ -132,12 +123,12 @@ final class Stream
     }
 
     /**
-     * @param $filename
+     * @param string $filename
      * @return bool
      */
     private function isRoot($filename)
     {
-        return substr($filename, strlen(self::ROOT) * -1) === self::ROOT;
+        return \substr($filename, \strlen(self::ROOT) * -1) === self::ROOT;
     }
 
     /**
@@ -146,10 +137,10 @@ final class Stream
      */
     private function uriToPath($uri)
     {
-        $filename = urldecode(str_replace(self::PROTOCOL . self::HOST, '', $uri));
+        $filename = \urldecode(\str_replace(self::PROTOCOL . self::HOST, '', $uri));
         // @codeCoverageIgnoreStart
         if (PHP_OS === 'WINNT') {
-            return ltrim($filename, '/');
+            return \ltrim($filename, '/');
         }
         // @codeCoverageIgnoreEnd
 

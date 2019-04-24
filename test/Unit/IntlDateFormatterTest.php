@@ -1,11 +1,14 @@
 <?php
-namespace Genkgo\Xsl\Integration\Xsl;
+declare(strict_types=1);
+
+namespace Genkgo\Xsl\Unit;
 
 use DateTime;
+use Genkgo\Xsl\Integration\Xsl\AbstractXslTest;
 use Genkgo\Xsl\Xpath\Exception\InvalidArgumentException;
 use Genkgo\Xsl\Xsl\Functions\Formatter\IntlDateTimeFormatter;
 
-class IntlDateFormatterTest extends AbstractXslTest
+final class IntlDateFormatterTest extends AbstractXslTest
 {
     public function testFormatDate()
     {
@@ -13,12 +16,12 @@ class IntlDateFormatterTest extends AbstractXslTest
 
         $this->assertEquals(
             '2015-10-16',
-            $formatter->format(new DateTime('2015-10-16'), '[Y]-[M]-[D]', 'en_US', null)
+            $formatter->format(new DateTime('2015-10-16'), '[Y]-[M]-[D]', 'en_US')
         );
 
         $this->assertEquals(
             '42',
-            $formatter->format(new DateTime('2015-10-16'), '[W]', 'en_US', null)
+            $formatter->format(new DateTime('2015-10-16'), '[W]', 'en_US')
         );
     }
 
@@ -26,7 +29,7 @@ class IntlDateFormatterTest extends AbstractXslTest
     {
         try {
             $formatter = IntlDateTimeFormatter::createWithFlagDate();
-            $formatter->format(new DateTime('2015-10-16'), '[H]', 'en_US', null);
+            $formatter->format(new DateTime('2015-10-16'), '[H]', 'en_US');
         } catch (InvalidArgumentException $e) {
             $this->assertEquals('XTDE1340', $e->getErrorCode());
         }
@@ -38,12 +41,12 @@ class IntlDateFormatterTest extends AbstractXslTest
 
         $this->assertEquals(
             '09:37:00',
-            $formatter->format(new DateTime('09:37:00'), '[H]:[m]:[s]', 'en_US', null)
+            $formatter->format(new DateTime('09:37:00'), '[H]:[m]:[s]', 'en_US')
         );
 
         $this->assertEquals(
             'AM',
-            $formatter->format(new DateTime('09:37:00'), '[P]', 'en_US', null)
+            $formatter->format(new DateTime('09:37:00'), '[P]', 'en_US')
         );
     }
 
@@ -52,8 +55,9 @@ class IntlDateFormatterTest extends AbstractXslTest
         $formatter = IntlDateTimeFormatter::createWithFlagDateTime();
 
         $this->assertThat(
-            $formatter->format(new DateTime('2015-10-16 15:37:00'), '[Y]-[M]-[D] [H]:[m]:[s] [Z]', 'en_US', null),
+            $formatter->format(new DateTime('2015-10-16 15:37:00'), '[Y]-[M]-[D] [H]:[m]:[s] [Z]', 'en_US'),
             $this->logicalOr(
+                '2015-10-16 15:37:00 UTC',
                 '2015-10-16 15:37:00 GMT',
                 '2015-10-16 15:37:00 GMT+2',
                 '2015-10-16 15:37:00 GMT+02:00',
@@ -62,13 +66,13 @@ class IntlDateFormatterTest extends AbstractXslTest
         );
 
         $this->assertThat(
-            $formatter->format(new DateTime('2015-10-16 15:37:00'), '[Y]-[M]-[D] [h]:[m]:[s] [P] [z]', 'en_US', null),
+            $formatter->format(new DateTime('2015-10-16 15:37:00'), '[Y]-[M]-[D] [h]:[m]:[s] [P] [z]', 'en_US'),
             $this->logicalOr('2015-10-16 03:37:00 PM GMT+02:00', '2015-10-16 03:37:00 PM GMT')
         );
 
         $this->assertEquals(
             '289 Friday',
-            $formatter->format(new DateTime('2015-10-16 15:37:00'), '[d] [F]', 'en_US', null)
+            $formatter->format(new DateTime('2015-10-16 15:37:00'), '[d] [F]', 'en_US')
         );
     }
 
@@ -79,7 +83,7 @@ class IntlDateFormatterTest extends AbstractXslTest
         try {
             $this->assertEquals(
                 '09:37:00',
-                $formatter->format(new DateTime('2015-10-16'), '[Y]]', 'en_US', null)
+                $formatter->format(new DateTime('2015-10-16'), '[Y]]', 'en_US')
             );
         } catch (InvalidArgumentException $e) {
             $this->assertEquals('XTDE1340', $e->getErrorCode());
@@ -92,7 +96,7 @@ class IntlDateFormatterTest extends AbstractXslTest
         $this->expectExceptionMessage('No valid components found');
 
         $formatter = IntlDateTimeFormatter::createWithFlagDate();
-        $formatter->format(new DateTime('2015-10-16'), '[A]', 'en_US', null);
+        $formatter->format(new DateTime('2015-10-16'), '[A]', 'en_US');
     }
 
     public function testNotSupportedComponent()
@@ -101,7 +105,7 @@ class IntlDateFormatterTest extends AbstractXslTest
         $this->expectExceptionMessage('Component [E] is not supported');
 
         $formatter = IntlDateTimeFormatter::createWithFlagDate();
-        $formatter->format(new DateTime('2015-10-16'), '[E]', 'en_US', null);
+        $formatter->format(new DateTime('2015-10-16'), '[E]', 'en_US');
     }
 
     public function testEscapeBrackets()
@@ -112,8 +116,7 @@ class IntlDateFormatterTest extends AbstractXslTest
             $formatter->format(
                 new DateTime('2015-05-16 15:37:00'),
                 '[[Date:]] [Y]-[M]-[D] [h]:[m]:[s] [P]',
-                'en_US',
-                null
+                'en_US'
             )
         );
     }
@@ -127,8 +130,7 @@ class IntlDateFormatterTest extends AbstractXslTest
         $formatter->format(
             new DateTime('2015-10-16 15:37:00'),
             '[[ Hallo [Y',
-            'en_US',
-            null
+            'en_US'
         );
     }
 
@@ -140,8 +142,7 @@ class IntlDateFormatterTest extends AbstractXslTest
         $formatter->format(
             new DateTime('2015-10-16'),
             '[H]',
-            'en_US',
-            null
+            'en_US'
         );
     }
 
@@ -154,8 +155,7 @@ class IntlDateFormatterTest extends AbstractXslTest
         $formatter->format(
             new DateTime('2015-10-16'),
             ']',
-            'en_US',
-            null
+            'en_US'
         );
     }
 
@@ -167,8 +167,7 @@ class IntlDateFormatterTest extends AbstractXslTest
             $formatter->format(
                 new DateTime('2015-10-16 15:37:00'),
                 '[MNn]',
-                'en_US',
-                null
+                'en_US'
             )
         );
     }
@@ -181,8 +180,7 @@ class IntlDateFormatterTest extends AbstractXslTest
             $formatter->format(
                 new DateTime('2015-10-16 15:37:00'),
                 '[MNn,*-3]',
-                'en_US',
-                null
+                'en_US'
             )
         );
     }
@@ -195,8 +193,7 @@ class IntlDateFormatterTest extends AbstractXslTest
             $formatter->format(
                 new DateTime('2015-10-16 15:37:00'),
                 '[F]',
-                'en_US',
-                null
+                'en_US'
             )
         );
     }
@@ -209,8 +206,7 @@ class IntlDateFormatterTest extends AbstractXslTest
             $formatter->format(
                 new DateTime('2015-10-16 15:37:00'),
                 '[FNn,*-3]',
-                'en_US',
-                null
+                'en_US'
             )
         );
     }
@@ -223,8 +219,7 @@ class IntlDateFormatterTest extends AbstractXslTest
             $formatter->format(
                 new DateTime('2015-10-16 15:37:00'),
                 '[FNn,*-4]',
-                'en_US',
-                null
+                'en_US'
             )
         );
     }
@@ -237,8 +232,7 @@ class IntlDateFormatterTest extends AbstractXslTest
             $formatter->format(
                 new DateTime('2015-10-16 15:37:00'),
                 '[FN,*-3]',
-                'en_US',
-                null
+                'en_US'
             )
         );
     }
@@ -251,8 +245,7 @@ class IntlDateFormatterTest extends AbstractXslTest
             $formatter->format(
                 new DateTime('2015-10-16 15:37:00'),
                 '[Fn,*-3]',
-                'en_US',
-                null
+                'en_US'
             )
         );
     }
@@ -265,8 +258,7 @@ class IntlDateFormatterTest extends AbstractXslTest
             $formatter->format(
                 new DateTime('2015-10-16 15:37:00'),
                 '[MN] [FN,*-3]',
-                'en_US',
-                null
+                'en_US'
             )
         );
     }
@@ -279,8 +271,7 @@ class IntlDateFormatterTest extends AbstractXslTest
             $formatter->format(
                 new DateTime('2015-10-08 15:37:00'),
                 '[D,*-1]',
-                'en_US',
-                null
+                'en_US'
             )
         );
     }
@@ -293,8 +284,7 @@ class IntlDateFormatterTest extends AbstractXslTest
             $formatter->format(
                 new DateTime('2015-05-08 15:37:00'),
                 '[M,*-1]',
-                'en_US',
-                null
+                'en_US'
             )
         );
     }
@@ -307,8 +297,7 @@ class IntlDateFormatterTest extends AbstractXslTest
             $formatter->format(
                 new DateTime('2015-05-08 15:37:00'),
                 '[D] [MNn] [Y]',
-                'en_US',
-                null
+                'en_US'
             )
         );
     }
@@ -321,8 +310,7 @@ class IntlDateFormatterTest extends AbstractXslTest
             $formatter->format(
                 new \DateTime('2017-01-01 18:42:34.000000', new \DateTimeZone('UTC')),
                 '[D]-[M]-[Y]',
-                'nl_NL',
-                null
+                'nl_NL'
             )
         );
     }

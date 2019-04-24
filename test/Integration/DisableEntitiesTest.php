@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Integration;
 
 use DOMDocument;
@@ -11,7 +13,7 @@ final class DisableEntitiesTest extends AbstractIntegrationTestCase
     {
         $this->expectException(\DOMException::class);
 
-        file_put_contents(sys_get_temp_dir() . '/xsl-passwd', 'test');
+        \file_put_contents(\sys_get_temp_dir() . '/xsl-passwd', 'test');
         $config = new Config();
 
         $xslDoc = new DOMDocument();
@@ -29,7 +31,7 @@ final class DisableEntitiesTest extends AbstractIntegrationTestCase
     {
         $this->expectException(\DOMException::class);
 
-        file_put_contents(sys_get_temp_dir() . '/xsl-passwd', 'test');
+        \file_put_contents(\sys_get_temp_dir() . '/xsl-passwd', 'test');
         $config = new Config();
 
         $xslDoc = new DOMDocument();
@@ -45,7 +47,7 @@ final class DisableEntitiesTest extends AbstractIntegrationTestCase
 
     public function testEntitiesEnabled()
     {
-        file_put_contents(sys_get_temp_dir() . '/xsl-passwd', 'test');
+        \file_put_contents(\sys_get_temp_dir() . '/xsl-passwd', 'test');
         $config = new Config();
         $config->enableEntities();
 
@@ -60,14 +62,14 @@ final class DisableEntitiesTest extends AbstractIntegrationTestCase
         $processor->importStylesheet($xslDoc);
 
         $this->assertEquals(
-            base64_encode('test'),
-            trim($processor->transformToXML($xmlDoc))
+            \base64_encode('test'),
+            \trim($processor->transformToXML($xmlDoc))
         );
     }
 
     public function testEntitiesEnabledInclude()
     {
-        file_put_contents(sys_get_temp_dir() . '/xsl-passwd', 'test');
+        \file_put_contents(\sys_get_temp_dir() . '/xsl-passwd', 'test');
         $config = new Config();
         $config->enableEntities();
 
@@ -80,8 +82,8 @@ final class DisableEntitiesTest extends AbstractIntegrationTestCase
         $processor = new XsltProcessor($config);
         $processor->importStylesheet($xslDoc);
         $this->assertEquals(
-            base64_encode('test'),
-            trim($processor->transformToXML($xmlDoc))
+            \base64_encode('test'),
+            \trim($processor->transformToXML($xmlDoc))
         );
     }
 }

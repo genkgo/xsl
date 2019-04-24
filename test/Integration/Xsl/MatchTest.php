@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Integration\Xsl;
 
 class MatchTest extends AbstractXslTest

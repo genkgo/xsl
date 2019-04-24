@@ -1,7 +1,10 @@
 <?php
-namespace Genkgo\Xsl\Integration\Xsl;
+declare(strict_types=1);
+
+namespace Genkgo\Xsl\Unit;
 
 use DateTime;
+use Genkgo\Xsl\Integration\Xsl\AbstractXslTest;
 use Genkgo\Xsl\Xpath\Exception\InvalidArgumentException;
 use Genkgo\Xsl\Xsl\Functions\Formatter\DateTimeFormatter;
 
@@ -13,12 +16,12 @@ class DateFormatterTest extends AbstractXslTest
 
         $this->assertEquals(
             '2015-10-16',
-            $formatter->format(new DateTime('2015-10-16'), '[Y]-[M]-[D]', 'en_US', null)
+            $formatter->format(new DateTime('2015-10-16'), '[Y]-[M]-[D]', 'en_US')
         );
 
         $this->assertEquals(
             '42',
-            $formatter->format(new DateTime('2015-10-16'), '[W]', 'en_US', null)
+            $formatter->format(new DateTime('2015-10-16'), '[W]', 'en_US')
         );
     }
 
@@ -26,7 +29,7 @@ class DateFormatterTest extends AbstractXslTest
     {
         try {
             $formatter = DateTimeFormatter::createWithFlagDate();
-            $formatter->format(new DateTime('2015-10-16'), '[H]', 'en_US', null);
+            $formatter->format(new DateTime('2015-10-16'), '[H]', 'en_US');
         } catch (InvalidArgumentException $e) {
             $this->assertEquals('XTDE1340', $e->getErrorCode());
         }
@@ -38,12 +41,12 @@ class DateFormatterTest extends AbstractXslTest
 
         $this->assertEquals(
             '09:37:00',
-            $formatter->format(new DateTime('09:37:00'), '[H]:[m]:[s]', 'en_US', null)
+            $formatter->format(new DateTime('09:37:00'), '[H]:[m]:[s]', 'en_US')
         );
 
         $this->assertEquals(
             'AM',
-            $formatter->format(new DateTime('09:37:00'), '[P]', 'en_US', null)
+            $formatter->format(new DateTime('09:37:00'), '[P]', 'en_US')
         );
     }
 
@@ -52,7 +55,7 @@ class DateFormatterTest extends AbstractXslTest
         $formatter = DateTimeFormatter::createWithFlagDateTime();
 
         $this->assertThat(
-            $formatter->format(new DateTime('2015-10-16 15:37:00'), '[Y]-[M]-[D] [H]:[m]:[s] [Z]', 'en_US', null),
+            $formatter->format(new DateTime('2015-10-16 15:37:00'), '[Y]-[M]-[D] [H]:[m]:[s] [Z]', 'en_US'),
             $this->logicalOr(
                 '2015-10-16 15:37:00 GMT+02:00',
                 '2015-10-16 15:37:00 CEST',
@@ -64,12 +67,12 @@ class DateFormatterTest extends AbstractXslTest
 
         $this->assertEquals(
             $date->format('Y-m-d h:i:s A \G\M\TP'),
-            $formatter->format($date, '[Y]-[M]-[D] [h]:[m]:[s] [P] [z]', 'en_US', null)
+            $formatter->format($date, '[Y]-[M]-[D] [h]:[m]:[s] [P] [z]', 'en_US')
         );
 
         $this->assertEquals(
             ((int)$date->format('z') + 1) . $date->format(' l'),
-            $formatter->format($date, '[d] [F]', 'en_US', null)
+            $formatter->format($date, '[d] [F]', 'en_US')
         );
     }
 
@@ -80,7 +83,7 @@ class DateFormatterTest extends AbstractXslTest
         try {
             $this->assertEquals(
                 '09:37:00',
-                $formatter->format(new DateTime('2015-10-16'), '[Y]]', 'en_US', null)
+                $formatter->format(new DateTime('2015-10-16'), '[Y]]', 'en_US')
             );
         } catch (InvalidArgumentException $e) {
             $this->assertEquals('XTDE1340', $e->getErrorCode());
@@ -93,7 +96,7 @@ class DateFormatterTest extends AbstractXslTest
         $this->expectExceptionMessage('No valid components found');
 
         $formatter = DateTimeFormatter::createWithFlagDate();
-        $formatter->format(new DateTime('2015-10-16'), '[A]', 'en_US', null);
+        $formatter->format(new DateTime('2015-10-16'), '[A]', 'en_US');
     }
 
     public function testNotSupportedComponent()
@@ -102,7 +105,7 @@ class DateFormatterTest extends AbstractXslTest
         $this->expectExceptionMessage('Component [E] is not supported');
 
         $formatter = DateTimeFormatter::createWithFlagDate();
-        $formatter->format(new DateTime('2015-10-16'), '[E]', 'en_US', null);
+        $formatter->format(new DateTime('2015-10-16'), '[E]', 'en_US');
     }
 
     public function testEscapeBrackets()
@@ -113,8 +116,7 @@ class DateFormatterTest extends AbstractXslTest
             $formatter->format(
                 new DateTime('2015-10-16 15:37:00'),
                 '[[Date:]] [Y]-[M]-[D] [h]:[m]:[s] [P]',
-                'en_US',
-                null
+                'en_US'
             )
         );
     }
@@ -128,8 +130,7 @@ class DateFormatterTest extends AbstractXslTest
         $formatter->format(
             new DateTime('2015-10-16 15:37:00'),
             '[[ Hallo [Y',
-            'en_US',
-            null
+            'en_US'
         );
     }
 
@@ -141,8 +142,7 @@ class DateFormatterTest extends AbstractXslTest
         $formatter->format(
             new DateTime('2015-10-16'),
             '[H]',
-            'en_US',
-            null
+            'en_US'
         );
     }
 
@@ -155,8 +155,7 @@ class DateFormatterTest extends AbstractXslTest
         $formatter->format(
             new DateTime('2015-10-16'),
             ']',
-            'en_US',
-            null
+            'en_US'
         );
     }
 
@@ -166,8 +165,7 @@ class DateFormatterTest extends AbstractXslTest
         $this->assertEquals('16 10 2015', $formatter->format(
             new DateTime('2015-10-16'),
             '[D] [MNn] [Y]',
-            'en_US',
-            null
+            'en_US'
         ));
     }
 }

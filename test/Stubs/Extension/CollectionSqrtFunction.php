@@ -1,10 +1,12 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Stubs\Extension;
 
 use Genkgo\Xsl\Callback\MethodCallInterface;
 use Genkgo\Xsl\TransformationContext;
 
-class CollectionSqrtFunction implements MethodCallInterface
+final class CollectionSqrtFunction implements MethodCallInterface
 {
     private $collection;
 
@@ -14,12 +16,12 @@ class CollectionSqrtFunction implements MethodCallInterface
     }
 
     /**
-     * @param $arguments
+     * @param array $arguments
      * @param TransformationContext $context
      * @return mixed
      */
-    public function call($arguments, TransformationContext $context)
+    public function call(array $arguments, TransformationContext $context)
     {
-        return count($arguments) * count($this->collection);
+        return \count($arguments) * \count($this->collection);
     }
 }

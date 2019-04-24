@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Unit;
 
 use DOMDocument;
@@ -26,7 +28,7 @@ class XsltProcessorTest extends AbstractTestCase
         $decorator = new XsltProcessor(new Config());
         $decorator->importStyleSheet($xslDoc);
 
-        $this->assertGreaterThan(1, strlen($decorator->transformToXML($xmlDoc)));
+        $this->assertGreaterThan(1, \strlen($decorator->transformToXML($xmlDoc)));
     }
 
     public function testVersion1()
@@ -40,7 +42,7 @@ class XsltProcessorTest extends AbstractTestCase
         $decorator = new XsltProcessor(new Config());
         $decorator->importStyleSheet($xslDoc);
 
-        $this->assertGreaterThan(1, strlen($decorator->transformToXML($xmlDoc)));
+        $this->assertGreaterThan(1, \strlen($decorator->transformToXML($xmlDoc)));
     }
 
     public function testVersion2()
@@ -54,7 +56,7 @@ class XsltProcessorTest extends AbstractTestCase
         $decorator = new XsltProcessor(new Config());
         $decorator->importStyleSheet($xslDoc);
 
-        $this->assertGreaterThan(1, strlen($decorator->transformToXML($xmlDoc)));
+        $this->assertGreaterThan(1, \strlen($decorator->transformToXML($xmlDoc)));
     }
 
     public function testVersion3()
@@ -68,6 +70,6 @@ class XsltProcessorTest extends AbstractTestCase
         $decorator = new XsltProcessor(new Config());
         $decorator->importStyleSheet($xslDoc);
 
-        $this->assertGreaterThan(1, strlen($decorator->transformToXML($xmlDoc)));
+        $this->assertGreaterThan(1, \strlen($decorator->transformToXML($xmlDoc)));
     }
 }

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * @license
  * The MIT License
@@ -27,9 +29,12 @@
 /**
  * @author moz@google.com (Michael Zhou)
  */
-namespace Genkgo\Xsl;
+namespace Genkgo\Xsl\Unit;
 
-class XpathLexerTest extends AbstractTestCase
+use Genkgo\Xsl\Xpath;
+use Genkgo\Xsl\AbstractTestCase;
+
+final class XpathLexerTest extends AbstractTestCase
 {
     public function testTokenize()
     {
@@ -38,7 +43,7 @@ class XpathLexerTest extends AbstractTestCase
         $resultLexer = Xpath\Lexer::tokenize($sourcePath);
         $expectedLexer = new Xpath\Lexer($expectedTokens);
 
-        for ($i = 0; $i < count($expectedTokens); $i++) {
+        for ($i = 0; $i < \count($expectedTokens); $i++) {
             $this->assertEquals($expectedLexer->current(), $resultLexer->current());
             $expectedLexer->next();
             $resultLexer->next();
@@ -51,7 +56,7 @@ class XpathLexerTest extends AbstractTestCase
             '35.00', ']'];
         $resultLexer = new Xpath\Lexer($expectedTokens);
 
-        for ($i = 0; $i < count($expectedTokens); $i++) {
+        for ($i = 0; $i < \count($expectedTokens); $i++) {
             $this->assertEquals($expectedTokens[$i], $resultLexer->current());
             $resultLexer->next();
         }
@@ -71,7 +76,7 @@ class XpathLexerTest extends AbstractTestCase
         $expectedTokens = ['name', '(', '"some_name"', ')'];
         $resultLexer = new Xpath\Lexer($expectedTokens);
         $this->assertEquals($expectedTokens[0], $resultLexer->current());
-        for ($i = 0; $i < count($expectedTokens); $i++) {
+        for ($i = 0; $i < \count($expectedTokens); $i++) {
             $resultLexer->seek($i);
             $this->assertEquals($expectedTokens[$i], $resultLexer->current());
         }
@@ -82,12 +87,12 @@ class XpathLexerTest extends AbstractTestCase
         $expectedTokens = ['..', '/', 'contents', '/', 'child', '::', 'sections'];
 
         $resultLexer = new Xpath\Lexer($expectedTokens);
-        for ($i = 0; $i < count($expectedTokens); $i++) {
+        for ($i = 0; $i < \count($expectedTokens); $i++) {
             $resultLexer->next();
         }
 
         $resultLexer->prev();
-        $this->assertEquals($expectedTokens[count($expectedTokens) - 1], $resultLexer->current());
+        $this->assertEquals($expectedTokens[\count($expectedTokens) - 1], $resultLexer->current());
     }
 
     public function testIterate()

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Integration\Xpath;
 
 class SequenceTest extends AbstractXpathTest
@@ -95,11 +97,11 @@ class SequenceTest extends AbstractXpathTest
 
     public function testUnordered()
     {
-        $expected = explode(' ', 'genkgo/xsl by transpiled is xsl2');
-        $items = explode(' ', $this->transformFile('Stubs/Xpath/Sequence/unordered.xsl'));
+        $expected = \explode(' ', 'genkgo/xsl by transpiled is xsl2');
+        $items = \explode(' ', $this->transformFile('Stubs/Xpath/Sequence/unordered.xsl'));
 
         foreach ($items as $item) {
-            $this->assertTrue(in_array($item, $expected));
+            $this->assertTrue(\in_array($item, $expected));
         }
     }
 

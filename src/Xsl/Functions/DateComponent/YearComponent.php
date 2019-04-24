@@ -1,16 +1,14 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xsl\Functions\DateComponent;
 
 use DateTimeInterface;
 use Genkgo\Xsl\Xsl\Functions\Formatter\ComponentInterface;
 use Genkgo\Xsl\Xsl\Functions\Formatter\PictureString;
 
-/**
- * Class YearComponent
- * @package Genkgo\Xsl\Xsl\Functions\DateComponent
- */
-final class YearComponent implements ComponentInterface {
-
+final class YearComponent implements ComponentInterface
+{
     /**
      * @param PictureString $pictureString
      * @param DateTimeInterface $date

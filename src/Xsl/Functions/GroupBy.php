@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xsl\Functions;
 
 use DOMElement;
@@ -11,16 +13,13 @@ use Genkgo\Xsl\Xpath\Compiler;
 use Genkgo\Xsl\Xsl\ForEachGroup\Map as ForEachGroupMap;
 use Genkgo\Xsl\Xsl\XslTransformations;
 
-/**
- * Class GroupBy
- * @package Genkgo\Xsl\Xsl\Functions
- */
-class GroupBy implements FunctionInterface, MethodCallInterface
+final class GroupBy implements FunctionInterface, MethodCallInterface
 {
     /**
      * @var Compiler
      */
     private $compiler;
+
     /**
      * @var ForEachGroupMap
      */
@@ -36,7 +35,6 @@ class GroupBy implements FunctionInterface, MethodCallInterface
         $this->groups = $groups;
     }
 
-
     /**
      * @param FunctionMap $functionMap
      * @return void
@@ -47,11 +45,11 @@ class GroupBy implements FunctionInterface, MethodCallInterface
     }
 
     /**
-     * @param $arguments
+     * @param array $arguments
      * @param TransformationContext $context
      * @return true
      */
-    public function call($arguments, TransformationContext $context)
+    public function call(array $arguments, TransformationContext $context)
     {
         /** @var string $groupId */
         $groupId = $arguments[0];
@@ -62,9 +60,9 @@ class GroupBy implements FunctionInterface, MethodCallInterface
         /** @var string $elementId */
         $elementId = $arguments[3];
         /** @var string $groupBy */
-        $groupBy = base64_decode($arguments[4]);
+        $groupBy = \base64_decode($arguments[4]);
         /** @var string[] $namespaces */
-        $namespaces = json_decode(base64_decode($arguments[5]), true);
+        $namespaces = \json_decode(\base64_decode($arguments[5]) ?: '', true);
 
         $collection = $this->groups->get($groupId, $iterationId);
 
@@ -79,9 +77,9 @@ class GroupBy implements FunctionInterface, MethodCallInterface
                 $xpath->registerNamespace($prefix, $namespace);
             }
 
-            $expression = str_replace(
+            $expression = \str_replace(
                 'position()',
-                $collection->countGroupItems() + 1,
+                (string)($collection->countGroupItems() + 1),
                 'string(' . $groupBy . ')'
             );
 

@@ -1,11 +1,13 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Integration\Xpath;
 
 class DateTest extends AbstractXpathTest
 {
     public function testCurrentTime()
     {
-        $this->assertEquals(1, preg_match(
+        $this->assertEquals(1, \preg_match(
             '/[0-9]{2}\:[0-9]{2}\:[0-9]{2}\+[0-9]{2}\:[0-9]{2}/',
             $this->transformFile('Stubs/Xpath/Date/current-time.xsl')
         ));
@@ -13,7 +15,7 @@ class DateTest extends AbstractXpathTest
 
     public function testCurrentDate()
     {
-        $this->assertEquals(1, preg_match(
+        $this->assertEquals(1, \preg_match(
             '/[0-9]{4}\-[0-9]{2}\-[0-9]{2}\+[0-9]{2}\:[0-9]{2}/',
             $this->transformFile('Stubs/Xpath/Date/current-date.xsl')
         ));
@@ -21,7 +23,7 @@ class DateTest extends AbstractXpathTest
 
     public function testCurrentDateTime()
     {
-        $this->assertEquals(1, preg_match(
+        $this->assertEquals(1, \preg_match(
             '/[0-9]{4}\-[0-9]{2}\-[0-9]{2}T[0-9]{2}\:[0-9]{2}\:[0-9]{2}\+[0-9]{2}\:[0-9]{2}/',
             $this->transformFile('Stubs/Xpath/Date/current-dateTime.xsl')
         ));
@@ -29,12 +31,12 @@ class DateTest extends AbstractXpathTest
 
     public function testYearFromDate()
     {
-        $this->assertEquals(date('Y'), $this->transformFile('Stubs/Xpath/Date/year-from-date.xsl'));
+        $this->assertEquals(\date('Y'), $this->transformFile('Stubs/Xpath/Date/year-from-date.xsl'));
     }
 
     public function testYearFromDateTime()
     {
-        $this->assertEquals(date('Y'), $this->transformFile('Stubs/Xpath/Date/year-from-dateTime.xsl'));
+        $this->assertEquals(\date('Y'), $this->transformFile('Stubs/Xpath/Date/year-from-dateTime.xsl'));
     }
 
     public function testYearsFromDurations()

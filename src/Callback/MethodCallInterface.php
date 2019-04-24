@@ -1,18 +1,16 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Callback;
 
 use Genkgo\Xsl\TransformationContext;
 
-/**
- * Interface MethodCallInterface
- * @package Genkgo\Xsl\Callback
- */
 interface MethodCallInterface
 {
     /**
-     * @param $arguments
+     * @param array $arguments
      * @param TransformationContext $context
      * @return mixed
      */
-    public function call($arguments, TransformationContext $context);
+    public function call(array $arguments, TransformationContext $context);
 }

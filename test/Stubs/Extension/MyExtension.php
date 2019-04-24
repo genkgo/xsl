@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Stubs\Extension;
 
 use Genkgo\Xsl\Callback\ClosureFunction;
@@ -14,12 +16,12 @@ class MyExtension implements XmlNamespaceInterface
     const URI = 'https://github.com/genkgo/xsl/tree/master/tests/Stubs/Extension/MyExtension';
 
     /**
-     * @param ...$args
+     * @param mixed ...$args
      * @return string
      */
     public static function helloWorld(...$args)
     {
-        return 'Hello World was called and received ' . count($args) . ' arguments!';
+        return 'Hello World was called and received ' . \count($args) . ' arguments!';
     }
 
     /**
@@ -30,17 +32,21 @@ class MyExtension implements XmlNamespaceInterface
     public function register(TransformerCollection $transformers, FunctionMap $functions)
     {
         (new StaticFunction(
-            self::URI . ':hello-world', new StringFunction([static::class, 'helloWorld']))
+            self::URI . ':hello-world',
+            new StringFunction([static::class, 'helloWorld'])
+        )
         )->register($functions);
 
         (new MethodFunction(
-            self::URI . ':collection-sqrt', new CollectionSqrtFunction([1, 2, 3, 4]))
+            self::URI . ':collection-sqrt',
+            new CollectionSqrtFunction([1, 2, 3, 4])
+        )
         )->register($functions);
 
         (new ClosureFunction(
             self::URI . ':hello-earth',
             function ($arguments) {
-                return count($arguments);
+                return \count($arguments);
             }
         ))->register($functions);
     }

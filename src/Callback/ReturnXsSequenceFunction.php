@@ -1,13 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Callback;
 
 use DOMNode;
 use Genkgo\Xsl\Xpath\Lexer;
 
-/**
- * Class ReturnXsSequenceFunction
- * @package Genkgo\Xsl\Callback
- */
 final class ReturnXsSequenceFunction implements ReplaceFunctionInterface
 {
     /**
@@ -38,7 +36,7 @@ final class ReturnXsSequenceFunction implements ReplaceFunctionInterface
         while (true) {
             $item = $lexer->peek($currentKey + 1);
 
-            if ($item === null) {
+            if ($item === '') {
                 break;
             }
 

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Schema;
 
 use Genkgo\Xsl\Callback\ObjectFunction;
@@ -8,15 +10,8 @@ use Genkgo\Xsl\Util\FunctionMap;
 use Genkgo\Xsl\Util\TransformerCollection;
 use Genkgo\Xsl\XmlNamespaceInterface;
 
-/**
- * Class XmlSchema
- * @package Genkgo\Xsl\Schema
- */
-class XmlSchema implements XmlNamespaceInterface
+final class XmlSchema implements XmlNamespaceInterface
 {
-    /**
-     *
-     */
     const URI = 'http://www.w3.org/2001/XMLSchema';
 
     /**
@@ -27,23 +22,33 @@ class XmlSchema implements XmlNamespaceInterface
     public function register(TransformerCollection $transformers, FunctionMap $functions)
     {
         (new StaticFunction(
-            self::URI.':date', new ReturnXsScalarFunction(new ObjectFunction([Functions::class, 'xsDate']), 'date'))
+            self::URI.':date',
+            new ReturnXsScalarFunction(new ObjectFunction([Functions::class, 'xsDate']), 'date')
+        )
         )->register($functions);
 
         (new StaticFunction(
-            self::URI.':time', new ReturnXsScalarFunction(new ObjectFunction([Functions::class, 'xsTime']), 'time'))
+            self::URI.':time',
+            new ReturnXsScalarFunction(new ObjectFunction([Functions::class, 'xsTime']), 'time')
+        )
         )->register($functions);
 
         (new StaticFunction(
-            self::URI.':dateTime', new ReturnXsScalarFunction(new ObjectFunction([Functions::class, 'xsDateTime']), 'dateTime'))
+            self::URI.':dateTime',
+            new ReturnXsScalarFunction(new ObjectFunction([Functions::class, 'xsDateTime']), 'dateTime')
+        )
         )->register($functions);
 
         (new StaticFunction(
-            self::URI.':dayTimeDuration', new ReturnXsScalarFunction(new ObjectFunction([Functions::class, 'xsDayTimeDuration']), 'dayTimeDuration'))
+            self::URI.':dayTimeDuration',
+            new ReturnXsScalarFunction(new ObjectFunction([Functions::class, 'xsDayTimeDuration']), 'dayTimeDuration')
+        )
         )->register($functions);
 
         (new StaticFunction(
-            self::URI.':integer', new ReturnXsScalarFunction(new ObjectFunction([Functions::class, 'xsInteger']), 'integer'))
+            self::URI.':integer',
+            new ReturnXsScalarFunction(new ObjectFunction([Functions::class, 'xsInteger']), 'integer')
+        )
         )->register($functions);
     }
 }

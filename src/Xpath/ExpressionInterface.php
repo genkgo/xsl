@@ -1,19 +1,17 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xpath;
 
 use DOMNode;
 
-/**
- * Interface ExpressionInterface
- * @package Genkgo\Xsl\Xpath
- */
 interface ExpressionInterface
 {
     /**
      * @param Lexer $lexer
      * @return bool
      */
-    public function supports(Lexer $lexer);
+    public function supports(Lexer $lexer): bool;
 
     /**
      * @param Lexer $lexer

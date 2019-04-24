@@ -1,10 +1,12 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Integration;
 
 use DOMDocument;
 use Genkgo\Xsl\XsltProcessor;
 
-class ProcessXslt2DocumentsTest extends AbstractIntegrationTestCase
+final class ProcessXslt2DocumentsTest extends AbstractIntegrationTestCase
 {
     public function testMultipleMethod()
     {
@@ -18,9 +20,9 @@ class ProcessXslt2DocumentsTest extends AbstractIntegrationTestCase
         $processor->importStylesheet($xslDoc);
         $processorResult = $processor->transformToXML($xmlDoc);
 
-        $this->assertEquals(157, trim($processorResult));
+        $this->assertEquals(157, \trim($processorResult));
     }
-    
+
     public function testInclude()
     {
         $xslDoc = new DOMDocument();
@@ -33,7 +35,7 @@ class ProcessXslt2DocumentsTest extends AbstractIntegrationTestCase
         $transpiler->importStylesheet($xslDoc);
         $transpilerResult = $transpiler->transformToXML($xmlDoc);
 
-        $this->assertEquals(157, trim($transpilerResult));
+        $this->assertEquals(157, \trim($transpilerResult));
     }
 
     public function testIncludeFullPath()
@@ -46,7 +48,7 @@ class ProcessXslt2DocumentsTest extends AbstractIntegrationTestCase
         $xslDoc->appendChild($xslRoot);
 
         $include = $xslDoc->createElementNS('http://www.w3.org/1999/XSL/Transform', 'xsl:include');
-        $include->setAttribute('href', getcwd() . '/Stubs/include3.xsl');
+        $include->setAttribute('href', \getcwd() . '/Stubs/include3.xsl');
         $xslRoot->appendChild($include);
 
         $xmlDoc = new DOMDocument();
@@ -56,7 +58,7 @@ class ProcessXslt2DocumentsTest extends AbstractIntegrationTestCase
         $transpiler->importStylesheet($xslDoc);
         $transpilerResult = $transpiler->transformToXML($xmlDoc);
 
-        $this->assertEquals(157, trim($transpilerResult));
+        $this->assertEquals(157, \trim($transpilerResult));
     }
 
     public function testExcludePrefixesAll()
@@ -69,7 +71,7 @@ class ProcessXslt2DocumentsTest extends AbstractIntegrationTestCase
         $xslDoc->appendChild($xslRoot);
 
         $include = $xslDoc->createElementNS('http://www.w3.org/1999/XSL/Transform', 'xsl:include');
-        $include->setAttribute('href', getcwd() . '/Stubs/include3.xsl');
+        $include->setAttribute('href', \getcwd() . '/Stubs/include3.xsl');
         $xslRoot->appendChild($include);
 
         $xmlDoc = new DOMDocument();
@@ -79,6 +81,6 @@ class ProcessXslt2DocumentsTest extends AbstractIntegrationTestCase
         $transpiler->importStylesheet($xslDoc);
         $transpilerResult = $transpiler->transformToXML($xmlDoc);
 
-        $this->assertEquals(157, trim($transpilerResult));
+        $this->assertEquals(157, \trim($transpilerResult));
     }
 }

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xsl\Functions\Formatter;
 
 use DateTimeInterface;
@@ -17,28 +19,22 @@ use Genkgo\Xsl\Xsl\Functions\DateComponent\TimezoneOffsetUtcComponent;
 use Genkgo\Xsl\Xsl\Functions\DateComponent\WeekOfYearComponent;
 use Genkgo\Xsl\Xsl\Functions\DateComponent\YearComponent;
 
-/**
- * Class DateTimeFormatting
- * @package Genkgo\Xsl\Xsl\Functions\Formatter
- */
-class DateTimeFormatter implements FormatterInterface {
-
+final class DateTimeFormatter implements FormatterInterface
+{
     /**
      * @var array|ComponentInterface[]
      */
     private $components = [];
-
-    /**
-     *
-     */
-    private function __construct() {
-
+    
+    private function __construct()
+    {
     }
 
     /**
      * @param array $components
      */
-    private function mapComponents(array $components) {
+    private function mapComponents(array $components)
+    {
         foreach ($components as $component) {
             $this->components[(string)$component] = $component;
         }
@@ -47,23 +43,23 @@ class DateTimeFormatter implements FormatterInterface {
     /**
      * @param DateTimeInterface $date
      * @param string $picture
-     * @param $locale
-     * @param $calendar
+     * @param string $locale
+     * @param string $calendar
      * @return string
      * @throws InvalidArgumentException
      * @credits https://github.com/Saxonica/Saxon-CE/ https://github.com/Saxonica/Saxon-CE/blob/master/notices/MOZILLA.txt
      */
-    public function format(DateTimeInterface $date, $picture, $locale, $calendar)
+    public function format(DateTimeInterface $date, string $picture, string $locale, string $calendar = ''): string
     {
         $result = [];
 
         $i = 0;
         while (true) {
-            while ($i < strlen($picture) && substr($picture, $i, 1) != '[') {
-                $result[] = $this->escape(substr($picture, $i, 1));
-                if (substr($picture, $i, 1) == ']') {
+            while ($i < \strlen($picture) && \substr($picture, $i, 1) != '[') {
+                $result[] = $this->escape(\substr($picture, $i, 1));
+                if (\substr($picture, $i, 1) == ']') {
                     $i++;
-                    if ($i == strlen($picture) || substr($picture, $i, 1) != ']') {
+                    if ($i == \strlen($picture) || \substr($picture, $i, 1) != ']') {
                         $exception = new InvalidArgumentException('Wrong formatted date, escape by doubling [[ and ]]');
                         $exception->setErrorCode('XTDE1340');
                         throw $exception;
@@ -72,25 +68,25 @@ class DateTimeFormatter implements FormatterInterface {
                 $i++;
             }
 
-            if ($i == strlen($picture)) {
+            if ($i == \strlen($picture)) {
                 break;
             }
 
             // look for '[['
             $i++;
 
-            if ($i < strlen($picture) && substr($picture, $i, 1) == '[') {
+            if ($i < \strlen($picture) && \substr($picture, $i, 1) == '[') {
                 $result[] = '[';
                 $i++;
             } else {
-                $close = ($i < strlen($picture) ? strpos($picture, "]", $i) : -1);
+                $close = ($i < \strlen($picture) ? \strpos($picture, "]", $i) : -1);
                 if ($close === -1 || $close === false) {
                     $exception = new InvalidArgumentException('Wrong formatted date, missing ]');
                     $exception->setErrorCode('XTDE1340');
                     throw $exception;
                 }
 
-                $pictureString = new PictureString(substr($picture, $i, $close - $i));
+                $pictureString = new PictureString(\substr($picture, $i, $close - $i));
                 $specifier = $pictureString->getComponentSpecifier();
 
                 if (isset($this->components[$specifier])) {
@@ -105,7 +101,7 @@ class DateTimeFormatter implements FormatterInterface {
             }
         }
 
-        return $date->format(implode('', $result));
+        return $date->format(\implode('', $result));
     }
 
     /**
@@ -173,6 +169,4 @@ class DateTimeFormatter implements FormatterInterface {
     {
         return '\\' . $char;
     }
-
-
 }

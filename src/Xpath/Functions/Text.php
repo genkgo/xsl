@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xpath\Functions;
 
 use DOMDocument;
@@ -7,160 +9,162 @@ use Genkgo\Xsl\Schema\XsSequence;
 use Genkgo\Xsl\Util\Assert;
 use Genkgo\Xsl\Util\FetchNamespacesFromNode;
 
-/**
- * Class Text
- * @package Genkgo\Xsl\Xpath\Functions
- */
-class Text
+final class Text
 {
     /**
-     * @param $haystack
-     * @param $needle
+     * @param string $haystack
+     * @param string $needle
      * @return bool
      *
      * @author Salman A
      * @link http://stackoverflow.com/questions/834303/startswith-and-endswith-functions-in-php
      */
-    public static function startsWith($haystack, $needle)
+    public static function startsWith(string $haystack, string $needle): bool
     {
-        return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== false;
+        return $needle === "" || \strrpos($haystack, $needle, -\strlen($haystack)) !== false;
     }
+
     /**
-     * @param $haystack
-     * @param $needle
+     * @param string $haystack
+     * @param string $needle
      * @return bool
      *
      * @author Salman A
      * @link http://stackoverflow.com/questions/834303/startswith-and-endswith-functions-in-php
      */
-    public static function endsWith($haystack, $needle)
+    public static function endsWith(string $haystack, string $needle): bool
     {
-        return $needle === "" || (($temp = strlen($haystack) - strlen($needle)) >= 0 && strpos($haystack, $needle, $temp) !== false);
+        return $needle === "" || (($temp = \strlen($haystack) - \strlen($needle)) >= 0 && \strpos($haystack, $needle, $temp) !== false);
     }
 
     /**
-     * @param $input
-     * @param $pattern
+     * @param string $input
+     * @param string $pattern
      * @param string $flags
      * @return bool
      */
-    public static function matches($input, $pattern, $flags = '')
+    public static function matches(string $input, string $pattern, $flags = ''): bool
     {
-        return preg_match('/'.$pattern.'/'.$flags, $input) === 1;
+        return \preg_match('/'.$pattern.'/'.$flags, $input) === 1;
     }
 
     /**
-     * @param $input
+     * @param string $input
      * @return string
      */
-    public static function lowerCase($input)
+    public static function lowerCase(string $input): string
     {
-        return strtolower($input);
+        return \strtolower($input);
     }
 
     /**
-     * @param $input
+     * @param string $input
      * @return string
      */
-    public static function upperCase($input)
+    public static function upperCase(string $input): string
     {
-        return strtoupper($input);
+        return \strtoupper($input);
     }
 
     /**
-     * @param $input
-     * @param $mapString
-     * @param $translateString
+     * @param string $input
+     * @param string $mapString
+     * @param string $translateString
      * @return string
      */
-    public static function translate($input, $mapString, $translateString)
+    public static function translate(string $input, string $mapString, string $translateString): string
     {
-        return strtr($input, $mapString, $translateString);
+        return \strtr($input, $mapString, $translateString);
     }
 
     /**
-     * @param $haystack
-     * @param $needle
+     * @param string $haystack
+     * @param string $needle
      * @return string
      */
-    public static function substringAfter($haystack, $needle)
+    public static function substringAfter(string $haystack, string $needle): string
     {
         if ($needle === '') {
             return $haystack;
         }
 
-        $position = strpos($haystack, $needle);
+        $position = \strpos($haystack, $needle);
         if ($position === false) {
             return '';
         }
 
-        return substr($haystack, $position + strlen($needle));
+        return \substr($haystack, $position + \strlen($needle));
     }
 
     /**
-     * @param $haystack
-     * @param $needle
+     * @param string $haystack
+     * @param string $needle
      * @return string
      */
-    public static function substringBefore($haystack, $needle)
+    public static function substringBefore(string $haystack, string $needle): string
     {
         if ($needle === '') {
             return $haystack;
         }
 
-        $position = strpos($haystack, $needle);
+        $position = \strpos($haystack, $needle);
         if ($position === false) {
             return '';
         }
 
-        return substr($haystack, 0, $position);
+        return \substr($haystack, 0, $position);
     }
 
     /**
-     * @param $input
-     * @param $pattern
+     * @param string $input
+     * @param string $pattern
      * @param string $flags
-     * @return DOMDocument
+     * @return XsSequence
      */
-    public static function tokenize($input, $pattern, $flags = '')
+    public static function tokenize(string $input, string $pattern, $flags = ''): XsSequence
     {
-        return XsSequence::fromArray(preg_split('/'.$pattern.'/'.$flags, $input));
+        $split = \preg_split('/'.$pattern.'/'.$flags, $input);
+        if ($split === false) {
+            return XsSequence::fromArray([]);
+        }
+
+        return XsSequence::fromArray($split);
     }
 
     /**
-     * @param $elements
-     * @return DOMDocument
+     * @param array $elements
+     * @return XsSequence
      */
-    public static function inScopePrefixes($elements)
+    public static function inScopePrefixes(array $elements): XsSequence
     {
         Assert::assertArray($elements);
         $listOfPrefixes = [];
         foreach ($elements as $element) {
-            $listOfPrefixes = array_merge(
+            $listOfPrefixes = \array_merge(
                 $listOfPrefixes,
-                array_keys(FetchNamespacesFromNode::fetch($element))
+                \array_keys(FetchNamespacesFromNode::fetch($element))
             );
         }
         return XsSequence::fromArray($listOfPrefixes);
     }
 
     /**
-     * @param $input
-     * @param $pattern
+     * @param string $input
+     * @param string $pattern
      * @param string $flags
-     * @return DOMDocument
+     * @return string
      */
-    public static function replace($input, $pattern, $replacement, $flags = '')
+    public static function replace(string $input, string $pattern, string $replacement, string $flags = ''): string
     {
-        return preg_replace('/'.$pattern.'/'.$flags, $replacement, $input);
+        return (string)\preg_replace('/'.$pattern.'/'.$flags, $replacement, $input);
     }
 
     /**
-     * @param DOMElement[] $elements
-     * @param $separator
+     * @param array|DOMElement[] $elements
+     * @param string $separator
      * @return string
      */
-    public static function stringJoin($elements, $separator)
+    public static function stringJoin(array $elements, string $separator): string
     {
         $result = '';
 
@@ -178,23 +182,23 @@ class Text
     }
 
     /**
-     * @param $uriPart
+     * @param string $uriPart
      * @return string
      */
-    public static function encodeForUri($uriPart)
+    public static function encodeForUri(string $uriPart): string
     {
-        return rawurlencode($uriPart);
+        return \rawurlencode($uriPart);
     }
 
     /**
-     * @param $sequence
+     * @param mixed $sequence
      * @return string
      */
-    public static function codePointsToString($sequence)
+    public static function codePointsToString($sequence): string
     {
         $result = '';
 
-        if (is_numeric($sequence)) {
+        if (\is_numeric($sequence)) {
             return \IntlChar::chr((int)$sequence);
         }
 
@@ -206,17 +210,17 @@ class Text
     }
 
     /**
-     * @param $string
-     * @return string
+     * @param string $string
+     * @return XsSequence
      */
-    public static function stringToCodePoints($string)
+    public static function stringToCodePoints(string $string): XsSequence
     {
         $result = [];
 
         $iterator = \IntlBreakIterator::createCharacterInstance(\Locale::getDefault());
         $iterator->setText($string);
 
-        foreach($iterator->getPartsIterator() as $char) {
+        foreach ($iterator->getPartsIterator() as $char) {
             $result[] = \IntlChar::ord($char);
         }
 

@@ -1,16 +1,15 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xsl\ForEachGroup;
 
-/**
- * Class Group
- * @package Genkgo\Xsl\Xsl\ForEachGroup
- */
-class Group implements \Countable
+final class Group implements \Countable
 {
     /**
-     * @var
+     * @var string
      */
     private $key;
+
     /**
      * @var array
      */
@@ -19,7 +18,7 @@ class Group implements \Countable
     /**
      * @param string $key
      */
-    public function __construct($key)
+    public function __construct(string $key)
     {
         $this->key = $key;
     }
@@ -27,7 +26,7 @@ class Group implements \Countable
     /**
      * @return string
      */
-    public function getKey()
+    public function getKey(): string
     {
         return $this->key;
     }
@@ -35,7 +34,7 @@ class Group implements \Countable
     /**
      * @return array
      */
-    public function getIds()
+    public function getIds(): array
     {
         return $this->ids;
     }
@@ -43,7 +42,7 @@ class Group implements \Countable
     /**
      * @param string $id
      */
-    public function addId($id)
+    public function addId(string $id): void
     {
         $this->ids[] = $id;
     }
@@ -51,8 +50,8 @@ class Group implements \Countable
     /**
      * @return int
      */
-    public function count()
+    public function count(): int
     {
-        return count($this->ids);
+        return \count($this->ids);
     }
 }

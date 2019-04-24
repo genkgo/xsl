@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xpath\Expression;
 
 use DOMNode;
@@ -12,10 +14,7 @@ final class ForLoopExpression implements ExpressionInterface
      * @var ForLoopConstructor
      */
     private $forLoopConstructor;
-
-    /**
-     *
-     */
+    
     public function __construct()
     {
         $this->forLoopConstructor = new ForLoopConstructor();
@@ -25,9 +24,9 @@ final class ForLoopExpression implements ExpressionInterface
      * @param Lexer $lexer
      * @return bool
      */
-    public function supports(Lexer $lexer)
+    public function supports(Lexer $lexer): bool
     {
-        return ($lexer->current() === 'to' && preg_match('/\s/', $lexer->peek($lexer->key() - 1)) === 1);
+        return ($lexer->current() === 'to' && \preg_match('/\s/', $lexer->peek($lexer->key() - 1)) === 1);
     }
 
     /**
@@ -60,7 +59,7 @@ final class ForLoopExpression implements ExpressionInterface
         ];
 
         $level = 0;
-        $position = count($tokens);
+        $position = \count($tokens);
         do {
             $token = $tokens[$position - 1];
             if ($level === 0 && isset($breakTokens[$token])) {

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xpath;
 
 use DOMNode;
@@ -7,10 +9,6 @@ use Genkgo\Xsl\Xpath\Expression\ForLoopExpression;
 use Genkgo\Xsl\Xpath\Expression\FunctionExpression;
 use Genkgo\Xsl\Xpath\Expression\SequenceExpression;
 
-/**
- * Class Compiler
- * @package Genkgo\Xsl\Xpath
- */
 final class Compiler
 {
     /**
@@ -31,11 +29,11 @@ final class Compiler
     }
 
     /**
-     * @param $xpathExpression
+     * @param string $xpathExpression
      * @param DOMNode $currentElement
      * @return string
      */
-    public function compile($xpathExpression, DOMNode $currentElement)
+    public function compile(string $xpathExpression, DOMNode $currentElement): string
     {
         $resultTokens = [];
         $lexer = Lexer::tokenize($xpathExpression);
@@ -49,6 +47,6 @@ final class Compiler
             $resultTokens[] = $token;
         }
 
-        return trim(implode('', $resultTokens));
+        return \trim(\implode('', $resultTokens));
     }
 }

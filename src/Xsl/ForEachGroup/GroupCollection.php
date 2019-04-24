@@ -1,14 +1,12 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xsl\ForEachGroup;
 
 use ArrayIterator;
 use IteratorAggregate;
 
-/**
- * Class GroupCollection
- * @package Genkgo\Xsl\Xsl\ForEachGroup
- */
-class GroupCollection implements IteratorAggregate
+final class GroupCollection implements IteratorAggregate
 {
     /**
      * @var array|Group[]

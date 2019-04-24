@@ -1,12 +1,10 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Exception;
 
 use Exception;
 
-/**
- * Class CacheDisabledException
- * @package Genkgo\Xsl\Exception
- */
-class CacheDisabledException extends Exception
+final class CacheDisabledException extends Exception
 {
 }

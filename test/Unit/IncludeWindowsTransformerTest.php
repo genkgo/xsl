@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Unit;
 
 use DOMDocument;
@@ -22,7 +24,6 @@ class IncludeWindowsTransformerTest extends AbstractTestCase
         $list = $xpath->query('//xsl:include');
         /** @var \DOMElement $element */
         foreach ($list as $element) {
-
             $this->assertTrue($transformer->supports($element));
             $transformer->transform($element);
 

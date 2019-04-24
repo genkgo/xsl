@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xsl\Node;
 
 use DOMElement;
@@ -7,10 +9,6 @@ use Genkgo\Xsl\Xsl\ElementTransformerInterface;
 use Genkgo\Xsl\Xsl\TextValueTemplate;
 use Genkgo\Xsl\Xsl\XslTransformations;
 
-/**
- * Class AttributeExpandText
- * @package Genkgo\Xsl\Xsl\Element
- */
 final class AttributeExpandText implements ElementTransformerInterface
 {
     /**
@@ -59,7 +57,7 @@ final class AttributeExpandText implements ElementTransformerInterface
         foreach ($elements as $element) {
             $overwritesQuery = new \DOMXPath($element->ownerDocument);
             $nearestExpand = $overwritesQuery->evaluate(
-                sprintf(
+                \sprintf(
                     'string(ancestor-or-self::*[namespace-uri() = "%s" and @expand-text][1]/@expand-text)',
                     XslTransformations::URI
                 ),

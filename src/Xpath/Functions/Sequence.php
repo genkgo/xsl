@@ -1,65 +1,64 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xpath\Functions;
 
 use Genkgo\Xsl\Schema\XsSequence;
 
-/**
- * Class Sequence
- * @package Genkgo\Xsl\Xpath\Functions
- */
-class Sequence
+final class Sequence
 {
     /**
-     * @param $elements
+     * @param array $elements
      * @return XsSequence
-     * @throws \Genkgo\Xsl\Schema\Exception\UnknownSequenceItemException
      */
-    public static function reverse($elements)
+    public static function reverse(array $elements): XsSequence
     {
-        return XsSequence::fromArray(array_reverse($elements));
+        return XsSequence::fromArray(\array_reverse($elements));
     }
 
     /**
-     * @param $elements
-     * @param $position
-     * @param $element
+     * @param array $elements
+     * @param int|float $position
+     * @param mixed $element
      * @return XsSequence
      */
-    public static function insertBefore($elements, $position, $element)
+    public static function insertBefore(array $elements, $position, $element): XsSequence
     {
-        array_splice($elements, $position - 1, 0, $element);
+        \array_splice($elements, (int)$position - 1, 0, $element);
         return XsSequence::fromArray($elements);
     }
 
     /**
-     * @param $elements
-     * @param $position
+     * @param array $elements
+     * @param int|float $position
      * @return XsSequence
      */
-    public static function remove($elements, $position)
+    public static function remove(array $elements, $position): XsSequence
     {
-        unset($elements[$position - 1]);
+        unset($elements[(int)$position - 1]);
         return XsSequence::fromArray($elements);
     }
 
     /**
-     * @param $elements
-     * @param $position
-     * @param null $length
+     * @param array $elements
+     * @param int|float $position
+     * @param int|float|null $length
      * @return XsSequence
-     * @throws \Genkgo\Xsl\Schema\Exception\UnknownSequenceItemException
      */
-    public static function subsequence($elements, $position, $length = null)
+    public static function subsequence(array $elements, $position, $length = null): XsSequence
     {
-        return XsSequence::fromArray(array_slice($elements, $position - 1, $length));
+        if ($length === null) {
+            $length = \count($elements);
+        }
+
+        return XsSequence::fromArray(\array_slice($elements, (int)$position - 1, (int)$length));
     }
 
     /**
-     * @param $elements
+     * @param array $elements
      * @return XsSequence
-     * @throws \Genkgo\Xsl\Schema\Exception\UnknownSequenceItemException
      */
-    public static function distinctValues($elements)
+    public static function distinctValues(array $elements): XsSequence
     {
         $sequence = XsSequence::fromArray($elements);
 
@@ -68,30 +67,29 @@ class Sequence
             $values[] = $childNode->nodeValue;
         }
 
-        return XsSequence::fromArray(array_unique($values));
+        return XsSequence::fromArray(\array_unique($values));
     }
 
     /**
-     * @param $elements
+     * @param array $elements
      * @return XsSequence
-     * @throws \Genkgo\Xsl\Schema\Exception\UnknownSequenceItemException
      */
-    public static function unordered($elements)
+    public static function unordered(array $elements): XsSequence
     {
-        shuffle($elements);
+        \shuffle($elements);
 
         return XsSequence::fromArray($elements);
     }
 
     /**
-     * @param $haystack
-     * @param $needle
+     * @param mixed $haystack
+     * @param mixed $needle
      * @return bool|int
      */
     public static function indexOf($haystack, $needle)
     {
-        if (is_string($haystack)) {
-            $position = strpos($haystack, $needle);
+        if (\is_string($haystack)) {
+            $position = \strpos($haystack, $needle);
             if ($position === false) {
                 return false;
             }

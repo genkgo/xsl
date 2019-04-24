@@ -1,9 +1,13 @@
 <?php
-namespace Genkgo\Xsl;
+declare(strict_types=1);
 
+namespace Genkgo\Xsl\Unit;
+
+use Genkgo\Xsl\AbstractTestCase;
+use Genkgo\Xsl\Config;
 use Genkgo\Xsl\Schema\XmlSchema;
 
-class ConfigTest extends AbstractTestCase
+final class ConfigTest extends AbstractTestCase
 {
     public function testSetExtensions()
     {

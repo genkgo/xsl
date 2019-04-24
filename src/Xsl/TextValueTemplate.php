@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 
 namespace Genkgo\Xsl\Xsl;
 
@@ -35,16 +37,16 @@ final class TextValueTemplate
         $parentNode = $textNode->parentNode;
         $components = [];
 
-        $length = strlen($expression);
+        $length = \strlen($expression);
         $last = 0;
         while ($last < $length) {
-            $i0 = strpos($expression, "{", $last);
-            $i1 = strpos($expression, "{{", $last);
-            $i8 = strpos($expression, "}", $last);
-            $i9 = strpos($expression, "}}", $last);
+            $i0 = \strpos($expression, "{", $last);
+            $i1 = \strpos($expression, "{{", $last);
+            $i8 = \strpos($expression, "}", $last);
+            $i9 = \strpos($expression, "}}", $last);
 
             if (($i0 === false || $length < $i0) && ($i8 === false || $length < $i8)) {   // found end of string
-                $components[] = substr($expression, $last);
+                $components[] = \substr($expression, $last);
                 break;
             } elseif ($i8 >= 0 && ($i0 === false || $i8 < $i0)) {             // found a "}"
                 if ($i8 !== $i9) {                        // a "}" that isn't a "}}"
@@ -52,14 +54,14 @@ final class TextValueTemplate
                     $exception->setErrorCode("XTSE0370");
                     throw $exception;
                 }
-                $components[] = substr($expression, $last, $i8 + 2 - $last);
+                $components[] = \substr($expression, $last, $i8 + 2 - $last);
                 $last = $i8 + 2;
             } elseif ($i1 >= 0 && $i1 === $i0) {              // found a doubled "{{"
-                $components[] = substr($expression, $last, $i1 + 2 - $last);
+                $components[] = \substr($expression, $last, $i1 + 2 - $last);
                 $last = $i1 + 2;
             } elseif ($i0 >= 0) {                        // found a single "{"
                 if ($i0 > $last) {
-                    $components[] = substr($expression, $last, $i0 - $last);
+                    $components[] = \substr($expression, $last, $i0 - $last);
                 }
 
                 if ($i8 === false) {
@@ -77,7 +79,7 @@ final class TextValueTemplate
                     ->addArgument(PhpCallback::class . '::callStatic')
                     ->addArgument(ElementValueOf::class)
                     ->addArgument('valueOf')
-                    ->addExpression(substr($expression, $compileFrom, $compileUntil))
+                    ->addExpression(\substr($expression, $compileFrom, $compileUntil))
                     ->addArgument(' ');
 
                 $valueOf = $textNode->ownerDocument->createElementNS(
@@ -116,8 +118,7 @@ final class TextValueTemplate
         }
 
         $textNode->parentNode->appendChild(
-            $textNode->ownerDocument->createTextNode(implode('', $components))
+            $textNode->ownerDocument->createTextNode(\implode('', $components))
         );
     }
-
 }

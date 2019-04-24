@@ -1,11 +1,13 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Integration\Xsl;
 
 use DOMDocument;
 use Genkgo\Xsl\Integration\AbstractIntegrationTestCase;
 use Genkgo\Xsl\XsltProcessor;
 
-class ForEachGroupTest extends AbstractIntegrationTestCase
+final class ForEachGroupTest extends AbstractIntegrationTestCase
 {
     public function testByElement()
     {
@@ -18,7 +20,7 @@ class ForEachGroupTest extends AbstractIntegrationTestCase
         $data = new DOMDocument();
         $data->load('Stubs/packages.xml');
 
-        $this->assertEquals('testtest', trim($processor->transformToXml($data)));
+        $this->assertEquals('testtest', \trim($processor->transformToXml($data)));
     }
 
     public function testByAttribute()
@@ -32,7 +34,7 @@ class ForEachGroupTest extends AbstractIntegrationTestCase
         $data = new DOMDocument();
         $data->load('Stubs/packages.xml');
 
-        $this->assertEquals('testtest', trim($processor->transformToXml($data)));
+        $this->assertEquals('testtest', \trim($processor->transformToXml($data)));
     }
 
     public function testByFunction()
@@ -46,7 +48,7 @@ class ForEachGroupTest extends AbstractIntegrationTestCase
         $data = new DOMDocument();
         $data->load('Stubs/packages.xml');
 
-        $this->assertEquals('testtesttest', trim($processor->transformToXml($data)));
+        $this->assertEquals('testtesttest', \trim($processor->transformToXml($data)));
     }
 
     public function testEmpty()
@@ -60,7 +62,7 @@ class ForEachGroupTest extends AbstractIntegrationTestCase
         $data = new DOMDocument();
         $data->load('Stubs/packages.xml');
 
-        $this->assertEquals('', trim($processor->transformToXml($data)));
+        $this->assertEquals('', \trim((string)$processor->transformToXml($data)));
     }
 
     public function testByCurrentGroupingKey()
@@ -74,7 +76,7 @@ class ForEachGroupTest extends AbstractIntegrationTestCase
         $data = new DOMDocument();
         $data->load('Stubs/packages.xml');
 
-        $this->assertEquals('ComposerGenkgo', trim($processor->transformToXml($data)));
+        $this->assertEquals('ComposerGenkgo', \trim($processor->transformToXml($data)));
     }
 
     public function testByCurrentGroupingKeySort()
@@ -88,7 +90,7 @@ class ForEachGroupTest extends AbstractIntegrationTestCase
         $data = new DOMDocument();
         $data->load('Stubs/packages.xml');
 
-        $this->assertEquals('GenkgoComposer', trim($processor->transformToXml($data)));
+        $this->assertEquals('GenkgoComposer', \trim($processor->transformToXml($data)));
     }
 
     public function testByCurrentGroup()
@@ -102,7 +104,7 @@ class ForEachGroupTest extends AbstractIntegrationTestCase
         $data = new DOMDocument();
         $data->load('Stubs/packages.xml');
 
-        $this->assertEquals('Composer:-ComposerGenkgo:-CAMT-XSL-Migrations', trim($processor->transformToXml($data)));
+        $this->assertEquals('Composer:-ComposerGenkgo:-CAMT-XSL-Migrations', \trim($processor->transformToXml($data)));
     }
 
     public function testCurrentGroupCurrentGroupingKeyWithForEach()
@@ -116,7 +118,7 @@ class ForEachGroupTest extends AbstractIntegrationTestCase
         $data = new DOMDocument();
         $data->load('Stubs/packages.xml');
 
-        $this->assertEquals('', trim($processor->transformToXml($data)));
+        $this->assertEquals('', \trim((string)$processor->transformToXml($data)));
     }
 
     public function testByAggregating()
@@ -130,7 +132,7 @@ class ForEachGroupTest extends AbstractIntegrationTestCase
         $data = new DOMDocument();
         $data->load('Stubs/packages.xml');
 
-        $this->assertEquals('20116044', trim($processor->transformToXml($data)));
+        $this->assertEquals('20116044', \trim($processor->transformToXml($data)));
     }
 
     public function testByAncestor()
@@ -144,7 +146,7 @@ class ForEachGroupTest extends AbstractIntegrationTestCase
         $data = new DOMDocument();
         $data->load('Stubs/packages.xml');
 
-        $this->assertEquals('2015-10-24 16:13:122015-10-24 16:13:12', trim($processor->transformToXml($data)));
+        $this->assertEquals('2015-10-24 16:13:122015-10-24 16:13:12', \trim($processor->transformToXml($data)));
     }
 
     public function testByTest()
@@ -158,7 +160,7 @@ class ForEachGroupTest extends AbstractIntegrationTestCase
         $data = new DOMDocument();
         $data->load('Stubs/packages.xml');
 
-        $this->assertEquals('1 CAMT packages', trim($processor->transformToXml($data)));
+        $this->assertEquals('1 CAMT packages', \trim($processor->transformToXml($data)));
     }
 
     public function testByPosition()
@@ -172,7 +174,7 @@ class ForEachGroupTest extends AbstractIntegrationTestCase
         $data = new DOMDocument();
         $data->load('Stubs/packages.xml');
 
-        $this->assertEquals('22', trim($processor->transformToXml($data)));
+        $this->assertEquals('22', \trim($processor->transformToXml($data)));
     }
 
     public function testWithNamespaceFunctions()
@@ -186,7 +188,7 @@ class ForEachGroupTest extends AbstractIntegrationTestCase
         $data = new DOMDocument();
         $data->load('Stubs/packages.xml');
 
-        $this->assertEquals('201120152014', trim($processor->transformToXml($data)));
+        $this->assertEquals('201120152014', \trim($processor->transformToXml($data)));
     }
 
     public function testByAttributeValueTemplates()
@@ -200,7 +202,7 @@ class ForEachGroupTest extends AbstractIntegrationTestCase
         $data = new DOMDocument();
         $data->load('Stubs/packages.xml');
 
-        $this->assertEquals('<span title="1 CAMT packages for key Genkgo">CAMT</span>', trim($processor->transformToXml($data)));
+        $this->assertEquals('<span title="1 CAMT packages for key Genkgo">CAMT</span>', \trim($processor->transformToXml($data)));
     }
 
     public function testMultipleCalls()
@@ -216,7 +218,7 @@ class ForEachGroupTest extends AbstractIntegrationTestCase
 
         $this->assertEquals(
             'Author1Author2Author3Author4Author5Author1Author2Author3Author4Author1',
-            trim($processor->transformToXml($data))
+            \trim($processor->transformToXml($data))
         );
     }
 }

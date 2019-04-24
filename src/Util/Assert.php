@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Util;
 
 use DOMNode;
@@ -8,22 +10,22 @@ use Genkgo\Xsl\Xpath\Exception\InvalidArgumentException;
 final class Assert
 {
     /**
-     * @param $value
+     * @param mixed $value
      * @throws InvalidArgumentException
      */
-    public static function assertArray($value)
+    public static function assertArray($value): void
     {
-        if (is_array($value) === false) {
+        if (\is_array($value) === false) {
             throw new InvalidArgumentException("Expected a date object, got scalar");
         }
     }
 
     /**
      * @param DOMNode $element
-     * @param $name
+     * @param string $name
      * @throws InvalidArgumentException
      */
-    public static function assertSchema(DOMNode $element, $name)
+    public static function assertSchema(DOMNode $element, string $name): void
     {
         if ($element->namespaceURI !== XmlSchema::URI || $element->localName !== $name) {
             $nsSchema = XmlSchema::URI;

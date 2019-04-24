@@ -1,21 +1,18 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xsl\Functions\Formatter;
 
 use DateTimeInterface;
 
-/**
- * Interface FormatterInterface
- * @package Genkgo\Xsl\Xsl\Functions\Formatter
- */
-interface FormatterInterface {
-
+interface FormatterInterface
+{
     /**
      * @param DateTimeInterface $date
-     * @param $picture
-     * @param $locale
-     * @param $calendar
-     * @return mixed
+     * @param string $picture
+     * @param string $locale
+     * @param string $calendar
+     * @return string
      */
-    public function format(DateTimeInterface $date, $picture, $locale, $calendar);
-
+    public function format(DateTimeInterface $date, string $picture, string $locale, string $calendar = ''): string;
 }

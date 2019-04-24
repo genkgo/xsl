@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xsl\Node;
 
 use DOMAttr;
@@ -7,10 +9,6 @@ use Genkgo\Xsl\Xpath\Exception\InvalidArgumentException;
 use Genkgo\Xsl\Xsl\AttributeTransformerInterface;
 use Genkgo\Xsl\Xsl\AttributeValueTemplate;
 
-/**
- * Class AttributeValueTemplates
- * @package Genkgo\Xsl\Xsl\Element
- */
 final class AttributeValueTemplates implements AttributeTransformerInterface
 {
     /**

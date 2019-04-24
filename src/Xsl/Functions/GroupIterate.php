@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xsl\Functions;
 
 use DOMDocument;
@@ -10,10 +12,16 @@ use Genkgo\Xsl\Xsl\ForEachGroup\Group;
 use Genkgo\Xsl\Xsl\ForEachGroup\Map as ForEachGroupMap;
 use Genkgo\Xsl\Xsl\XslTransformations;
 
-class GroupIterate implements FunctionInterface, MethodCallInterface
+final class GroupIterate implements FunctionInterface, MethodCallInterface
 {
+    /**
+     * @var ForEachGroupMap
+     */
     private $groups;
 
+    /**
+     * @param ForEachGroupMap $groups
+     */
     public function __construct(ForEachGroupMap $groups)
     {
         $this->groups = $groups;
@@ -29,11 +37,11 @@ class GroupIterate implements FunctionInterface, MethodCallInterface
     }
 
     /**
-     * @param $arguments
+     * @param array $arguments
      * @param TransformationContext $context
      * @return DOMDocument
      */
-    public function call($arguments, TransformationContext $context)
+    public function call(array $arguments, TransformationContext $context)
     {
         /** @var Group[] $group */
         $group = $this->groups->get($arguments[0], $arguments[1]);

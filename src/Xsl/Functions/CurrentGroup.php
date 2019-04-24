@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xsl\Functions;
 
 use DOMElement;
@@ -9,11 +11,7 @@ use Genkgo\Xsl\Util\FunctionMap;
 use Genkgo\Xsl\Xpath\Lexer;
 use Genkgo\Xsl\Xsl\Functions;
 
-/**
- * Class CurrentGroupingKey
- * @package Genkgo\Xsl\Xsl\Functions
- */
-class CurrentGroup implements ReplaceFunctionInterface, FunctionInterface
+final class CurrentGroup implements ReplaceFunctionInterface, FunctionInterface
 {
     /**
      * @param FunctionMap $functionMap
@@ -42,8 +40,11 @@ class CurrentGroup implements ReplaceFunctionInterface, FunctionInterface
             return ['/', 'xs:sequence', '/', '*'];
         }
 
-        /** @var DOMElement $xslForEach */
-        $groupId = $xslForEach->getAttribute('group-id');
+        if ($xslForEach instanceof DOMElement) {
+            $groupId = $xslForEach->getAttribute('group-id');
+        } else {
+            throw new \UnexpectedValueException('Expecting DOMElement');
+        }
 
         $resultTokens = [];
         $resultTokens[] = '$current-un-grouped-' . $groupId;
@@ -68,6 +69,10 @@ class CurrentGroup implements ReplaceFunctionInterface, FunctionInterface
      */
     private function isForEachGroupElement(DOMNode $element)
     {
-        return $element->nodeName === 'xsl:for-each' && $element->getAttribute('group-id');
+        if ($element instanceof DOMElement) {
+            return $element->nodeName === 'xsl:for-each' && $element->getAttribute('group-id');
+        }
+
+        return false;
     }
 }

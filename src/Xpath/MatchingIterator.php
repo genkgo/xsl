@@ -1,15 +1,14 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xpath;
 
 use Iterator;
 
-/**
- * Class MatchingIterator
- * @package Genkgo\Xsl\Xpath
- */
-class MatchingIterator implements Iterator
+final class MatchingIterator implements Iterator
 {
     const DIRECTION_UP = 1;
+
     const DIRECTION_DOWN = -1;
 
     /**
@@ -26,6 +25,7 @@ class MatchingIterator implements Iterator
      * @var int
      */
     private $position;
+
     /**
      * @var int
      */
@@ -33,10 +33,10 @@ class MatchingIterator implements Iterator
 
     /**
      * @param Lexer $lexer
-     * @param $regex
+     * @param string $regex
      * @param int $direction
      */
-    public function __construct(Lexer $lexer, $regex, $direction = self::DIRECTION_UP)
+    public function __construct(Lexer $lexer, string $regex, int $direction = self::DIRECTION_UP)
     {
         $this->lexer = $lexer;
         $this->regex = $regex;
@@ -62,7 +62,7 @@ class MatchingIterator implements Iterator
 
         for ($i = $this->position; $this->compare($i, $end); $i += $this->direction) {
             $token = $this->lexer->peek($i);
-            if (preg_match($this->regex, $token) === 1) {
+            if (\preg_match($this->regex, $token) === 1) {
                 $this->position = $i;
                 return;
             }
@@ -72,9 +72,9 @@ class MatchingIterator implements Iterator
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function key()
+    public function key(): int
     {
         return $this->position;
     }
@@ -94,10 +94,7 @@ class MatchingIterator implements Iterator
     {
         $this->start();
     }
-
-    /**
-     *
-     */
+    
     private function start()
     {
         $this->position = $this->lexer->key() + ($this->direction * -1);
@@ -105,11 +102,11 @@ class MatchingIterator implements Iterator
     }
 
     /**
-     * @param $index
-     * @param $end
+     * @param int $index
+     * @param int $end
      * @return bool
      */
-    private function compare($index, $end)
+    private function compare(int $index, int $end): bool
     {
         return $this->direction === self::DIRECTION_UP ? $index < $end : $index >= $end;
     }
