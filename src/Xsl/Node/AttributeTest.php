@@ -1,14 +1,12 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xsl\Node;
 
 use DOMElement;
 use Genkgo\Xsl\Xpath\Compiler;
 use Genkgo\Xsl\Xsl\ElementTransformerInterface;
 
-/**
- * Class AttributeSelect
- * @package Genkgo\Xsl\Xsl\Element
- */
 final class AttributeTest implements ElementTransformerInterface
 {
     /**

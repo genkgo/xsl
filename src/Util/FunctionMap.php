@@ -1,12 +1,10 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Util;
 
 use Genkgo\Xsl\Callback\FunctionInterface;
 
-/**
- * Class FunctionMap
- * @package Genkgo\Xsl\Util
- */
 final class FunctionMap
 {
     /**
@@ -15,34 +13,34 @@ final class FunctionMap
     private $functions = [];
 
     /**
-     * @param $name
+     * @param string $name
      * @param FunctionInterface $function
      * @return FunctionMap
      */
-    public function set($name, FunctionInterface $function)
+    public function set(string $name, FunctionInterface $function): self
     {
         $this->functions[$name] = $function;
         return $this;
     }
 
     /**
-     * @param $name
-     * @return FunctionInterface|null
+     * @param string $name
+     * @return FunctionInterface
      */
-    public function get($name)
+    public function get(string $name): FunctionInterface
     {
         if (isset($this->functions[$name])) {
             return $this->functions[$name];
         }
 
-        return null;
+        throw new \InvalidArgumentException('Cannot find function ' . $name . ' in function map');
     }
 
     /**
-     * @param $name
+     * @param string $name
      * @return bool
      */
-    public function has($name)
+    public function has(string $name): bool
     {
         return isset($this->functions[$name]);
     }

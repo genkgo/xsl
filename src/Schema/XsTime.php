@@ -1,18 +1,13 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Schema;
 
 use DateTimeImmutable;
 use Genkgo\Xsl\Exception\CastException;
 
-/**
- * Class XsTime
- * @package Genkgo\Xsl\Schema
- */
 final class XsTime extends AbstractXsElement
 {
-    /**
-     *
-     */
     const FORMAT = 'H:i:sP';
 
     /**

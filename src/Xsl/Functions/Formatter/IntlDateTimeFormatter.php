@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xsl\Functions\Formatter;
 
 use DateTimeInterface;
@@ -18,26 +20,25 @@ use Genkgo\Xsl\Xsl\Functions\IntlDateComponent\WeekOfYearComponent;
 use Genkgo\Xsl\Xsl\Functions\IntlDateComponent\YearComponent;
 use IntlDateFormatter;
 
-/**
- * Class DateTimeFormatting
- * @package Genkgo\Xsl\Xsl\Functions\Formatter
- */
-class IntlDateTimeFormatter implements FormatterInterface {
-
+final class IntlDateTimeFormatter implements FormatterInterface
+{
     const ESCAPE = '\'';
 
     /**
      * @var array|ComponentInterface[]
      */
     private $components = [];
+
     /**
      * @var string
      */
     private $timezone;
+
     /**
      * @var bool
      */
     private $flagsDate = false;
+
     /**
      * @var bool
      */
@@ -46,41 +47,41 @@ class IntlDateTimeFormatter implements FormatterInterface {
     /**
      * @param array $components
      */
-    private function mapComponents(array $components) {
+    private function mapComponents(array $components)
+    {
         foreach ($components as $component) {
             $this->components[(string)$component] = $component;
         }
-        $this->timezone = date_default_timezone_get();
+        $this->timezone = \date_default_timezone_get();
     }
 
     /**
      * @param DateTimeInterface $date
      * @param string $picture
-     * @param $locale
-     * @param $calendar
+     * @param string $locale
+     * @param string $calendar
      * @return string
      * @throws InvalidArgumentException
      * @credits https://github.com/Saxonica/Saxon-CE/ https://github.com/Saxonica/Saxon-CE/blob/master/notices/MOZILLA.txt
      */
-    public function format(DateTimeInterface $date, $picture, $locale, $calendar)
+    public function format(DateTimeInterface $date, string $picture, string $locale, string $calendar = ''): string
     {
         $result = [];
 
         $i = 0;
         $escaped = false;
         while (true) {
-
-            while ($i < strlen($picture) && substr($picture, $i, 1) !== '[') {
+            while ($i < \strlen($picture) && \substr($picture, $i, 1) !== '[') {
                 if ($escaped === false) {
                     $result[] = self::ESCAPE;
                     $escaped = true;
                 }
 
-                $result[] = substr($picture, $i, 1);
+                $result[] = \substr($picture, $i, 1);
 
-                if (substr($picture, $i, 1) === ']') {
+                if (\substr($picture, $i, 1) === ']') {
                     $i++;
-                    if ($i == strlen($picture) || substr($picture, $i, 1) != ']') {
+                    if ($i == \strlen($picture) || \substr($picture, $i, 1) != ']') {
                         $exception = new InvalidArgumentException('Wrong formatted date, escape by doubling [[ and ]]');
                         $exception->setErrorCode('XTDE1340');
                         throw $exception;
@@ -89,25 +90,25 @@ class IntlDateTimeFormatter implements FormatterInterface {
                 $i++;
             }
 
-            if ($i === strlen($picture)) {
+            if ($i === \strlen($picture)) {
                 break;
             }
 
             // look for '[['
             $i++;
 
-            if ($i < strlen($picture) && substr($picture, $i, 1) === '[') {
+            if ($i < \strlen($picture) && \substr($picture, $i, 1) === '[') {
                 $result[] = '[';
                 $i++;
             } else {
-                $close = ($i < strlen($picture) ? strpos($picture, "]", $i) : -1);
+                $close = ($i < \strlen($picture) ? \strpos($picture, "]", $i) : -1);
                 if ($close === -1 || $close === false) {
                     $exception = new InvalidArgumentException('Wrong formatted date, missing ]');
                     $exception->setErrorCode('XTDE1340');
                     throw $exception;
                 }
 
-                $pictureString = new PictureString(substr($picture, $i, $close - $i));
+                $pictureString = new PictureString(\substr($picture, $i, $close - $i));
                 $specifier = $pictureString->getComponentSpecifier();
 
                 if (isset($this->components[$specifier])) {
@@ -117,21 +118,20 @@ class IntlDateTimeFormatter implements FormatterInterface {
                             $escaped = true;
                         }
 
-                        $result[] = strtoupper(
+                        $result[] = \strtoupper(
                             $this->formatPattern(
                                 $date,
                                 $locale,
                                 $this->components[$specifier]->format($pictureString, $date)
                             )
                         );
-
                     } elseif ($pictureString->getPresentationModifier() === 'n') {
                         if ($escaped === false) {
                             $result[] = self::ESCAPE;
                             $escaped = true;
                         }
 
-                        $result[] = strtolower(
+                        $result[] = \strtolower(
                             $this->formatPattern(
                                 $date,
                                 $locale,
@@ -160,10 +160,11 @@ class IntlDateTimeFormatter implements FormatterInterface {
             $result[] = self::ESCAPE;
         }
 
-        return $this->formatPattern($date, $locale, implode('', $result));
+        return $this->formatPattern($date, $locale, \implode('', $result));
     }
 
-    private function formatPattern (DateTimeInterface $date, $locale, $pattern) {
+    private function formatPattern(DateTimeInterface $date, $locale, $pattern)
+    {
         return (
             new IntlDateFormatter(
                 $locale,

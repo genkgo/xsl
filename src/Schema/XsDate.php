@@ -1,19 +1,13 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Schema;
 
 use DateTimeImmutable;
-use DOMDocument;
 use Genkgo\Xsl\Exception\CastException;
 
-/**
- * Class XsDate
- * @package Genkgo\Xsl\Schema
- */
 final class XsDate extends AbstractXsElement
 {
-    /**
-     *
-     */
     const FORMAT = 'Y-m-dP';
 
     /**

@@ -1,4 +1,6 @@
-<?php
+<?php 
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Integration\Xsl;
 
 class TestTest extends AbstractXslTest

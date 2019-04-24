@@ -1,14 +1,12 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xsl\Functions\Formatter;
 
 use Genkgo\Xsl\Xpath\Exception\InvalidArgumentException;
 
-/**
- * Class PictureString
- * @package Genkgo\Xsl\Xsl\Functions\Formatter
- */
-final class PictureString {
-
+final class PictureString
+{
     /**
      * @var string
      */
@@ -23,6 +21,7 @@ final class PictureString {
      * @var int
      */
     private $minWidth;
+
     /**
      * @var int
      */
@@ -34,7 +33,7 @@ final class PictureString {
      */
     public function __construct($picture)
     {
-        $matches = preg_match_all('/([YMDdWwFHhmsfZzPCE])\\s*(.*)/', $picture, $groups);
+        $matches = \preg_match_all('/([YMDdWwFHhmsfZzPCE])\\s*(.*)/', $picture, $groups);
         if ($matches === 0) {
             $exception = new InvalidArgumentException('No valid components found');
             $exception->setErrorCode('XTDE1340');
@@ -44,20 +43,21 @@ final class PictureString {
         $this->componentSpecifier = $groups[1][0];
         $modifier = $groups[2][0];
 
-        if (($comma = strpos($modifier, ',')) !== false) {
-            $this->presentationModifier = substr($modifier, 0, $comma);
+        if (($comma = \strpos($modifier, ',')) !== false) {
+            $this->presentationModifier = \substr($modifier, 0, $comma);
 
-            if (($dash = strpos($modifier, '-')) !== false) {
-                $widthModifier = substr($modifier, $comma + 1);
-                list($this->minWidth, $this->maxWidth) = explode('-', $widthModifier);
-                if ($this->maxWidth === '*') {
-                    $this->maxWidth = null;
+            if (($dash = \strpos($modifier, '-')) !== false) {
+                $widthModifier = \substr($modifier, $comma + 1);
+                [$minWidth, $maxWidth] = \explode('-', $widthModifier);
+                if ($maxWidth !== '*') {
+                    $this->maxWidth = (int)$maxWidth;
                 }
-                if ($this->minWidth === '*') {
-                    $this->minWidth = null;
+
+                if ($minWidth !== '*') {
+                    $this->minWidth = (int)$minWidth;
                 }
             } else {
-                $this->minWidth = (int) substr($modifier, $comma + 1);
+                $this->minWidth = (int) \substr($modifier, $comma + 1);
             }
         } else {
             $this->presentationModifier = $modifier;
@@ -81,19 +81,18 @@ final class PictureString {
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getMaxWidth()
+    public function getMaxWidth():? int
     {
         return $this->maxWidth;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getMinWidth()
+    public function getMinWidth():? int
     {
         return $this->minWidth;
     }
-
 }

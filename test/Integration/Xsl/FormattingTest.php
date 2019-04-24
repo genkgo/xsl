@@ -1,4 +1,6 @@
-<?php
+<?php 
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Integration\Xsl;
 
 use Genkgo\Xsl\Schema\XsDate;
@@ -132,7 +134,7 @@ class FormattingTest extends AbstractXslTest
     public function testFormatCurrent()
     {
         $this->assertEquals(
-            date('d'),
+            \date('d'),
             $this->transformFile('Stubs/Xsl/Formatting/format-current.xsl', [
                 'picture' => '[D]'
             ])

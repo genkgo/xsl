@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * @license
  * The MIT License
@@ -33,23 +35,20 @@ use Countable;
 use Iterator;
 use SeekableIterator;
 
-/**
- * Class Lexer
- * @package Genkgo\Xsl\Xpath
- */
 final class Lexer implements Iterator, SeekableIterator, Countable
 {
     /**
      * @var array|string[]
      */
     private $tokens;
+
     /**
      * @var int
      */
     private $position = 0;
 
     /**
-     * @param $tokens
+     * @param array $tokens
      */
     public function __construct(array $tokens)
     {
@@ -57,13 +56,13 @@ final class Lexer implements Iterator, SeekableIterator, Countable
     }
 
     /**
-     * @param $source
+     * @param string $source
      * @return Lexer
      */
-    public static function tokenize($source)
+    public static function tokenize(string $source)
     {
         $tokens = [];
-        preg_match_all(self::compileTokenRegEx(), $source, $tokens);
+        \preg_match_all(self::compileTokenRegEx(), $source, $tokens);
         $tokens = $tokens[0];
 
         return new static($tokens);
@@ -88,7 +87,7 @@ final class Lexer implements Iterator, SeekableIterator, Countable
             '.', // Any single character.
         ];
 
-        return '/' . implode('|', $tokens) . '/';
+        return '/' . \implode('|', $tokens) . '/';
     }
 
     /**
@@ -97,7 +96,7 @@ final class Lexer implements Iterator, SeekableIterator, Countable
      */
     public function insert(array $tokens, $position)
     {
-        array_splice($this->tokens, $position, 0, $tokens);
+        \array_splice($this->tokens, $position, 0, $tokens);
     }
 
     /**
@@ -153,13 +152,9 @@ final class Lexer implements Iterator, SeekableIterator, Countable
      * @param int $position
      * @return string
      */
-    public function peek($position)
+    public function peek(int $position): string
     {
-        if (isset($this->tokens[$position])) {
-            return $this->tokens[$position];
-        } else {
-            return null;
-        }
+        return $this->tokens[$position] ?? '';
     }
 
     /**
@@ -167,12 +162,9 @@ final class Lexer implements Iterator, SeekableIterator, Countable
      */
     public function count()
     {
-        return count($this->tokens);
+        return \count($this->tokens);
     }
-
-    /**
-     *
-     */
+    
     public function prev()
     {
         $this->position--;

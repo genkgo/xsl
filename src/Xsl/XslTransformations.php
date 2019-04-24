@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xsl;
 
 use Genkgo\Xsl\Callback\ObjectFunction;
@@ -16,21 +18,15 @@ use Genkgo\Xsl\Xsl\Functions\GroupIterate;
 use Genkgo\Xsl\Xsl\Functions\GroupIterationId;
 use Genkgo\Xsl\Xsl\Node\IncludeWindowsTransformer;
 
-/**
- * Class XslTransformations
- * @package Genkgo\Xsl\Xsl
- */
 final class XslTransformations implements XmlNamespaceInterface
 {
-    /**
-     *
-     */
     const URI = 'http://www.w3.org/1999/XSL/Transform';
 
     /**
      * @var Compiler
      */
     private $xpathCompiler;
+
     /**
      * @var Config
      */

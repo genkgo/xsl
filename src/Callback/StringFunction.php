@@ -1,19 +1,18 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Callback;
 
 use DOMNode;
 use Genkgo\Xsl\Xpath\Lexer;
 
-/**
- * Class StringFunction
- * @package Genkgo\Xsl\Callback
- */
 final class StringFunction implements ReplaceFunctionInterface
 {
     /**
      * @var bool
      */
     private $camelize = false;
+
     /**
      * @var array
      */
@@ -23,7 +22,7 @@ final class StringFunction implements ReplaceFunctionInterface
      * @param array $callback
      * @param bool $camelize
      */
-    public function __construct(array $callback, $camelize = false)
+    public function __construct(array $callback, bool $camelize = false)
     {
         $this->callback = $callback;
         $this->camelize = $camelize;
@@ -32,7 +31,7 @@ final class StringFunction implements ReplaceFunctionInterface
     /**
      * @param Lexer $lexer
      * @param DOMNode $currentElement
-     * @return array|\string[]
+     * @return array|string[]
      */
     public function replace(Lexer $lexer, DOMNode $currentElement)
     {
@@ -72,8 +71,8 @@ final class StringFunction implements ReplaceFunctionInterface
      */
     private function convertToCamel($methodName)
     {
-        $methodName = ucwords(str_replace(['-', '_'], ' ', $methodName));
-        $methodName = lcfirst(str_replace(' ', '', $methodName));
+        $methodName = \ucwords(\str_replace(['-', '_'], ' ', $methodName));
+        $methodName = \lcfirst(\str_replace(' ', '', $methodName));
 
         return $methodName;
     }

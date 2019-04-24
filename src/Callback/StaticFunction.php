@@ -1,31 +1,38 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Callback;
 
 use DOMNode;
 use Genkgo\Xsl\Util\FunctionMap;
 use Genkgo\Xsl\Xpath\Lexer;
 
-/**
- * Interface FunctionCall
- * @package Genkgo\Xsl\Callback
- */
 final class StaticFunction implements FunctionInterface, ReplaceFunctionInterface
 {
+    /**
+     * @var string
+     */
     private $name;
+
+    /**
+     * @var ReplaceFunctionInterface
+     */
     private $replacer;
 
-    public function __construct($name, ReplaceFunctionInterface $replacer)
+    /**
+     * @param string $name
+     * @param ReplaceFunctionInterface $replacer
+     */
+    public function __construct(string $name, ReplaceFunctionInterface $replacer)
     {
         $this->name = $name;
         $this->replacer = $replacer;
     }
 
-
     /**
      * @param FunctionMap $functionMap
-     * @return void
      */
-    public function register(FunctionMap $functionMap)
+    public function register(FunctionMap $functionMap): void
     {
         $functionMap->set($this->name, $this);
     }
@@ -33,9 +40,9 @@ final class StaticFunction implements FunctionInterface, ReplaceFunctionInterfac
     /**
      * @param Lexer $lexer
      * @param DOMNode $currentElement
-     * @return array|\string[]
+     * @return array|string[]
      */
-    public function replace(Lexer $lexer, DOMNode $currentElement)
+    public function replace(Lexer $lexer, DOMNode $currentElement): array
     {
         return $this->replacer->replace($lexer, $currentElement);
     }

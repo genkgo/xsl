@@ -1,10 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Exception;
 
-/**
- * Class ReadOnlyStreamException
- * @package Genkgo\Xsl\Exception
- */
-class ReadOnlyStreamException extends StreamException
+final class ReadOnlyStreamException extends StreamException
 {
 }

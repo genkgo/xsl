@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xpath\Expression;
 
 use DOMNode;
@@ -14,10 +16,7 @@ final class SequenceExpression implements ExpressionInterface
      * @var ReturnXsSequenceFunction
      */
     private $sequenceConstructor;
-
-    /**
-     *
-     */
+    
     public function __construct()
     {
         $this->sequenceConstructor = new ReturnXsSequenceFunction(new SequenceConstructor());
@@ -27,7 +26,7 @@ final class SequenceExpression implements ExpressionInterface
      * @param Lexer $lexer
      * @return bool
      */
-    public function supports(Lexer $lexer)
+    public function supports(Lexer $lexer): bool
     {
         if ($lexer->current() !== '(') {
             return false;
@@ -79,6 +78,6 @@ final class SequenceExpression implements ExpressionInterface
      */
     public function merge(Lexer $lexer, DOMNode $currentElement, array $tokens)
     {
-        return array_merge($tokens, $this->sequenceConstructor->replace($lexer, $currentElement));
+        return \array_merge($tokens, $this->sequenceConstructor->replace($lexer, $currentElement));
     }
 }

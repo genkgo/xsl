@@ -1,13 +1,15 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xsl\Functions\Formatter;
+
 use DateTimeInterface;
 
 /**
  * Interface ComponentInterface
- * @package Genkgo\Xsl\Xsl\Functions\DateComponent
  */
-interface ComponentInterface {
-
+interface ComponentInterface
+{
     /**
      * @param PictureString $pictureString
      * @param DateTimeInterface $date
@@ -19,5 +21,4 @@ interface ComponentInterface {
      * @return mixed
      */
     public function __toString();
-
 }

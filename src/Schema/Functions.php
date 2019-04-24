@@ -1,16 +1,14 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Schema;
 
 use Genkgo\Xsl\Exception\CastException;
 
-/**
- * Class Functions
- * @package Genkgo\Xsl\Schema
- */
-class Functions
+final class Functions
 {
     /**
-     * @param $value
+     * @param mixed $value
      * @return XsDate
      */
     public static function xsDate($value)
@@ -20,7 +18,7 @@ class Functions
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      * @return XsTime
      */
     public static function xsTime($value)
@@ -30,7 +28,7 @@ class Functions
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      * @return XsDateTime
      */
     public static function xsDateTime($value)
@@ -40,7 +38,7 @@ class Functions
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      * @return XsDayTimeDuration
      */
     public static function xsDayTimeDuration($value)
@@ -50,12 +48,12 @@ class Functions
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      * @return XsInteger|XsSequence
      */
     public static function xsInteger($value)
     {
-        if (is_bool($value)) {
+        if (\is_bool($value)) {
             return new XsInteger((int)$value);
         }
 
@@ -69,7 +67,7 @@ class Functions
             return new XsInteger(0);
         }
 
-        if (!is_numeric($value) && !is_bool($value)) {
+        if (!\is_numeric($value) && !\is_bool($value)) {
             throw new CastException('Cannot cast to integer');
         }
 

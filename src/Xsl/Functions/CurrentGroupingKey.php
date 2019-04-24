@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xsl\Functions;
 
 use DOMElement;
@@ -9,11 +11,7 @@ use Genkgo\Xsl\Util\FunctionMap;
 use Genkgo\Xsl\Xpath\Lexer;
 use Genkgo\Xsl\Xsl\XslTransformations;
 
-/**
- * Class CurrentGroupingKey
- * @package Genkgo\Xsl\Xsl\Functions
- */
-class CurrentGroupingKey implements ReplaceFunctionInterface, FunctionInterface
+final class CurrentGroupingKey implements ReplaceFunctionInterface, FunctionInterface
 {
     /**
      * @param FunctionMap $functionMap
@@ -45,9 +43,12 @@ class CurrentGroupingKey implements ReplaceFunctionInterface, FunctionInterface
         if ($currentElement->localName === 'sort' && $currentElement->namespaceURI === XslTransformations::URI) {
             $resultTokens = ['current()', '/', '@key'];
         } else {
-            /** @var DOMElement $xslForEach */
-            $groupId = $xslForEach->getAttribute('group-id');
-            $resultTokens = ['$current-group-' . $groupId, '/', '@key'];
+            if ($xslForEach instanceof DOMElement) {
+                $groupId = $xslForEach->getAttribute('group-id');
+                $resultTokens = ['$current-group-' . $groupId, '/', '@key'];
+            } else {
+                throw new \UnexpectedValueException('Expecting DOMElement');
+            }
         }
 
         $lexer->seek($lexer->key() + 2);
@@ -60,6 +61,10 @@ class CurrentGroupingKey implements ReplaceFunctionInterface, FunctionInterface
      */
     private function isForEachGroupElement(DOMNode $element)
     {
-        return $element->nodeName === 'xsl:for-each' && $element->getAttribute('group-id');
+        if ($element instanceof DOMElement) {
+            return $element->nodeName === 'xsl:for-each' && $element->getAttribute('group-id');
+        }
+
+        return false;
     }
 }

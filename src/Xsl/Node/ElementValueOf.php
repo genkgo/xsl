@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xsl\Node;
 
 use DOMElement;
@@ -6,10 +8,6 @@ use Genkgo\Xsl\Callback\PhpCallback;
 use Genkgo\Xsl\Xpath\FunctionBuilder;
 use Genkgo\Xsl\Xsl\ElementTransformerInterface;
 
-/**
- * Class ElementValueOf
- * @package Genkgo\Xsl\Xsl\Node
- */
 final class ElementValueOf implements ElementTransformerInterface
 {
     /**
@@ -42,18 +40,18 @@ final class ElementValueOf implements ElementTransformerInterface
 
     /**
      * @param mixed $elements
-     * @param $separator
-     * @return string
+     * @param string $separator
+     * @return string|int|float|bool
      */
-    public static function valueOf($elements, $separator)
+    public static function valueOf($elements, string $separator)
     {
-        if (is_scalar($elements)) {
+        if (\is_scalar($elements)) {
             return $elements;
         }
 
         $result = '';
 
-        if (is_array($elements)) {
+        if (\is_array($elements)) {
             $index = 0;
             foreach ($elements as $element) {
                 if ($index > 0) {

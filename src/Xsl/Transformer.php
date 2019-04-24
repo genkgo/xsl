@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xsl;
 
 use DOMAttr;
@@ -20,12 +22,10 @@ use Genkgo\Xsl\Xsl\Node\ElementForEachGroup;
 use Genkgo\Xsl\Xsl\Node\ElementValueOf;
 use Genkgo\Xsl\Xsl\Node\IncludeWindowsTransformer;
 
-/**
- * Class Transformer
- * @package Genkgo\Xsl\Xsl
- */
 final class Transformer implements TransformerInterface
 {
+    private const DEFAULT_EXCLUDE_PREFIXES = ['php', 'xs'];
+
     /**
      * @var ElementTransformerInterface[]
      */
@@ -35,6 +35,7 @@ final class Transformer implements TransformerInterface
      * @var AttributeTransformerInterface[]
      */
     private $attributeTransformers = [];
+
     /**
      * @var Config
      */
@@ -69,7 +70,6 @@ final class Transformer implements TransformerInterface
         ];
     }
 
-
     /**
      * @param DOMDocument $document
      */
@@ -78,15 +78,18 @@ final class Transformer implements TransformerInterface
         $root = $document->documentElement;
 
         $namespaces = FetchNamespacesFromNode::fetch($document->documentElement);
-        $xslPrefix = array_search(XslTransformations::URI, $namespaces);
+        $xslPrefix = \array_search(XslTransformations::URI, $namespaces);
 
-        $excludePrefixes = preg_split('/\s/', $root->getAttribute('exclude-result-prefixes'));
-        $excludePrefixes[] = 'php';
-        $excludePrefixes[] = 'xs';
+        $documentPrefixes = \preg_split('/\s/', (string)$root->getAttribute('exclude-result-prefixes'));
+        if ($documentPrefixes === false) {
+            $documentPrefixes = [];
+        }
 
-        if (in_array('#all', $excludePrefixes) === true || $this->config->shouldExcludeResultPrefixes()) {
-            $excludePrefixes = array_merge($excludePrefixes, array_keys($namespaces));
-            $excludePrefixes = array_filter(
+        $excludePrefixes = \array_merge($documentPrefixes, self::DEFAULT_EXCLUDE_PREFIXES);
+
+        if (\in_array('#all', $excludePrefixes) === true || $this->config->shouldExcludeResultPrefixes()) {
+            $excludePrefixes = \array_merge($excludePrefixes, \array_keys($namespaces));
+            $excludePrefixes = \array_filter(
                 $excludePrefixes,
                 function ($prefix) {
                     return $prefix !== '#all';
@@ -94,21 +97,21 @@ final class Transformer implements TransformerInterface
             );
         }
 
-        $excludePrefixes = array_unique($excludePrefixes);
+        $excludePrefixes = \array_unique($excludePrefixes);
 
         $root->setAttribute('xmlns:php', 'http://php.net/xsl');
         $root->setAttribute('xmlns:xs', XmlSchema::URI);
-        $root->setAttribute('exclude-result-prefixes', implode(' ', $excludePrefixes));
+        $root->setAttribute('exclude-result-prefixes', \implode(' ', $excludePrefixes));
 
-        $this->transformElements($document, $xslPrefix);
-        $this->transformAttributes($document, $xslPrefix);
+        $this->transformElements($document, (string)$xslPrefix);
+        $this->transformAttributes($document, (string)$xslPrefix);
     }
 
     /**
      * @param DOMDocument $document
-     * @param $xslPrefix
+     * @param string $xslPrefix
      */
-    private function transformElements(DOMDocument $document, $xslPrefix)
+    private function transformElements(DOMDocument $document, string $xslPrefix) : void
     {
         /** @var DOMNodeList|DOMElement[] $list */
         $matchAndSelectElements = new DOMXPath($document);
@@ -124,13 +127,13 @@ final class Transformer implements TransformerInterface
 
     /**
      * @param DOMDocument $document
-     * @param $xslPrefix
+     * @param string $xslPrefix
      */
     private function transformAttributes(DOMDocument $document, $xslPrefix)
     {
         /** @var DOMNodeList|DOMAttr[] $list */
         $matchAndSelectElements = new DOMXPath($document);
-        $lengthPrefix = strlen($xslPrefix);
+        $lengthPrefix = \strlen($xslPrefix);
         $expression = '//*[substring(name(), 1, ' . $lengthPrefix . ') != "' . $xslPrefix . '"]/@*[contains(., "{") or contains(., "}")]';
 
         $list = $matchAndSelectElements->query($expression);

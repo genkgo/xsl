@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xpath;
 
 use DOMNode;
@@ -6,16 +8,12 @@ use Genkgo\Xsl\Callback\PhpCallback;
 use Genkgo\Xsl\Callback\ReplaceFunctionInterface;
 use Genkgo\Xsl\Schema\XsSequence;
 
-/**
- * Class Sequence
- * @package Genkgo\Xsl\Xpath
- */
 final class SequenceConstructor implements ReplaceFunctionInterface
 {
     /**
      * @param Lexer $lexer
      * @param DOMNode $currentElement
-     * @return array|\string[]
+     * @return array|string[]
      */
     public function replace(Lexer $lexer, DOMNode $currentElement)
     {
@@ -42,9 +40,8 @@ final class SequenceConstructor implements ReplaceFunctionInterface
     }
 
     /**
-     * @param $arguments
-     * @return mixed
-     * @throws \Genkgo\Xsl\Schema\Exception\UnknownSequenceItemException
+     * @param mixed ...$arguments
+     * @return XsSequence
      */
     public static function call(...$arguments)
     {

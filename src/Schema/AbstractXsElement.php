@@ -1,18 +1,15 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Schema;
 
 use DOMDocument;
-use DOMElement;
 use Genkgo\Xsl\Exception\CastException;
 
-/**
- * Class AbstractXsElement
- * @package Genkgo\Xsl\Schema
- */
 abstract class AbstractXsElement extends DOMDocument
 {
     /**
-     * @param null $value
+     * @param mixed|null $value
      */
     final public function __construct($value = null)
     {
@@ -39,17 +36,17 @@ abstract class AbstractXsElement extends DOMDocument
     abstract protected function getElementName();
 
     /**
-     * @param DOMElement[] $elements
-     * @return string
+     * @param mixed $elements
+     * @return mixed
      * @throws CastException
      */
     public static function castToNodeValue($elements)
     {
-        if (is_scalar($elements)) {
-            return (string) $elements;
+        if (\is_scalar($elements)) {
+            return $elements;
         }
 
-        if (is_array($elements) && count($elements) === 1) {
+        if (\is_array($elements) && \count($elements) === 1) {
             return $elements[0]->nodeValue;
         }
 

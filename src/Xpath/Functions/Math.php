@@ -1,55 +1,53 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xpath\Functions;
 
-/**
- * Class Math
- * @package Genkgo\Xsl\Xpath\Functions
- */
-class Math
+final class Math
 {
     /**
-     * @param $number
-     * @return number
+     * @param int|float $number
+     * @return int|float
      */
     public static function abs($number)
     {
-        return abs($number);
+        return \abs($number);
     }
 
     /**
-     * @param $number
-     * @return float
+     * @param int|float $number
+     * @return int|float
      */
     public static function ceiling($number)
     {
-        return ceil($number);
+        return \ceil($number);
     }
 
     /**
-     * @param $number
-     * @return float
+     * @param int|float $number
+     * @return int|float
      */
     public static function floor($number)
     {
-        return floor($number);
+        return \floor($number);
     }
 
     /**
-     * @param $number
-     * @return float
+     * @param int|float $number
+     * @return int|float
      */
     public static function round($number)
     {
-        return round($number);
+        return \round($number);
     }
 
     /**
-     * @param $number
+     * @param int|float $number
      * @param int $precision
-     * @return float
+     * @return int|float
      */
     public static function roundHalfToEven($number, $precision = 0)
     {
-        return round($number, $precision, PHP_ROUND_HALF_EVEN);
+        return \round($number, (int)$precision, PHP_ROUND_HALF_EVEN);
     }
 }

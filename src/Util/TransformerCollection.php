@@ -1,14 +1,12 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Util;
 
 use ArrayIterator;
 use Genkgo\Xsl\TransformerInterface;
 use IteratorAggregate;
 
-/**
- * Class TransformerCollection
- * @package Genkgo\Xsl\Util
- */
 final class TransformerCollection implements IteratorAggregate
 {
     /**

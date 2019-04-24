@@ -1,16 +1,14 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xsl\Functions\IntlDateComponent;
 
 use DateTimeInterface;
 use Genkgo\Xsl\Xsl\Functions\Formatter\ComponentInterface;
 use Genkgo\Xsl\Xsl\Functions\Formatter\PictureString;
 
-/**
- * Class HourInDayComponent
- * @package Genkgo\Xsl\Xsl\Functions\DateComponent
- */
-final class HourInDayComponent implements ComponentInterface {
-
+final class HourInDayComponent implements ComponentInterface
+{
     /**
      * @param PictureString $pictureString
      * @param DateTimeInterface $date

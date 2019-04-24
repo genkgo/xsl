@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xpath\Functions;
 
 use DateInterval;
@@ -9,16 +11,12 @@ use Genkgo\Xsl\Schema\XsInteger;
 use Genkgo\Xsl\Schema\XsTime;
 use Genkgo\Xsl\Util\Assert;
 
-/**
- * Class Date
- * @package Genkgo\Xsl\Xpath\Functions
- */
-class Date
+final class Date
 {
     /**
      * @return XsTime
      */
-    public static function currentTime()
+    public static function currentTime(): XsTime
     {
         return XsTime::now();
     }
@@ -26,7 +24,7 @@ class Date
     /**
      * @return XsDate
      */
-    public static function currentDate()
+    public static function currentDate(): XsDate
     {
         return XsDate::now();
     }
@@ -34,17 +32,16 @@ class Date
     /**
      * @return XsDateTime
      */
-    public static function currentDateTime()
+    public static function currentDateTime(): XsDateTime
     {
         return XsDateTime::now();
     }
 
     /**
-     * @param $value
+     * @param array $value
      * @return XsInteger
-     * @throws \Genkgo\Xsl\Xpath\Exception\InvalidArgumentException
      */
-    public static function yearFromDate($value)
+    public static function yearFromDate(array $value)
     {
         Assert::assertArray($value);
         Assert::assertSchema($value[0], 'date');
@@ -53,11 +50,10 @@ class Date
     }
 
     /**
-     * @param $value
+     * @param array $value
      * @return XsInteger
-     * @throws \Genkgo\Xsl\Xpath\Exception\InvalidArgumentException
      */
-    public static function yearFromDateTime($value)
+    public static function yearFromDateTime(array $value)
     {
         Assert::assertArray($value);
         Assert::assertSchema($value[0], 'dateTime');
@@ -66,11 +62,10 @@ class Date
     }
 
     /**
-     * @param $value
+     * @param array $value
      * @return XsInteger
-     * @throws \Genkgo\Xsl\Xpath\Exception\InvalidArgumentException
      */
-    public static function monthFromDate($value)
+    public static function monthFromDate(array $value)
     {
         Assert::assertArray($value);
         Assert::assertSchema($value[0], 'date');
@@ -79,11 +74,10 @@ class Date
     }
 
     /**
-     * @param $value
+     * @param array $value
      * @return XsInteger
-     * @throws \Genkgo\Xsl\Xpath\Exception\InvalidArgumentException
      */
-    public static function monthFromDateTime($value)
+    public static function monthFromDateTime(array $value)
     {
         Assert::assertArray($value);
         Assert::assertSchema($value[0], 'dateTime');
@@ -92,11 +86,10 @@ class Date
     }
 
     /**
-     * @param $value
+     * @param array $value
      * @return XsInteger
-     * @throws \Genkgo\Xsl\Xpath\Exception\InvalidArgumentException
      */
-    public static function dayFromDate($value)
+    public static function dayFromDate(array $value)
     {
         Assert::assertArray($value);
         Assert::assertSchema($value[0], 'date');
@@ -105,11 +98,10 @@ class Date
     }
 
     /**
-     * @param $value
+     * @param array $value
      * @return XsInteger
-     * @throws \Genkgo\Xsl\Xpath\Exception\InvalidArgumentException
      */
-    public static function dayFromDateTime($value)
+    public static function dayFromDateTime(array $value)
     {
         Assert::assertArray($value);
         Assert::assertSchema($value[0], 'dateTime');
@@ -118,11 +110,10 @@ class Date
     }
 
     /**
-     * @param $value
+     * @param array $value
      * @return XsInteger
-     * @throws \Genkgo\Xsl\Xpath\Exception\InvalidArgumentException
      */
-    public static function hoursFromTime($value)
+    public static function hoursFromTime(array $value)
     {
         Assert::assertArray($value);
         Assert::assertSchema($value[0], 'time');
@@ -131,11 +122,10 @@ class Date
     }
 
     /**
-     * @param $value
+     * @param array $value
      * @return XsInteger
-     * @throws \Genkgo\Xsl\Xpath\Exception\InvalidArgumentException
      */
-    public static function hoursFromDateTime($value)
+    public static function hoursFromDateTime(array $value)
     {
         Assert::assertArray($value);
         Assert::assertSchema($value[0], 'dateTime');
@@ -144,11 +134,10 @@ class Date
     }
 
     /**
-     * @param $value
+     * @param array $value
      * @return XsInteger
-     * @throws \Genkgo\Xsl\Xpath\Exception\InvalidArgumentException
      */
-    public static function minutesFromTime($value)
+    public static function minutesFromTime(array $value)
     {
         Assert::assertArray($value);
         Assert::assertSchema($value[0], 'time');
@@ -157,11 +146,10 @@ class Date
     }
 
     /**
-     * @param $value
+     * @param array $value
      * @return XsInteger
-     * @throws \Genkgo\Xsl\Xpath\Exception\InvalidArgumentException
      */
-    public static function minutesFromDateTime($value)
+    public static function minutesFromDateTime(array $value)
     {
         Assert::assertArray($value);
         Assert::assertSchema($value[0], 'dateTime');
@@ -170,11 +158,10 @@ class Date
     }
 
     /**
-     * @param $value
+     * @param array $value
      * @return XsInteger
-     * @throws \Genkgo\Xsl\Xpath\Exception\InvalidArgumentException
      */
-    public static function secondsFromTime($value)
+    public static function secondsFromTime(array $value)
     {
         Assert::assertArray($value);
         Assert::assertSchema($value[0], 'time');
@@ -183,11 +170,10 @@ class Date
     }
 
     /**
-     * @param $value
+     * @param array $value
      * @return XsInteger
-     * @throws \Genkgo\Xsl\Xpath\Exception\InvalidArgumentException
      */
-    public static function secondsFromDateTime($value)
+    public static function secondsFromDateTime(array $value)
     {
         Assert::assertArray($value);
         Assert::assertSchema($value[0], 'dateTime');
@@ -196,11 +182,10 @@ class Date
     }
 
     /**
-     * @param $value
+     * @param array $value
      * @return XsInteger
-     * @throws \Genkgo\Xsl\Xpath\Exception\InvalidArgumentException
      */
-    public static function yearsFromDuration($value)
+    public static function yearsFromDuration(array $value)
     {
         Assert::assertArray($value);
         Assert::assertSchema($value[0], 'dayTimeDuration');
@@ -209,11 +194,10 @@ class Date
     }
 
     /**
-     * @param $value
+     * @param array $value
      * @return XsInteger
-     * @throws \Genkgo\Xsl\Xpath\Exception\InvalidArgumentException
      */
-    public static function monthsFromDuration($value)
+    public static function monthsFromDuration(array $value)
     {
         Assert::assertArray($value);
         Assert::assertSchema($value[0], 'dayTimeDuration');
@@ -222,11 +206,10 @@ class Date
     }
 
     /**
-     * @param $value
+     * @param array $value
      * @return XsInteger
-     * @throws \Genkgo\Xsl\Xpath\Exception\InvalidArgumentException
      */
-    public static function daysFromDuration($value)
+    public static function daysFromDuration(array $value)
     {
         Assert::assertArray($value);
         Assert::assertSchema($value[0], 'dayTimeDuration');
@@ -235,11 +218,10 @@ class Date
     }
 
     /**
-     * @param $value
+     * @param array $value
      * @return XsInteger
-     * @throws \Genkgo\Xsl\Xpath\Exception\InvalidArgumentException
      */
-    public static function hoursFromDuration($value)
+    public static function hoursFromDuration(array $value)
     {
         Assert::assertArray($value);
         Assert::assertSchema($value[0], 'dayTimeDuration');
@@ -248,11 +230,10 @@ class Date
     }
 
     /**
-     * @param $value
+     * @param array $value
      * @return XsInteger
-     * @throws \Genkgo\Xsl\Xpath\Exception\InvalidArgumentException
      */
-    public static function minutesFromDuration($value)
+    public static function minutesFromDuration(array $value)
     {
         Assert::assertArray($value);
         Assert::assertSchema($value[0], 'dayTimeDuration');
@@ -261,11 +242,10 @@ class Date
     }
 
     /**
-     * @param $value
+     * @param array $value
      * @return XsInteger
-     * @throws \Genkgo\Xsl\Xpath\Exception\InvalidArgumentException
      */
-    public static function secondsFromDuration($value)
+    public static function secondsFromDuration(array $value)
     {
         Assert::assertArray($value);
         Assert::assertSchema($value[0], 'dayTimeDuration');

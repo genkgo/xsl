@@ -1,19 +1,13 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Schema;
 
 use DateTimeImmutable;
-use DOMDocument;
 use Genkgo\Xsl\Exception\CastException;
 
-/**
- * Class XsDateTime
- * @package Genkgo\Xsl\Schema
- */
 final class XsDateTime extends AbstractXsElement
 {
-    /**
-     *
-     */
     const FORMAT = DATE_W3C;
 
     /**

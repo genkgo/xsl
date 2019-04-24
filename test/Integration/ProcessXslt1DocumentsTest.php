@@ -1,22 +1,13 @@
-<?php
+<?php 
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Integration;
 
 use DOMDocument;
 use Genkgo\Xsl\XsltProcessor;
 
-class ProcessXslt1DocumentsTest extends AbstractIntegrationTestCase
+final class ProcessXslt1DocumentsTest extends AbstractIntegrationTestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-
-        if (defined('HHVM_VERSION')) {
-            // this test should be skipped on hhvm
-            // https://github.com/facebook/hhvm/issues/2593
-            $this->markTestSkipped();
-        }
-    }
-
     public function testCollection()
     {
         $xslDoc = new DOMDocument();
@@ -57,7 +48,10 @@ class ProcessXslt1DocumentsTest extends AbstractIntegrationTestCase
 
     public function testSimpleXml()
     {
-        $xslDoc = simplexml_load_file('Stubs/include.xsl');
+        $xslDoc = \simplexml_load_file('Stubs/include.xsl');
+        if ($xslDoc === false) {
+            throw new \RuntimeException('Cannot load stylesheet');
+        }
 
         $xmlDoc = new DOMDocument();
         $xmlDoc->load('Stubs/collection.xml');
@@ -75,11 +69,11 @@ class ProcessXslt1DocumentsTest extends AbstractIntegrationTestCase
 
     public function testFromString()
     {
-        $cwd = getcwd();
-        chdir(dirname(__DIR__).'/Stubs');
+        $cwd = \getcwd();
+        \chdir(\dirname(__DIR__).'/Stubs');
 
         $xslDoc = new DOMDocument('1.0', 'UTF-8');
-        $xslDoc->loadXML(file_get_contents('include.xsl'));
+        $xslDoc->loadXML((string)\file_get_contents('include.xsl'));
 
         $xmlDoc = new DOMDocument();
         $xmlDoc->load('collection.xml');
@@ -94,7 +88,7 @@ class ProcessXslt1DocumentsTest extends AbstractIntegrationTestCase
 
         $this->assertEquals($nativeResult, $transpilerResult);
 
-        chdir($cwd);
+        \chdir((string)$cwd);
     }
 
     public function testTransformToDoc()
@@ -127,12 +121,12 @@ class ProcessXslt1DocumentsTest extends AbstractIntegrationTestCase
         $native = new \XSLTProcessor();
         $native->importStylesheet($xslDoc);
         $native->transformToUri($xmlDoc, 'php://temp');
-        $nativeResult = file_get_contents('php://temp');
+        $nativeResult = \file_get_contents('php://temp');
 
         $transpiler = new XsltProcessor();
         $transpiler->importStylesheet($xslDoc);
         $transpiler->transformToUri($xmlDoc, 'php://temp');
-        $transpilerResult = file_get_contents('php://temp');
+        $transpilerResult = \file_get_contents('php://temp');
 
         $this->assertEquals($nativeResult, $transpilerResult);
     }
@@ -148,12 +142,12 @@ class ProcessXslt1DocumentsTest extends AbstractIntegrationTestCase
         $native = new \XSLTProcessor();
         $native->importStylesheet($xslDoc);
         $native->registerPHPFunctions();
-        $nativeResult = trim($native->transformToXML($xmlDoc));
+        $nativeResult = \trim($native->transformToXML($xmlDoc));
 
         $transpiler = new XsltProcessor();
         $transpiler->importStylesheet($xslDoc);
         $transpiler->registerPHPFunctions();
-        $transpilerResult = trim($transpiler->transformToXML($xmlDoc));
+        $transpilerResult = \trim($transpiler->transformToXML($xmlDoc));
 
         $this->assertEquals('false', $nativeResult);
         $this->assertEquals($nativeResult, $transpilerResult);
@@ -170,12 +164,12 @@ class ProcessXslt1DocumentsTest extends AbstractIntegrationTestCase
         $native = new \XSLTProcessor();
         $native->importStylesheet($xslDoc);
         $native->registerPHPFunctions('strpos');
-        $nativeResult = trim($native->transformToXML($xmlDoc));
+        $nativeResult = \trim($native->transformToXML($xmlDoc));
 
         $transpiler = new XsltProcessor();
         $transpiler->importStylesheet($xslDoc);
         $transpiler->registerPHPFunctions('strpos');
-        $transpilerResult = trim($transpiler->transformToXML($xmlDoc));
+        $transpilerResult = \trim($transpiler->transformToXML($xmlDoc));
 
         $this->assertEquals('false', $nativeResult);
         $this->assertEquals($nativeResult, $transpilerResult);
@@ -192,12 +186,12 @@ class ProcessXslt1DocumentsTest extends AbstractIntegrationTestCase
         $native = new \XSLTProcessor();
         $native->importStylesheet($xslDoc);
         $native->registerPHPFunctions();
-        $nativeResult = trim($native->transformToXML($xmlDoc));
+        $nativeResult = \trim($native->transformToXML($xmlDoc));
 
         $transpiler = new XsltProcessor();
         $transpiler->importStylesheet($xslDoc);
         $transpiler->registerPHPFunctions();
-        $transpilerResult = trim($transpiler->transformToXML($xmlDoc));
+        $transpilerResult = \trim($transpiler->transformToXML($xmlDoc));
 
         $this->assertEquals($nativeResult, $transpilerResult);
     }
@@ -213,12 +207,12 @@ class ProcessXslt1DocumentsTest extends AbstractIntegrationTestCase
         $native = new \XSLTProcessor();
         $native->importStylesheet($xslDoc);
         $native->registerPHPFunctions();
-        $nativeResult = trim($native->transformToXML($xmlDoc));
+        $nativeResult = \trim($native->transformToXML($xmlDoc));
 
         $transpiler = new XsltProcessor();
         $transpiler->importStylesheet($xslDoc);
         $transpiler->registerPHPFunctions();
-        $transpilerResult = trim($transpiler->transformToXML($xmlDoc));
+        $transpilerResult = \trim($transpiler->transformToXML($xmlDoc));
 
         $this->assertEquals($nativeResult, $transpilerResult);
     }

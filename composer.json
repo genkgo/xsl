@@ -2,13 +2,17 @@
     "name" : "genkgo/xsl",
     "description": "XSL 2.0 Transpiler in PHP",
     "require" : {
-        "php" : ">=7.0",
+        "php" : ">=7.2",
+        "ext-json" : "*",
         "ext-xsl" : "*",
         "ext-dom" : "*"
     },
     "require-dev" : {
         "ext-intl" : "*",
-        "phpunit/phpunit" : "~6.0",
+        "phpunit/phpunit": "^7.0",
+        "phpstan/phpstan": "^0.11",
+        "phpstan/phpstan-phpunit": "^0.11",
+        "friendsofphp/php-cs-fixer": "^2.9",
         "genkgo/cache" : "~0.2.0"
     },
     "suggest": {

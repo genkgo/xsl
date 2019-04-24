@@ -1,6 +1,9 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xpath\Expression;
 
+use DOMDocument;
 use DOMNode;
 use Genkgo\Xsl\Callback\ReplaceFunctionInterface;
 use Genkgo\Xsl\Util\FetchNamespacesFromNode;
@@ -8,13 +11,16 @@ use Genkgo\Xsl\Util\FunctionMap;
 use Genkgo\Xsl\Xpath\ExpressionInterface;
 use Genkgo\Xsl\Xpath\Lexer;
 
-class FunctionExpression implements ExpressionInterface
+final class FunctionExpression implements ExpressionInterface
 {
     /**
      * @var FunctionMap
      */
     private $functions;
 
+    /**
+     * @param FunctionMap $functions
+     */
     public function __construct(FunctionMap $functions)
     {
         $this->functions = $functions;
@@ -24,7 +30,7 @@ class FunctionExpression implements ExpressionInterface
      * @param Lexer $lexer
      * @return bool
      */
-    public function supports(Lexer $lexer)
+    public function supports(Lexer $lexer): bool
     {
         $nextToken = $lexer->peek($lexer->key() + 1);
         return $nextToken === '(';
@@ -38,7 +44,7 @@ class FunctionExpression implements ExpressionInterface
      */
     public function merge(Lexer $lexer, DOMNode $currentElement, array $tokens)
     {
-        return array_merge($tokens, $this->createFunctionTokens($lexer, $currentElement));
+        return \array_merge($tokens, $this->createFunctionTokens($lexer, $currentElement));
     }
 
     /**
@@ -48,6 +54,10 @@ class FunctionExpression implements ExpressionInterface
      */
     private function createFunctionTokens(Lexer $lexer, DOMNode $currentElement)
     {
+        if ($currentElement->ownerDocument instanceof DOMDocument === false) {
+            throw new \UnexpectedValueException('Expecting currentElement attached to document');
+        }
+
         $token = $lexer->current();
         $documentElement = $currentElement->ownerDocument->documentElement;
         $namespaces = FetchNamespacesFromNode::fetch($documentElement);
@@ -64,18 +74,18 @@ class FunctionExpression implements ExpressionInterface
     }
 
     /**
-     * @param $token
+     * @param string $token
      * @param array $namespaces
      * @return string
      */
-    private function convertTokenToFunctionName($token, array $namespaces)
+    private function convertTokenToFunctionName(string $token, array $namespaces): string
     {
-        $functionName = strpos($token, ':');
+        $functionName = \strpos($token, ':');
 
         if ($functionName !== false) {
-            $prefix = substr($token, 0, $functionName);
+            $prefix = \substr($token, 0, $functionName);
             if (isset($namespaces[$prefix])) {
-                $token = $namespaces[$prefix] . ':' . substr($token, $functionName + 1);
+                $token = $namespaces[$prefix] . ':' . \substr($token, $functionName + 1);
             }
         }
 

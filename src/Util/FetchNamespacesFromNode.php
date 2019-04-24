@@ -1,13 +1,12 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Util;
 
+use DOMDocument;
 use DOMNode;
 use DOMXPath;
 
-/**
- * Class FetchNamespacesFromDocument
- * @package Genkgo\Xsl\Util
- */
 final class FetchNamespacesFromNode
 {
     /**
@@ -17,6 +16,10 @@ final class FetchNamespacesFromNode
     public static function fetch(DOMNode $element)
     {
         $namespaces = [];
+
+        if ($element->ownerDocument instanceof DOMDocument === false) {
+            throw new \InvalidArgumentException('Expecting DOMNode to be attached to document');
+        }
 
         $listOfNamespaces = new DOMXPath($element->ownerDocument);
         foreach ($listOfNamespaces->query('namespace::*', $element) as $node) {

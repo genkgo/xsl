@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xsl\Node;
 
 use DOMDocument;
@@ -10,16 +12,13 @@ use Genkgo\Xsl\Xpath\FunctionBuilder;
 use Genkgo\Xsl\Xsl\ElementTransformerInterface;
 use Genkgo\Xsl\Xsl\XslTransformations;
 
-/**
- * Class ElementForEachGroup
- * @package Genkgo\Xsl\Xsl\Node
- */
 final class ElementForEachGroup implements ElementTransformerInterface
 {
     /**
      * @var Compiler
      */
     private $xpathCompiler;
+
     /**
      * @param Compiler $compiler
      */
@@ -45,7 +44,7 @@ final class ElementForEachGroup implements ElementTransformerInterface
      */
     public function transform(DOMElement $element)
     {
-        $groupId = md5(uniqid());
+        $groupId = \md5(\uniqid());
         $document = $element->ownerDocument;
         $select = $element->getAttribute('select');
 
@@ -56,13 +55,19 @@ final class ElementForEachGroup implements ElementTransformerInterface
 
         $sorts = $element->getElementsByTagNameNS(XslTransformations::URI, 'sort');
         while ($sorts->length > 0) {
-            $xslForEach->appendChild($this->convertSort($sorts->item(0), $groupId));
+            $item = $sorts->item(0);
+            if ($item instanceof DOMElement) {
+                $xslForEach->appendChild($this->convertSort($item, $groupId));
+            }
         }
 
         $xslForEach->appendChild($groupVariable);
 
         while ($element->childNodes->length > 0) {
-            $xslForEach->appendChild($element->childNodes->item(0));
+            $item = $element->childNodes->item(0);
+            if ($item !== null) {
+                $xslForEach->appendChild($item);
+            }
         }
 
         $element->parentNode->insertBefore($xslForEach, $element);
@@ -73,10 +78,10 @@ final class ElementForEachGroup implements ElementTransformerInterface
 
     /**
      * @param DOMElement $element
-     * @param $groupId
+     * @param string $groupId
      * @return DOMElement
      */
-    private function createForEachStatement(DOMElement $element, $groupId)
+    private function createForEachStatement(DOMElement $element, string $groupId): DOMElement
     {
         $select = $element->getAttribute('select');
         $groupBy = $element->getAttribute('group-by');
@@ -89,9 +94,8 @@ final class ElementForEachGroup implements ElementTransformerInterface
             ->addExpression('$iteration-' . $groupId)
             ->addExpression('.')
             ->addExpression('generate-id(.)')
-            ->addArgument(base64_encode($groupBy))
-            ->addArgument(base64_encode(json_encode($namespaces)))
-        ;
+            ->addArgument(\base64_encode($groupBy))
+            ->addArgument(\base64_encode((string)\json_encode($namespaces)));
 
         $updatedSelect = $select.'[' . $addGroupingItem->build() . ']';
 
@@ -112,11 +116,11 @@ final class ElementForEachGroup implements ElementTransformerInterface
 
     /**
      * @param DOMDocument $document
-     * @param $groupId
-     * @param $select
+     * @param string $groupId
+     * @param string $select
      * @return DOMElement
      */
-    private function createUnGroupedVariable(DOMDocument $document, $groupId, $select)
+    private function createUnGroupedVariable(DOMDocument $document, string $groupId, string $select): DOMElement
     {
         $variable = $document->createElementNS(XslTransformations::URI, 'xsl:variable');
         $variable->setAttribute('name', 'current-un-grouped-' . $groupId);
@@ -126,11 +130,10 @@ final class ElementForEachGroup implements ElementTransformerInterface
 
     /**
      * @param DOMDocument $document
-     * @param $groupId
-     * @param $select
+     * @param string $groupId
      * @return DOMElement
      */
-    private function createIterationId(DOMDocument $document, $groupId)
+    private function createIterationId(DOMDocument $document, string $groupId): DOMElement
     {
         $createIterationId = (new FunctionBuilder('php:function'))
             ->addArgument(PhpCallback::class . '::call')
@@ -145,10 +148,10 @@ final class ElementForEachGroup implements ElementTransformerInterface
 
     /**
      * @param DOMDocument $document
-     * @param $groupId
+     * @param string $groupId
      * @return DOMElement
      */
-    private function createGroupVariable(DOMDocument $document, $groupId)
+    private function createGroupVariable(DOMDocument $document, string $groupId): DOMElement
     {
         $variable = $document->createElementNS(XslTransformations::URI, 'xsl:variable');
         $variable->setAttribute('name', 'current-group-' . $groupId);
@@ -156,11 +159,16 @@ final class ElementForEachGroup implements ElementTransformerInterface
         return $variable;
     }
 
-    private function convertSort(DOMElement $sort, $groupId)
+    /**
+     * @param DOMElement $sort
+     * @param string $groupId
+     * @return DOMElement
+     */
+    private function convertSort(DOMElement $sort, string $groupId)
     {
         $sort->setAttribute(
             'select',
-            str_replace(
+            \str_replace(
                 'current-group()',
                 '$current-un-grouped-' . $groupId . '[generate-id(.) = current()//xsl:element-id]',
                 $sort->getAttribute('select')

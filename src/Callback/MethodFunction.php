@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Callback;
 
 use DOMNode;
@@ -6,21 +8,27 @@ use Genkgo\Xsl\TransformationContext;
 use Genkgo\Xsl\Util\FunctionMap;
 use Genkgo\Xsl\Xpath\Lexer;
 
-/**
- * Interface MethodFunction
- * @package Genkgo\Xsl\Callback
- */
 final class MethodFunction implements FunctionInterface, MethodCallInterface, ReplaceFunctionInterface
 {
+    /**
+     * @var string
+     */
     private $name;
+
+    /**
+     * @var MethodCallInterface
+     */
     private $caller;
 
-    public function __construct($name, MethodCallInterface $caller)
+    /**
+     * @param string $name
+     * @param MethodCallInterface $caller
+     */
+    public function __construct(string $name, MethodCallInterface $caller)
     {
         $this->name = $name;
         $this->caller = $caller;
     }
-
 
     /**
      * @param FunctionMap $functionMap
@@ -32,11 +40,11 @@ final class MethodFunction implements FunctionInterface, MethodCallInterface, Re
     }
 
     /**
-     * @param $arguments
+     * @param array $arguments
      * @param TransformationContext $context
      * @return mixed
      */
-    public function call($arguments, TransformationContext $context)
+    public function call(array $arguments, TransformationContext $context)
     {
         return $this->caller->call($arguments, $context);
     }
@@ -44,7 +52,7 @@ final class MethodFunction implements FunctionInterface, MethodCallInterface, Re
     /**
      * @param Lexer $lexer
      * @param DOMNode $currentElement
-     * @return array|\string[]
+     * @return array|string[]
      */
     public function replace(Lexer $lexer, DOMNode $currentElement)
     {

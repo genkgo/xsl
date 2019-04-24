@@ -1,4 +1,6 @@
-<?php
+<?php 
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Unit;
 
 use Genkgo\Xsl\AbstractTestCase;
@@ -20,7 +22,7 @@ class MatchingIteratorTest extends AbstractTestCase
             $index++;
         }
 
-        $this->assertEquals(2, iterator_count($iterator));
+        $this->assertEquals(2, \iterator_count($iterator));
     }
 
     public function testNoMatches()
@@ -28,7 +30,7 @@ class MatchingIteratorTest extends AbstractTestCase
         $lexer = new Lexer(['/', '/', '*']);
         $iterator = new MatchingIterator($lexer, '/a/');
 
-        $this->assertEquals(0, iterator_count($iterator));
+        $this->assertEquals(0, \iterator_count($iterator));
     }
 
     public function testEmpty()
@@ -36,7 +38,7 @@ class MatchingIteratorTest extends AbstractTestCase
         $lexer = new Lexer([]);
         $iterator = new MatchingIterator($lexer, '/a/');
 
-        $this->assertEquals(0, iterator_count($iterator));
+        $this->assertEquals(0, \iterator_count($iterator));
     }
 
     public function testOtherSeekPosition()
@@ -54,7 +56,7 @@ class MatchingIteratorTest extends AbstractTestCase
             $iterator->next();
         }
 
-        $this->assertEquals(1, iterator_count($iterator));
+        $this->assertEquals(1, \iterator_count($iterator));
     }
 
     public function testDirectionDown()
@@ -62,7 +64,7 @@ class MatchingIteratorTest extends AbstractTestCase
         $lexer = new Lexer(['/', '/', '*']);
         $iterator = new MatchingIterator($lexer, '/\//', MatchingIterator::DIRECTION_DOWN);
 
-        $this->assertEquals(1, iterator_count($iterator));
+        $this->assertEquals(1, \iterator_count($iterator));
     }
 
     public function testDirectionDownOtherSeekPosition()
@@ -71,6 +73,6 @@ class MatchingIteratorTest extends AbstractTestCase
         $lexer->seek(1);
 
         $iterator = new MatchingIterator($lexer, '/\//', MatchingIterator::DIRECTION_DOWN);
-        $this->assertEquals(2, iterator_count($iterator));
+        $this->assertEquals(2, \iterator_count($iterator));
     }
 }

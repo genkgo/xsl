@@ -1,13 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xpath\Exception;
 
 use Exception;
 
-/**
- * Class InvalidArgumentException
- * @package Genkgo\Xsl\Xpath\Exception
- */
-class InvalidArgumentException extends Exception
+final class InvalidArgumentException extends Exception
 {
     /**
      * @var string

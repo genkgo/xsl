@@ -1,4 +1,6 @@
-<?php
+<?php 
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Integration\Schema;
 
 use DOMDocument;
@@ -22,6 +24,6 @@ abstract class AbstractSchemaTest extends AbstractIntegrationTestCase
         $document = new DOMDocument();
         $document->load('Stubs/collection.xml');
 
-        return trim($processor->transformToXml($document));
+        return \trim($processor->transformToXml($document));
     }
 }

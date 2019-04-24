@@ -1,56 +1,64 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Callback;
 
 use Genkgo\Xsl\TransformationContext;
 
-/**
- * Class PhpCallback
- * @package Genkgo\Xsl\Callback
- */
-class PhpCallback
+final class PhpCallback
 {
     /**
-     * @var TransformationContext
+     * @var TransformationContext|null
      */
     private static $context;
 
     /**
      * @param TransformationContext $context
      */
-    public static function set(TransformationContext $context)
+    public static function set(TransformationContext $context): void
     {
         self::$context = $context;
     }
-
-    /**
-     *
-     */
+    
     public static function reset()
     {
         self::$context = null;
     }
 
     /**
-     * @param $functionName
-     * @param ...$arguments
+     * @param string $functionName
+     * @param mixed ...$arguments
      * @return mixed
      */
-    public static function call($functionName, ...$arguments)
+    public static function call(string $functionName, ...$arguments)
     {
-        $context = self::$context;
-        $function = $context->getFunctions()->get($functionName);
+        if (self::$context === null) {
+            throw new \RuntimeException('No context known when calling function from strylesheet');
+        }
 
-        return call_user_func([$function, 'call'], $arguments, $context);
+        $function = self::$context->getFunctions()->get($functionName);
+        $callable = [$function, 'call'];
+
+        if (\is_callable($callable)) {
+            return \call_user_func($callable, $arguments, self::$context);
+        }
+
+        throw new \RuntimeException('Calling function that is not callable');
     }
 
     /**
-     * @param $class
-     * @param $method
-     * @param ...$arguments
+     * @param string $class
+     * @param string $method
+     * @param mixed ...$arguments
      * @return mixed
      */
-    public static function callStatic($class, $method, ...$arguments)
+    public static function callStatic(string $class, string $method, ...$arguments)
     {
-        return call_user_func_array([$class, $method], $arguments);
+        $callable = [$class, $method];
+        if (\is_callable($callable)) {
+            return \call_user_func_array($callable, $arguments);
+        }
+
+        throw new \RuntimeException('Calling static method that is not callable');
     }
 }

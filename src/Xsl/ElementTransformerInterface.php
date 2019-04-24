@@ -1,11 +1,12 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Xsl;
 
 use DOMElement;
 
 /**
  * Interface ElementTransformerInterface
- * @package Genkgo\Xsl\Xsl
  */
 interface ElementTransformerInterface
 {
@@ -14,6 +15,7 @@ interface ElementTransformerInterface
      * @return bool
      */
     public function supports(DOMElement $document);
+
     /**
      * @param DOMElement $element
      */

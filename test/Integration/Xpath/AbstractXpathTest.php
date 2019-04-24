@@ -1,4 +1,6 @@
-<?php
+<?php 
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Integration\Xpath;
 
 use DOMDocument;
@@ -15,13 +17,11 @@ abstract class AbstractXpathTest extends AbstractIntegrationTestCase
         $processor = new XsltProcessor();
         $processor->importStyleSheet($styleSheet);
 
-        foreach ($parameters as $key => $value) {
-            $processor->setParameter('', $key, $value);
-        }
+        $processor->setParameter('', $parameters);
 
         $document = new DOMDocument();
         $document->load('Stubs/collection.xml');
 
-        return trim($processor->transformToXml($document));
+        return \trim((string)$processor->transformToXml($document));
     }
 }

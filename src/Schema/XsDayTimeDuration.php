@@ -1,13 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Schema;
 
 use DateInterval;
 use Genkgo\Xsl\Exception\CastException;
 
-/**
- * Class XsDayTimeDuration
- * @package Genkgo\Xsl\Schema
- */
 final class XsDayTimeDuration extends AbstractXsElement
 {
     /**
@@ -25,11 +23,11 @@ final class XsDayTimeDuration extends AbstractXsElement
      */
     public static function fromString($date)
     {
-        $value = new DateInterval($date);
-        if ($value === false) {
+        try {
+            new DateInterval($date);
+            return new self($date);
+        } catch (\Exception $e) {
             throw new CastException('Cannot create dayTimeDuration from ' . $date);
         }
-
-        return new self($date);
     }
 }

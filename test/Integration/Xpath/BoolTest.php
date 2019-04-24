@@ -1,4 +1,6 @@
-<?php
+<?php 
+declare(strict_types=1);
+
 namespace Genkgo\Xsl\Integration\Xpath;
 
 class BoolTest extends AbstractXpathTest

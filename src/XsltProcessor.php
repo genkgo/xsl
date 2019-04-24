@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Genkgo\Xsl;
 
 use DOMDocument;
@@ -9,24 +11,23 @@ use Genkgo\Xsl\Util\TransformerCollection;
 use SimpleXMLElement;
 use XSLTProcessor as PhpXsltProcessor;
 
-/**
- * Class XsltProcessor
- * @package Genkgo\Xsl
- */
 final class XsltProcessor extends PhpXsltProcessor
 {
     /**
      * @var bool
      */
     private static $booted = false;
+
     /**
-     * @var
+     * @var object
      */
     private $styleSheet;
+
     /**
      * @var Config
      */
     private $config;
+
     /**
      * @var array|null
      */
@@ -61,7 +62,7 @@ final class XsltProcessor extends PhpXsltProcessor
         $styleSheet = $this->styleSheetToDomDocument();
 
         $transpiler = $this->createTranspiler($styleSheet);
-        libxml_use_internal_errors();
+        \libxml_use_internal_errors();
         parent::importStylesheet($this->getTranspiledStyleSheet($transpiler, $styleSheet));
 
         return $transpiler->transform(function () use ($doc) {
@@ -103,11 +104,11 @@ final class XsltProcessor extends PhpXsltProcessor
     }
 
     /**
-     * @param null $restrict
+     * @param string|array|null $restrict
      */
     public function registerPHPFunctions($restrict = null)
     {
-        if (is_string($restrict)) {
+        if (\is_string($restrict)) {
             $restrict = [$restrict];
         }
 
@@ -123,19 +124,16 @@ final class XsltProcessor extends PhpXsltProcessor
     {
         $this->boot();
 
-        $streamContext = stream_context_create($this->createStreamOptions($transpiler));
-        libxml_set_streams_context($streamContext);
+        $streamContext = \stream_context_create($this->createStreamOptions($transpiler));
+        \libxml_set_streams_context($streamContext);
 
         return $this->createTranspiledDocument($styleSheet);
     }
-
-    /**
-     *
-     */
+    
     private function boot()
     {
         if (self::$booted === false) {
-            stream_wrapper_register('gxsl', Stream::class);
+            \stream_wrapper_register('gxsl', Stream::class);
             self::$booted = true;
         }
     }
@@ -182,7 +180,7 @@ final class XsltProcessor extends PhpXsltProcessor
      */
     private function getNamespaces($xpathCompiler)
     {
-        return array_merge(
+        return \array_merge(
             $this->config->getExtensions(),
             [
                 new Xsl\XslTransformations($xpathCompiler, $this->config),
@@ -202,7 +200,7 @@ final class XsltProcessor extends PhpXsltProcessor
 
         // @codeCoverageIgnoreStart
         if (PHP_OS === 'WINNT') {
-            $documentURI = str_replace('file:', '/', $documentURI);
+            $documentURI = \str_replace('file:', '/', $documentURI);
         }
         // @codeCoverageIgnoreEnd
 
@@ -217,10 +215,19 @@ final class XsltProcessor extends PhpXsltProcessor
     private function styleSheetToDomDocument()
     {
         if ($this->styleSheet instanceof SimpleXMLElement) {
-            return dom_import_simplexml($this->styleSheet)->ownerDocument;
+            $document = \dom_import_simplexml($this->styleSheet);
+            if ($document === false) {
+                throw new \UnexpectedValueException('Cannot transform SimpleXMLElement to DOMDocument');
+            }
+
+            return $document->ownerDocument;
         }
 
-        return $this->styleSheet;
+        if ($this->styleSheet instanceof DOMDocument) {
+            return $this->styleSheet;
+        }
+
+        throw new \UnexpectedValueException('Unknown stylesheet type');
     }
 
     /**
