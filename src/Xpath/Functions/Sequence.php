@@ -47,7 +47,11 @@ final class Sequence
      */
     public static function subsequence(array $elements, $position, $length = null): XsSequence
     {
-        return XsSequence::fromArray(\array_slice($elements, (int)$position - 1, $length));
+        if ($length === null) {
+            $length = \count($elements);
+        }
+
+        return XsSequence::fromArray(\array_slice($elements, (int)$position - 1, (int)$length));
     }
 
     /**

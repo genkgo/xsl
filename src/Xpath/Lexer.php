@@ -96,7 +96,7 @@ final class Lexer implements Iterator, SeekableIterator, Countable
      */
     public function insert(array $tokens, $position)
     {
-        \array_splice($this->tokens, $position, 0, $tokens);
+        \array_splice($this->tokens, (int)$position, 0, $tokens);
     }
 
     /**
