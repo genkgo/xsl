@@ -5,14 +5,15 @@ namespace Genkgo\Xsl\Unit;
 
 use DOMDocument;
 use Genkgo\Xsl\AbstractTestCase;
-use Genkgo\Xsl\Config;
+use Genkgo\Xsl\Cache\NullCache;
+use Genkgo\Xsl\ProcessorFactory;
 use Genkgo\Xsl\XsltProcessor;
 
 class XsltProcessorTest extends AbstractTestCase
 {
     public function testConstruct()
     {
-        $decorator = new XsltProcessor();
+        $decorator = new XsltProcessor(new NullCache());
 
         $this->assertTrue($decorator instanceof \XSLTProcessor);
     }
@@ -25,7 +26,7 @@ class XsltProcessorTest extends AbstractTestCase
         $xmlDoc = new DOMDocument();
         $xmlDoc->load('Stubs/collection.xml');
 
-        $decorator = new XsltProcessor(new Config());
+        $decorator = new XsltProcessor(new NullCache());
         $decorator->importStyleSheet($xslDoc);
 
         $this->assertGreaterThan(1, \strlen($decorator->transformToXML($xmlDoc)));
@@ -39,7 +40,7 @@ class XsltProcessorTest extends AbstractTestCase
         $xmlDoc = new DOMDocument();
         $xmlDoc->load('Stubs/collection.xml');
 
-        $decorator = new XsltProcessor(new Config());
+        $decorator = new XsltProcessor(new NullCache());
         $decorator->importStyleSheet($xslDoc);
 
         $this->assertGreaterThan(1, \strlen($decorator->transformToXML($xmlDoc)));
@@ -53,7 +54,7 @@ class XsltProcessorTest extends AbstractTestCase
         $xmlDoc = new DOMDocument();
         $xmlDoc->load('Stubs/collection.xml');
 
-        $decorator = new XsltProcessor(new Config());
+        $decorator = new XsltProcessor(new NullCache());
         $decorator->importStyleSheet($xslDoc);
 
         $this->assertGreaterThan(1, \strlen($decorator->transformToXML($xmlDoc)));
@@ -67,7 +68,7 @@ class XsltProcessorTest extends AbstractTestCase
         $xmlDoc = new DOMDocument();
         $xmlDoc->load('Stubs/collection.xml');
 
-        $decorator = new XsltProcessor(new Config());
+        $decorator = new XsltProcessor(new NullCache());
         $decorator->importStyleSheet($xslDoc);
 
         $this->assertGreaterThan(1, \strlen($decorator->transformToXML($xmlDoc)));

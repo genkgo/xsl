@@ -5,9 +5,9 @@ namespace Genkgo\Xsl;
 
 use DOMDocument;
 use Genkgo\Xsl\Callback\PhpCallback;
-use Genkgo\Xsl\Exception\CacheDisabledException;
 use Genkgo\Xsl\Util\FunctionMap;
 use Genkgo\Xsl\Util\TransformerCollection;
+use Psr\SimpleCache\CacheInterface;
 use SimpleXMLElement;
 use XSLTProcessor as PhpXsltProcessor;
 
@@ -24,25 +24,28 @@ final class XsltProcessor extends PhpXsltProcessor
     private $styleSheet;
 
     /**
-     * @var Config
-     */
-    private $config;
-
-    /**
      * @var array|null
      */
     private $phpFunctions = [];
 
     /**
-     * @param Config $config
+     * @var CacheInterface
      */
-    public function __construct(Config $config = null)
-    {
-        if ($config === null) {
-            $config = Config::fromDefault();
-        }
+    private $cache;
 
-        $this->config = $config;
+    /**
+     * @var array|XmlNamespaceInterface[]
+     */
+    private $extensions;
+
+    /**
+     * @param CacheInterface $cache
+     * @param array|XmlNamespaceInterface[] $extensions
+     */
+    public function __construct(CacheInterface $cache, array $extensions = [])
+    {
+        $this->cache = $cache;
+        $this->extensions = $extensions;
     }
 
     /**
@@ -166,12 +169,7 @@ final class XsltProcessor extends PhpXsltProcessor
             $namespace->register($transformers, $functions);
         }
 
-        try {
-            return new Transpiler($context, $this->config->getCacheAdapter(), $this->config->isEntitiesDisabled());
-        } catch (CacheDisabledException $e) {
-        }
-
-        return new Transpiler($context, null, $this->config->isEntitiesDisabled());
+        return new Transpiler($context, $this->cache);
     }
 
     /**
@@ -181,9 +179,9 @@ final class XsltProcessor extends PhpXsltProcessor
     private function getNamespaces($xpathCompiler)
     {
         return \array_merge(
-            $this->config->getExtensions(),
+            $this->extensions,
             [
-                new Xsl\XslTransformations($xpathCompiler, $this->config),
+                new Xsl\XslTransformations($xpathCompiler),
                 new Xpath\XmlPath(),
                 new Schema\XmlSchema()
             ]
