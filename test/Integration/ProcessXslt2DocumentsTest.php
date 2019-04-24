@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Genkgo\Xsl\Integration;
 
 use DOMDocument;
+use Genkgo\Xsl\Cache\NullCache;
 use Genkgo\Xsl\XsltProcessor;
 
 final class ProcessXslt2DocumentsTest extends AbstractIntegrationTestCase
@@ -16,7 +17,7 @@ final class ProcessXslt2DocumentsTest extends AbstractIntegrationTestCase
         $xmlDoc = new DOMDocument();
         $xmlDoc->load('Stubs/combine-multiple-functions.xml');
 
-        $processor = new XsltProcessor();
+        $processor = new XsltProcessor(new NullCache());
         $processor->importStylesheet($xslDoc);
         $processorResult = $processor->transformToXML($xmlDoc);
 
@@ -31,7 +32,7 @@ final class ProcessXslt2DocumentsTest extends AbstractIntegrationTestCase
         $xmlDoc = new DOMDocument();
         $xmlDoc->load('Stubs/combine-multiple-functions.xml');
 
-        $transpiler = new XsltProcessor();
+        $transpiler = new XsltProcessor(new NullCache());
         $transpiler->importStylesheet($xslDoc);
         $transpilerResult = $transpiler->transformToXML($xmlDoc);
 
@@ -54,7 +55,7 @@ final class ProcessXslt2DocumentsTest extends AbstractIntegrationTestCase
         $xmlDoc = new DOMDocument();
         $xmlDoc->load('Stubs/combine-multiple-functions.xml');
 
-        $transpiler = new XsltProcessor();
+        $transpiler = new XsltProcessor(new NullCache());
         $transpiler->importStylesheet($xslDoc);
         $transpilerResult = $transpiler->transformToXML($xmlDoc);
 
@@ -77,7 +78,7 @@ final class ProcessXslt2DocumentsTest extends AbstractIntegrationTestCase
         $xmlDoc = new DOMDocument();
         $xmlDoc->load('Stubs/combine-multiple-functions.xml');
 
-        $transpiler = new XsltProcessor();
+        $transpiler = new XsltProcessor(new NullCache());
         $transpiler->importStylesheet($xslDoc);
         $transpilerResult = $transpiler->transformToXML($xmlDoc);
 

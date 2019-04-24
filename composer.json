@@ -5,15 +5,15 @@
         "php" : ">=7.2",
         "ext-json" : "*",
         "ext-xsl" : "*",
-        "ext-dom" : "*"
+        "ext-dom" : "*",
+        "psr/simple-cache": "^1.0"
     },
     "require-dev" : {
         "ext-intl" : "*",
         "phpunit/phpunit": "^7.0",
         "phpstan/phpstan": "^0.11.5",
         "phpstan/phpstan-phpunit": "^0.11",
-        "friendsofphp/php-cs-fixer": "^2.9",
-        "genkgo/cache" : "~0.2.0"
+        "friendsofphp/php-cs-fixer": "^2.9"
     },
     "suggest": {
         "genkgo/cache": "Cache transpiled templates"

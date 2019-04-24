@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Genkgo\Xsl\Integration\Xpath;
 
 use DOMDocument;
+use Genkgo\Xsl\Cache\NullCache;
 use Genkgo\Xsl\Integration\AbstractIntegrationTestCase;
 use Genkgo\Xsl\XsltProcessor;
 
@@ -14,7 +15,7 @@ abstract class AbstractXpathTest extends AbstractIntegrationTestCase
         $styleSheet = new DOMDocument();
         $styleSheet->load($path);
 
-        $processor = new XsltProcessor();
+        $processor = new XsltProcessor(new NullCache());
         $processor->importStyleSheet($styleSheet);
 
         $processor->setParameter('', $parameters);

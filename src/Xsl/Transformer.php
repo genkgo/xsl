@@ -8,7 +8,6 @@ use DOMDocument;
 use DOMElement;
 use DOMNodeList;
 use DOMXPath;
-use Genkgo\Xsl\Config;
 use Genkgo\Xsl\Schema\XmlSchema;
 use Genkgo\Xsl\TransformerInterface;
 use Genkgo\Xsl\Util\FetchNamespacesFromNode;
@@ -37,19 +36,10 @@ final class Transformer implements TransformerInterface
     private $attributeTransformers = [];
 
     /**
-     * @var Config
-     */
-    private $config;
-
-    /**
-     * Transformer constructor.
      * @param Compiler $xpathCompiler
-     * @param Config $config
      */
-    public function __construct(Compiler $xpathCompiler, Config $config)
+    public function __construct(Compiler $xpathCompiler)
     {
-        $this->config = $config;
-
         $this->elementTransformers = [
             new ElementForEachGroup($xpathCompiler),
             new AttributeExpandText($xpathCompiler),
@@ -87,7 +77,7 @@ final class Transformer implements TransformerInterface
 
         $excludePrefixes = \array_merge($documentPrefixes, self::DEFAULT_EXCLUDE_PREFIXES);
 
-        if (\in_array('#all', $excludePrefixes) === true || $this->config->shouldExcludeResultPrefixes()) {
+        if (\in_array('#all', $excludePrefixes) === true) {
             $excludePrefixes = \array_merge($excludePrefixes, \array_keys($namespaces));
             $excludePrefixes = \array_filter(
                 $excludePrefixes,
