@@ -31,7 +31,7 @@ final class SequenceConstructor implements FunctionInterface
         $resultTokens[] = '\'';
         $resultTokens[] = ',';
         $resultTokens[] = '\'';
-        $resultTokens[] = 'call';
+        $resultTokens[] = 'newSequence';
         $resultTokens[] = '\'';
 
         if ($lexer->peek($lexer->key() + 1) !== ')') {
@@ -47,6 +47,16 @@ final class SequenceConstructor implements FunctionInterface
      * @return mixed
      */
     public function call(Arguments $arguments, TransformationContext $context)
+    {
+        throw new \BadMethodCallException();
+    }
+
+    /**
+     * @param Arguments $arguments
+     * @param TransformationContext $context
+     * @return mixed
+     */
+    public static function newSequence(Arguments $arguments, TransformationContext $context)
     {
         return XsSequence::fromArray($arguments->unpack());
     }

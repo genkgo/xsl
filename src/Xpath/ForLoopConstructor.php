@@ -31,7 +31,7 @@ final class ForLoopConstructor implements FunctionInterface
         $prepend[] = '\'';
         $prepend[] = ',';
         $prepend[] = '\'';
-        $prepend[] = 'call';
+        $prepend[] = 'newRange';
         $prepend[] = '\'';
         $prepend[] = ',';
 
@@ -81,6 +81,16 @@ final class ForLoopConstructor implements FunctionInterface
      * @return mixed
      */
     public function call(Arguments $arguments, TransformationContext $context)
+    {
+        throw new \BadMethodCallException();
+    }
+
+    /**
+     * @param Arguments $arguments
+     * @param TransformationContext $context
+     * @return mixed
+     */
+    public static function newRange(Arguments $arguments, TransformationContext $context)
     {
         $first = $arguments->castAsScalar(0);
         $last = $arguments->castAsScalar(1);
