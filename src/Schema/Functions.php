@@ -52,7 +52,6 @@ final class Functions
      * @param Arguments $arguments
      * @return XsInteger|XsSequence
      * @throws CastException
-     * @throws Exception\UnknownSequenceItemException
      */
     public static function integer(Arguments $arguments)
     {

@@ -5,14 +5,12 @@ namespace Genkgo\Xsl\Schema;
 
 use DOMAttr;
 use DOMElement;
-use Genkgo\Xsl\Schema\Exception\UnknownSequenceItemException;
 
 final class XsSequence extends AbstractXsElement
 {
     /**
      * @param array $list
      * @return XsSequence
-     * @throws UnknownSequenceItemException
      */
     public static function fromArray(array $list)
     {
@@ -35,7 +33,7 @@ final class XsSequence extends AbstractXsElement
                 $sequence->documentElement->appendChild($child);
             } else {
                 // @codeCoverageIgnoreStart
-                throw new UnknownSequenceItemException();
+                throw new \InvalidArgumentException('Cannot construct sequence from array');
                 // @codeCoverageIgnoreEnd
             }
         }
