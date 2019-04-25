@@ -4,6 +4,7 @@
     "require" : {
         "php" : ">=7.2",
         "ext-json" : "*",
+        "ext-libxml" : "*",
         "ext-xsl" : "*",
         "ext-dom" : "*",
         "ext-intl" : "*",
