@@ -8,7 +8,7 @@ final class XsInteger extends AbstractXsElement
     /**
      * @return string
      */
-    protected function getElementName()
+    protected function getElementName(): string
     {
         return 'integer';
     }

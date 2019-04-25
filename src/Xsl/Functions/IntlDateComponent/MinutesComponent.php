@@ -14,7 +14,7 @@ final class MinutesComponent implements ComponentInterface
      * @param DateTimeInterface $date
      * @return string
      */
-    public function format(PictureString $pictureString, DateTimeInterface $date)
+    public function format(PictureString $pictureString, DateTimeInterface $date): string
     {
         return 'mm';
     }
@@ -22,7 +22,7 @@ final class MinutesComponent implements ComponentInterface
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return 'm';
     }

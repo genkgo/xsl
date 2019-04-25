@@ -5,6 +5,6 @@ namespace Genkgo\Xsl\Exception;
 
 use Exception;
 
-class CastException extends Exception
+final class CastException extends Exception
 {
 }

@@ -63,7 +63,7 @@ final class Transformer implements TransformerInterface
     /**
      * @param DOMDocument $document
      */
-    public function transform(DOMDocument $document)
+    public function transform(DOMDocument $document): void
     {
         $root = $document->documentElement;
 

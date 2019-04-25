@@ -11,7 +11,7 @@ final class XsDayTimeDuration extends AbstractXsElement
     /**
      * @return string
      */
-    protected function getElementName()
+    protected function getElementName(): string
     {
         return 'dayTimeDuration';
     }

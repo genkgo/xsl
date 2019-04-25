@@ -28,7 +28,7 @@ final class AttributeExpandText implements ElementTransformerInterface
      * @param DOMElement $element
      * @return bool
      */
-    public function supports(DOMElement $element)
+    public function supports(DOMElement $element): bool
     {
         if ($element->ownerDocument->documentElement->getAttribute('version') !== '3.0') {
             return false;
@@ -48,7 +48,7 @@ final class AttributeExpandText implements ElementTransformerInterface
     /**
      * @param DOMElement $element
      */
-    public function transform(DOMElement $element)
+    public function transform(DOMElement $element): void
     {
         $valueTemplate = new TextValueTemplate($this->xpathCompiler);
 

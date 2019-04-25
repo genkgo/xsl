@@ -31,7 +31,7 @@ final class ElementForEachGroup implements ElementTransformerInterface
      * @param DOMElement $element
      * @return bool
      */
-    public function supports(DOMElement $element)
+    public function supports(DOMElement $element): bool
     {
         return (
             $element->ownerDocument->documentElement->getAttribute('version') !== '1.0' &&
@@ -42,7 +42,7 @@ final class ElementForEachGroup implements ElementTransformerInterface
     /**
      * @param DOMElement $element
      */
-    public function transform(DOMElement $element)
+    public function transform(DOMElement $element): void
     {
         $groupId = \md5(\uniqid());
         $document = $element->ownerDocument;

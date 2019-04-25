@@ -27,7 +27,7 @@ final class AttributeValueTemplates implements AttributeTransformerInterface
      * @param DOMAttr $attribute
      * @return bool
      */
-    public function supports(DOMAttr $attribute)
+    public function supports(DOMAttr $attribute): bool
     {
         return true;
     }
@@ -36,7 +36,7 @@ final class AttributeValueTemplates implements AttributeTransformerInterface
      * @param DOMAttr $attribute
      * @credits https://github.com/Saxonica/Saxon-CE/ https://github.com/Saxonica/Saxon-CE/blob/master/notices/MOZILLA.txt
      */
-    public function transform(DOMAttr $attribute)
+    public function transform(DOMAttr $attribute): void
     {
         (new AttributeValueTemplate($this->xpathCompiler))->expand($attribute);
     }

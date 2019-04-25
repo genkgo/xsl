@@ -11,11 +11,11 @@ interface AttributeTransformerInterface
      * @param DOMAttr $attribute
      * @return bool
      */
-    public function supports(DOMAttr $attribute);
+    public function supports(DOMAttr $attribute): bool;
 
     /**
      * @param DOMAttr $attribute
      * @return void
      */
-    public function transform(DOMAttr $attribute);
+    public function transform(DOMAttr $attribute): void;
 }

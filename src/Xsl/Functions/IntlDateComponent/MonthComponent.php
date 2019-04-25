@@ -14,7 +14,7 @@ final class MonthComponent implements ComponentInterface
      * @param DateTimeInterface $date
      * @return string
      */
-    public function format(PictureString $pictureString, DateTimeInterface $date)
+    public function format(PictureString $pictureString, DateTimeInterface $date): string
     {
         $presentation = $pictureString->getPresentationModifier();
         $maxWidth = $pictureString->getMaxWidth();
@@ -37,7 +37,7 @@ final class MonthComponent implements ComponentInterface
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return 'M';
     }

@@ -18,7 +18,7 @@ final class XsTime extends AbstractXsElement
     /**
      * @return string
      */
-    protected function getElementName()
+    protected function getElementName(): string
     {
         return 'time';
     }

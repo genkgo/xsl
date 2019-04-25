@@ -46,7 +46,7 @@ final class XsSequence extends AbstractXsElement
     /**
      * @return string
      */
-    protected function getElementName()
+    protected function getElementName(): string
     {
         return 'sequence';
     }

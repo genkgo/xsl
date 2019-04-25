@@ -5,9 +5,6 @@ namespace Genkgo\Xsl\Xsl\Functions\Formatter;
 
 use DateTimeInterface;
 
-/**
- * Interface ComponentInterface
- */
 interface ComponentInterface
 {
     /**
@@ -15,10 +12,10 @@ interface ComponentInterface
      * @param DateTimeInterface $date
      * @return string
      */
-    public function format(PictureString $pictureString, DateTimeInterface $date);
+    public function format(PictureString $pictureString, DateTimeInterface $date): string;
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function __toString();
+    public function __toString(): string;
 }

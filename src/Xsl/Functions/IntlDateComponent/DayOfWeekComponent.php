@@ -14,7 +14,7 @@ final class DayOfWeekComponent implements ComponentInterface
      * @param DateTimeInterface $date
      * @return string
      */
-    public function format(PictureString $pictureString, DateTimeInterface $date)
+    public function format(PictureString $pictureString, DateTimeInterface $date): string
     {
         $presentation = $pictureString->getPresentationModifier();
         if ($presentation === 'Nn' || $presentation === 'N' || $presentation === 'n') {
@@ -32,7 +32,7 @@ final class DayOfWeekComponent implements ComponentInterface
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return 'F';
     }
