@@ -34,22 +34,4 @@ abstract class AbstractXsElement extends DOMDocument
      * @return string
      */
     abstract protected function getElementName();
-
-    /**
-     * @param mixed $elements
-     * @return mixed
-     * @throws CastException
-     */
-    public static function castToNodeValue($elements)
-    {
-        if (\is_scalar($elements)) {
-            return $elements;
-        }
-
-        if (\is_array($elements) && \count($elements) === 1) {
-            return $elements[0]->nodeValue;
-        }
-
-        throw new CastException('Cannot convert list of elements to string');
-    }
 }

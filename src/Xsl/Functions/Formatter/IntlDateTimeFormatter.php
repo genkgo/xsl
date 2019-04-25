@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Genkgo\Xsl\Xsl\Functions\Formatter;
 
 use DateTimeInterface;
-use Genkgo\Xsl\Xpath\Exception\InvalidArgumentException;
 use Genkgo\Xsl\Xsl\Functions\IntlDateComponent\AmPmMarkerComponent;
 use Genkgo\Xsl\Xsl\Functions\IntlDateComponent\DayInMonthComponent;
 use Genkgo\Xsl\Xsl\Functions\IntlDateComponent\DayInYearComponent;
@@ -129,7 +128,6 @@ final class IntlDateTimeFormatter implements FormatterInterface
      * @param string $locale
      * @param string $calendar
      * @return string
-     * @throws InvalidArgumentException
      * @credits https://github.com/Saxonica/Saxon-CE/ https://github.com/Saxonica/Saxon-CE/blob/master/notices/MOZILLA.txt
      */
     private function format(DateTimeInterface $date, array $components, string $picture, string $locale, string $calendar = ''): string

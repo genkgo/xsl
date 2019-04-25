@@ -6,9 +6,8 @@ namespace Genkgo\Xsl\Integration\Xsl;
 use Genkgo\Xsl\Schema\XsDate;
 use Genkgo\Xsl\Schema\XsDateTime;
 use Genkgo\Xsl\Schema\XsTime;
-use Genkgo\Xsl\Xpath\Exception\InvalidArgumentException;
 
-class FormattingTest extends AbstractXslTest
+final class FormattingTest extends AbstractXslTest
 {
     public function testDateTime()
     {

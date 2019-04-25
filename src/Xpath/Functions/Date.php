@@ -10,7 +10,6 @@ use Genkgo\Xsl\Schema\XsDate;
 use Genkgo\Xsl\Schema\XsDateTime;
 use Genkgo\Xsl\Schema\XsInteger;
 use Genkgo\Xsl\Schema\XsTime;
-use Genkgo\Xsl\Util\Assert;
 
 final class Date
 {

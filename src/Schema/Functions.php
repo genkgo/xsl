@@ -49,7 +49,10 @@ final class Functions
     }
 
     /**
+     * @param Arguments $arguments
      * @return XsInteger|XsSequence
+     * @throws CastException
+     * @throws Exception\UnknownSequenceItemException
      */
     public static function integer(Arguments $arguments)
     {
@@ -63,7 +66,7 @@ final class Functions
             return XsSequence::fromArray([]);
         }
 
-        $value = XsInteger::castToNodeValue($value);
+        $value = $arguments->castAsScalar(0);
 
         if ($value === '') {
             return new XsInteger(0);
