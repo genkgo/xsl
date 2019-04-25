@@ -5,8 +5,8 @@ namespace Genkgo\Xsl;
 
 use Closure;
 use DOMDocument;
-use Genkgo\Cache\CallbackCacheInterface;
 use Genkgo\Xsl\Callback\PhpCallback;
+use Psr\SimpleCache\CacheInterface;
 
 final class Transpiler
 {
@@ -16,28 +16,20 @@ final class Transpiler
     private $context;
 
     /**
-     * @var CallbackCacheInterface|null
+     * @var CacheInterface
      */
-    private $cacheAdapter;
-
-    /**
-     * @var bool
-     */
-    private $disableEntities;
+    private $cache;
 
     /**
      * @param TransformationContext $context
-     * @param CallbackCacheInterface $cacheAdapter
-     * @param bool $disableEntities
+     * @param CacheInterface $cache
      */
     public function __construct(
         TransformationContext $context,
-        CallbackCacheInterface $cacheAdapter = null,
-        bool $disableEntities = true
+        CacheInterface $cache
     ) {
         $this->context = $context;
-        $this->cacheAdapter = $cacheAdapter;
-        $this->disableEntities = $disableEntities;
+        $this->cache = $cache;
     }
 
     /**
@@ -47,27 +39,30 @@ final class Transpiler
     {
         $document = $this->context->getDocument();
 
-        $callback = function () use ($document) {
-            if ($this->disableEntities && $document->doctype instanceof \DOMDocumentType && $document->doctype->entities->length > 0) {
-                throw new \DOMException('Invalid document, contains entities');
-            }
-
-            $this->transpile($document);
-            return $document->saveXML();
-        };
-
         $documentURI = $document->documentURI;
+
         // @codeCoverageIgnoreStart
         if (PHP_OS === 'WINNT') {
             $documentURI = \ltrim(\str_replace('file:', '', $documentURI), '/');
         }
         // @codeCoverageIgnoreEnd
 
-        if ($this->cacheAdapter !== null && \is_file($documentURI)) {
-            return $this->cacheAdapter->get($documentURI, $callback);
+        if ($documentURI && !\is_file($documentURI)) {
+            return $document->saveXML();
         }
 
-        return $callback();
+        $result = $this->cache->get($documentURI, '');
+        if ($result === '') {
+            if ($document->doctype instanceof \DOMDocumentType && $document->doctype->entities->length > 0) {
+                throw new \DOMException('Invalid document, contains entities');
+            }
+
+            $this->transpile($document);
+            $result = $document->saveXML();
+        }
+
+        $this->cache->set($documentURI, $result);
+        return $result;
     }
 
     /**
@@ -98,25 +93,23 @@ final class Transpiler
      */
     public function transpileFile(string $path): string
     {
-        $callback = function () use ($path) {
+        $result = $this->cache->get($path, '');
+        if ($result === '') {
             $document = new DOMDocument();
             $document->substituteEntities = false;
             $document->resolveExternals = false;
             $document->load($path);
 
-            if ($this->disableEntities && $document->doctype instanceof \DOMDocumentType && $document->doctype->entities->length > 0) {
+            if ($document->doctype instanceof \DOMDocumentType && $document->doctype->entities->length > 0) {
                 throw new \DOMException('Invalid document, contains entities');
             }
 
             $this->transpile($document);
-            return $document->saveXML();
-        };
-
-        if ($this->cacheAdapter !== null) {
-            return $this->cacheAdapter->get($path, $callback);
+            $result = $document->saveXML();
         }
 
-        return $callback();
+        $this->cache->set($path, $result);
+        return $result;
     }
 
     /**

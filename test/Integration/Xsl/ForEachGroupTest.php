@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Genkgo\Xsl\Integration\Xsl;
 
 use DOMDocument;
+use Genkgo\Xsl\Cache\NullCache;
 use Genkgo\Xsl\Integration\AbstractIntegrationTestCase;
 use Genkgo\Xsl\XsltProcessor;
 
@@ -14,7 +15,7 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-element.xsl');
 
-        $processor = new XsltProcessor();
+        $processor = new XsltProcessor(new NullCache());
         $processor->importStyleSheet($styleSheet);
 
         $data = new DOMDocument();
@@ -28,7 +29,7 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-attribute.xsl');
 
-        $processor = new XsltProcessor();
+        $processor = new XsltProcessor(new NullCache());
         $processor->importStyleSheet($styleSheet);
 
         $data = new DOMDocument();
@@ -42,7 +43,7 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-function.xsl');
 
-        $processor = new XsltProcessor();
+        $processor = new XsltProcessor(new NullCache());
         $processor->importStyleSheet($styleSheet);
 
         $data = new DOMDocument();
@@ -56,7 +57,7 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/ForEachGroup/group-empty.xsl');
 
-        $processor = new XsltProcessor();
+        $processor = new XsltProcessor(new NullCache());
         $processor->importStyleSheet($styleSheet);
 
         $data = new DOMDocument();
@@ -70,7 +71,7 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-current-grouping-key.xsl');
 
-        $processor = new XsltProcessor();
+        $processor = new XsltProcessor(new NullCache());
         $processor->importStyleSheet($styleSheet);
 
         $data = new DOMDocument();
@@ -84,7 +85,7 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-current-grouping-key-sort.xsl');
 
-        $processor = new XsltProcessor();
+        $processor = new XsltProcessor(new NullCache());
         $processor->importStyleSheet($styleSheet);
 
         $data = new DOMDocument();
@@ -98,7 +99,7 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-current-group.xsl');
 
-        $processor = new XsltProcessor();
+        $processor = new XsltProcessor(new NullCache());
         $processor->importStyleSheet($styleSheet);
 
         $data = new DOMDocument();
@@ -112,7 +113,7 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/ForEachGroup/current-group-without-for-each-group.xsl');
 
-        $processor = new XsltProcessor();
+        $processor = new XsltProcessor(new NullCache());
         $processor->importStyleSheet($styleSheet);
 
         $data = new DOMDocument();
@@ -126,7 +127,7 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-aggregating.xsl');
 
-        $processor = new XsltProcessor();
+        $processor = new XsltProcessor(new NullCache());
         $processor->importStyleSheet($styleSheet);
 
         $data = new DOMDocument();
@@ -140,7 +141,7 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-ancestor.xsl');
 
-        $processor = new XsltProcessor();
+        $processor = new XsltProcessor(new NullCache());
         $processor->importStyleSheet($styleSheet);
 
         $data = new DOMDocument();
@@ -154,7 +155,7 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-test.xsl');
 
-        $processor = new XsltProcessor();
+        $processor = new XsltProcessor(new NullCache());
         $processor->importStyleSheet($styleSheet);
 
         $data = new DOMDocument();
@@ -168,7 +169,7 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-position.xsl');
 
-        $processor = new XsltProcessor();
+        $processor = new XsltProcessor(new NullCache());
         $processor->importStyleSheet($styleSheet);
 
         $data = new DOMDocument();
@@ -182,7 +183,7 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-namespace-functions.xsl');
 
-        $processor = new XsltProcessor();
+        $processor = new XsltProcessor(new NullCache());
         $processor->importStyleSheet($styleSheet);
 
         $data = new DOMDocument();
@@ -196,7 +197,7 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-avt.xsl');
 
-        $processor = new XsltProcessor();
+        $processor = new XsltProcessor(new NullCache());
         $processor->importStyleSheet($styleSheet);
 
         $data = new DOMDocument();
@@ -210,7 +211,7 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/ForEachGroup/group-multiple.xsl');
 
-        $processor = new XsltProcessor();
+        $processor = new XsltProcessor(new NullCache());
         $processor->importStyleSheet($styleSheet);
 
         $data = new DOMDocument();

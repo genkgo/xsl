@@ -4,7 +4,8 @@ declare(strict_types=1);
 namespace Genkgo\Xsl\Integration;
 
 use DOMDocument;
-use Genkgo\Xsl\Config;
+use Genkgo\Xsl\Cache\NullCache;
+use Genkgo\Xsl\ProcessorFactory;
 use Genkgo\Xsl\Stubs\Extension\MyExtension;
 use Genkgo\Xsl\XsltProcessor;
 
@@ -14,8 +15,7 @@ final class ExtensionTest extends AbstractIntegrationTestCase
     {
         $extension = new MyExtension();
 
-        $config = new Config();
-        $config->setExtensions([$extension]);
+        $factory = new ProcessorFactory(new NullCache(), [$extension]);
 
         $xslDoc = new DOMDocument();
         $xslDoc->load('Stubs/my-extension.xsl');
@@ -23,7 +23,7 @@ final class ExtensionTest extends AbstractIntegrationTestCase
         $xmlDoc = new DOMDocument();
         $xmlDoc->load('Stubs/collection.xml');
 
-        $processor = new XsltProcessor($config);
+        $processor = $factory->newProcessor();
         $processor->importStylesheet($xslDoc);
         $processorResult = $processor->transformToXML($xmlDoc);
 
@@ -34,8 +34,7 @@ final class ExtensionTest extends AbstractIntegrationTestCase
     {
         $extension = new MyExtension();
 
-        $config = new Config();
-        $config->setExtensions([$extension]);
+        $factory = new ProcessorFactory(new NullCache(), [$extension]);
 
         $xslDoc = new DOMDocument();
         $xslDoc->load('Stubs/my-extension.xsl');
@@ -44,7 +43,7 @@ final class ExtensionTest extends AbstractIntegrationTestCase
         $xmlDoc = new DOMDocument();
         $xmlDoc->load('Stubs/collection.xml');
 
-        $processor = new XsltProcessor($config);
+        $processor = $factory->newProcessor();
         $processor->importStylesheet($xslDoc);
         $processorResult = $processor->transformToXML($xmlDoc);
 
@@ -54,9 +53,7 @@ final class ExtensionTest extends AbstractIntegrationTestCase
     public function testClosure()
     {
         $extension = new MyExtension();
-
-        $config = new Config();
-        $config->addExtension($extension);
+        $factory = new ProcessorFactory(new NullCache(), [$extension]);
 
         $xslDoc = new DOMDocument();
         $xslDoc->load('Stubs/closure.xsl');
@@ -65,7 +62,7 @@ final class ExtensionTest extends AbstractIntegrationTestCase
         $xmlDoc = new DOMDocument();
         $xmlDoc->load('Stubs/collection.xml');
 
-        $processor = new XsltProcessor($config);
+        $processor = $factory->newProcessor();
         $processor->importStylesheet($xslDoc);
         $processorResult = $processor->transformToXML($xmlDoc);
 
@@ -75,9 +72,7 @@ final class ExtensionTest extends AbstractIntegrationTestCase
     public function testMethod()
     {
         $extension = new MyExtension();
-
-        $config = new Config();
-        $config->addExtension($extension);
+        $factory = new ProcessorFactory(new NullCache(), [$extension]);
 
         $xslDoc = new DOMDocument();
         $xslDoc->load('Stubs/method.xsl');
@@ -86,7 +81,7 @@ final class ExtensionTest extends AbstractIntegrationTestCase
         $xmlDoc = new DOMDocument();
         $xmlDoc->load('Stubs/collection.xml');
 
-        $processor = new XsltProcessor($config);
+        $processor = $factory->newProcessor();
         $processor->importStylesheet($xslDoc);
         $processorResult = $processor->transformToXML($xmlDoc);
 

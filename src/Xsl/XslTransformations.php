@@ -5,7 +5,6 @@ namespace Genkgo\Xsl\Xsl;
 
 use Genkgo\Xsl\Callback\ObjectFunction;
 use Genkgo\Xsl\Callback\StaticFunction;
-use Genkgo\Xsl\Config;
 use Genkgo\Xsl\Util\FunctionMap;
 use Genkgo\Xsl\Util\TransformerCollection;
 use Genkgo\Xsl\XmlNamespaceInterface;
@@ -16,7 +15,6 @@ use Genkgo\Xsl\Xsl\Functions\DateFormatting;
 use Genkgo\Xsl\Xsl\Functions\GroupBy;
 use Genkgo\Xsl\Xsl\Functions\GroupIterate;
 use Genkgo\Xsl\Xsl\Functions\GroupIterationId;
-use Genkgo\Xsl\Xsl\Node\IncludeWindowsTransformer;
 
 final class XslTransformations implements XmlNamespaceInterface
 {
@@ -28,18 +26,11 @@ final class XslTransformations implements XmlNamespaceInterface
     private $xpathCompiler;
 
     /**
-     * @var Config
-     */
-    private $config;
-
-    /**
-     * XslTransformations constructor.
      * @param Compiler $xpathCompiler
      */
-    public function __construct(Compiler $xpathCompiler, Config $config)
+    public function __construct(Compiler $xpathCompiler)
     {
         $this->xpathCompiler = $xpathCompiler;
-        $this->config = $config;
     }
 
     /**
@@ -52,7 +43,7 @@ final class XslTransformations implements XmlNamespaceInterface
         $this->registerGroupFunctions($functions);
         $this->registerFormatDateFunctions($functions);
 
-        $transformers->attach(new Transformer($this->xpathCompiler, $this->config));
+        $transformers->attach(new Transformer($this->xpathCompiler));
     }
 
     private function registerGroupFunctions(FunctionMap $functions)

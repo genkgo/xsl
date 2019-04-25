@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Genkgo\Xsl\Integration\Xsl;
 
 use DOMDocument;
+use Genkgo\Xsl\Cache\NullCache;
 use Genkgo\Xsl\Integration\AbstractIntegrationTestCase;
 use Genkgo\Xsl\XsltProcessor;
 
@@ -15,7 +16,7 @@ abstract class AbstractXslTest extends AbstractIntegrationTestCase
         $styleSheet->preserveWhiteSpace = true;
         $styleSheet->load($path);
 
-        $processor = new XsltProcessor();
+        $processor = new XsltProcessor(new NullCache());
         $processor->importStyleSheet($styleSheet);
 
         foreach ($parameters as $key => $value) {

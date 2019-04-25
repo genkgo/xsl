@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Genkgo\Xsl\Integration;
 
 use DOMDocument;
+use Genkgo\Xsl\Cache\NullCache;
 use Genkgo\Xsl\XsltProcessor;
 
 final class ProcessXslt1DocumentsTest extends AbstractIntegrationTestCase
@@ -20,7 +21,7 @@ final class ProcessXslt1DocumentsTest extends AbstractIntegrationTestCase
         $native->importStylesheet($xslDoc);
         $nativeResult = $native->transformToXML($xmlDoc);
 
-        $transpiler = new XsltProcessor();
+        $transpiler = new XsltProcessor(new NullCache());
         $transpiler->importStylesheet($xslDoc);
         $transpilerResult = $transpiler->transformToXML($xmlDoc);
 
@@ -39,7 +40,7 @@ final class ProcessXslt1DocumentsTest extends AbstractIntegrationTestCase
         $native->importStylesheet($xslDoc);
         $nativeResult = $native->transformToXML($xmlDoc);
 
-        $transpiler = new XsltProcessor();
+        $transpiler = new XsltProcessor(new NullCache());
         $transpiler->importStylesheet($xslDoc);
         $transpilerResult = $transpiler->transformToXML($xmlDoc);
 
@@ -60,7 +61,7 @@ final class ProcessXslt1DocumentsTest extends AbstractIntegrationTestCase
         $native->importStylesheet($xslDoc);
         $nativeResult = $native->transformToXML($xmlDoc);
 
-        $transpiler = new XsltProcessor();
+        $transpiler = new XsltProcessor(new NullCache());
         $transpiler->importStylesheet($xslDoc);
         $transpilerResult = $transpiler->transformToXML($xmlDoc);
 
@@ -82,7 +83,7 @@ final class ProcessXslt1DocumentsTest extends AbstractIntegrationTestCase
         $native->importStylesheet($xslDoc);
         $nativeResult = $native->transformToXML($xmlDoc);
 
-        $transpiler = new XsltProcessor();
+        $transpiler = new XsltProcessor(new NullCache());
         $transpiler->importStylesheet($xslDoc);
         $transpilerResult = $transpiler->transformToXML($xmlDoc);
 
@@ -103,7 +104,7 @@ final class ProcessXslt1DocumentsTest extends AbstractIntegrationTestCase
         $native->importStylesheet($xslDoc);
         $nativeResult = $native->transformToDoc($xmlDoc);
 
-        $transpiler = new XsltProcessor();
+        $transpiler = new XsltProcessor(new NullCache());
         $transpiler->importStylesheet($xslDoc);
         $transpilerResult = $transpiler->transformToDoc($xmlDoc);
 
@@ -123,7 +124,7 @@ final class ProcessXslt1DocumentsTest extends AbstractIntegrationTestCase
         $native->transformToUri($xmlDoc, 'php://temp');
         $nativeResult = \file_get_contents('php://temp');
 
-        $transpiler = new XsltProcessor();
+        $transpiler = new XsltProcessor(new NullCache());
         $transpiler->importStylesheet($xslDoc);
         $transpiler->transformToUri($xmlDoc, 'php://temp');
         $transpilerResult = \file_get_contents('php://temp');
@@ -144,7 +145,7 @@ final class ProcessXslt1DocumentsTest extends AbstractIntegrationTestCase
         $native->registerPHPFunctions();
         $nativeResult = \trim($native->transformToXML($xmlDoc));
 
-        $transpiler = new XsltProcessor();
+        $transpiler = new XsltProcessor(new NullCache());
         $transpiler->importStylesheet($xslDoc);
         $transpiler->registerPHPFunctions();
         $transpilerResult = \trim($transpiler->transformToXML($xmlDoc));
@@ -166,7 +167,7 @@ final class ProcessXslt1DocumentsTest extends AbstractIntegrationTestCase
         $native->registerPHPFunctions('strpos');
         $nativeResult = \trim($native->transformToXML($xmlDoc));
 
-        $transpiler = new XsltProcessor();
+        $transpiler = new XsltProcessor(new NullCache());
         $transpiler->importStylesheet($xslDoc);
         $transpiler->registerPHPFunctions('strpos');
         $transpilerResult = \trim($transpiler->transformToXML($xmlDoc));
@@ -188,7 +189,7 @@ final class ProcessXslt1DocumentsTest extends AbstractIntegrationTestCase
         $native->registerPHPFunctions();
         $nativeResult = \trim($native->transformToXML($xmlDoc));
 
-        $transpiler = new XsltProcessor();
+        $transpiler = new XsltProcessor(new NullCache());
         $transpiler->importStylesheet($xslDoc);
         $transpiler->registerPHPFunctions();
         $transpilerResult = \trim($transpiler->transformToXML($xmlDoc));
@@ -209,7 +210,7 @@ final class ProcessXslt1DocumentsTest extends AbstractIntegrationTestCase
         $native->registerPHPFunctions();
         $nativeResult = \trim($native->transformToXML($xmlDoc));
 
-        $transpiler = new XsltProcessor();
+        $transpiler = new XsltProcessor(new NullCache());
         $transpiler->importStylesheet($xslDoc);
         $transpiler->registerPHPFunctions();
         $transpilerResult = \trim($transpiler->transformToXML($xmlDoc));
@@ -229,7 +230,7 @@ final class ProcessXslt1DocumentsTest extends AbstractIntegrationTestCase
         $native->importStylesheet($xslDoc);
         $nativeResult = $native->transformToXML($xmlDoc);
 
-        $transpiler = new XsltProcessor();
+        $transpiler = new XsltProcessor(new NullCache());
         $transpiler->importStylesheet($xslDoc);
         $transpilerResult = $transpiler->transformToXML($xmlDoc);
 
