@@ -3,56 +3,61 @@ declare(strict_types=1);
 
 namespace Genkgo\Xsl\Schema;
 
+use Genkgo\Xsl\Callback\Arguments;
 use Genkgo\Xsl\Exception\CastException;
 
 final class Functions
 {
     /**
-     * @param mixed $value
+     * @param Arguments $arguments
      * @return XsDate
+     * @throws CastException
      */
-    public static function date($value)
+    public static function date(Arguments $arguments)
     {
-        $value = XsDate::castToNodeValue($value);
-        return XsDate::fromString($value);
+        return XsDate::fromString($arguments->castAsScalar(0));
     }
 
     /**
-     * @param mixed $value
+     * @param Arguments $arguments
      * @return XsTime
+     * @throws CastException
      */
-    public static function time($value)
+    public static function time(Arguments $arguments)
     {
-        $value = XsTime::castToNodeValue($value);
-        return XsTime::fromString($value);
+        return XsTime::fromString($arguments->castAsScalar(0));
     }
 
     /**
-     * @param mixed $value
+     * @param Arguments $arguments
      * @return XsDateTime
+     * @throws CastException
      */
-    public static function dateTime($value)
+    public static function dateTime(Arguments $arguments)
     {
-        $value = XsDateTime::castToNodeValue($value);
-        return XsDateTime::fromString($value);
+        return XsDateTime::fromString($arguments->castAsScalar(0));
     }
 
     /**
-     * @param mixed $value
+     * @param Arguments $arguments
      * @return XsDayTimeDuration
+     * @throws CastException
      */
-    public static function dayTimeDuration($value)
+    public static function dayTimeDuration(Arguments $arguments)
     {
-        $value = XsDayTimeDuration::castToNodeValue($value);
-        return XsDayTimeDuration::fromString($value);
+        return XsDayTimeDuration::fromString($arguments->castAsScalar(0));
     }
 
     /**
-     * @param mixed $value
+     * @param Arguments $arguments
      * @return XsInteger|XsSequence
+     * @throws CastException
+     * @throws Exception\UnknownSequenceItemException
      */
-    public static function integer($value)
+    public static function integer(Arguments $arguments)
     {
+        $value = $arguments->get(0);
+
         if (\is_bool($value)) {
             return new XsInteger((int)$value);
         }
@@ -61,7 +66,7 @@ final class Functions
             return XsSequence::fromArray([]);
         }
 
-        $value = XsInteger::castToNodeValue($value);
+        $value = $arguments->castAsScalar(0);
 
         if ($value === '') {
             return new XsInteger(0);

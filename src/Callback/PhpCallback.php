@@ -41,9 +41,9 @@ final class PhpCallback
             $namespace = \substr($functionQname, 0, $dot);
             $functionName = \substr($functionQname, $dot + 1);
 
-            return self::$context->getFunctions()->get($namespace)->get($functionName)->call($arguments, self::$context);
+            return self::$context->getFunctions()->get($namespace)->get($functionName)->call(new Arguments($arguments), self::$context);
         } else {
-            return self::$context->getFunctions()->get('')->get($functionQname)->call($arguments, self::$context);
+            return self::$context->getFunctions()->get('')->get($functionQname)->call(new Arguments($arguments), self::$context);
         }
     }
 
@@ -57,7 +57,7 @@ final class PhpCallback
     {
         $callable = [$class, $method];
         if (\is_callable($callable)) {
-            return \call_user_func_array($callable, $arguments);
+            return \call_user_func($callable, new Arguments($arguments), self::$context);
         }
 
         throw new \RuntimeException('Calling static method that is not callable');

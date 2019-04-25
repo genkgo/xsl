@@ -3,65 +3,53 @@ declare(strict_types=1);
 
 namespace Genkgo\Xsl\Xpath\Functions;
 
-use DOMElement;
+use Genkgo\Xsl\Callback\Arguments;
 use Genkgo\Xsl\Schema\XsSequence;
 
 final class Aggregation
 {
     /**
-     * @param DOMElement[] $elements
-     * @return float|XsSequence
+     * @param Arguments $arguments
+     * @return float|int|XsSequence
      */
-    public static function avg($elements)
+    public static function avg(Arguments $arguments)
     {
+        $elements = $arguments->castAsSequence(0);
+
         if (\count($elements) === 0) {
             return XsSequence::fromArray([]);
         }
 
-        $total = 0;
-
-        foreach ($elements as $element) {
-            $total += (int) $element->nodeValue;
-        }
-
-        return $total / \count($elements);
+        return \array_sum($elements) / \count($elements);
     }
 
     /**
-     * @param DOMElement[] $elements
+     * @param Arguments $arguments
      * @return mixed
      */
-    public static function max($elements)
+    public static function max(Arguments $arguments)
     {
+        $elements = $arguments->castAsSequence(0);
+
         if (\count($elements) === 0) {
             return XsSequence::fromArray([]);
         }
 
-        $items = [];
-
-        foreach ($elements as $element) {
-            $items[] = $element->nodeValue;
-        }
-
-        return \max($items);
+        return \max($elements);
     }
 
     /**
-     * @param DOMElement[] $elements
+     * @param Arguments $arguments
      * @return mixed
      */
-    public static function min($elements)
+    public static function min(Arguments $arguments)
     {
+        $elements = $arguments->castAsSequence(0);
+
         if (\count($elements) === 0) {
             return XsSequence::fromArray([]);
         }
 
-        $items = [];
-
-        foreach ($elements as $element) {
-            $items[] = $element->nodeValue;
-        }
-
-        return \min($items);
+        return \min($elements);
     }
 }

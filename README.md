@@ -3,7 +3,7 @@ XSL 2.0 Transpiler in PHP
 
 ### Installation
 
-Requires PHP 5.6 or later. There are no plans to support PHP 5.5 or earlier. PRs in this matter are rejected. It is installable and autoloadable via Composer as [genkgo/xsl](https://packagist.org/packages/genkgo/xsl).
+Requires PHP 7.2 or later. For PHP 5.6+ use version 0.6. It is installable and autoloadable via Composer as [genkgo/xsl](https://packagist.org/packages/genkgo/xsl).
 
 ### Quality
 
@@ -27,6 +27,7 @@ Replace `XSLTProcessor` with `Genkgo\Xsl\XsltProcessor`, change `version="1.0"` 
 ```php
 <?php
 use Genkgo\Xsl\XsltProcessor;
+use Genkgo\Xsl\Cache\NullCache;
 
 $xslDoc = new DOMDocument();
 $xslDoc->load('Stubs/collection.xsl');
@@ -34,7 +35,7 @@ $xslDoc->load('Stubs/collection.xsl');
 $xmlDoc = new DOMDocument();
 $xmlDoc->load('Stubs/collection.xml');
 
-$transpiler = new XsltProcessor();
+$transpiler = new XsltProcessor(new NullCache());
 $transpiler->importStylesheet($xslDoc);
 echo $transpiler->transformToXML($xmlDoc);
 ```
@@ -50,24 +51,32 @@ test](https://github.com/genkgo/xsl/blob/master/tests/Integration/ExtensionTest.
 <?php
 // use omitted for readability
 
-class MyExtensions implements XmlNamespaceInterface {
+class MyExtension implements XmlNamespaceInterface {
 
     const URI = 'https://github.com/genkgo/xsl/tree/master/tests/Stubs/Extension/MyExtension';
 
-    public function register(TransformerCollection $transformers, FunctionMap $functions) {
-        $functions->set('helloWorld', new StringFunction('helloWorld', static::class), self::URI);
+    public function register(TransformerCollection $transformers, FunctionCollection $functions) {
+        $functions->set(
+            self::URI, 
+            new class extends AbstractLazyFunctionMap {
+                public function newFunctionList(): array
+                {
+                    return [
+                        'hello-world' => ['newStringFunction', MyExtension::class],
+                    ];
+                }
+            }
+        );
     }
 
-    public static function helloWorld(...$args) {
-        return 'Hello World was called and received ' . count($args) . ' arguments!';
+    public static function helloWorld(Arguments $arguments) {
+        return 'Hello World was called and received ' . count($arguments->unpack()) . ' arguments!';
     }
 
 }
 
-$config = new Config();
-$config->setExtensions(new MyExtensions());
-
-$processor = new XsltProcessor($config);
+$factory = new ProcessorFactory(new NullCache(), [new MyExtension()]);
+$processor = $factory->newProcessor();
 ```
 
 and then call the function in your style sheet.
@@ -92,24 +101,18 @@ will yield: `Hello World was called and received 20 arguments!`.
 
 Depending on the complexity of your stylesheet, the transpiling process could slow down the processing of your
 document. Therefore, you probably want to cache the result stylesheet. By adding
-[`genkgo/cache`](https://github.com/genkgo/cache) to your composer.json, you will add the possibility to enable caching.
+[`psr/simple-cache`](https://packagist.org/packages/psr/simple-cache) to your composer.json, you will add the possibility to enable caching.
 See the example below, or the [integration test](https://github.com/genkgo/xsl/blob/master/tests/Integration/CacheTest.php)
 to see how it works.
 
 
 ```php
 <?php
-use Genkgo\Cache\Adapters\ArrayAdapter;
-use Genkgo\Cache\Adapters\SimpleCallbackAdapter;
-use Genkgo\Xsl\Config;
-use Genkgo\Xsl\XsltProcessor;
+use Genkgo\Xsl\Cache\ArrayCache;
+use Genkgo\Xsl\ProcessorFactory;
 
-$arrayCache = new ArrayAdapter();
-
-$config = new Config();
-$config->setCacheAdapter(new SimpleCallbackAdapter($arrayCache));
-
-$transpiler = new XsltProcessor($config);
+$factory = new ProcessorFactory(new ArrayCache());
+$processor = $factory->newProcessor();
 ```
 
 ## Contributing

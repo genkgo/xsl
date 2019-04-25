@@ -154,7 +154,6 @@ final class XsltProcessor extends PhpXsltProcessor
         } else {
             $phpFunctions[] = PhpCallback::class . '::call';
             $phpFunctions[] = PhpCallback::class . '::callStatic';
-            $phpFunctions[] = PhpCallback::class . '::callContext';
             parent::registerPHPFunctions($phpFunctions);
         }
 

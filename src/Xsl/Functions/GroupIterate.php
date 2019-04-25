@@ -5,6 +5,7 @@ namespace Genkgo\Xsl\Xsl\Functions;
 
 use DOMDocument;
 use DOMNode;
+use Genkgo\Xsl\Callback\Arguments;
 use Genkgo\Xsl\Callback\FunctionInterface;
 use Genkgo\Xsl\TransformationContext;
 use Genkgo\Xsl\Xpath\Lexer;
@@ -28,14 +29,14 @@ final class GroupIterate implements FunctionInterface
     }
 
     /**
-     * @param array $arguments
+     * @param Arguments $arguments
      * @param TransformationContext $context
      * @return DOMDocument
      */
-    public function call(array $arguments, TransformationContext $context)
+    public function call(Arguments $arguments, TransformationContext $context)
     {
         /** @var Group[] $group */
-        $group = $this->groups->get($arguments[0], $arguments[1]);
+        $group = $this->groups->get($arguments->get(0), $arguments->get(1));
 
         $document = new DOMDocument();
         $groupElement = $document->createElementNS(XslTransformations::URI, 'xsl:groups');

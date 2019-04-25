@@ -3,9 +3,8 @@ declare(strict_types=1);
 
 namespace Genkgo\Xsl\Xpath\Functions;
 
-use DOMElement;
+use Genkgo\Xsl\Callback\Arguments;
 use Genkgo\Xsl\Schema\XsSequence;
-use Genkgo\Xsl\Util\Assert;
 use Genkgo\Xsl\Util\FetchNamespacesFromNode;
 
 final class Text
@@ -115,13 +114,20 @@ final class Text
     }
 
     /**
-     * @param string $input
-     * @param string $pattern
-     * @param string $flags
+     * @param Arguments $arguments
      * @return XsSequence
      */
-    public static function tokenize(string $input, string $pattern, $flags = ''): XsSequence
+    public static function tokenize(Arguments $arguments): XsSequence
     {
+        $input = $arguments->castAsScalar(0);
+        $pattern = $arguments->castAsScalar(1);
+
+        try {
+            $flags = $arguments->castAsScalar(2);
+        } catch (\InvalidArgumentException $e) {
+            $flags = '';
+        }
+
         $split = \preg_split('/'.$pattern.'/'.$flags, $input);
         if ($split === false) {
             return XsSequence::fromArray([]);
@@ -131,14 +137,13 @@ final class Text
     }
 
     /**
-     * @param array $elements
+     * @param Arguments $arguments
      * @return XsSequence
      */
-    public static function inScopePrefixes(array $elements): XsSequence
+    public static function inScopePrefixes(Arguments $arguments): XsSequence
     {
-        Assert::assertArray($elements);
         $listOfPrefixes = [];
-        foreach ($elements as $element) {
+        foreach ($arguments->get(0) as $element) {
             $listOfPrefixes = \array_merge(
                 $listOfPrefixes,
                 \array_keys(FetchNamespacesFromNode::fetch($element))
@@ -159,12 +164,14 @@ final class Text
     }
 
     /**
-     * @param array|DOMElement[] $elements
-     * @param string $separator
+     * @param Arguments $arguments
      * @return string
      */
-    public static function stringJoin(array $elements, string $separator): string
+    public static function stringJoin(Arguments $arguments): string
     {
+        $elements = $arguments->castAsSequence(0);
+        $separator = (string)$arguments->castAsScalar(1);
+
         $result = '';
 
         $index = 0;
@@ -173,7 +180,7 @@ final class Text
                 $result .= $separator;
             }
 
-            $result .= $element->nodeValue;
+            $result .= $element;
             $index++;
         }
 
@@ -190,34 +197,35 @@ final class Text
     }
 
     /**
-     * @param mixed $sequence
+     * @param Arguments $arguments
      * @return string
      */
-    public static function codepointsToString($sequence): string
+    public static function codepointsToString(Arguments $arguments): string
     {
         $result = '';
+        $sequence = $arguments->get(0);
 
         if (\is_numeric($sequence)) {
             return \IntlChar::chr((int)$sequence);
         }
 
-        foreach ($sequence as $element) {
-            $result .= \IntlChar::chr((int)$element->nodeValue);
+        foreach ($arguments->castAsSequence(0) as $element) {
+            $result .= \IntlChar::chr((int)$element);
         }
 
         return $result;
     }
 
     /**
-     * @param string $string
+     * @param Arguments $arguments
      * @return XsSequence
      */
-    public static function stringToCodePoints(string $string): XsSequence
+    public static function stringToCodePoints(Arguments $arguments): XsSequence
     {
         $result = [];
 
         $iterator = \IntlBreakIterator::createCharacterInstance(\Locale::getDefault());
-        $iterator->setText($string);
+        $iterator->setText($arguments->castAsScalar(0));
 
         foreach ($iterator->getPartsIterator() as $char) {
             $result[] = \IntlChar::ord($char);

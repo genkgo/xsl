@@ -18,6 +18,6 @@ final class XmlPath implements XmlNamespaceInterface
      */
     public function register(TransformerCollection $transformers, FunctionCollection $functions): void
     {
-        $functions->attach(self::URI, new FunctionMap());
+        $functions->attach(self::URI, new FunctionMap(self::URI));
     }
 }

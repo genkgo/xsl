@@ -10,11 +10,23 @@ abstract class AbstractLazyFunctionMap implements FunctionMapInterface
      */
     private $functions = [];
 
-    public function __construct()
+    /**
+     * @var string
+     */
+    private $namespace;
+
+    /**
+     * @param string $namespace
+     */
+    final public function __construct(string $namespace)
     {
+        $this->namespace = $namespace;
         $this->functions = $this->newStaticFunctionList();
     }
 
+    /**
+     * @return array
+     */
     abstract protected function newStaticFunctionList(): array;
 
     /**
@@ -37,6 +49,7 @@ abstract class AbstractLazyFunctionMap implements FunctionMapInterface
 
             $this->functions[$name] = \call_user_func(
                 $callable,
+                $name,
                 $className,
                 $this->convertToCamel($name),
                 ...\array_slice($this->functions[$name], 2)
@@ -58,46 +71,78 @@ abstract class AbstractLazyFunctionMap implements FunctionMapInterface
     }
 
     /**
+     * @param string $functionName
      * @param string $className
      * @param string $methodName
      * @return FunctionInterface
      */
-    final protected function newStringFunction(string $className, string $methodName): FunctionInterface
-    {
-        return new StringFunction($className, $methodName);
+    final protected function newStringFunction(
+        string $functionName,
+        string $className,
+        string $methodName
+    ): FunctionInterface {
+        return new StringFunction($this->newFullFunctionQname($functionName), $className, $methodName);
     }
 
     /**
+     * @param string $functionName
      * @param string $className
      * @param string $methodName
      * @return FunctionInterface
      */
-    final protected function newStaticClassFunction(string $className, string $methodName): FunctionInterface
-    {
-        return new StaticClassFunction($className, $methodName);
+    final protected function newStaticClassFunction(
+        string $functionName,
+        string $className,
+        string $methodName
+    ): FunctionInterface {
+        return new StaticClassFunction($this->newFullFunctionQname($functionName), $className, $methodName);
     }
 
     /**
+     * @param string $functionName
      * @param string $className
      * @param string $methodName
      * @return FunctionInterface
      */
-    final protected function newSequenceReturnFunction(string $className, string $methodName): FunctionInterface
-    {
-        return new ReturnXsSequenceFunction(new StaticClassFunction($className, $methodName));
+    final protected function newSequenceReturnFunction(
+        string $functionName,
+        string $className,
+        string $methodName
+    ): FunctionInterface {
+        return new ReturnXsSequenceFunction(
+            new StaticClassFunction($this->newFullFunctionQname($functionName), $className, $methodName)
+        );
     }
 
     /**
+     * @param string $functionName
      * @param string $className
      * @param string $methodName
      * @param string $returnType
      * @return FunctionInterface
      */
     final protected function newScalarReturnFunction(
+        string $functionName,
         string $className,
         string $methodName,
         string $returnType
     ): FunctionInterface {
-        return new ReturnXsScalarFunction(new StaticClassFunction($className, $methodName), $returnType);
+        return new ReturnXsScalarFunction(
+            new StaticClassFunction($this->newFullFunctionQname($functionName), $className, $methodName),
+            $returnType
+        );
+    }
+
+    /**
+     * @param string $functionName
+     * @return string
+     */
+    private function newFullFunctionQname(string $functionName): string
+    {
+        if ($this->namespace === '') {
+            return $functionName;
+        }
+
+        return $this->namespace . ':' . $functionName;
     }
 }

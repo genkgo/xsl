@@ -6,7 +6,6 @@ namespace Genkgo\Xsl\Xsl;
 
 use Genkgo\Xsl\Callback\PhpCallback;
 use Genkgo\Xsl\Xpath\Compiler;
-use Genkgo\Xsl\Xpath\Exception\InvalidArgumentException;
 use Genkgo\Xsl\Xpath\FunctionBuilder;
 use Genkgo\Xsl\Xsl\Node\ElementValueOf;
 use RuntimeException;
@@ -28,7 +27,6 @@ final class TextValueTemplate
 
     /**
      * @param \DOMText $textNode
-     * @throws InvalidArgumentException
      */
     public function expand(\DOMText $textNode)
     {
@@ -50,9 +48,7 @@ final class TextValueTemplate
                 break;
             } elseif ($i8 >= 0 && ($i0 === false || $i8 < $i0)) {             // found a "}"
                 if ($i8 !== $i9) {                        // a "}" that isn't a "}}"
-                    $exception = new InvalidArgumentException("Closing curly brace in attribute value template \"" . $expression . "\" must be doubled");
-                    $exception->setErrorCode("XTSE0370");
-                    throw $exception;
+                    throw new \InvalidArgumentException("Closing curly brace in attribute value template \"" . $expression . "\" must be doubled", 370);
                 }
                 $components[] = \substr($expression, $last, $i8 + 2 - $last);
                 $last = $i8 + 2;
@@ -65,9 +61,7 @@ final class TextValueTemplate
                 }
 
                 if ($i8 === false) {
-                    $exception = new InvalidArgumentException("Curly brace in attribute value template \"" . $expression . "\" must be closed");
-                    $exception->setErrorCode("XTSE0370");
-                    throw $exception;
+                    throw new \InvalidArgumentException("Curly brace in attribute value template \"" . $expression . "\" must be closed", 370);
                 }
 
                 $compileFrom = $i0 + 1;

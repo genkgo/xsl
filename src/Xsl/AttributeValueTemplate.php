@@ -1,11 +1,9 @@
 <?php
 declare(strict_types=1);
 
-
 namespace Genkgo\Xsl\Xsl;
 
 use Genkgo\Xsl\Xpath\Compiler;
-use Genkgo\Xsl\Xpath\Exception\InvalidArgumentException;
 use RuntimeException;
 
 final class AttributeValueTemplate
@@ -25,7 +23,6 @@ final class AttributeValueTemplate
 
     /**
      * @param \DOMAttr $attribute
-     * @throws InvalidArgumentException
      */
     public function expand(\DOMAttr $attribute)
     {
@@ -46,9 +43,7 @@ final class AttributeValueTemplate
                 break;
             } elseif ($i8 >= 0 && ($i0 === false || $i8 < $i0)) {             // found a "}"
                 if ($i8 !== $i9) {                        // a "}" that isn't a "}}"
-                    $exception = new InvalidArgumentException("Closing curly brace in attribute value template \"" . $expression . "\" must be doubled");
-                    $exception->setErrorCode("XTSE0370");
-                    throw $exception;
+                    throw new \InvalidArgumentException("Closing curly brace in attribute value template \"" . $expression . "\" must be doubled", 370);
                 }
                 $components[] = \substr($expression, $last, $i8 + 2 - $last);
                 $last = $i8 + 2;
@@ -61,9 +56,7 @@ final class AttributeValueTemplate
                 }
 
                 if ($i8 === false) {
-                    $exception = new InvalidArgumentException("Curly brace in attribute value template \"" . $expression . "\" must be closed");
-                    $exception->setErrorCode("XTSE0370");
-                    throw $exception;
+                    throw new \InvalidArgumentException("Curly brace in attribute value template \"" . $expression . "\" must be closed", 370);
                 }
 
                 $compileFrom = $i0 + 1;

@@ -3,51 +3,62 @@ declare(strict_types=1);
 
 namespace Genkgo\Xsl\Xpath\Functions;
 
+use Genkgo\Xsl\Callback\Arguments;
 use Genkgo\Xsl\Schema\XsSequence;
 
 final class Sequence
 {
     /**
-     * @param array $elements
+     * @param Arguments $arguments
      * @return XsSequence
      */
-    public static function reverse(array $elements): XsSequence
+    public static function reverse(Arguments $arguments): XsSequence
     {
-        return XsSequence::fromArray(\array_reverse($elements));
+        return XsSequence::fromArray(\array_reverse($arguments->castAsSequence(0)));
     }
 
     /**
-     * @param array $elements
-     * @param int|float $position
-     * @param mixed $element
+     * @param Arguments $arguments
      * @return XsSequence
      */
-    public static function insertBefore(array $elements, $position, $element): XsSequence
+    public static function insertBefore(Arguments $arguments): XsSequence
     {
-        \array_splice($elements, (int)$position - 1, 0, $element);
+        $elements = $arguments->castAsSequence(0);
+
+        \array_splice(
+            $elements,
+            (int)$arguments->castAsScalar(1) - 1,
+            0,
+            $arguments->get(2)
+        );
+
         return XsSequence::fromArray($elements);
     }
 
     /**
-     * @param array $elements
-     * @param int|float $position
+     * @param Arguments $arguments
      * @return XsSequence
      */
-    public static function remove(array $elements, $position): XsSequence
+    public static function remove(Arguments $arguments): XsSequence
     {
-        unset($elements[(int)$position - 1]);
+        $elements = $arguments->castAsSequence(0);
+
+        unset($elements[(int)$arguments->castAsScalar(1) - 1]);
         return XsSequence::fromArray($elements);
     }
 
     /**
-     * @param array $elements
-     * @param int|float $position
-     * @param int|float|null $length
+     * @param Arguments $arguments
      * @return XsSequence
      */
-    public static function subsequence(array $elements, $position, $length = null): XsSequence
+    public static function subsequence(Arguments $arguments): XsSequence
     {
-        if ($length === null) {
+        $elements = $arguments->castAsSequence(0);
+        $position = (int)$arguments->castAsScalar(1);
+
+        try {
+            $length = (int)$arguments->castAsScalar(2);
+        } catch (\InvalidArgumentException $e) {
             $length = \count($elements);
         }
 
@@ -55,12 +66,12 @@ final class Sequence
     }
 
     /**
-     * @param array $elements
+     * @param Arguments $arguments
      * @return XsSequence
      */
-    public static function distinctValues(array $elements): XsSequence
+    public static function distinctValues(Arguments $arguments): XsSequence
     {
-        $sequence = XsSequence::fromArray($elements);
+        $sequence = XsSequence::fromArray($arguments->castAsSequence(0));
 
         $values = [];
         foreach ($sequence->documentElement->childNodes as $childNode) {
@@ -71,23 +82,26 @@ final class Sequence
     }
 
     /**
-     * @param array $elements
+     * @param Arguments $arguments
      * @return XsSequence
      */
-    public static function unordered(array $elements): XsSequence
+    public static function unordered(Arguments $arguments): XsSequence
     {
+        $elements = $arguments->castAsSequence(0);
         \shuffle($elements);
 
         return XsSequence::fromArray($elements);
     }
 
     /**
-     * @param mixed $haystack
-     * @param mixed $needle
+     * @param Arguments $arguments
      * @return bool|int
      */
-    public static function indexOf($haystack, $needle)
+    public static function indexOf(Arguments $arguments)
     {
+        $haystack = $arguments->get(0);
+        $needle = $arguments->get(1);
+
         if (\is_string($haystack)) {
             $position = \strpos($haystack, $needle);
             if ($position === false) {
@@ -98,7 +112,7 @@ final class Sequence
         }
 
         $index = 1;
-        $sequence = XsSequence::fromArray($haystack);
+        $sequence = XsSequence::fromArray($arguments->castAsSequence(0));
 
         foreach ($sequence->documentElement->childNodes as $childNode) {
             if ($needle === $childNode->nodeValue) {

@@ -5,7 +5,6 @@ namespace Genkgo\Xsl\Unit;
 
 use DateTime;
 use Genkgo\Xsl\Integration\Xsl\AbstractXslTest;
-use Genkgo\Xsl\Xpath\Exception\InvalidArgumentException;
 use Genkgo\Xsl\Xsl\Functions\Formatter\IntlDateTimeFormatter;
 
 final class IntlDateFormatterTest extends AbstractXslTest
@@ -23,16 +22,6 @@ final class IntlDateFormatterTest extends AbstractXslTest
             '42',
             $formatter->formatDate(new DateTime('2015-10-16'), '[W]', 'en_US')
         );
-    }
-
-    public function testExceptionCode()
-    {
-        try {
-            $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
-            $formatter->formatDate(new DateTime('2015-10-16'), '[H]', 'en_US');
-        } catch (InvalidArgumentException $e) {
-            $this->assertEquals('XTDE1340', $e->getErrorCode());
-        }
     }
 
     public function testFormatTime()
@@ -85,14 +74,14 @@ final class IntlDateFormatterTest extends AbstractXslTest
                 '09:37:00',
                 $formatter->formatTime(new DateTime('2015-10-16'), '[Y]]', 'en_US')
             );
-        } catch (InvalidArgumentException $e) {
-            $this->assertEquals('XTDE1340', $e->getErrorCode());
+        } catch (\InvalidArgumentException $e) {
+            $this->assertEquals(1340, $e->getCode());
         }
     }
 
     public function testNoValidComponents()
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('No valid components found');
 
         $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
@@ -101,7 +90,7 @@ final class IntlDateFormatterTest extends AbstractXslTest
 
     public function testNotSupportedComponent()
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Component [E] is not supported');
 
         $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
@@ -123,7 +112,7 @@ final class IntlDateFormatterTest extends AbstractXslTest
 
     public function testUnclosedFormat()
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Wrong formatted date, missing ]');
 
         $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
@@ -136,7 +125,7 @@ final class IntlDateFormatterTest extends AbstractXslTest
 
     public function testFormatDateNo24Hour()
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
         $formatter->formatDate(
@@ -148,7 +137,7 @@ final class IntlDateFormatterTest extends AbstractXslTest
 
     public function testWrongEscape()
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Wrong formatted date, escape by doubling [[ and ]]');
 
         $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());

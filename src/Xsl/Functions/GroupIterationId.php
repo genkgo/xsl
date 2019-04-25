@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Genkgo\Xsl\Xsl\Functions;
 
 use DOMNode;
+use Genkgo\Xsl\Callback\Arguments;
 use Genkgo\Xsl\Callback\FunctionInterface;
 use Genkgo\Xsl\TransformationContext;
 use Genkgo\Xsl\Xpath\Lexer;
@@ -25,17 +26,13 @@ final class GroupIterationId implements FunctionInterface
     }
 
     /**
-     * @param array $arguments
+     * @param Arguments $arguments
      * @param TransformationContext $context
      * @return int
      */
-    public function call(array $arguments, TransformationContext $context)
+    public function call(Arguments $arguments, TransformationContext $context)
     {
-        if (!isset($arguments[0])) {
-            throw new \UnexpectedValueException('Got no arguments, expected 1');
-        }
-
-        return $this->groups->newIterationId($arguments[0]);
+        return $this->groups->newIterationId($arguments->get(0));
     }
 
     /**

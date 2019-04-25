@@ -5,6 +5,7 @@ namespace Genkgo\Xsl\Xsl\Functions;
 
 use DOMElement;
 use DOMNode;
+use Genkgo\Xsl\Callback\Arguments;
 use Genkgo\Xsl\Callback\FunctionInterface;
 use Genkgo\Xsl\TransformationContext;
 use Genkgo\Xsl\Xpath\Lexer;
@@ -60,11 +61,11 @@ final class CurrentGroupingKey implements FunctionInterface
     }
 
     /**
-     * @param array $arguments
+     * @param Arguments $arguments
      * @param TransformationContext $context
      * @return mixed
      */
-    public function call(array $arguments, TransformationContext $context)
+    public function call(Arguments $arguments, TransformationContext $context)
     {
         throw new \BadMethodCallException();
     }

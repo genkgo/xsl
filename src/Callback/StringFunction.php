@@ -11,6 +11,11 @@ final class StringFunction implements FunctionInterface
     /**
      * @var string
      */
+    private $name;
+
+    /**
+     * @var string
+     */
     private $className;
 
     /**
@@ -19,11 +24,13 @@ final class StringFunction implements FunctionInterface
     private $methodName;
 
     /**
+     * @param string $name
      * @param string $className
      * @param string $methodName
      */
-    public function __construct(string $className, string $methodName)
+    public function __construct(string $name, string $className, string $methodName)
     {
+        $this->name = $name;
         $this->className = $className;
         $this->methodName = $methodName;
     }
@@ -36,33 +43,37 @@ final class StringFunction implements FunctionInterface
     public function serialize(Lexer $lexer, DOMNode $currentElement): array
     {
         $resultTokens = [];
-        $resultTokens[] = 'php:functionString';
+        $resultTokens[] = 'php:function';
         $resultTokens[] = '(';
         $resultTokens[] = '\'';
-        $resultTokens[] = PhpCallback::class.'::callStatic';
+        $resultTokens[] = PhpCallback::class.'::call';
         $resultTokens[] = '\'';
         $resultTokens[] = ',';
         $resultTokens[] = '\'';
-        $resultTokens[] = $this->className;
+        $resultTokens[] = $this->name;
         $resultTokens[] = '\'';
-        $resultTokens[] = ',';
-        $resultTokens[] = '\'';
-        $resultTokens[] = $this->methodName;
-        $resultTokens[] = '\'';
+
         $lexer->next();
+
         if ($lexer->peek($lexer->key() + 1) !== ')') {
             $resultTokens[] = ',';
         }
+
         return $resultTokens;
     }
 
     /**
-     * @param array $arguments
+     * @param Arguments $arguments
      * @param TransformationContext $context
      * @return mixed
      */
-    public function call(array $arguments, TransformationContext $context)
+    public function call(Arguments $arguments, TransformationContext $context)
     {
-        throw new \BadMethodCallException();
+        $callable = [$this->className, $this->methodName];
+        if (\is_callable($callable)) {
+            return \call_user_func_array($callable, $arguments->unpackAsScalar());
+        }
+
+        throw new \InvalidArgumentException('Argument is not callable');
     }
 }

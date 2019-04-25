@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Genkgo\Xsl\Xpath;
 
 use DOMNode;
+use Genkgo\Xsl\Callback\Arguments;
 use Genkgo\Xsl\Callback\FunctionInterface;
 use Genkgo\Xsl\Callback\PhpCallback;
 use Genkgo\Xsl\Schema\XsSequence;
@@ -41,21 +42,22 @@ final class SequenceConstructor implements FunctionInterface
     }
 
     /**
-     * @param array $arguments
+     * @param Arguments $arguments
      * @param TransformationContext $context
      * @return mixed
      */
-    public function call(array $arguments, TransformationContext $context)
+    public function call(Arguments $arguments, TransformationContext $context)
     {
         throw new \BadMethodCallException();
     }
 
     /**
-     * @param mixed ...$arguments
-     * @return XsSequence
+     * @param Arguments $arguments
+     * @param TransformationContext $context
+     * @return mixed
      */
-    public static function newSequence(...$arguments): XsSequence
+    public static function newSequence(Arguments $arguments, TransformationContext $context)
     {
-        return XsSequence::fromArray($arguments);
+        return XsSequence::fromArray($arguments->unpack());
     }
 }
