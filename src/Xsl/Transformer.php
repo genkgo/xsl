@@ -48,7 +48,7 @@ final class Transformer implements TransformerInterface
             new AttributeSelect($xpathCompiler),
             new AttributeTest($xpathCompiler),
             new ElementValueOf(),
-            new ElementAttribute($xpathCompiler),
+            new ElementAttribute(),
         ];
 
         // @codeCoverageIgnoreStart
