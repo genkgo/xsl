@@ -11,9 +11,10 @@ final class AmPmMarkerComponent implements ComponentInterface
 {
     /**
      * @param PictureString $pictureString
+     * @param DateTimeInterface $date
      * @return string
      */
-    public function format(PictureString $pictureString, DateTimeInterface $date)
+    public function format(PictureString $pictureString, DateTimeInterface $date): string
     {
         return 'a';
     }
@@ -21,7 +22,7 @@ final class AmPmMarkerComponent implements ComponentInterface
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return 'P';
     }

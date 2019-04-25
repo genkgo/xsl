@@ -6,7 +6,6 @@ namespace Genkgo\Xsl\Xsl\Node;
 use DOMElement;
 use Genkgo\Xsl\Callback\Arguments;
 use Genkgo\Xsl\Callback\PhpCallback;
-use Genkgo\Xsl\TransformationContext;
 use Genkgo\Xsl\Xpath\FunctionBuilder;
 use Genkgo\Xsl\Xsl\ElementTransformerInterface;
 
@@ -16,7 +15,7 @@ final class ElementValueOf implements ElementTransformerInterface
      * @param DOMElement $element
      * @return bool
      */
-    public function supports(DOMElement $element)
+    public function supports(DOMElement $element): bool
     {
         return $element->ownerDocument->documentElement->getAttribute('version') !== '1.0' && $element->localName === 'value-of';
     }
@@ -24,7 +23,7 @@ final class ElementValueOf implements ElementTransformerInterface
     /**
      * @param DOMElement $element
      */
-    public function transform(DOMElement $element)
+    public function transform(DOMElement $element): void
     {
         $select = $element->getAttribute('select');
         $separator = $element->hasAttribute('separator') ? $element->getAttribute('separator') : ' ';

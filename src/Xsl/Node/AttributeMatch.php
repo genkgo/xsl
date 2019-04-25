@@ -26,7 +26,7 @@ final class AttributeMatch implements ElementTransformerInterface
      * @param DOMElement $element
      * @return bool
      */
-    public function supports(DOMElement $element)
+    public function supports(DOMElement $element): bool
     {
         return $element->hasAttribute('match');
     }
@@ -34,7 +34,7 @@ final class AttributeMatch implements ElementTransformerInterface
     /**
      * @param DOMElement $element
      */
-    public function transform(DOMElement $element)
+    public function transform(DOMElement $element): void
     {
         $element->setAttribute(
             'match',

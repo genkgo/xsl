@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Genkgo\Xsl\Schema;
 
 use DOMDocument;
-use Genkgo\Xsl\Exception\CastException;
 
 abstract class AbstractXsElement extends DOMDocument
 {
@@ -25,7 +24,7 @@ abstract class AbstractXsElement extends DOMDocument
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->documentElement->nodeValue;
     }
@@ -33,5 +32,5 @@ abstract class AbstractXsElement extends DOMDocument
     /**
      * @return string
      */
-    abstract protected function getElementName();
+    abstract protected function getElementName(): string;
 }

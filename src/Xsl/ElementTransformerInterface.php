@@ -5,19 +5,16 @@ namespace Genkgo\Xsl\Xsl;
 
 use DOMElement;
 
-/**
- * Interface ElementTransformerInterface
- */
 interface ElementTransformerInterface
 {
     /**
      * @param DOMElement $document
      * @return bool
      */
-    public function supports(DOMElement $document);
+    public function supports(DOMElement $document): bool;
 
     /**
      * @param DOMElement $element
      */
-    public function transform(DOMElement $element);
+    public function transform(DOMElement $element): void;
 }

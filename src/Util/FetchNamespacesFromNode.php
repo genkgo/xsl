@@ -13,7 +13,7 @@ final class FetchNamespacesFromNode
      * @param DOMNode $element
      * @return array
      */
-    public static function fetch(DOMNode $element)
+    public static function fetch(DOMNode $element): array
     {
         $namespaces = [];
 
