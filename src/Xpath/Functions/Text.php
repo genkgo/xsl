@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Genkgo\Xsl\Xpath\Functions;
 
-use DOMDocument;
 use DOMElement;
 use Genkgo\Xsl\Schema\XsSequence;
 use Genkgo\Xsl\Util\Assert;
@@ -194,7 +193,7 @@ final class Text
      * @param mixed $sequence
      * @return string
      */
-    public static function codePointsToString($sequence): string
+    public static function codepointsToString($sequence): string
     {
         $result = '';
 

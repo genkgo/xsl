@@ -1,46 +1,40 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Genkgo\Xsl\Callback;
 
 use DOMNode;
+use Genkgo\Xsl\TransformationContext;
 use Genkgo\Xsl\Xpath\Lexer;
 
-final class StringFunction implements ReplaceFunctionInterface
+final class StringFunction implements FunctionInterface
 {
     /**
-     * @var bool
+     * @var string
      */
-    private $camelize = false;
+    private $className;
 
     /**
-     * @var array
+     * @var string
      */
-    private $callback;
+    private $methodName;
 
     /**
-     * @param array $callback
-     * @param bool $camelize
+     * @param string $className
+     * @param string $methodName
      */
-    public function __construct(array $callback, bool $camelize = false)
+    public function __construct(string $className, string $methodName)
     {
-        $this->callback = $callback;
-        $this->camelize = $camelize;
+        $this->className = $className;
+        $this->methodName = $methodName;
     }
 
     /**
      * @param Lexer $lexer
      * @param DOMNode $currentElement
-     * @return array|string[]
+     * @return array
      */
-    public function replace(Lexer $lexer, DOMNode $currentElement)
+    public function serialize(Lexer $lexer, DOMNode $currentElement): array
     {
-        if ($this->camelize === true) {
-            $methodName = $this->convertToCamel($this->callback[1]);
-        } else {
-            $methodName = $this->callback[1];
-        }
-
         $resultTokens = [];
         $resultTokens[] = 'php:functionString';
         $resultTokens[] = '(';
@@ -49,31 +43,26 @@ final class StringFunction implements ReplaceFunctionInterface
         $resultTokens[] = '\'';
         $resultTokens[] = ',';
         $resultTokens[] = '\'';
-        $resultTokens[] = $this->callback[0];
+        $resultTokens[] = $this->className;
         $resultTokens[] = '\'';
         $resultTokens[] = ',';
         $resultTokens[] = '\'';
-        $resultTokens[] = $methodName;
+        $resultTokens[] = $this->methodName;
         $resultTokens[] = '\'';
-
         $lexer->next();
-
         if ($lexer->peek($lexer->key() + 1) !== ')') {
             $resultTokens[] = ',';
         }
-
         return $resultTokens;
     }
 
     /**
-     * @param string $methodName
-     * @return string
+     * @param array $arguments
+     * @param TransformationContext $context
+     * @return mixed
      */
-    private function convertToCamel($methodName)
+    public function call(array $arguments, TransformationContext $context)
     {
-        $methodName = \ucwords(\str_replace(['-', '_'], ' ', $methodName));
-        $methodName = \lcfirst(\str_replace(' ', '', $methodName));
-
-        return $methodName;
+        throw new \BadMethodCallException();
     }
 }

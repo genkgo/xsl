@@ -6,15 +6,15 @@ namespace Genkgo\Xsl\Unit;
 use DOMDocument;
 use Genkgo\Xsl\AbstractTestCase;
 use Genkgo\Xsl\Cache\NullCache;
+use Genkgo\Xsl\Callback\FunctionCollection;
 use Genkgo\Xsl\TransformationContext;
 use Genkgo\Xsl\Exception\ReadOnlyStreamException;
 use Genkgo\Xsl\Exception\StreamException;
 use Genkgo\Xsl\Stream;
 use Genkgo\Xsl\Transpiler;
-use Genkgo\Xsl\Util\FunctionMap;
 use Genkgo\Xsl\Util\TransformerCollection;
 
-class StreamTest extends AbstractTestCase
+final class StreamTest extends AbstractTestCase
 {
     public function testStreamOpenRead()
     {
@@ -65,7 +65,7 @@ class StreamTest extends AbstractTestCase
         return \stream_context_create([
             'gxsl' => [
                 'transpiler' => new Transpiler(
-                    new TransformationContext(new DOMDocument('1.0', 'UTF-8'), new TransformerCollection(), new FunctionMap()),
+                    new TransformationContext(new DOMDocument('1.0', 'UTF-8'), new TransformerCollection(), new FunctionCollection()),
                     new NullCache()
                 )
             ]

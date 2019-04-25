@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace Genkgo\Xsl\Xsl\Functions;
 
 use DateTime;
-use DOMElement;
 use Genkgo\Xsl\Schema\XsDate;
 use Genkgo\Xsl\Schema\XsDateTime;
 use Genkgo\Xsl\Schema\XsTime;
+use Genkgo\Xsl\TransformationContext;
 use Genkgo\Xsl\Util\Assert;
 use Genkgo\Xsl\Xpath\Exception\InvalidArgumentException;
 use Genkgo\Xsl\Xsl\Functions;
@@ -16,164 +16,96 @@ use Locale;
 final class DateFormatting
 {
     /**
-     * @var Functions\Formatter\FormatterInterface
+     * @var Formatter\FormatterInterface
      */
-    private static $dateTimeFormatter;
+    private $formatter;
 
     /**
-     * @var Functions\Formatter\FormatterInterface
+     * @param Formatter\FormatterInterface $formatter
      */
-    private static $dateFormatter;
+    public function __construct(Functions\Formatter\FormatterInterface $formatter)
+    {
+        $this->formatter = $formatter;
+    }
 
     /**
-     * @var Functions\Formatter\FormatterInterface
-     */
-    private static $timeFormatter;
-
-    /**
-     * @var string
-     */
-    private static $locale;
-
-    /**
-     * @param DOMElement[] $value
-     * @param string $picture
-     * @param string|null $language
+     * @param array $arguments
+     * @param TransformationContext $context
      * @return string
      * @throws InvalidArgumentException
      */
-    public static function formatDate($value, string $picture, string $language = null)
+    public function formatDate(array $arguments, TransformationContext $context)
     {
-        Assert::assertArray($value);
-        if (\count($value) === 0) {
+        Assert::assertArray($arguments);
+        Assert::assertArray($arguments[0]);
+
+        if (\count($arguments[0]) === 0) {
             return '';
         }
 
-        Assert::assertSchema($value[0], 'date');
+        Assert::assertSchema($arguments[0][0], 'date');
 
-        if (self::$dateFormatter === null) {
-            // @codeCoverageIgnoreStart
-            if (\extension_loaded('intl')) {
-                self::$dateFormatter = Functions\Formatter\IntlDateTimeFormatter::createWithFlagDate();
-            } else {
-                self::$dateFormatter = Functions\Formatter\DateTimeFormatter::createWithFlagDate();
-            }
-            // @codeCoverageIgnoreEnd
-        }
+        $locale = $arguments[2] ?? Locale::getDefault();
 
-        if ($language === null) {
-            $locale = self::detectSystemLocale();
-        } else {
-            $locale = $language;
-        }
-
-        $date = DateTime::createFromFormat(XsDate::FORMAT, $value[0]->nodeValue);
+        $date = DateTime::createFromFormat(XsDate::FORMAT, $arguments[0][0]->nodeValue);
         if ($date === false) {
-            throw new \UnexpectedValueException('Cannot initialize DateTime from ' . $value[0]->nodeValue);
+            throw new \UnexpectedValueException('Cannot initialize DateTime from ' . $arguments[0][0]->nodeValue);
         }
 
-        return self::$dateFormatter->format($date, $picture, $locale, 'AD');
+        return $this->formatter->formatDate($date, $arguments[1], $locale, 'AD');
     }
 
     /**
-     * @param DOMElement[] $value
-     * @param string $picture
-     * @param string|null $language
+     * @param array $arguments
+     * @param TransformationContext $context
      * @return string
      * @throws InvalidArgumentException
      */
-    public static function formatTime($value, string $picture, string $language = null)
+    public function formatTime(array $arguments, TransformationContext $context)
     {
-        Assert::assertArray($value);
-        Assert::assertSchema($value[0], 'time');
+        Assert::assertArray($arguments);
+        Assert::assertArray($arguments[0]);
 
-        if (self::$timeFormatter === null) {
-            // @codeCoverageIgnoreStart
-            if (\extension_loaded('intl')) {
-                self::$timeFormatter = Functions\Formatter\IntlDateTimeFormatter::createWithFlagTime();
-            } else {
-                self::$timeFormatter = Functions\Formatter\DateTimeFormatter::createWithFlagTime();
-            }
-            // @codeCoverageIgnoreEnd
+        if (\count($arguments[0]) === 0) {
+            return '';
         }
 
-        if ($language === null) {
-            $locale = self::detectSystemLocale();
-        } else {
-            $locale = $language;
-        }
+        Assert::assertSchema($arguments[0][0], 'time');
 
-        $date = DateTime::createFromFormat(XsTime::FORMAT, $value[0]->nodeValue);
+        $locale = $arguments[2] ?? Locale::getDefault();
+
+        $date = DateTime::createFromFormat(XsTime::FORMAT, $arguments[0][0]->nodeValue);
         if ($date === false) {
-            throw new \UnexpectedValueException('Cannot initialize DateTime from ' . $value[0]->nodeValue);
+            throw new \UnexpectedValueException('Cannot initialize DateTime from ' . $arguments[0][0]->nodeValue);
         }
 
-        return self::$timeFormatter->format($date, $picture, $locale, 'AD');
+        return $this->formatter->formatTime($date, $arguments[1], $locale, 'AD');
     }
 
     /**
-     * @param DOMElement[] $value
-     * @param string $picture
-     * @param string|null $language
+     * @param array $arguments
+     * @param TransformationContext $context
      * @return string
      * @throws InvalidArgumentException
      */
-    public static function formatDateTime($value, string $picture, string $language = null)
+    public function formatDateTime(array $arguments, TransformationContext $context)
     {
-        Assert::assertArray($value);
-        Assert::assertSchema($value[0], 'dateTime');
+        Assert::assertArray($arguments);
+        Assert::assertArray($arguments[0]);
 
-        if (self::$dateTimeFormatter === null) {
-            // @codeCoverageIgnoreStart
-            if (\extension_loaded('intl')) {
-                self::$dateTimeFormatter = Functions\Formatter\IntlDateTimeFormatter::createWithFlagDateTime();
-            } else {
-                self::$dateTimeFormatter = Functions\Formatter\DateTimeFormatter::createWithFlagDateTime();
-            }
-            // @codeCoverageIgnoreEnd
+        if (\count($arguments[0]) === 0) {
+            return '';
         }
 
-        if ($language === null) {
-            $locale = self::detectSystemLocale();
-        } else {
-            $locale = $language;
-        }
+        Assert::assertSchema($arguments[0][0], 'dateTime');
 
-        $date = DateTime::createFromFormat(XsDateTime::FORMAT, $value[0]->nodeValue);
+        $locale = $arguments[2] ?? Locale::getDefault();
+
+        $date = DateTime::createFromFormat(XsDateTime::FORMAT, $arguments[0][0]->nodeValue);
         if ($date === false) {
-            throw new \UnexpectedValueException('Cannot initialize DateTime from ' . $value[0]->nodeValue);
+            throw new \UnexpectedValueException('Cannot initialize DateTime from ' . $arguments[0][0]->nodeValue);
         }
 
-        return self::$dateTimeFormatter->format($date, $picture, $locale, 'AD');
-    }
-
-    /**
-     * @return string
-     */
-    private static function detectSystemLocale()
-    {
-        if (self::$locale === null) {
-            self::$locale = self::getSystemLocale();
-        }
-
-        return self::$locale;
-    }
-
-    /**
-     * @return string
-     * @codeCoverageIgnore
-     */
-    private static function getSystemLocale(): string
-    {
-        if (\class_exists(Locale::class)) {
-            return Locale::getDefault();
-        }
-
-        $locale = \setlocale(LC_ALL, null);
-        if ($locale === false) {
-            throw new \UnexpectedValueException('Cannot determine locale of this system');
-        }
-
-        return $locale;
+        return $this->formatter->formatDateTime($date, $arguments[1], $locale, 'AD');
     }
 }

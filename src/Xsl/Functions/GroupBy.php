@@ -4,44 +4,37 @@ declare(strict_types=1);
 namespace Genkgo\Xsl\Xsl\Functions;
 
 use DOMElement;
+use DOMNode;
 use DOMXPath;
 use Genkgo\Xsl\Callback\FunctionInterface;
-use Genkgo\Xsl\Callback\MethodCallInterface;
 use Genkgo\Xsl\TransformationContext;
-use Genkgo\Xsl\Util\FunctionMap;
 use Genkgo\Xsl\Xpath\Compiler;
+use Genkgo\Xsl\Xpath\Lexer;
 use Genkgo\Xsl\Xsl\ForEachGroup\Map as ForEachGroupMap;
-use Genkgo\Xsl\Xsl\XslTransformations;
 
-final class GroupBy implements FunctionInterface, MethodCallInterface
+final class GroupBy implements FunctionInterface
 {
-    /**
-     * @var Compiler
-     */
-    private $compiler;
-
     /**
      * @var ForEachGroupMap
      */
     private $groups;
 
     /**
-     * @param Compiler $compiler
      * @param ForEachGroupMap $groups
      */
-    public function __construct(Compiler $compiler, ForEachGroupMap $groups)
+    public function __construct(ForEachGroupMap $groups)
     {
-        $this->compiler = $compiler;
         $this->groups = $groups;
     }
 
     /**
-     * @param FunctionMap $functionMap
-     * @return void
+     * @param Lexer $lexer
+     * @param DOMNode $currentElement
+     * @return array
      */
-    public function register(FunctionMap $functionMap)
+    public function serialize(Lexer $lexer, DOMNode $currentElement): array
     {
-        $functionMap->set(XslTransformations::URI . ':group-by', $this);
+        return [$lexer->current()];
     }
 
     /**
@@ -83,8 +76,10 @@ final class GroupBy implements FunctionInterface, MethodCallInterface
                 'string(' . $groupBy . ')'
             );
 
+            $compiler = new Compiler($context->getFunctions());
+
             $groupingKey = $xpath->evaluate(
-                $this->compiler->compile($expression, $element),
+                $compiler->compile($expression, $element),
                 $element
             );
 

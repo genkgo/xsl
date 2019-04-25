@@ -6,10 +6,9 @@ namespace Genkgo\Xsl\Callback;
 use Closure;
 use DOMNode;
 use Genkgo\Xsl\TransformationContext;
-use Genkgo\Xsl\Util\FunctionMap;
 use Genkgo\Xsl\Xpath\Lexer;
 
-final class ClosureFunction implements FunctionInterface, ReplaceFunctionInterface, MethodCallInterface
+final class ClosureFunction implements FunctionInterface
 {
     /**
      * @var string
@@ -25,19 +24,10 @@ final class ClosureFunction implements FunctionInterface, ReplaceFunctionInterfa
      * @param string $name
      * @param Closure $callback
      */
-    public function __construct($name, Closure $callback)
+    public function __construct(string $name, Closure $callback)
     {
         $this->name = $name;
         $this->callback = $callback;
-    }
-
-    /**
-     * @param FunctionMap $functionMap
-     * @return void
-     */
-    public function register(FunctionMap $functionMap)
-    {
-        $functionMap->set($this->name, $this);
     }
 
     /**
@@ -45,7 +35,7 @@ final class ClosureFunction implements FunctionInterface, ReplaceFunctionInterfa
      * @param DOMNode $currentElement
      * @return array|string[]
      */
-    public function replace(Lexer $lexer, DOMNode $currentElement)
+    public function serialize(Lexer $lexer, DOMNode $currentElement): array
     {
         $resultTokens = [];
         $resultTokens[] = 'php:function';
@@ -74,7 +64,6 @@ final class ClosureFunction implements FunctionInterface, ReplaceFunctionInterfa
      */
     public function call(array $arguments, TransformationContext $context)
     {
-        $callback = $this->callback;
-        return $callback($arguments, $context);
+        return \call_user_func($this->callback, $arguments, $context);
     }
 }

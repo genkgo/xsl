@@ -1,16 +1,34 @@
 <?php
 declare(strict_types=1);
 
-namespace Genkgo\Xsl\Xpath;
+namespace Genkgo\Xsl\Callback;
 
 use DOMNode;
-use Genkgo\Xsl\Callback\FunctionInterface;
-use Genkgo\Xsl\Callback\PhpCallback;
-use Genkgo\Xsl\Schema\XsSequence;
 use Genkgo\Xsl\TransformationContext;
+use Genkgo\Xsl\Xpath\Lexer;
 
-final class SequenceConstructor implements FunctionInterface
+final class StaticClassFunction implements FunctionInterface
 {
+    /**
+     * @var string
+     */
+    private $className;
+
+    /**
+     * @var string
+     */
+    private $methodName;
+
+    /**
+     * @param string $className
+     * @param string $methodName
+     */
+    public function __construct(string $className, string $methodName)
+    {
+        $this->className = $className;
+        $this->methodName = $methodName;
+    }
+
     /**
      * @param Lexer $lexer
      * @param DOMNode $currentElement
@@ -26,12 +44,14 @@ final class SequenceConstructor implements FunctionInterface
         $resultTokens[] = '\'';
         $resultTokens[] = ',';
         $resultTokens[] = '\'';
-        $resultTokens[] = static::class;
+        $resultTokens[] = $this->className;
         $resultTokens[] = '\'';
         $resultTokens[] = ',';
         $resultTokens[] = '\'';
-        $resultTokens[] = 'newSequence';
+        $resultTokens[] = $this->methodName;
         $resultTokens[] = '\'';
+
+        $lexer->next();
 
         if ($lexer->peek($lexer->key() + 1) !== ')') {
             $resultTokens[] = ',';
@@ -47,15 +67,11 @@ final class SequenceConstructor implements FunctionInterface
      */
     public function call(array $arguments, TransformationContext $context)
     {
-        throw new \BadMethodCallException();
-    }
+        $callable = [$this->className, $this->methodName];
+        if (\is_callable($callable)) {
+            return \call_user_func($callable, $arguments, $context);
+        }
 
-    /**
-     * @param mixed ...$arguments
-     * @return XsSequence
-     */
-    public static function newSequence(...$arguments): XsSequence
-    {
-        return XsSequence::fromArray($arguments);
+        throw new \InvalidArgumentException('Argument is not callable');
     }
 }

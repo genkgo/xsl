@@ -41,7 +41,7 @@ final class ForLoopExpression implements ExpressionInterface
             $tokens,
             $this->findStartExpression($tokens),
             0,
-            $this->forLoopConstructor->replace($lexer, $currentElement)
+            $this->forLoopConstructor->serialize($lexer, $currentElement)
         );
         $tokens[] = ',';
         return $tokens;
