@@ -5,6 +5,7 @@ namespace Genkgo\Xsl\Xpath\Functions;
 
 use DateInterval;
 use DateTimeImmutable;
+use Genkgo\Xsl\Callback\Arguments;
 use Genkgo\Xsl\Schema\XsDate;
 use Genkgo\Xsl\Schema\XsDateTime;
 use Genkgo\Xsl\Schema\XsInteger;
@@ -38,218 +39,199 @@ final class Date
     }
 
     /**
-     * @param array $value
+     * @param Arguments $arguments
      * @return XsInteger
      */
-    public static function yearFromDate(array $value)
+    public static function yearFromDate(Arguments $arguments)
     {
-        Assert::assertArray($value);
-        Assert::assertSchema($value[0], 'date');
-
-        return new XsInteger((int) (new DateTimeImmutable($value[0]->nodeValue))->format('Y'));
+        $arguments->assertSchema(0, 'date');
+        return new XsInteger((int) (new DateTimeImmutable($arguments->castAsScalar(0)))->format('Y'));
     }
 
     /**
-     * @param array $value
+     * @param Arguments $arguments
      * @return XsInteger
      */
-    public static function yearFromDateTime(array $value)
+    public static function yearFromDateTime(Arguments $arguments)
     {
-        Assert::assertArray($value);
-        Assert::assertSchema($value[0], 'dateTime');
+        $arguments->assertSchema(0, 'dateTime');
 
-        return new XsInteger((int) (new DateTimeImmutable($value[0]->nodeValue))->format('Y'));
+        return new XsInteger((int) (new DateTimeImmutable($arguments->castAsScalar(0)))->format('Y'));
     }
 
     /**
-     * @param array $value
+     * @param Arguments $arguments
      * @return XsInteger
      */
-    public static function monthFromDate(array $value)
+    public static function monthFromDate(Arguments $arguments)
     {
-        Assert::assertArray($value);
-        Assert::assertSchema($value[0], 'date');
+        $arguments->assertSchema(0, 'date');
 
-        return new XsInteger((int) (new DateTimeImmutable($value[0]->nodeValue))->format('n'));
+        return new XsInteger((int) (new DateTimeImmutable($arguments->castAsScalar(0)))->format('n'));
     }
 
     /**
-     * @param array $value
+     * @param Arguments $arguments
      * @return XsInteger
      */
-    public static function monthFromDateTime(array $value)
+    public static function monthFromDateTime(Arguments $arguments)
     {
-        Assert::assertArray($value);
-        Assert::assertSchema($value[0], 'dateTime');
+        $arguments->assertSchema(0, 'dateTime');
 
-        return new XsInteger((int) (new DateTimeImmutable($value[0]->nodeValue))->format('n'));
+        return new XsInteger((int) (new DateTimeImmutable($arguments->castAsScalar(0)))->format('n'));
     }
 
     /**
-     * @param array $value
+     * @param Arguments $arguments
      * @return XsInteger
      */
-    public static function dayFromDate(array $value)
+    public static function dayFromDate(Arguments $arguments)
     {
-        Assert::assertArray($value);
-        Assert::assertSchema($value[0], 'date');
+        $arguments->assertSchema(0, 'date');
 
-        return new XsInteger((int) (new DateTimeImmutable($value[0]->nodeValue))->format('j'));
+        return new XsInteger((int) (new DateTimeImmutable($arguments->castAsScalar(0)))->format('j'));
     }
 
     /**
-     * @param array $value
+     * @param Arguments $arguments
      * @return XsInteger
      */
-    public static function dayFromDateTime(array $value)
+    public static function dayFromDateTime(Arguments $arguments)
     {
-        Assert::assertArray($value);
-        Assert::assertSchema($value[0], 'dateTime');
+        $arguments->assertSchema(0, 'dateTime');
 
-        return new XsInteger((int) (new DateTimeImmutable($value[0]->nodeValue))->format('j'));
+        return new XsInteger((int) (new DateTimeImmutable($arguments->castAsScalar(0)))->format('j'));
     }
 
     /**
-     * @param array $value
+     * @param Arguments $arguments
      * @return XsInteger
      */
-    public static function hoursFromTime(array $value)
+    public static function hoursFromTime(Arguments $arguments)
     {
-        Assert::assertArray($value);
-        Assert::assertSchema($value[0], 'time');
+        $arguments->assertSchema(0, 'time');
 
-        return new XsInteger((int) (new DateTimeImmutable($value[0]->nodeValue))->format('G'));
+        return new XsInteger((int) (new DateTimeImmutable($arguments->castAsScalar(0)))->format('G'));
     }
 
     /**
-     * @param array $value
+     * @param Arguments $arguments
      * @return XsInteger
      */
-    public static function hoursFromDateTime(array $value)
+    public static function hoursFromDateTime(Arguments $arguments)
     {
-        Assert::assertArray($value);
-        Assert::assertSchema($value[0], 'dateTime');
+        $arguments->assertSchema(0, 'dateTime');
 
-        return new XsInteger((int) (new DateTimeImmutable($value[0]->nodeValue))->format('G'));
+        return new XsInteger((int) (new DateTimeImmutable($arguments->castAsScalar(0)))->format('G'));
     }
 
     /**
-     * @param array $value
+     * @param Arguments $arguments
      * @return XsInteger
      */
-    public static function minutesFromTime(array $value)
+    public static function minutesFromTime(Arguments $arguments)
     {
-        Assert::assertArray($value);
-        Assert::assertSchema($value[0], 'time');
+        $arguments->assertSchema(0, 'time');
 
-        return new XsInteger((int) (new DateTimeImmutable($value[0]->nodeValue))->format('i'));
+        return new XsInteger((int) (new DateTimeImmutable($arguments->castAsScalar(0)))->format('i'));
     }
 
     /**
-     * @param array $value
+     * @param Arguments $arguments
      * @return XsInteger
      */
-    public static function minutesFromDateTime(array $value)
+    public static function minutesFromDateTime(Arguments $arguments)
     {
-        Assert::assertArray($value);
-        Assert::assertSchema($value[0], 'dateTime');
+        $arguments->assertSchema(0, 'dateTime');
 
-        return new XsInteger((int) (new DateTimeImmutable($value[0]->nodeValue))->format('i'));
+        return new XsInteger((int) (new DateTimeImmutable($arguments->castAsScalar(0)))->format('i'));
     }
 
     /**
-     * @param array $value
+     * @param Arguments $arguments
      * @return XsInteger
      */
-    public static function secondsFromTime(array $value)
+    public static function secondsFromTime(Arguments $arguments)
     {
-        Assert::assertArray($value);
-        Assert::assertSchema($value[0], 'time');
+        $arguments->assertSchema(0, 'time');
 
-        return new XsInteger((int) (new DateTimeImmutable($value[0]->nodeValue))->format('s'));
+        return new XsInteger((int) (new DateTimeImmutable($arguments->castAsScalar(0)))->format('s'));
     }
 
     /**
-     * @param array $value
+     * @param Arguments $arguments
      * @return XsInteger
      */
-    public static function secondsFromDateTime(array $value)
+    public static function secondsFromDateTime(Arguments $arguments)
     {
-        Assert::assertArray($value);
-        Assert::assertSchema($value[0], 'dateTime');
+        $arguments->assertSchema(0, 'dateTime');
 
-        return new XsInteger((int) (new DateTimeImmutable($value[0]->nodeValue))->format('s'));
+        return new XsInteger((int) (new DateTimeImmutable($arguments->castAsScalar(0)))->format('s'));
     }
 
     /**
-     * @param array $value
+     * @param Arguments $arguments
      * @return XsInteger
      */
-    public static function yearsFromDuration(array $value)
+    public static function yearsFromDuration(Arguments $arguments)
     {
-        Assert::assertArray($value);
-        Assert::assertSchema($value[0], 'dayTimeDuration');
+        $arguments->assertSchema(0, 'dayTimeDuration');
 
-        return new XsInteger((int) (new DateInterval($value[0]->nodeValue))->format('%y'));
+        return new XsInteger((int) (new DateInterval($arguments->castAsScalar(0)))->format('%y'));
     }
 
     /**
-     * @param array $value
+     * @param Arguments $arguments
      * @return XsInteger
      */
-    public static function monthsFromDuration(array $value)
+    public static function monthsFromDuration(Arguments $arguments)
     {
-        Assert::assertArray($value);
-        Assert::assertSchema($value[0], 'dayTimeDuration');
+        $arguments->assertSchema(0, 'dayTimeDuration');
 
-        return new XsInteger((int) (new DateInterval($value[0]->nodeValue))->format('%m'));
+        return new XsInteger((int) (new DateInterval($arguments->castAsScalar(0)))->format('%m'));
     }
 
     /**
-     * @param array $value
+     * @param Arguments $arguments
      * @return XsInteger
      */
-    public static function daysFromDuration(array $value)
+    public static function daysFromDuration(Arguments $arguments)
     {
-        Assert::assertArray($value);
-        Assert::assertSchema($value[0], 'dayTimeDuration');
+        $arguments->assertSchema(0, 'dayTimeDuration');
 
-        return new XsInteger((int) (new DateInterval($value[0]->nodeValue))->format('%d'));
+        return new XsInteger((int) (new DateInterval($arguments->castAsScalar(0)))->format('%d'));
     }
 
     /**
-     * @param array $value
+     * @param Arguments $arguments
      * @return XsInteger
      */
-    public static function hoursFromDuration(array $value)
+    public static function hoursFromDuration(Arguments $arguments)
     {
-        Assert::assertArray($value);
-        Assert::assertSchema($value[0], 'dayTimeDuration');
+        $arguments->assertSchema(0, 'dayTimeDuration');
 
-        return new XsInteger((int) (new DateInterval($value[0]->nodeValue))->format('%h'));
+        return new XsInteger((int) (new DateInterval($arguments->castAsScalar(0)))->format('%h'));
     }
 
     /**
-     * @param array $value
+     * @param Arguments $arguments
      * @return XsInteger
      */
-    public static function minutesFromDuration(array $value)
+    public static function minutesFromDuration(Arguments $arguments)
     {
-        Assert::assertArray($value);
-        Assert::assertSchema($value[0], 'dayTimeDuration');
+        $arguments->assertSchema(0, 'dayTimeDuration');
 
-        return new XsInteger((int) (new DateInterval($value[0]->nodeValue))->format('%i'));
+        return new XsInteger((int) (new DateInterval($arguments->castAsScalar(0)))->format('%i'));
     }
 
     /**
-     * @param array $value
+     * @param Arguments $arguments
      * @return XsInteger
      */
-    public static function secondsFromDuration(array $value)
+    public static function secondsFromDuration(Arguments $arguments)
     {
-        Assert::assertArray($value);
-        Assert::assertSchema($value[0], 'dayTimeDuration');
+        $arguments->assertSchema(0, 'dayTimeDuration');
 
-        return new XsInteger((int) (new DateTimeImmutable($value[0]->nodeValue))->format('%s'));
+        return new XsInteger((int) (new DateTimeImmutable($arguments->castAsScalar(0)))->format('%s'));
     }
 }

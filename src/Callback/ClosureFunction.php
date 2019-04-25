@@ -58,11 +58,11 @@ final class ClosureFunction implements FunctionInterface
     }
 
     /**
-     * @param array $arguments
+     * @param Arguments $arguments
      * @param TransformationContext $context
      * @return mixed
      */
-    public function call(array $arguments, TransformationContext $context)
+    public function call(Arguments $arguments, TransformationContext $context)
     {
         return \call_user_func($this->callback, $arguments, $context);
     }

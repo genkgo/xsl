@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace Genkgo\Xsl\Xsl\Functions\Formatter;
 
-use Genkgo\Xsl\Xpath\Exception\InvalidArgumentException;
-
 final class PictureString
 {
     /**
@@ -29,15 +27,13 @@ final class PictureString
 
     /**
      * @param string $picture
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function __construct($picture)
     {
         $matches = \preg_match_all('/([YMDdWwFHhmsfZzPCE])\\s*(.*)/', $picture, $groups);
         if ($matches === 0) {
-            $exception = new InvalidArgumentException('No valid components found');
-            $exception->setErrorCode('XTDE1340');
-            throw $exception;
+            throw new \InvalidArgumentException('No valid components found', 1340);
         }
 
         $this->componentSpecifier = $groups[1][0];

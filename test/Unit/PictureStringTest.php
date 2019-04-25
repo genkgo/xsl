@@ -4,10 +4,9 @@ declare(strict_types=1);
 namespace Genkgo\Xsl\Unit;
 
 use Genkgo\Xsl\AbstractTestCase;
-use Genkgo\Xsl\Xpath\Exception\InvalidArgumentException;
 use Genkgo\Xsl\Xsl\Functions\Formatter\PictureString;
 
-class PictureStringTest extends AbstractTestCase
+final class PictureStringTest extends AbstractTestCase
 {
     public function testComponentOnly()
     {
@@ -77,7 +76,7 @@ class PictureStringTest extends AbstractTestCase
 
     public function testInvalidComponent()
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         new PictureString('G');
     }
 }

@@ -150,9 +150,7 @@ final class IntlDateTimeFormatter implements FormatterInterface
                 if (\substr($picture, $i, 1) === ']') {
                     $i++;
                     if ($i == \strlen($picture) || \substr($picture, $i, 1) != ']') {
-                        $exception = new InvalidArgumentException('Wrong formatted date, escape by doubling [[ and ]]');
-                        $exception->setErrorCode('XTDE1340');
-                        throw $exception;
+                        throw new \InvalidArgumentException('Wrong formatted date, escape by doubling [[ and ]]', 1340);
                     }
                 }
                 $i++;
@@ -171,9 +169,7 @@ final class IntlDateTimeFormatter implements FormatterInterface
             } else {
                 $close = ($i < \strlen($picture) ? \strpos($picture, "]", $i) : -1);
                 if ($close === -1 || $close === false) {
-                    $exception = new InvalidArgumentException('Wrong formatted date, missing ]');
-                    $exception->setErrorCode('XTDE1340');
-                    throw $exception;
+                    throw new \InvalidArgumentException('Wrong formatted date, missing ]', 1340);
                 }
 
                 $pictureString = new PictureString(\substr($picture, $i, $close - $i));
@@ -215,9 +211,7 @@ final class IntlDateTimeFormatter implements FormatterInterface
                         $result[] = $components[$specifier]->format($pictureString, $date);
                     }
                 } else {
-                    $exception = new InvalidArgumentException("Component [{$specifier}] is not supported");
-                    $exception->setErrorCode('XTDE1340');
-                    throw $exception;
+                    throw new \InvalidArgumentException("Component [{$specifier}] is not supported", 1340);
                 }
 
                 $i = $close + 1;

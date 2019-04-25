@@ -107,7 +107,7 @@ class FormattingTest extends AbstractXslTest
 
     public function testInvalidDataType()
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Expected a date object, got scalar');
 
         $xsDateTime = XsDateTime::fromString('2015-10-16 15:37:00');
@@ -120,7 +120,7 @@ class FormattingTest extends AbstractXslTest
 
     public function testInvalidSequence()
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Expected a http://www.w3.org/2001/XMLSchema:dateTime object, got xs:item');
 
         $xsDateTime = XsDateTime::fromString('2015-10-16 15:37:00');

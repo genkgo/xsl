@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace Genkgo\Xsl\Xsl\Node;
 
 use DOMElement;
+use Genkgo\Xsl\Callback\Arguments;
 use Genkgo\Xsl\Callback\PhpCallback;
+use Genkgo\Xsl\TransformationContext;
 use Genkgo\Xsl\Xpath\FunctionBuilder;
 use Genkgo\Xsl\Xsl\ElementTransformerInterface;
 
@@ -39,12 +41,18 @@ final class ElementValueOf implements ElementTransformerInterface
     }
 
     /**
-     * @param mixed $elements
-     * @param string $separator
+     * @param Arguments $arguments
      * @return string|int|float|bool
      */
-    public static function valueOf($elements, string $separator)
+    public static function valueOf(Arguments $arguments)
     {
+        $elements = $arguments->get(0);
+        try {
+            $separator = (string)$arguments->castAsScalar(1);
+        } catch (\InvalidArgumentException $e) {
+            $separator = ' ';
+        }
+
         if (\is_scalar($elements)) {
             return $elements;
         }

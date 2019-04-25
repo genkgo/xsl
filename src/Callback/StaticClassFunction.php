@@ -12,6 +12,11 @@ final class StaticClassFunction implements FunctionInterface
     /**
      * @var string
      */
+    private $name;
+
+    /**
+     * @var string
+     */
     private $className;
 
     /**
@@ -20,11 +25,13 @@ final class StaticClassFunction implements FunctionInterface
     private $methodName;
 
     /**
+     * @param string $name
      * @param string $className
      * @param string $methodName
      */
-    public function __construct(string $className, string $methodName)
+    public function __construct(string $name, string $className, string $methodName)
     {
+        $this->name = $name;
         $this->className = $className;
         $this->methodName = $methodName;
     }
@@ -40,15 +47,11 @@ final class StaticClassFunction implements FunctionInterface
         $resultTokens[] = 'php:function';
         $resultTokens[] = '(';
         $resultTokens[] = '\'';
-        $resultTokens[] = PhpCallback::class.'::callStatic';
+        $resultTokens[] = PhpCallback::class.'::call';
         $resultTokens[] = '\'';
         $resultTokens[] = ',';
         $resultTokens[] = '\'';
-        $resultTokens[] = $this->className;
-        $resultTokens[] = '\'';
-        $resultTokens[] = ',';
-        $resultTokens[] = '\'';
-        $resultTokens[] = $this->methodName;
+        $resultTokens[] = $this->name;
         $resultTokens[] = '\'';
 
         $lexer->next();
@@ -61,15 +64,15 @@ final class StaticClassFunction implements FunctionInterface
     }
 
     /**
-     * @param array $arguments
+     * @param Arguments $arguments
      * @param TransformationContext $context
      * @return mixed
      */
-    public function call(array $arguments, TransformationContext $context)
+    public function call(Arguments $arguments, TransformationContext $context)
     {
         $callable = [$this->className, $this->methodName];
         if (\is_callable($callable)) {
-            return \call_user_func($callable, $arguments, $context);
+            return \call_user_func($callable, $arguments);
         }
 
         throw new \InvalidArgumentException('Argument is not callable');

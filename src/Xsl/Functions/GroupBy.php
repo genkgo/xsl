@@ -6,6 +6,7 @@ namespace Genkgo\Xsl\Xsl\Functions;
 use DOMElement;
 use DOMNode;
 use DOMXPath;
+use Genkgo\Xsl\Callback\Arguments;
 use Genkgo\Xsl\Callback\FunctionInterface;
 use Genkgo\Xsl\TransformationContext;
 use Genkgo\Xsl\Xpath\Compiler;
@@ -38,24 +39,24 @@ final class GroupBy implements FunctionInterface
     }
 
     /**
-     * @param array $arguments
+     * @param Arguments $arguments
      * @param TransformationContext $context
      * @return true
      */
-    public function call(array $arguments, TransformationContext $context)
+    public function call(Arguments $arguments, TransformationContext $context)
     {
         /** @var string $groupId */
-        $groupId = $arguments[0];
+        $groupId = $arguments->get(0);
         /** @var string $groupId */
-        $iterationId = $arguments[1];
+        $iterationId = $arguments->get(1);
         /** @var DOMElement[] $elements */
-        $elements = $arguments[2];
+        $elements = $arguments->get(2);
         /** @var string $elementId */
-        $elementId = $arguments[3];
+        $elementId = $arguments->get(3);
         /** @var string $groupBy */
-        $groupBy = \base64_decode($arguments[4]);
+        $groupBy = \base64_decode($arguments->get(4));
         /** @var string[] $namespaces */
-        $namespaces = \json_decode(\base64_decode($arguments[5]) ?: '', true);
+        $namespaces = \json_decode(\base64_decode($arguments->get(5)) ?: '', true);
 
         $collection = $this->groups->get($groupId, $iterationId);
 

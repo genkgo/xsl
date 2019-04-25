@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Xsl\Stubs\Extension;
 
+use Genkgo\Xsl\Callback\Arguments;
 use Genkgo\Xsl\TransformationContext;
 
 final class CollectionSqrtFunction
@@ -21,12 +22,12 @@ final class CollectionSqrtFunction
     }
 
     /**
-     * @param array $arguments
-     * @param TransformationContext $context
+     * @param Arguments $arguments
      * @return mixed
      */
-    public function sqrt(array $arguments, TransformationContext $context)
+    public function sqrt(Arguments $arguments)
     {
-        return \count($arguments) * \count($this->collection);
+        $unpacked = $arguments->unpack();
+        return \count($unpacked) * \count($this->collection);
     }
 }

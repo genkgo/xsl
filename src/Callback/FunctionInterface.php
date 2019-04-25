@@ -17,9 +17,9 @@ interface FunctionInterface
     public function serialize(Lexer $lexer, DOMNode $currentElement): array;
 
     /**
-     * @param array $arguments
+     * @param Arguments $arguments
      * @param TransformationContext $context
      * @return mixed
      */
-    public function call(array $arguments, TransformationContext $context);
+    public function call(Arguments $arguments, TransformationContext $context);
 }

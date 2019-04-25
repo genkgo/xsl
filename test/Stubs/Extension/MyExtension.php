@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Xsl\Stubs\Extension;
 
+use Genkgo\Xsl\Callback\Arguments;
 use Genkgo\Xsl\Callback\ClosureFunction;
 use Genkgo\Xsl\Callback\FunctionCollection;
 use Genkgo\Xsl\Callback\FunctionInterface;
@@ -16,12 +17,12 @@ final class MyExtension implements XmlNamespaceInterface
     const URI = 'https://github.com/genkgo/xsl/tree/master/tests/Stubs/Extension/MyExtension';
 
     /**
-     * @param mixed ...$args
+     * @param Arguments $arguments
      * @return string
      */
-    public static function helloWorld(...$args)
+    public static function helloWorld(Arguments $arguments)
     {
-        return 'Hello World was called and received ' . \count($args) . ' arguments!';
+        return 'Hello World was called and received ' . \count($arguments->unpack()) . ' arguments!';
     }
 
     /**
@@ -39,7 +40,11 @@ final class MyExtension implements XmlNamespaceInterface
                 public function __construct()
                 {
                     $this->functions = [
-                        'hello-world' => new StaticClassFunction(MyExtension::class, 'helloWorld'),
+                        'hello-world' => new StaticClassFunction(
+                            MyExtension::URI . ':hello-world',
+                            MyExtension::class,
+                            'helloWorld'
+                        ),
                         'collection-sqrt' => new ClosureFunction(
                             MyExtension::URI . ':collection-sqrt',
                             \Closure::fromCallable(
@@ -51,8 +56,8 @@ final class MyExtension implements XmlNamespaceInterface
                         ),
                         'hello-earth' => new ClosureFunction(
                             MyExtension::URI . ':hello-earth',
-                            function ($arguments) {
-                                return \count($arguments);
+                            function (Arguments $arguments) {
+                                return \count($arguments->unpack());
                             }
                         ),
                     ];

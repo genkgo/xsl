@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Genkgo\Xsl\Xpath;
 
 use DOMNode;
+use Genkgo\Xsl\Callback\Arguments;
 use Genkgo\Xsl\Callback\FunctionInterface;
 use Genkgo\Xsl\Callback\PhpCallback;
 use Genkgo\Xsl\Schema\XsSequence;
@@ -30,7 +31,7 @@ final class ForLoopConstructor implements FunctionInterface
         $prepend[] = '\'';
         $prepend[] = ',';
         $prepend[] = '\'';
-        $prepend[] = 'newRange';
+        $prepend[] = 'call';
         $prepend[] = '\'';
         $prepend[] = ',';
 
@@ -75,29 +76,14 @@ final class ForLoopConstructor implements FunctionInterface
     }
 
     /**
-     * @param array $arguments
+     * @param Arguments $arguments
      * @param TransformationContext $context
      * @return mixed
      */
-    public function call(array $arguments, TransformationContext $context)
+    public function call(Arguments $arguments, TransformationContext $context)
     {
-        throw new \BadMethodCallException();
-    }
-
-    /**
-     * @param int|float $first
-     * @param int|float $last
-     * @return XsSequence
-     */
-    public static function newRange($first, $last): XsSequence
-    {
-        if (isset($first[0]->textContent)) {
-            $first = \trim($first[0]->textContent);
-        }
-
-        if (isset($last[0]->textContent)) {
-            $last = \trim($last[0]->textContent);
-        }
+        $first = $arguments->castAsScalar(0);
+        $last = $arguments->castAsScalar(1);
 
         return XsSequence::fromArray(\range($first, $last));
     }

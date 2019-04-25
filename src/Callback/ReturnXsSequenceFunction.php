@@ -61,11 +61,11 @@ final class ReturnXsSequenceFunction implements FunctionInterface
     }
 
     /**
-     * @param array $arguments
+     * @param Arguments $arguments
      * @param TransformationContext $context
      * @return mixed
      */
-    public function call(array $arguments, TransformationContext $context)
+    public function call(Arguments $arguments, TransformationContext $context)
     {
         return $this->parentFunction->call($arguments, $context);
     }
