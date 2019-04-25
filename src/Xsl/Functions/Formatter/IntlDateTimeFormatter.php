@@ -22,37 +22,19 @@ use IntlDateFormatter;
 
 final class IntlDateTimeFormatter implements FormatterInterface
 {
-    const ESCAPE = '\'';
-
-    /**
-     * @var array|ComponentInterface[]
-     */
-    private $components = [];
+    public const ESCAPE = '\'';
 
     /**
      * @var string
      */
-    private $timezone;
+    private $defaultTimezone;
 
     /**
-     * @var bool
+     * @param string $defaultTimezone
      */
-    private $flagsDate = false;
-
-    /**
-     * @var bool
-     */
-    private $flagsTime = false;
-
-    /**
-     * @param array $components
-     */
-    private function mapComponents(array $components)
+    public function __construct(string $defaultTimezone)
     {
-        foreach ($components as $component) {
-            $this->components[(string)$component] = $component;
-        }
-        $this->timezone = \date_default_timezone_get();
+        $this->defaultTimezone = $defaultTimezone;
     }
 
     /**
@@ -61,10 +43,96 @@ final class IntlDateTimeFormatter implements FormatterInterface
      * @param string $locale
      * @param string $calendar
      * @return string
+     */
+    public function formatDate(DateTimeInterface $date, string $picture, string $locale, string $calendar = ''): string
+    {
+        return $this->format(
+            $date,
+            $this->newComponentsMap([
+                new TimezoneOffsetUtcComponent(),
+                new TimezoneOffsetGmtComponent(),
+                new YearComponent(),
+                new MonthComponent(),
+                new DayInMonthComponent(),
+                new DayInYearComponent(),
+                new DayOfWeekComponent(),
+                new WeekOfYearComponent(),
+            ]),
+            $picture,
+            $locale,
+            $calendar
+        );
+    }
+
+    /**
+     * @param DateTimeInterface $date
+     * @param string $picture
+     * @param string $locale
+     * @param string $calendar
+     * @return string
+     */
+    public function formatTime(DateTimeInterface $date, string $picture, string $locale, string $calendar = ''): string
+    {
+        return $this->format(
+            $date,
+            $this->newComponentsMap([
+                new TimezoneOffsetUtcComponent(),
+                new TimezoneOffsetGmtComponent(),
+                new HourInDayComponent(),
+                new HourInHalfDayComponent(),
+                new MinutesComponent(),
+                new SecondsComponent(),
+                new AmPmMarkerComponent(),
+            ]),
+            $picture,
+            $locale,
+            $calendar
+        );
+    }
+
+    /**
+     * @param DateTimeInterface $date
+     * @param string $picture
+     * @param string $locale
+     * @param string $calendar
+     * @return string
+     */
+    public function formatDateTime(DateTimeInterface $date, string $picture, string $locale, string $calendar = ''): string
+    {
+        return $this->format(
+            $date,
+            $this->newComponentsMap([
+                new TimezoneOffsetUtcComponent(),
+                new TimezoneOffsetGmtComponent(),
+                new YearComponent(),
+                new MonthComponent(),
+                new DayInMonthComponent(),
+                new DayInYearComponent(),
+                new DayOfWeekComponent(),
+                new WeekOfYearComponent(),
+                new HourInDayComponent(),
+                new HourInHalfDayComponent(),
+                new MinutesComponent(),
+                new SecondsComponent(),
+                new AmPmMarkerComponent(),
+            ]),
+            $picture,
+            $locale,
+            $calendar
+        );
+    }
+
+    /**
+     * @param DateTimeInterface $date
+     * @param array $components
+     * @param string $picture
+     * @param string $locale
+     * @param string $calendar
+     * @return string
      * @throws InvalidArgumentException
      * @credits https://github.com/Saxonica/Saxon-CE/ https://github.com/Saxonica/Saxon-CE/blob/master/notices/MOZILLA.txt
      */
-    public function format(DateTimeInterface $date, string $picture, string $locale, string $calendar = ''): string
+    private function format(DateTimeInterface $date, array $components, string $picture, string $locale, string $calendar = ''): string
     {
         $result = [];
 
@@ -111,7 +179,7 @@ final class IntlDateTimeFormatter implements FormatterInterface
                 $pictureString = new PictureString(\substr($picture, $i, $close - $i));
                 $specifier = $pictureString->getComponentSpecifier();
 
-                if (isset($this->components[$specifier])) {
+                if (isset($components[$specifier])) {
                     if ($pictureString->getPresentationModifier() === 'N') {
                         if ($escaped === false) {
                             $result[] = self::ESCAPE;
@@ -122,7 +190,7 @@ final class IntlDateTimeFormatter implements FormatterInterface
                             $this->formatPattern(
                                 $date,
                                 $locale,
-                                $this->components[$specifier]->format($pictureString, $date)
+                                $components[$specifier]->format($pictureString, $date)
                             )
                         );
                     } elseif ($pictureString->getPresentationModifier() === 'n') {
@@ -135,7 +203,7 @@ final class IntlDateTimeFormatter implements FormatterInterface
                             $this->formatPattern(
                                 $date,
                                 $locale,
-                                $this->components[$specifier]->format($pictureString, $date)
+                                $components[$specifier]->format($pictureString, $date)
                             )
                         );
                     } else {
@@ -144,7 +212,7 @@ final class IntlDateTimeFormatter implements FormatterInterface
                             $escaped = false;
                         }
 
-                        $result[] = $this->components[$specifier]->format($pictureString, $date);
+                        $result[] = $components[$specifier]->format($pictureString, $date);
                     }
                 } else {
                     $exception = new InvalidArgumentException("Component [{$specifier}] is not supported");
@@ -163,14 +231,20 @@ final class IntlDateTimeFormatter implements FormatterInterface
         return $this->formatPattern($date, $locale, \implode('', $result));
     }
 
-    private function formatPattern(DateTimeInterface $date, $locale, $pattern)
+    /**
+     * @param DateTimeInterface $date
+     * @param string $locale
+     * @param string $pattern
+     * @return string
+     */
+    private function formatPattern(DateTimeInterface $date, string $locale, string $pattern): string
     {
         return (
             new IntlDateFormatter(
                 $locale,
                 IntlDateFormatter::FULL,
                 IntlDateFormatter::FULL,
-                $this->timezone,
+                $this->defaultTimezone,
                 IntlDateFormatter::GREGORIAN,
                 $pattern
             )
@@ -178,67 +252,17 @@ final class IntlDateTimeFormatter implements FormatterInterface
     }
 
     /**
-     * @return IntlDateTimeFormatter
+     * @param array|ComponentInterface[] $components
+     * @return array
      */
-    public static function createWithFlagDate()
+    private function newComponentsMap(array $components):array
     {
-        $formatter = new self();
-        $formatter->flagsDate = true;
-        $formatter->mapComponents([
-            new TimezoneOffsetUtcComponent(),
-            new TimezoneOffsetGmtComponent(),
-            new YearComponent(),
-            new MonthComponent(),
-            new DayInMonthComponent(),
-            new DayInYearComponent(),
-            new DayOfWeekComponent(),
-            new WeekOfYearComponent(),
-        ]);
-        return $formatter;
-    }
+        $map = [];
 
-    /**
-     * @return IntlDateTimeFormatter
-     */
-    public static function createWithFlagDateTime()
-    {
-        $formatter = new self();
-        $formatter->flagsDate = true;
-        $formatter->flagsTime = true;
-        $formatter->mapComponents([
-            new TimezoneOffsetUtcComponent(),
-            new TimezoneOffsetGmtComponent(),
-            new YearComponent(),
-            new MonthComponent(),
-            new DayInMonthComponent(),
-            new DayInYearComponent(),
-            new DayOfWeekComponent(),
-            new WeekOfYearComponent(),
-            new HourInDayComponent(),
-            new HourInHalfDayComponent(),
-            new MinutesComponent(),
-            new SecondsComponent(),
-            new AmPmMarkerComponent(),
-        ]);
-        return $formatter;
-    }
+        foreach ($components as $component) {
+            $map[(string)$component] = $component;
+        }
 
-    /**
-     * @return IntlDateTimeFormatter
-     */
-    public static function createWithFlagTime()
-    {
-        $formatter = new self();
-        $formatter->flagsTime = true;
-        $formatter->mapComponents([
-            new TimezoneOffsetUtcComponent(),
-            new TimezoneOffsetGmtComponent(),
-            new HourInDayComponent(),
-            new HourInHalfDayComponent(),
-            new MinutesComponent(),
-            new SecondsComponent(),
-            new AmPmMarkerComponent(),
-        ]);
-        return $formatter;
+        return $map;
     }
 }

@@ -4,12 +4,13 @@ declare(strict_types=1);
 namespace Genkgo\Xsl\Callback;
 
 use DOMNode;
+use Genkgo\Xsl\TransformationContext;
 use Genkgo\Xsl\Xpath\Lexer;
 
-final class ReturnXsScalarFunction implements ReplaceFunctionInterface
+final class ReturnXsScalarFunction implements FunctionInterface
 {
     /**
-     * @var ReplaceFunctionInterface
+     * @var FunctionInterface
      */
     private $parentFunction;
 
@@ -19,10 +20,10 @@ final class ReturnXsScalarFunction implements ReplaceFunctionInterface
     private $type;
 
     /**
-     * @param ReplaceFunctionInterface $parentFunction
+     * @param FunctionInterface $parentFunction
      * @param string $type
      */
-    public function __construct(ReplaceFunctionInterface $parentFunction, string $type)
+    public function __construct(FunctionInterface $parentFunction, string $type)
     {
         $this->parentFunction = $parentFunction;
         $this->type = ($type === '' ? '*' : $type);
@@ -33,9 +34,9 @@ final class ReturnXsScalarFunction implements ReplaceFunctionInterface
      * @param DOMNode $currentElement
      * @return array
      */
-    public function replace(Lexer $lexer, DOMNode $currentElement)
+    public function serialize(Lexer $lexer, DOMNode $currentElement): array
     {
-        $resultTokens = $this->parentFunction->replace($lexer, $currentElement);
+        $resultTokens = $this->parentFunction->serialize($lexer, $currentElement);
 
         $currentKey = $lexer->key();
         $level = 1;
@@ -64,5 +65,15 @@ final class ReturnXsScalarFunction implements ReplaceFunctionInterface
         }
 
         return $resultTokens;
+    }
+
+    /**
+     * @param array $arguments
+     * @param TransformationContext $context
+     * @return mixed
+     */
+    public function call(array $arguments, TransformationContext $context)
+    {
+        return $this->parentFunction->call($arguments, $context);
     }
 }

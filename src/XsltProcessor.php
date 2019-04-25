@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace Genkgo\Xsl;
 
 use DOMDocument;
+use Genkgo\Xsl\Callback\FunctionCollection;
 use Genkgo\Xsl\Callback\PhpCallback;
-use Genkgo\Xsl\Util\FunctionMap;
 use Genkgo\Xsl\Util\TransformerCollection;
 use Psr\SimpleCache\CacheInterface;
 use SimpleXMLElement;
@@ -159,7 +159,7 @@ final class XsltProcessor extends PhpXsltProcessor
         }
 
         $transformers = new TransformerCollection();
-        $functions = new FunctionMap();
+        $functions = new FunctionCollection();
 
         $xpathCompiler = new Xpath\Compiler($functions);
         $context = new TransformationContext($styleSheet, $transformers, $functions, $phpFunctions);

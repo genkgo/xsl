@@ -78,6 +78,6 @@ final class SequenceExpression implements ExpressionInterface
      */
     public function merge(Lexer $lexer, DOMNode $currentElement, array $tokens)
     {
-        return \array_merge($tokens, $this->sequenceConstructor->replace($lexer, $currentElement));
+        return \array_merge($tokens, $this->sequenceConstructor->serialize($lexer, $currentElement));
     }
 }

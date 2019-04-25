@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Genkgo\Xsl\Xpath;
 
 use DOMNode;
-use Genkgo\Xsl\Util\FunctionMap;
+use Genkgo\Xsl\Callback\FunctionCollection;
 use Genkgo\Xsl\Xpath\Expression\ForLoopExpression;
 use Genkgo\Xsl\Xpath\Expression\FunctionExpression;
 use Genkgo\Xsl\Xpath\Expression\SequenceExpression;
@@ -17,9 +17,9 @@ final class Compiler
     private $expressions = [];
 
     /**
-     * @param FunctionMap $functions
+     * @param FunctionCollection $functions
      */
-    public function __construct(FunctionMap $functions)
+    public function __construct(FunctionCollection $functions)
     {
         $this->expressions = [
             new FunctionExpression($functions),

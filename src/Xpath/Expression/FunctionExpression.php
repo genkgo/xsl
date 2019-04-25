@@ -5,23 +5,22 @@ namespace Genkgo\Xsl\Xpath\Expression;
 
 use DOMDocument;
 use DOMNode;
-use Genkgo\Xsl\Callback\ReplaceFunctionInterface;
+use Genkgo\Xsl\Callback\FunctionCollection;
 use Genkgo\Xsl\Util\FetchNamespacesFromNode;
-use Genkgo\Xsl\Util\FunctionMap;
 use Genkgo\Xsl\Xpath\ExpressionInterface;
 use Genkgo\Xsl\Xpath\Lexer;
 
 final class FunctionExpression implements ExpressionInterface
 {
     /**
-     * @var FunctionMap
+     * @var FunctionCollection
      */
     private $functions;
 
     /**
-     * @param FunctionMap $functions
+     * @param FunctionCollection $functions
      */
-    public function __construct(FunctionMap $functions)
+    public function __construct(FunctionCollection $functions)
     {
         $this->functions = $functions;
     }
@@ -61,16 +60,21 @@ final class FunctionExpression implements ExpressionInterface
         $token = $lexer->current();
         $documentElement = $currentElement->ownerDocument->documentElement;
         $namespaces = FetchNamespacesFromNode::fetch($documentElement);
-        $functionName = $this->convertTokenToFunctionName($token, $namespaces);
+        $functionQname = $this->convertTokenToFunctionName($token, $namespaces);
 
-        if ($this->functions->has($functionName)) {
-            $function = $this->functions->get($functionName);
-            if ($function instanceof ReplaceFunctionInterface) {
-                return $function->replace($lexer, $currentElement);
+        try {
+            $dot = \strrpos($functionQname, ':');
+            if ($dot !== false) {
+                $namespace = \substr($functionQname, 0, $dot);
+                $functionName = \substr($functionQname, $dot + 1);
+
+                return $this->functions->get($namespace)->get($functionName)->serialize($lexer, $currentElement);
+            } else {
+                return $this->functions->get('')->get($functionQname)->serialize($lexer, $currentElement);
             }
+        } catch (\InvalidArgumentException $e) {
+            return [$token];
         }
-
-        return [$token];
     }
 
     /**

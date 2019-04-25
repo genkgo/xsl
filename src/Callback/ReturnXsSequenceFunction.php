@@ -4,19 +4,20 @@ declare(strict_types=1);
 namespace Genkgo\Xsl\Callback;
 
 use DOMNode;
+use Genkgo\Xsl\TransformationContext;
 use Genkgo\Xsl\Xpath\Lexer;
 
-final class ReturnXsSequenceFunction implements ReplaceFunctionInterface
+final class ReturnXsSequenceFunction implements FunctionInterface
 {
     /**
-     * @var ReplaceFunctionInterface
+     * @var FunctionInterface
      */
     private $parentFunction;
 
     /**
-     * @param ReplaceFunctionInterface $parentFunction
+     * @param FunctionInterface $parentFunction
      */
-    public function __construct(ReplaceFunctionInterface $parentFunction)
+    public function __construct(FunctionInterface $parentFunction)
     {
         $this->parentFunction = $parentFunction;
     }
@@ -26,9 +27,9 @@ final class ReturnXsSequenceFunction implements ReplaceFunctionInterface
      * @param DOMNode $currentElement
      * @return array
      */
-    public function replace(Lexer $lexer, DOMNode $currentElement)
+    public function serialize(Lexer $lexer, DOMNode $currentElement): array
     {
-        $resultTokens = $this->parentFunction->replace($lexer, $currentElement);
+        $resultTokens = $this->parentFunction->serialize($lexer, $currentElement);
 
         $currentKey = $lexer->key();
         $level = 1;
@@ -57,5 +58,15 @@ final class ReturnXsSequenceFunction implements ReplaceFunctionInterface
         }
 
         return $resultTokens;
+    }
+
+    /**
+     * @param array $arguments
+     * @param TransformationContext $context
+     * @return mixed
+     */
+    public function call(array $arguments, TransformationContext $context)
+    {
+        return $this->parentFunction->call($arguments, $context);
     }
 }

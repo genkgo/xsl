@@ -12,24 +12,24 @@ final class IntlDateFormatterTest extends AbstractXslTest
 {
     public function testFormatDate()
     {
-        $formatter = IntlDateTimeFormatter::createWithFlagDate();
+        $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
 
         $this->assertEquals(
             '2015-10-16',
-            $formatter->format(new DateTime('2015-10-16'), '[Y]-[M]-[D]', 'en_US')
+            $formatter->formatDate(new DateTime('2015-10-16'), '[Y]-[M]-[D]', 'en_US')
         );
 
         $this->assertEquals(
             '42',
-            $formatter->format(new DateTime('2015-10-16'), '[W]', 'en_US')
+            $formatter->formatDate(new DateTime('2015-10-16'), '[W]', 'en_US')
         );
     }
 
     public function testExceptionCode()
     {
         try {
-            $formatter = IntlDateTimeFormatter::createWithFlagDate();
-            $formatter->format(new DateTime('2015-10-16'), '[H]', 'en_US');
+            $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
+            $formatter->formatDate(new DateTime('2015-10-16'), '[H]', 'en_US');
         } catch (InvalidArgumentException $e) {
             $this->assertEquals('XTDE1340', $e->getErrorCode());
         }
@@ -37,25 +37,25 @@ final class IntlDateFormatterTest extends AbstractXslTest
 
     public function testFormatTime()
     {
-        $formatter = IntlDateTimeFormatter::createWithFlagTime();
+        $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
 
         $this->assertEquals(
             '09:37:00',
-            $formatter->format(new DateTime('09:37:00'), '[H]:[m]:[s]', 'en_US')
+            $formatter->formatTime(new DateTime('09:37:00'), '[H]:[m]:[s]', 'en_US')
         );
 
         $this->assertEquals(
             'AM',
-            $formatter->format(new DateTime('09:37:00'), '[P]', 'en_US')
+            $formatter->formatTime(new DateTime('09:37:00'), '[P]', 'en_US')
         );
     }
 
     public function testFormatDateTime()
     {
-        $formatter = IntlDateTimeFormatter::createWithFlagDateTime();
+        $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
 
         $this->assertThat(
-            $formatter->format(new DateTime('2015-10-16 15:37:00'), '[Y]-[M]-[D] [H]:[m]:[s] [Z]', 'en_US'),
+            $formatter->formatDateTime(new DateTime('2015-10-16 15:37:00'), '[Y]-[M]-[D] [H]:[m]:[s] [Z]', 'en_US'),
             $this->logicalOr(
                 '2015-10-16 15:37:00 UTC',
                 '2015-10-16 15:37:00 GMT',
@@ -66,24 +66,24 @@ final class IntlDateFormatterTest extends AbstractXslTest
         );
 
         $this->assertThat(
-            $formatter->format(new DateTime('2015-10-16 15:37:00'), '[Y]-[M]-[D] [h]:[m]:[s] [P] [z]', 'en_US'),
+            $formatter->formatDateTime(new DateTime('2015-10-16 15:37:00'), '[Y]-[M]-[D] [h]:[m]:[s] [P] [z]', 'en_US'),
             $this->logicalOr('2015-10-16 03:37:00 PM GMT+02:00', '2015-10-16 03:37:00 PM GMT')
         );
 
         $this->assertEquals(
             '289 Friday',
-            $formatter->format(new DateTime('2015-10-16 15:37:00'), '[d] [F]', 'en_US')
+            $formatter->formatDateTime(new DateTime('2015-10-16 15:37:00'), '[d] [F]', 'en_US')
         );
     }
 
     public function testInvalidPicture()
     {
-        $formatter = IntlDateTimeFormatter::createWithFlagTime();
+        $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
 
         try {
             $this->assertEquals(
                 '09:37:00',
-                $formatter->format(new DateTime('2015-10-16'), '[Y]]', 'en_US')
+                $formatter->formatTime(new DateTime('2015-10-16'), '[Y]]', 'en_US')
             );
         } catch (InvalidArgumentException $e) {
             $this->assertEquals('XTDE1340', $e->getErrorCode());
@@ -95,8 +95,8 @@ final class IntlDateFormatterTest extends AbstractXslTest
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('No valid components found');
 
-        $formatter = IntlDateTimeFormatter::createWithFlagDate();
-        $formatter->format(new DateTime('2015-10-16'), '[A]', 'en_US');
+        $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
+        $formatter->formatDate(new DateTime('2015-10-16'), '[A]', 'en_US');
     }
 
     public function testNotSupportedComponent()
@@ -104,16 +104,16 @@ final class IntlDateFormatterTest extends AbstractXslTest
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Component [E] is not supported');
 
-        $formatter = IntlDateTimeFormatter::createWithFlagDate();
-        $formatter->format(new DateTime('2015-10-16'), '[E]', 'en_US');
+        $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
+        $formatter->formatDate(new DateTime('2015-10-16'), '[E]', 'en_US');
     }
 
     public function testEscapeBrackets()
     {
-        $formatter = IntlDateTimeFormatter::createWithFlagDateTime();
+        $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
         $this->assertEquals(
             '[Date:] 2015-05-16 03:37:00 PM',
-            $formatter->format(
+            $formatter->formatDateTime(
                 new DateTime('2015-05-16 15:37:00'),
                 '[[Date:]] [Y]-[M]-[D] [h]:[m]:[s] [P]',
                 'en_US'
@@ -126,8 +126,8 @@ final class IntlDateFormatterTest extends AbstractXslTest
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Wrong formatted date, missing ]');
 
-        $formatter = IntlDateTimeFormatter::createWithFlagDateTime();
-        $formatter->format(
+        $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
+        $formatter->formatDateTime(
             new DateTime('2015-10-16 15:37:00'),
             '[[ Hallo [Y',
             'en_US'
@@ -138,8 +138,8 @@ final class IntlDateFormatterTest extends AbstractXslTest
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $formatter = IntlDateTimeFormatter::createWithFlagDate();
-        $formatter->format(
+        $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
+        $formatter->formatDate(
             new DateTime('2015-10-16'),
             '[H]',
             'en_US'
@@ -151,8 +151,8 @@ final class IntlDateFormatterTest extends AbstractXslTest
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Wrong formatted date, escape by doubling [[ and ]]');
 
-        $formatter = IntlDateTimeFormatter::createWithFlagDate();
-        $formatter->format(
+        $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
+        $formatter->formatDate(
             new DateTime('2015-10-16'),
             ']',
             'en_US'
@@ -161,10 +161,10 @@ final class IntlDateFormatterTest extends AbstractXslTest
 
     public function testFormatMonthName()
     {
-        $formatter = IntlDateTimeFormatter::createWithFlagDate();
+        $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
         $this->assertEquals(
             'October',
-            $formatter->format(
+            $formatter->formatDate(
                 new DateTime('2015-10-16 15:37:00'),
                 '[MNn]',
                 'en_US'
@@ -174,10 +174,10 @@ final class IntlDateFormatterTest extends AbstractXslTest
 
     public function testFormatMonthNameAbbreviated()
     {
-        $formatter = IntlDateTimeFormatter::createWithFlagDate();
+        $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
         $this->assertEquals(
             'Oct',
-            $formatter->format(
+            $formatter->formatDate(
                 new DateTime('2015-10-16 15:37:00'),
                 '[MNn,*-3]',
                 'en_US'
@@ -187,10 +187,10 @@ final class IntlDateFormatterTest extends AbstractXslTest
 
     public function testFormatDayName()
     {
-        $formatter = IntlDateTimeFormatter::createWithFlagDate();
+        $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
         $this->assertEquals(
             'Friday',
-            $formatter->format(
+            $formatter->formatDate(
                 new DateTime('2015-10-16 15:37:00'),
                 '[F]',
                 'en_US'
@@ -200,10 +200,10 @@ final class IntlDateFormatterTest extends AbstractXslTest
 
     public function testFormatDayNameAbbreviated()
     {
-        $formatter = IntlDateTimeFormatter::createWithFlagDate();
+        $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
         $this->assertEquals(
             'Fri',
-            $formatter->format(
+            $formatter->formatDate(
                 new DateTime('2015-10-16 15:37:00'),
                 '[FNn,*-3]',
                 'en_US'
@@ -213,10 +213,10 @@ final class IntlDateFormatterTest extends AbstractXslTest
 
     public function testFormatDayNameFull()
     {
-        $formatter = IntlDateTimeFormatter::createWithFlagDate();
+        $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
         $this->assertEquals(
             'Friday',
-            $formatter->format(
+            $formatter->formatDate(
                 new DateTime('2015-10-16 15:37:00'),
                 '[FNn,*-4]',
                 'en_US'
@@ -226,10 +226,10 @@ final class IntlDateFormatterTest extends AbstractXslTest
 
     public function testUpperCase()
     {
-        $formatter = IntlDateTimeFormatter::createWithFlagDate();
+        $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
         $this->assertEquals(
             'FRI',
-            $formatter->format(
+            $formatter->formatDate(
                 new DateTime('2015-10-16 15:37:00'),
                 '[FN,*-3]',
                 'en_US'
@@ -239,10 +239,10 @@ final class IntlDateFormatterTest extends AbstractXslTest
 
     public function testLowerCase()
     {
-        $formatter = IntlDateTimeFormatter::createWithFlagDate();
+        $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
         $this->assertEquals(
             'fri',
-            $formatter->format(
+            $formatter->formatDate(
                 new DateTime('2015-10-16 15:37:00'),
                 '[Fn,*-3]',
                 'en_US'
@@ -252,10 +252,10 @@ final class IntlDateFormatterTest extends AbstractXslTest
 
     public function testFormatDayNameAbbreviatedCapitalWithMonthCapital()
     {
-        $formatter = IntlDateTimeFormatter::createWithFlagDate();
+        $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
         $this->assertEquals(
             'OCTOBER FRI',
-            $formatter->format(
+            $formatter->formatDate(
                 new DateTime('2015-10-16 15:37:00'),
                 '[MN] [FN,*-3]',
                 'en_US'
@@ -265,10 +265,10 @@ final class IntlDateFormatterTest extends AbstractXslTest
 
     public function testFormatDayInMonthWithoutLeadingZero()
     {
-        $formatter = IntlDateTimeFormatter::createWithFlagDate();
+        $formatter =new IntlDateTimeFormatter(\date_default_timezone_get());
         $this->assertSame(
             '8',
-            $formatter->format(
+            $formatter->formatDate(
                 new DateTime('2015-10-08 15:37:00'),
                 '[D,*-1]',
                 'en_US'
@@ -278,10 +278,10 @@ final class IntlDateFormatterTest extends AbstractXslTest
 
     public function testFormatMonthWithoutLeadingZero()
     {
-        $formatter = IntlDateTimeFormatter::createWithFlagDate();
+        $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
         $this->assertSame(
             '5',
-            $formatter->format(
+            $formatter->formatDate(
                 new DateTime('2015-05-08 15:37:00'),
                 '[M,*-1]',
                 'en_US'
@@ -291,10 +291,10 @@ final class IntlDateFormatterTest extends AbstractXslTest
 
     public function testMonthName()
     {
-        $formatter = IntlDateTimeFormatter::createWithFlagDate();
+        $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
         $this->assertSame(
             '08 May 2015',
-            $formatter->format(
+            $formatter->formatDate(
                 new DateTime('2015-05-08 15:37:00'),
                 '[D] [MNn] [Y]',
                 'en_US'
@@ -304,10 +304,10 @@ final class IntlDateFormatterTest extends AbstractXslTest
 
     public function testJanuaryFirst2017()
     {
-        $formatter = IntlDateTimeFormatter::createWithFlagDate();
+        $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
         $this->assertSame(
             '01-01-2017',
-            $formatter->format(
+            $formatter->formatDate(
                 new \DateTime('2017-01-01 18:42:34.000000', new \DateTimeZone('UTC')),
                 '[D]-[M]-[Y]',
                 'nl_NL'

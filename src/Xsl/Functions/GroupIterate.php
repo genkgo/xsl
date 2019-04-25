@@ -4,15 +4,15 @@ declare(strict_types=1);
 namespace Genkgo\Xsl\Xsl\Functions;
 
 use DOMDocument;
+use DOMNode;
 use Genkgo\Xsl\Callback\FunctionInterface;
-use Genkgo\Xsl\Callback\MethodCallInterface;
 use Genkgo\Xsl\TransformationContext;
-use Genkgo\Xsl\Util\FunctionMap;
+use Genkgo\Xsl\Xpath\Lexer;
 use Genkgo\Xsl\Xsl\ForEachGroup\Group;
 use Genkgo\Xsl\Xsl\ForEachGroup\Map as ForEachGroupMap;
 use Genkgo\Xsl\Xsl\XslTransformations;
 
-final class GroupIterate implements FunctionInterface, MethodCallInterface
+final class GroupIterate implements FunctionInterface
 {
     /**
      * @var ForEachGroupMap
@@ -25,15 +25,6 @@ final class GroupIterate implements FunctionInterface, MethodCallInterface
     public function __construct(ForEachGroupMap $groups)
     {
         $this->groups = $groups;
-    }
-
-    /**
-     * @param FunctionMap $functionMap
-     * @return void
-     */
-    public function register(FunctionMap $functionMap)
-    {
-        $functionMap->set(XslTransformations::URI . ':group-iterate', $this);
     }
 
     /**
@@ -63,5 +54,15 @@ final class GroupIterate implements FunctionInterface, MethodCallInterface
         }
 
         return $document;
+    }
+
+    /**
+     * @param Lexer $lexer
+     * @param DOMNode $currentElement
+     * @return array
+     */
+    public function serialize(Lexer $lexer, DOMNode $currentElement): array
+    {
+        return [$lexer->current()];
     }
 }

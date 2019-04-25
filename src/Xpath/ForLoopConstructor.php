@@ -4,18 +4,19 @@ declare(strict_types=1);
 namespace Genkgo\Xsl\Xpath;
 
 use DOMNode;
+use Genkgo\Xsl\Callback\FunctionInterface;
 use Genkgo\Xsl\Callback\PhpCallback;
-use Genkgo\Xsl\Callback\ReplaceFunctionInterface;
 use Genkgo\Xsl\Schema\XsSequence;
+use Genkgo\Xsl\TransformationContext;
 
-final class ForLoopConstructor implements ReplaceFunctionInterface
+final class ForLoopConstructor implements FunctionInterface
 {
     /**
      * @param Lexer $lexer
      * @param DOMNode $currentElement
-     * @return array|string[]
+     * @return array
      */
-    public function replace(Lexer $lexer, DOMNode $currentElement)
+    public function serialize(Lexer $lexer, DOMNode $currentElement): array
     {
         $prepend = [];
         $prepend[] = 'php:function';
@@ -29,7 +30,7 @@ final class ForLoopConstructor implements ReplaceFunctionInterface
         $prepend[] = '\'';
         $prepend[] = ',';
         $prepend[] = '\'';
-        $prepend[] = 'call';
+        $prepend[] = 'newRange';
         $prepend[] = '\'';
         $prepend[] = ',';
 
@@ -74,11 +75,21 @@ final class ForLoopConstructor implements ReplaceFunctionInterface
     }
 
     /**
-     * @param mixed $first
-     * @param mixed $last
+     * @param array $arguments
+     * @param TransformationContext $context
+     * @return mixed
+     */
+    public function call(array $arguments, TransformationContext $context)
+    {
+        throw new \BadMethodCallException();
+    }
+
+    /**
+     * @param int|float $first
+     * @param int|float $last
      * @return XsSequence
      */
-    public static function call($first, $last)
+    public static function newRange($first, $last): XsSequence
     {
         if (isset($first[0]->textContent)) {
             $first = \trim($first[0]->textContent);

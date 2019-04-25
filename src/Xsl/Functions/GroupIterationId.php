@@ -3,14 +3,13 @@ declare(strict_types=1);
 
 namespace Genkgo\Xsl\Xsl\Functions;
 
+use DOMNode;
 use Genkgo\Xsl\Callback\FunctionInterface;
-use Genkgo\Xsl\Callback\MethodCallInterface;
 use Genkgo\Xsl\TransformationContext;
-use Genkgo\Xsl\Util\FunctionMap;
+use Genkgo\Xsl\Xpath\Lexer;
 use Genkgo\Xsl\Xsl\ForEachGroup\Map as ForEachGroupMap;
-use Genkgo\Xsl\Xsl\XslTransformations;
 
-final class GroupIterationId implements FunctionInterface, MethodCallInterface
+final class GroupIterationId implements FunctionInterface
 {
     /**
      * @var ForEachGroupMap
@@ -26,15 +25,6 @@ final class GroupIterationId implements FunctionInterface, MethodCallInterface
     }
 
     /**
-     * @param FunctionMap $functionMap
-     * @return void
-     */
-    public function register(FunctionMap $functionMap)
-    {
-        $functionMap->set(XslTransformations::URI . ':group-iteration-id', $this);
-    }
-
-    /**
      * @param array $arguments
      * @param TransformationContext $context
      * @return int
@@ -46,5 +36,15 @@ final class GroupIterationId implements FunctionInterface, MethodCallInterface
         }
 
         return $this->groups->newIterationId($arguments[0]);
+    }
+
+    /**
+     * @param Lexer $lexer
+     * @param DOMNode $currentElement
+     * @return array
+     */
+    public function serialize(Lexer $lexer, DOMNode $currentElement): array
+    {
+        return [$lexer->current()];
     }
 }

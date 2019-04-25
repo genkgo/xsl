@@ -3,18 +3,10 @@ declare(strict_types=1);
 
 namespace Genkgo\Xsl\Xsl;
 
-use Genkgo\Xsl\Callback\ObjectFunction;
-use Genkgo\Xsl\Callback\StaticFunction;
-use Genkgo\Xsl\Util\FunctionMap;
+use Genkgo\Xsl\Callback\FunctionCollection;
 use Genkgo\Xsl\Util\TransformerCollection;
 use Genkgo\Xsl\XmlNamespaceInterface;
 use Genkgo\Xsl\Xpath\Compiler;
-use Genkgo\Xsl\Xsl\Functions\CurrentGroup;
-use Genkgo\Xsl\Xsl\Functions\CurrentGroupingKey;
-use Genkgo\Xsl\Xsl\Functions\DateFormatting;
-use Genkgo\Xsl\Xsl\Functions\GroupBy;
-use Genkgo\Xsl\Xsl\Functions\GroupIterate;
-use Genkgo\Xsl\Xsl\Functions\GroupIterationId;
 
 final class XslTransformations implements XmlNamespaceInterface
 {
@@ -35,41 +27,12 @@ final class XslTransformations implements XmlNamespaceInterface
 
     /**
      * @param TransformerCollection $transformers
-     * @param FunctionMap $functions
+     * @param FunctionCollection $functions
      * @return void
      */
-    public function register(TransformerCollection $transformers, FunctionMap $functions)
+    public function register(TransformerCollection $transformers, FunctionCollection $functions): void
     {
-        $this->registerGroupFunctions($functions);
-        $this->registerFormatDateFunctions($functions);
-
+        $functions->attach(self::URI, new FunctionMap());
         $transformers->attach(new Transformer($this->xpathCompiler));
-    }
-
-    private function registerGroupFunctions(FunctionMap $functions)
-    {
-        $groupMap = new ForEachGroup\Map();
-
-        (new GroupBy($this->xpathCompiler, $groupMap))->register($functions);
-        (new GroupIterate($groupMap))->register($functions);
-        (new GroupIterationId($groupMap))->register($functions);
-        (new CurrentGroupingKey())->register($functions);
-        (new CurrentGroup())->register($functions);
-    }
-
-    private function registerFormatDateFunctions(FunctionMap $functions)
-    {
-        (new StaticFunction(
-            'format-dateTime',
-            new ObjectFunction([DateFormatting::class, 'formatDateTime'])
-        ))->register($functions);
-        (new StaticFunction(
-            'format-date',
-            new ObjectFunction([DateFormatting::class, 'formatDate'])
-        ))->register($functions);
-        (new StaticFunction(
-            'format-time',
-            new ObjectFunction([DateFormatting::class, 'formatTime'])
-        ))->register($functions);
     }
 }

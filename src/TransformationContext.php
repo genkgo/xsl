@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Genkgo\Xsl;
 
 use DOMDocument;
-use Genkgo\Xsl\Util\FunctionMap;
+use Genkgo\Xsl\Callback\FunctionCollection;
 use Genkgo\Xsl\Util\TransformerCollection;
 
 final class TransformationContext
@@ -25,20 +25,20 @@ final class TransformationContext
     private $transformers;
 
     /**
-     * @var FunctionMap
+     * @var FunctionCollection
      */
     private $functions;
 
     /**
      * @param DOMDocument $document
      * @param TransformerCollection $transformers
-     * @param FunctionMap $functions
+     * @param FunctionCollection $functions
      * @param array|null $phpFunctions
      */
     public function __construct(
         DOMDocument $document,
         TransformerCollection $transformers,
-        FunctionMap $functions,
+        FunctionCollection $functions,
         array $phpFunctions = null
     ) {
         $this->document = $document;
@@ -64,7 +64,7 @@ final class TransformationContext
     }
 
     /**
-     * @return FunctionMap
+     * @return FunctionCollection
      */
     public function getFunctions()
     {

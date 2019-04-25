@@ -26,24 +26,25 @@ final class PhpCallback
     }
 
     /**
-     * @param string $functionName
+     * @param string $functionQname
      * @param mixed ...$arguments
      * @return mixed
      */
-    public static function call(string $functionName, ...$arguments)
+    public static function call(string $functionQname, ...$arguments)
     {
         if (self::$context === null) {
             throw new \RuntimeException('No context known when calling function from strylesheet');
         }
 
-        $function = self::$context->getFunctions()->get($functionName);
-        $callable = [$function, 'call'];
+        $dot = \strrpos($functionQname, ':');
+        if ($dot !== false) {
+            $namespace = \substr($functionQname, 0, $dot);
+            $functionName = \substr($functionQname, $dot + 1);
 
-        if (\is_callable($callable)) {
-            return \call_user_func($callable, $arguments, self::$context);
+            return self::$context->getFunctions()->get($namespace)->get($functionName)->call($arguments, self::$context);
+        } else {
+            return self::$context->getFunctions()->get('')->get($functionQname)->call($arguments, self::$context);
         }
-
-        throw new \RuntimeException('Calling function that is not callable');
     }
 
     /**

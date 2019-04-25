@@ -3,10 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Xsl\Schema;
 
-use Genkgo\Xsl\Callback\ObjectFunction;
-use Genkgo\Xsl\Callback\ReturnXsScalarFunction;
-use Genkgo\Xsl\Callback\StaticFunction;
-use Genkgo\Xsl\Util\FunctionMap;
+use Genkgo\Xsl\Callback\FunctionCollection;
 use Genkgo\Xsl\Util\TransformerCollection;
 use Genkgo\Xsl\XmlNamespaceInterface;
 
@@ -16,39 +13,11 @@ final class XmlSchema implements XmlNamespaceInterface
 
     /**
      * @param TransformerCollection $transformers
-     * @param FunctionMap $functions
+     * @param FunctionCollection $functions
      * @return void
      */
-    public function register(TransformerCollection $transformers, FunctionMap $functions)
+    public function register(TransformerCollection $transformers, FunctionCollection $functions): void
     {
-        (new StaticFunction(
-            self::URI.':date',
-            new ReturnXsScalarFunction(new ObjectFunction([Functions::class, 'xsDate']), 'date')
-        )
-        )->register($functions);
-
-        (new StaticFunction(
-            self::URI.':time',
-            new ReturnXsScalarFunction(new ObjectFunction([Functions::class, 'xsTime']), 'time')
-        )
-        )->register($functions);
-
-        (new StaticFunction(
-            self::URI.':dateTime',
-            new ReturnXsScalarFunction(new ObjectFunction([Functions::class, 'xsDateTime']), 'dateTime')
-        )
-        )->register($functions);
-
-        (new StaticFunction(
-            self::URI.':dayTimeDuration',
-            new ReturnXsScalarFunction(new ObjectFunction([Functions::class, 'xsDayTimeDuration']), 'dayTimeDuration')
-        )
-        )->register($functions);
-
-        (new StaticFunction(
-            self::URI.':integer',
-            new ReturnXsScalarFunction(new ObjectFunction([Functions::class, 'xsInteger']), 'integer')
-        )
-        )->register($functions);
+        $functions->attach(self::URI, new FunctionMap());
     }
 }

@@ -3,16 +3,23 @@ declare(strict_types=1);
 
 namespace Genkgo\Xsl\Callback;
 
-use Genkgo\Xsl\Util\FunctionMap;
+use DOMNode;
+use Genkgo\Xsl\TransformationContext;
+use Genkgo\Xsl\Xpath\Lexer;
 
-/**
- * Interface FunctionInterface
- */
 interface FunctionInterface
 {
     /**
-     * @param FunctionMap $functionMap
-     * @return void
+     * @param Lexer $lexer
+     * @param DOMNode $currentElement
+     * @return array
      */
-    public function register(FunctionMap $functionMap);
+    public function serialize(Lexer $lexer, DOMNode $currentElement): array;
+
+    /**
+     * @param array $arguments
+     * @param TransformationContext $context
+     * @return mixed
+     */
+    public function call(array $arguments, TransformationContext $context);
 }

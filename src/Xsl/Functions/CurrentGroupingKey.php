@@ -6,27 +6,18 @@ namespace Genkgo\Xsl\Xsl\Functions;
 use DOMElement;
 use DOMNode;
 use Genkgo\Xsl\Callback\FunctionInterface;
-use Genkgo\Xsl\Callback\ReplaceFunctionInterface;
-use Genkgo\Xsl\Util\FunctionMap;
+use Genkgo\Xsl\TransformationContext;
 use Genkgo\Xsl\Xpath\Lexer;
 use Genkgo\Xsl\Xsl\XslTransformations;
 
-final class CurrentGroupingKey implements ReplaceFunctionInterface, FunctionInterface
+final class CurrentGroupingKey implements FunctionInterface
 {
-    /**
-     * @param FunctionMap $functionMap
-     */
-    public function register(FunctionMap $functionMap)
-    {
-        $functionMap->set('current-grouping-key', $this);
-    }
-
     /**
      * @param Lexer $lexer
      * @param DOMNode $currentElement
      * @return string[]
      */
-    public function replace(Lexer $lexer, DOMNode $currentElement)
+    public function serialize(Lexer $lexer, DOMNode $currentElement): array
     {
         $xslForEach = $currentElement->parentNode;
         if ($xslForEach instanceof DOMNode) {
@@ -66,5 +57,15 @@ final class CurrentGroupingKey implements ReplaceFunctionInterface, FunctionInte
         }
 
         return false;
+    }
+
+    /**
+     * @param array $arguments
+     * @param TransformationContext $context
+     * @return mixed
+     */
+    public function call(array $arguments, TransformationContext $context)
+    {
+        throw new \BadMethodCallException();
     }
 }

@@ -11,7 +11,7 @@ final class Functions
      * @param mixed $value
      * @return XsDate
      */
-    public static function xsDate($value)
+    public static function date($value)
     {
         $value = XsDate::castToNodeValue($value);
         return XsDate::fromString($value);
@@ -21,7 +21,7 @@ final class Functions
      * @param mixed $value
      * @return XsTime
      */
-    public static function xsTime($value)
+    public static function time($value)
     {
         $value = XsTime::castToNodeValue($value);
         return XsTime::fromString($value);
@@ -31,7 +31,7 @@ final class Functions
      * @param mixed $value
      * @return XsDateTime
      */
-    public static function xsDateTime($value)
+    public static function dateTime($value)
     {
         $value = XsDateTime::castToNodeValue($value);
         return XsDateTime::fromString($value);
@@ -41,7 +41,7 @@ final class Functions
      * @param mixed $value
      * @return XsDayTimeDuration
      */
-    public static function xsDayTimeDuration($value)
+    public static function dayTimeDuration($value)
     {
         $value = XsDayTimeDuration::castToNodeValue($value);
         return XsDayTimeDuration::fromString($value);
@@ -51,7 +51,7 @@ final class Functions
      * @param mixed $value
      * @return XsInteger|XsSequence
      */
-    public static function xsInteger($value)
+    public static function integer($value)
     {
         if (\is_bool($value)) {
             return new XsInteger((int)$value);
