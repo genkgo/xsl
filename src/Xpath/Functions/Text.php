@@ -3,11 +3,8 @@ declare(strict_types=1);
 
 namespace Genkgo\Xsl\Xpath\Functions;
 
-use DOMElement;
 use Genkgo\Xsl\Callback\Arguments;
-use Genkgo\Xsl\Exception\CastException;
 use Genkgo\Xsl\Schema\XsSequence;
-use Genkgo\Xsl\Util\Assert;
 use Genkgo\Xsl\Util\FetchNamespacesFromNode;
 
 final class Text
@@ -117,9 +114,7 @@ final class Text
     }
 
     /**
-     * @param string $input
-     * @param string $pattern
-     * @param string $flags
+     * @param Arguments $arguments
      * @return XsSequence
      */
     public static function tokenize(Arguments $arguments): XsSequence

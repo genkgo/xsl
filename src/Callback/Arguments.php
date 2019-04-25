@@ -105,7 +105,7 @@ final class Arguments
     {
         return \array_map(
             function ($value) {
-                if (\is_array($value) && count($value) === 1) {
+                if (\is_array($value) && \count($value) === 1) {
                     return \reset($value)->textContent;
                 }
 

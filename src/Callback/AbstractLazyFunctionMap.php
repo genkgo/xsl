@@ -80,9 +80,8 @@ abstract class AbstractLazyFunctionMap implements FunctionMapInterface
         string $functionName,
         string $className,
         string $methodName
-    ): FunctionInterface
-    {
-        return new StringFunction($this->newFullFunctionQname($functionName),$className, $methodName);
+    ): FunctionInterface {
+        return new StringFunction($this->newFullFunctionQname($functionName), $className, $methodName);
     }
 
     /**
@@ -95,8 +94,7 @@ abstract class AbstractLazyFunctionMap implements FunctionMapInterface
         string $functionName,
         string $className,
         string $methodName
-    ): FunctionInterface
-    {
+    ): FunctionInterface {
         return new StaticClassFunction($this->newFullFunctionQname($functionName), $className, $methodName);
     }
 
@@ -110,8 +108,7 @@ abstract class AbstractLazyFunctionMap implements FunctionMapInterface
         string $functionName,
         string $className,
         string $methodName
-    ): FunctionInterface
-    {
+    ): FunctionInterface {
         return new ReturnXsSequenceFunction(
             new StaticClassFunction($this->newFullFunctionQname($functionName), $className, $methodName)
         );
@@ -129,8 +126,7 @@ abstract class AbstractLazyFunctionMap implements FunctionMapInterface
         string $className,
         string $methodName,
         string $returnType
-    ): FunctionInterface
-    {
+    ): FunctionInterface {
         return new ReturnXsScalarFunction(
             new StaticClassFunction($this->newFullFunctionQname($functionName), $className, $methodName),
             $returnType

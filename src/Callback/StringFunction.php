@@ -69,6 +69,11 @@ final class StringFunction implements FunctionInterface
      */
     public function call(Arguments $arguments, TransformationContext $context)
     {
-        return \call_user_func_array([$this->className, $this->methodName], $arguments->unpackAsScalar());
+        $callable = [$this->className, $this->methodName];
+        if (\is_callable($callable)) {
+            return \call_user_func_array($callable, $arguments->unpackAsScalar());
+        }
+
+        throw new \InvalidArgumentException('Argument is not callable');
     }
 }

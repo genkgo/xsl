@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Genkgo\Xsl\Xpath\Functions;
 
-use DOMElement;
 use Genkgo\Xsl\Callback\Arguments;
 use Genkgo\Xsl\Schema\XsSequence;
 
@@ -11,7 +10,7 @@ final class Aggregation
 {
     /**
      * @param Arguments $arguments
-     * @return float|XsSequence
+     * @return float|int|XsSequence
      */
     public static function avg(Arguments $arguments)
     {
