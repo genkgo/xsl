@@ -11,7 +11,7 @@ Requires PHP 7.2 or later. For PHP 5.6+ use version 0.6. It is installable and a
 [![Code Coverage](https://scrutinizer-ci.com/g/genkgo/xsl/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/genkgo/xsl/)
 [![Build Status](https://travis-ci.org/genkgo/xsl.png?branch=master)](https://travis-ci.org/genkgo/xsl)
 
-To run the unit tests at the command line, issue `phpunit -c tests/`. [PHPUnit](http://phpunit.de/manual/) is required.
+To run the unit tests at the command line, issue `./vendor/bin/phpunit -c phpunit.xml`. [PHPUnit](http://phpunit.de/manual/) is required.
 
 This library attempts to comply with [PSR-1][], [PSR-2][], and [PSR-4][]. If
 you notice compliance oversights, please send a patch via pull request.
