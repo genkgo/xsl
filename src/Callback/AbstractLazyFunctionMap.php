@@ -18,7 +18,7 @@ abstract class AbstractLazyFunctionMap implements FunctionMapInterface
     /**
      * @param string $namespace
      */
-    final public function __construct(string $namespace)
+    public function __construct(string $namespace)
     {
         $this->namespace = $namespace;
         $this->functions = $this->newStaticFunctionList();
