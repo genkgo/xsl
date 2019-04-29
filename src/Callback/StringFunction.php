@@ -2,11 +2,9 @@
 
 namespace Genkgo\Xsl\Callback;
 
-use DOMNode;
 use Genkgo\Xsl\TransformationContext;
-use Genkgo\Xsl\Xpath\Lexer;
 
-final class StringFunction implements FunctionInterface
+final class StringFunction extends AbstractFunction
 {
     /**
      * @var string
@@ -36,30 +34,11 @@ final class StringFunction implements FunctionInterface
     }
 
     /**
-     * @param Lexer $lexer
-     * @param DOMNode $currentElement
-     * @return array
+     * @return string
      */
-    public function serialize(Lexer $lexer, DOMNode $currentElement): array
+    protected function getName(): string
     {
-        $resultTokens = [];
-        $resultTokens[] = 'php:function';
-        $resultTokens[] = '(';
-        $resultTokens[] = '\'';
-        $resultTokens[] = PhpCallback::class.'::call';
-        $resultTokens[] = '\'';
-        $resultTokens[] = ',';
-        $resultTokens[] = '\'';
-        $resultTokens[] = $this->name;
-        $resultTokens[] = '\'';
-
-        $lexer->next();
-
-        if ($lexer->peek($lexer->key() + 1) !== ')') {
-            $resultTokens[] = ',';
-        }
-
-        return $resultTokens;
+        return $this->name;
     }
 
     /**
