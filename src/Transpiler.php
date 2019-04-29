@@ -47,7 +47,8 @@ final class Transpiler
         }
         // @codeCoverageIgnoreEnd
 
-        if ($documentURI && !\is_file($documentURI)) {
+        if (!$documentURI || !\is_file($documentURI)) {
+            $this->transpile($document);
             return $document->saveXML();
         }
 
