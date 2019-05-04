@@ -6,6 +6,7 @@ namespace Genkgo\Xsl;
 use DOMDocument;
 use Genkgo\Xsl\Callback\FunctionCollection;
 use Genkgo\Xsl\Callback\PhpCallback;
+use Genkgo\Xsl\Exception\TransformationException;
 use Genkgo\Xsl\Util\TransformerCollection;
 use Psr\SimpleCache\CacheInterface;
 use SimpleXMLElement;
@@ -65,12 +66,18 @@ final class XsltProcessor extends PhpXsltProcessor
         $styleSheet = $this->styleSheetToDomDocument();
 
         $transpiler = $this->createTranspiler($styleSheet);
-        \libxml_use_internal_errors();
-        parent::importStylesheet($this->getTranspiledStyleSheet($transpiler, $styleSheet));
+        \libxml_use_internal_errors(true);
 
-        return $transpiler->transform(function () use ($doc) {
-            return parent::transformToXml($doc);
-        });
+        try {
+            parent::importStylesheet($this->getTranspiledStyleSheet($transpiler, $styleSheet));
+            $this->throwOnLibxmlError();
+
+            return $transpiler->transform(function () use ($doc) {
+                return parent::transformToXml($doc);
+            });
+        } finally {
+            \libxml_clear_errors();
+        }
     }
 
     /**
@@ -82,11 +89,18 @@ final class XsltProcessor extends PhpXsltProcessor
         $styleSheet = $this->styleSheetToDomDocument();
 
         $transpiler = $this->createTranspiler($styleSheet);
-        parent::importStylesheet($this->getTranspiledStyleSheet($transpiler, $styleSheet));
+        \libxml_use_internal_errors(true);
 
-        return $transpiler->transform(function () use ($doc) {
-            return parent::transformToDoc($doc);
-        });
+        try {
+            parent::importStylesheet($this->getTranspiledStyleSheet($transpiler, $styleSheet));
+            $this->throwOnLibxmlError();
+
+            return $transpiler->transform(function () use ($doc) {
+                return parent::transformToDoc($doc);
+            });
+        } finally {
+            \libxml_clear_errors();
+        }
     }
 
     /**
@@ -97,13 +111,19 @@ final class XsltProcessor extends PhpXsltProcessor
     public function transformToUri($doc, $uri)
     {
         $styleSheet = $this->styleSheetToDomDocument();
-
         $transpiler = $this->createTranspiler($styleSheet);
-        parent::importStylesheet($this->getTranspiledStyleSheet($transpiler, $styleSheet));
+        \libxml_use_internal_errors(true);
 
-        return $transpiler->transform(function () use ($doc, $uri) {
-            return parent::transformToUri($doc, $uri);
-        });
+        try {
+            parent::importStylesheet($this->getTranspiledStyleSheet($transpiler, $styleSheet));
+            $this->throwOnLibxmlError();
+
+            return $transpiler->transform(function () use ($doc, $uri) {
+                return parent::transformToUri($doc, $uri);
+            });
+        } finally {
+            \libxml_clear_errors();
+        }
     }
 
     /**
@@ -240,5 +260,15 @@ final class XsltProcessor extends PhpXsltProcessor
         ];
 
         return $contextOptions;
+    }
+
+    private function throwOnLibxmlError()
+    {
+        $errors = \libxml_get_errors();
+        if ($errors === []) {
+            return;
+        }
+
+        throw TransformationException::fromLibxmlErrorList($errors);
     }
 }
