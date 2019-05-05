@@ -137,7 +137,7 @@ abstract class AbstractLazyFunctionMap implements FunctionMapInterface
      * @param string $functionName
      * @return string
      */
-    private function newFullFunctionQname(string $functionName): string
+    protected function newFullFunctionQname(string $functionName): string
     {
         if ($this->namespace === '') {
             return $functionName;
