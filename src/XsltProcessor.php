@@ -66,7 +66,7 @@ final class XsltProcessor extends PhpXsltProcessor
         $styleSheet = $this->styleSheetToDomDocument();
 
         $transpiler = $this->createTranspiler($styleSheet);
-        \libxml_use_internal_errors(true);
+        $useInternalErrors = \libxml_use_internal_errors(true);
 
         try {
             parent::importStylesheet($this->getTranspiledStyleSheet($transpiler, $styleSheet));
@@ -77,6 +77,7 @@ final class XsltProcessor extends PhpXsltProcessor
             });
         } finally {
             \libxml_clear_errors();
+            \libxml_use_internal_errors($useInternalErrors);
         }
     }
 
@@ -89,7 +90,7 @@ final class XsltProcessor extends PhpXsltProcessor
         $styleSheet = $this->styleSheetToDomDocument();
 
         $transpiler = $this->createTranspiler($styleSheet);
-        \libxml_use_internal_errors(true);
+        $useInternalErrors = \libxml_use_internal_errors(true);
 
         try {
             parent::importStylesheet($this->getTranspiledStyleSheet($transpiler, $styleSheet));
@@ -100,6 +101,7 @@ final class XsltProcessor extends PhpXsltProcessor
             });
         } finally {
             \libxml_clear_errors();
+            \libxml_use_internal_errors($useInternalErrors);
         }
     }
 
@@ -112,7 +114,7 @@ final class XsltProcessor extends PhpXsltProcessor
     {
         $styleSheet = $this->styleSheetToDomDocument();
         $transpiler = $this->createTranspiler($styleSheet);
-        \libxml_use_internal_errors(true);
+        $useInternalErrors = \libxml_use_internal_errors(true);
 
         try {
             parent::importStylesheet($this->getTranspiledStyleSheet($transpiler, $styleSheet));
@@ -123,6 +125,7 @@ final class XsltProcessor extends PhpXsltProcessor
             });
         } finally {
             \libxml_clear_errors();
+            \libxml_use_internal_errors($useInternalErrors);
         }
     }
 

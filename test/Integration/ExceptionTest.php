@@ -16,7 +16,7 @@ final class ExceptionTest extends AbstractTestCase
         $this->expectException(TransformationException::class);
 
         $xslDoc = new DOMDocument();
-        $xslDoc->loadXML(file_get_contents('Stubs/invalid-stylesheet.xsl'));
+        $xslDoc->loadXML((string)file_get_contents('Stubs/invalid-stylesheet.xsl'));
 
         $xmlDoc = new DOMDocument();
         $xmlDoc->load('Stubs/collection.xml');
