@@ -57,6 +57,10 @@ final class Arguments implements \Countable
             return $this->convertFromSchemaTypeToPhpType($value[0]);
         }
 
+        if (\is_array($value) && \count($value) === 0) {
+            return '';
+        }
+
         throw new CastException('Cannot convert list of elements to string');
     }
 
@@ -115,6 +119,10 @@ final class Arguments implements \Countable
             function ($value) {
                 if (\is_array($value) && \count($value) === 1) {
                     return $this->convertFromSchemaTypeToPhpType(\reset($value));
+                }
+
+                if (\is_array($value) && \count($value) === 0) {
+                    return '';
                 }
 
                 return $value;
