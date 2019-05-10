@@ -27,7 +27,7 @@ final class Sequence
 
         \array_splice(
             $elements,
-            (int)$arguments->castAsScalar(1) - 1,
+            (int)$arguments->castFromSchemaType(1) - 1,
             0,
             $arguments->get(2)
         );
@@ -43,7 +43,7 @@ final class Sequence
     {
         $elements = $arguments->castAsSequence(0);
 
-        unset($elements[(int)$arguments->castAsScalar(1) - 1]);
+        unset($elements[(int)$arguments->castFromSchemaType(1) - 1]);
         return XsSequence::fromArray($elements);
     }
 
@@ -54,10 +54,10 @@ final class Sequence
     public static function subsequence(Arguments $arguments): XsSequence
     {
         $elements = $arguments->castAsSequence(0);
-        $position = (int)$arguments->castAsScalar(1);
+        $position = (int)$arguments->castFromSchemaType(1);
 
         try {
-            $length = (int)$arguments->castAsScalar(2);
+            $length = (int)$arguments->castFromSchemaType(2);
         } catch (\InvalidArgumentException $e) {
             $length = \count($elements);
         }

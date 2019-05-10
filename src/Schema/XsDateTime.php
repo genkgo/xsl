@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Genkgo\Xsl\Schema;
 
-use DateTimeImmutable;
 use Genkgo\Xsl\Exception\CastException;
 
 final class XsDateTime extends AbstractXsElement
@@ -31,7 +30,7 @@ final class XsDateTime extends AbstractXsElement
     public static function fromString($date)
     {
         foreach (static::$formats as $format) {
-            $value = DateTimeImmutable::createFromFormat($format, $date);
+            $value = \DateTimeImmutable::createFromFormat($format, $date);
             if ($value) {
                 return new self($value->format(self::FORMAT));
             }
@@ -41,10 +40,25 @@ final class XsDateTime extends AbstractXsElement
     }
 
     /**
+     * @param \DOMNode $node
+     * @return \DateTimeImmutable
+     */
+    public static function parseNode(\DOMNode $node): \DateTimeImmutable
+    {
+        $result = \DateTimeImmutable::createFromFormat(self::FORMAT, $node->textContent);
+
+        if ($result === false) {
+            throw new \InvalidArgumentException('Cannot parse dateTime from ' . $node->textContent);
+        }
+
+        return $result;
+    }
+
+    /**
      * @return XsDateTime
      */
     public static function now()
     {
-        return new self((new DateTimeImmutable())->format(self::FORMAT));
+        return new self((new \DateTimeImmutable())->format(self::FORMAT));
     }
 }

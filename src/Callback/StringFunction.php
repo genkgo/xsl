@@ -50,7 +50,7 @@ final class StringFunction extends AbstractFunction
     {
         $callable = [$this->className, $this->methodName];
         if (\is_callable($callable)) {
-            return \call_user_func_array($callable, $arguments->unpackAsScalar());
+            return \call_user_func_array($callable, $arguments->unpackFromSchemaType());
         }
 
         throw new \InvalidArgumentException('Argument is not callable');

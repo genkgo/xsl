@@ -119,11 +119,11 @@ final class Text
      */
     public static function tokenize(Arguments $arguments): XsSequence
     {
-        $input = $arguments->castAsScalar(0);
-        $pattern = $arguments->castAsScalar(1);
+        $input = $arguments->castFromSchemaType(0);
+        $pattern = $arguments->castFromSchemaType(1);
 
         try {
-            $flags = $arguments->castAsScalar(2);
+            $flags = $arguments->castFromSchemaType(2);
         } catch (\InvalidArgumentException $e) {
             $flags = '';
         }
@@ -170,7 +170,7 @@ final class Text
     public static function stringJoin(Arguments $arguments): string
     {
         $elements = $arguments->castAsSequence(0);
-        $separator = (string)$arguments->castAsScalar(1);
+        $separator = (string)$arguments->castFromSchemaType(1);
 
         $result = '';
 
@@ -225,7 +225,7 @@ final class Text
         $result = [];
 
         $iterator = \IntlBreakIterator::createCharacterInstance(\Locale::getDefault());
-        $iterator->setText($arguments->castAsScalar(0));
+        $iterator->setText($arguments->castFromSchemaType(0));
 
         foreach ($iterator->getPartsIterator() as $char) {
             $result[] = \IntlChar::ord($char);

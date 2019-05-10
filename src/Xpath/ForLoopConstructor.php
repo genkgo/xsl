@@ -87,13 +87,12 @@ final class ForLoopConstructor implements FunctionInterface
 
     /**
      * @param Arguments $arguments
-     * @param TransformationContext $context
-     * @return mixed
+     * @return XsSequence
      */
-    public static function newRange(Arguments $arguments, TransformationContext $context)
+    public static function newRange(Arguments $arguments): XsSequence
     {
-        $first = $arguments->castAsScalar(0);
-        $last = $arguments->castAsScalar(1);
+        $first = $arguments->castFromSchemaType(0);
+        $last = $arguments->castFromSchemaType(1);
 
         return XsSequence::fromArray(\range($first, $last));
     }

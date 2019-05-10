@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace Genkgo\Xsl\Xpath\Functions;
 
-use DateInterval;
-use DateTimeImmutable;
 use Genkgo\Xsl\Callback\Arguments;
 use Genkgo\Xsl\Schema\XsDate;
 use Genkgo\Xsl\Schema\XsDateTime;
@@ -43,8 +41,8 @@ final class Date
      */
     public static function yearFromDate(Arguments $arguments)
     {
-        $arguments->assertSchema(0, 'date');
-        return new XsInteger((int) (new DateTimeImmutable($arguments->castAsScalar(0)))->format('Y'));
+        $arguments->assertSchemaType(0, 'date');
+        return new XsInteger((int) $arguments->castFromSchemaType(0)->format('Y'));
     }
 
     /**
@@ -53,9 +51,9 @@ final class Date
      */
     public static function yearFromDateTime(Arguments $arguments)
     {
-        $arguments->assertSchema(0, 'dateTime');
+        $arguments->assertSchemaType(0, 'dateTime');
 
-        return new XsInteger((int) (new DateTimeImmutable($arguments->castAsScalar(0)))->format('Y'));
+        return new XsInteger((int) $arguments->castFromSchemaType(0)->format('Y'));
     }
 
     /**
@@ -64,9 +62,9 @@ final class Date
      */
     public static function monthFromDate(Arguments $arguments)
     {
-        $arguments->assertSchema(0, 'date');
+        $arguments->assertSchemaType(0, 'date');
 
-        return new XsInteger((int) (new DateTimeImmutable($arguments->castAsScalar(0)))->format('n'));
+        return new XsInteger((int) $arguments->castFromSchemaType(0)->format('n'));
     }
 
     /**
@@ -75,9 +73,9 @@ final class Date
      */
     public static function monthFromDateTime(Arguments $arguments)
     {
-        $arguments->assertSchema(0, 'dateTime');
+        $arguments->assertSchemaType(0, 'dateTime');
 
-        return new XsInteger((int) (new DateTimeImmutable($arguments->castAsScalar(0)))->format('n'));
+        return new XsInteger((int) $arguments->castFromSchemaType(0)->format('n'));
     }
 
     /**
@@ -86,9 +84,9 @@ final class Date
      */
     public static function dayFromDate(Arguments $arguments)
     {
-        $arguments->assertSchema(0, 'date');
+        $arguments->assertSchemaType(0, 'date');
 
-        return new XsInteger((int) (new DateTimeImmutable($arguments->castAsScalar(0)))->format('j'));
+        return new XsInteger((int) $arguments->castFromSchemaType(0)->format('j'));
     }
 
     /**
@@ -97,9 +95,9 @@ final class Date
      */
     public static function dayFromDateTime(Arguments $arguments)
     {
-        $arguments->assertSchema(0, 'dateTime');
+        $arguments->assertSchemaType(0, 'dateTime');
 
-        return new XsInteger((int) (new DateTimeImmutable($arguments->castAsScalar(0)))->format('j'));
+        return new XsInteger((int) $arguments->castFromSchemaType(0)->format('j'));
     }
 
     /**
@@ -108,9 +106,9 @@ final class Date
      */
     public static function hoursFromTime(Arguments $arguments)
     {
-        $arguments->assertSchema(0, 'time');
+        $arguments->assertSchemaType(0, 'time');
 
-        return new XsInteger((int) (new DateTimeImmutable($arguments->castAsScalar(0)))->format('G'));
+        return new XsInteger((int) $arguments->castFromSchemaType(0)->format('G'));
     }
 
     /**
@@ -119,9 +117,9 @@ final class Date
      */
     public static function hoursFromDateTime(Arguments $arguments)
     {
-        $arguments->assertSchema(0, 'dateTime');
+        $arguments->assertSchemaType(0, 'dateTime');
 
-        return new XsInteger((int) (new DateTimeImmutable($arguments->castAsScalar(0)))->format('G'));
+        return new XsInteger((int) $arguments->castFromSchemaType(0)->format('G'));
     }
 
     /**
@@ -130,9 +128,9 @@ final class Date
      */
     public static function minutesFromTime(Arguments $arguments)
     {
-        $arguments->assertSchema(0, 'time');
+        $arguments->assertSchemaType(0, 'time');
 
-        return new XsInteger((int) (new DateTimeImmutable($arguments->castAsScalar(0)))->format('i'));
+        return new XsInteger((int) $arguments->castFromSchemaType(0)->format('i'));
     }
 
     /**
@@ -141,9 +139,9 @@ final class Date
      */
     public static function minutesFromDateTime(Arguments $arguments)
     {
-        $arguments->assertSchema(0, 'dateTime');
+        $arguments->assertSchemaType(0, 'dateTime');
 
-        return new XsInteger((int) (new DateTimeImmutable($arguments->castAsScalar(0)))->format('i'));
+        return new XsInteger((int) $arguments->castFromSchemaType(0)->format('i'));
     }
 
     /**
@@ -152,9 +150,9 @@ final class Date
      */
     public static function secondsFromTime(Arguments $arguments)
     {
-        $arguments->assertSchema(0, 'time');
+        $arguments->assertSchemaType(0, 'time');
 
-        return new XsInteger((int) (new DateTimeImmutable($arguments->castAsScalar(0)))->format('s'));
+        return new XsInteger((int) $arguments->castFromSchemaType(0)->format('s'));
     }
 
     /**
@@ -163,9 +161,9 @@ final class Date
      */
     public static function secondsFromDateTime(Arguments $arguments)
     {
-        $arguments->assertSchema(0, 'dateTime');
+        $arguments->assertSchemaType(0, 'dateTime');
 
-        return new XsInteger((int) (new DateTimeImmutable($arguments->castAsScalar(0)))->format('s'));
+        return new XsInteger((int) $arguments->castFromSchemaType(0)->format('s'));
     }
 
     /**
@@ -174,9 +172,9 @@ final class Date
      */
     public static function yearsFromDuration(Arguments $arguments)
     {
-        $arguments->assertSchema(0, 'dayTimeDuration');
+        $arguments->assertSchemaType(0, 'dayTimeDuration');
 
-        return new XsInteger((int) (new DateInterval($arguments->castAsScalar(0)))->format('%y'));
+        return new XsInteger((int) $arguments->castFromSchemaType(0)->format('%y'));
     }
 
     /**
@@ -185,9 +183,9 @@ final class Date
      */
     public static function monthsFromDuration(Arguments $arguments)
     {
-        $arguments->assertSchema(0, 'dayTimeDuration');
+        $arguments->assertSchemaType(0, 'dayTimeDuration');
 
-        return new XsInteger((int) (new DateInterval($arguments->castAsScalar(0)))->format('%m'));
+        return new XsInteger((int) $arguments->castFromSchemaType(0)->format('%m'));
     }
 
     /**
@@ -196,9 +194,9 @@ final class Date
      */
     public static function daysFromDuration(Arguments $arguments)
     {
-        $arguments->assertSchema(0, 'dayTimeDuration');
+        $arguments->assertSchemaType(0, 'dayTimeDuration');
 
-        return new XsInteger((int) (new DateInterval($arguments->castAsScalar(0)))->format('%d'));
+        return new XsInteger((int) $arguments->castFromSchemaType(0)->format('%d'));
     }
 
     /**
@@ -207,9 +205,9 @@ final class Date
      */
     public static function hoursFromDuration(Arguments $arguments)
     {
-        $arguments->assertSchema(0, 'dayTimeDuration');
+        $arguments->assertSchemaType(0, 'dayTimeDuration');
 
-        return new XsInteger((int) (new DateInterval($arguments->castAsScalar(0)))->format('%h'));
+        return new XsInteger((int) $arguments->castFromSchemaType(0)->format('%h'));
     }
 
     /**
@@ -218,9 +216,9 @@ final class Date
      */
     public static function minutesFromDuration(Arguments $arguments)
     {
-        $arguments->assertSchema(0, 'dayTimeDuration');
+        $arguments->assertSchemaType(0, 'dayTimeDuration');
 
-        return new XsInteger((int) (new DateInterval($arguments->castAsScalar(0)))->format('%i'));
+        return new XsInteger((int) $arguments->castFromSchemaType(0)->format('%i'));
     }
 
     /**
@@ -229,8 +227,8 @@ final class Date
      */
     public static function secondsFromDuration(Arguments $arguments)
     {
-        $arguments->assertSchema(0, 'dayTimeDuration');
+        $arguments->assertSchemaType(0, 'dayTimeDuration');
 
-        return new XsInteger((int) (new DateTimeImmutable($arguments->castAsScalar(0)))->format('%s'));
+        return new XsInteger((int) $arguments->castFromSchemaType(0)->format('%s'));
     }
 }

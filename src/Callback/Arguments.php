@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Genkgo\Xsl\Callback;
 
 use Genkgo\Xsl\Exception\CastException;
+use Genkgo\Xsl\Schema\DataTypeParser;
 use Genkgo\Xsl\Schema\XmlSchema;
 
 final class Arguments
@@ -14,11 +15,18 @@ final class Arguments
     private $arguments;
 
     /**
+     * @var DataTypeParser
+     */
+    private $dataTypeParser;
+
+    /**
+     * @param DataTypeParser $dataTypeParser
      * @param array $arguments
      */
-    public function __construct(array $arguments)
+    public function __construct(DataTypeParser $dataTypeParser, array $arguments)
     {
         $this->arguments = $arguments;
+        $this->dataTypeParser = $dataTypeParser;
     }
 
     /**
@@ -38,7 +46,7 @@ final class Arguments
      * @param int $number
      * @return mixed
      */
-    public function castAsScalar(int $number)
+    public function castFromSchemaType(int $number)
     {
         $value = $this->get($number);
         if (\is_scalar($value)) {
@@ -46,7 +54,7 @@ final class Arguments
         }
 
         if (\is_array($value) && \count($value) === 1) {
-            return $value[0]->nodeValue;
+            return $this->convertFromSchemaTypeToPhpType($value[0]);
         }
 
         throw new CastException('Cannot convert list of elements to string');
@@ -101,12 +109,12 @@ final class Arguments
     /**
      * @return array
      */
-    public function unpackAsScalar(): array
+    public function unpackFromSchemaType(): array
     {
         return \array_map(
             function ($value) {
                 if (\is_array($value) && \count($value) === 1) {
-                    return \reset($value)->textContent;
+                    return $this->convertFromSchemaTypeToPhpType(\reset($value));
                 }
 
                 return $value;
@@ -119,7 +127,7 @@ final class Arguments
      * @param int $number
      * @param string $name
      */
-    public function assertSchema(int $number, string $name): void
+    public function assertSchemaType(int $number, string $name): void
     {
         $element = $this->get($number)[0] ?? '';
         if ($element instanceof \DOMElement === false) {
@@ -130,5 +138,14 @@ final class Arguments
             $nsSchema = XmlSchema::URI;
             throw new \InvalidArgumentException("Expected a {$nsSchema}:{$name} object, got {$element->nodeName}");
         }
+    }
+
+    private function convertFromSchemaTypeToPhpType(\DOMNode $node)
+    {
+        if ($node->namespaceURI === XmlSchema::URI) {
+            return $this->dataTypeParser->parse($node);
+        }
+
+        return $node->textContent;
     }
 }

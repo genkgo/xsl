@@ -4,9 +4,6 @@ declare(strict_types=1);
 namespace Genkgo\Xsl\Xsl\Functions;
 
 use Genkgo\Xsl\Callback\Arguments;
-use Genkgo\Xsl\Schema\XsDate;
-use Genkgo\Xsl\Schema\XsDateTime;
-use Genkgo\Xsl\Schema\XsTime;
 use Genkgo\Xsl\Xsl\Functions;
 
 final class DateFormatting
@@ -34,20 +31,15 @@ final class DateFormatting
             return '';
         }
 
-        $arguments->assertSchema(0, 'date');
+        $arguments->assertSchemaType(0, 'date');
 
         try {
-            $locale = $arguments->castAsScalar(2);
+            $locale = $arguments->castFromSchemaType(2);
         } catch (\InvalidArgumentException $e) {
             $locale = \Locale::getDefault();
         }
 
-        $date = \DateTime::createFromFormat(XsDate::FORMAT, $arguments->castAsScalar(0));
-        if ($date === false) {
-            throw new \UnexpectedValueException('Cannot initialize DateTime from ' . $arguments->castAsScalar(0));
-        }
-
-        return $this->formatter->formatDate($date, $arguments->castAsScalar(1), $locale, 'AD');
+        return $this->formatter->formatDate($arguments->castFromSchemaType(0), $arguments->castFromSchemaType(1), $locale, 'AD');
     }
 
     /**
@@ -60,20 +52,20 @@ final class DateFormatting
             return '';
         }
 
-        $arguments->assertSchema(0, 'time');
+        $arguments->assertSchemaType(0, 'time');
 
         try {
-            $locale = $arguments->castAsScalar(2);
+            $locale = $arguments->castFromSchemaType(2);
         } catch (\InvalidArgumentException $e) {
             $locale = \Locale::getDefault();
         }
 
-        $date = \DateTime::createFromFormat(XsTime::FORMAT, $arguments->castAsScalar(0));
-        if ($date === false) {
-            throw new \UnexpectedValueException('Cannot initialize DateTime from ' . $arguments->castAsScalar(0));
-        }
-
-        return $this->formatter->formatTime($date, $arguments->castAsScalar(1), $locale, 'AD');
+        return $this->formatter->formatTime(
+            $arguments->castFromSchemaType(0),
+            $arguments->castFromSchemaType(1),
+            $locale,
+            'AD'
+        );
     }
 
     /**
@@ -86,19 +78,19 @@ final class DateFormatting
             return '';
         }
 
-        $arguments->assertSchema(0, 'dateTime');
+        $arguments->assertSchemaType(0, 'dateTime');
 
         try {
-            $locale = $arguments->castAsScalar(2);
+            $locale = $arguments->castFromSchemaType(2);
         } catch (\InvalidArgumentException $e) {
             $locale = \Locale::getDefault();
         }
 
-        $date = \DateTime::createFromFormat(XsDateTime::FORMAT, $arguments->castAsScalar(0));
-        if ($date === false) {
-            throw new \UnexpectedValueException('Cannot initialize DateTime from ' . $arguments->castAsScalar(0));
-        }
-
-        return $this->formatter->formatDateTime($date, $arguments->castAsScalar(1), $locale, 'AD');
+        return $this->formatter->formatDateTime(
+            $arguments->castFromSchemaType(0),
+            $arguments->castFromSchemaType(1),
+            $locale,
+            'AD'
+        );
     }
 }

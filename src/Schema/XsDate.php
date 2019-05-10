@@ -41,6 +41,21 @@ final class XsDate extends AbstractXsElement
     }
 
     /**
+     * @param \DOMNode $node
+     * @return DateTimeImmutable
+     */
+    public static function parseNode(\DOMNode $node): \DateTimeImmutable
+    {
+        $result = \DateTimeImmutable::createFromFormat(self::FORMAT, $node->textContent);
+
+        if ($result === false) {
+            throw new \InvalidArgumentException('Cannot parse date from ' . $node->textContent);
+        }
+
+        return $result;
+    }
+
+    /**
      * @return XsDate
      */
     public static function now()

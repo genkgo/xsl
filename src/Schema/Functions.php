@@ -15,7 +15,7 @@ final class Functions
      */
     public static function date(Arguments $arguments)
     {
-        return XsDate::fromString($arguments->castAsScalar(0));
+        return XsDate::fromString($arguments->castFromSchemaType(0));
     }
 
     /**
@@ -25,7 +25,7 @@ final class Functions
      */
     public static function time(Arguments $arguments)
     {
-        return XsTime::fromString($arguments->castAsScalar(0));
+        return XsTime::fromString($arguments->castFromSchemaType(0));
     }
 
     /**
@@ -35,7 +35,7 @@ final class Functions
      */
     public static function dateTime(Arguments $arguments)
     {
-        return XsDateTime::fromString($arguments->castAsScalar(0));
+        return XsDateTime::fromString($arguments->castFromSchemaType(0));
     }
 
     /**
@@ -45,7 +45,7 @@ final class Functions
      */
     public static function dayTimeDuration(Arguments $arguments)
     {
-        return XsDayTimeDuration::fromString($arguments->castAsScalar(0));
+        return XsDayTimeDuration::fromString($arguments->castFromSchemaType(0));
     }
 
     /**
@@ -65,7 +65,7 @@ final class Functions
             return XsSequence::fromArray([]);
         }
 
-        $value = $arguments->castAsScalar(0);
+        $value = $arguments->castFromSchemaType(0);
 
         if ($value === '') {
             return new XsInteger(0);

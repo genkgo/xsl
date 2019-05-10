@@ -12,4 +12,13 @@ final class XsInteger extends AbstractXsElement
     {
         return 'integer';
     }
+
+    /**
+     * @param \DOMNode $node
+     * @return int
+     */
+    public static function parseNode(\DOMNode $node): int
+    {
+        return (int) $node->textContent;
+    }
 }

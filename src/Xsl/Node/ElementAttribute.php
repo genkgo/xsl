@@ -56,7 +56,7 @@ final class ElementAttribute implements ElementTransformerInterface
     {
         $elements = $arguments->get(0);
         try {
-            $separator = (string)$arguments->castAsScalar(1);
+            $separator = (string)$arguments->castFromSchemaType(1);
         } catch (\InvalidArgumentException $e) {
             $separator = ' ';
         }
