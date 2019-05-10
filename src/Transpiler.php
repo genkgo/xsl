@@ -72,7 +72,7 @@ final class Transpiler
     public function transpile(DOMDocument $document)
     {
         $root = $document->documentElement;
-        if ($root instanceof \DOMElement === false) {
+        if ($root === null) {
             return;
         }
 
