@@ -89,7 +89,9 @@ final class XsltProcessor extends PhpXsltProcessor
         } finally {
             \libxml_clear_errors();
             \libxml_use_internal_errors($useInternalErrors);
-            \set_error_handler($previousHandler);
+            if (\is_callable($previousHandler)) {
+                \set_error_handler($previousHandler);
+            }
         }
     }
 
@@ -127,7 +129,9 @@ final class XsltProcessor extends PhpXsltProcessor
         } finally {
             \libxml_clear_errors();
             \libxml_use_internal_errors($useInternalErrors);
-            \set_error_handler($previousHandler);
+            if (\is_callable($previousHandler)) {
+                \set_error_handler($previousHandler);
+            }
         }
     }
 
@@ -165,7 +169,9 @@ final class XsltProcessor extends PhpXsltProcessor
         } finally {
             \libxml_clear_errors();
             \libxml_use_internal_errors($useInternalErrors);
-            \set_error_handler($previousHandler);
+            if (\is_callable($previousHandler)) {
+                \set_error_handler($previousHandler);
+            }
         }
     }
 
