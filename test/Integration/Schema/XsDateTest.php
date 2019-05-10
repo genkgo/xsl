@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Xsl\Integration\Schema;
 
-use Genkgo\Xsl\Exception\CastException;
+use Genkgo\Xsl\Exception\TransformationException;
 
 class XsDateTest extends AbstractSchemaTest
 {
@@ -16,7 +16,7 @@ class XsDateTest extends AbstractSchemaTest
 
     public function testWrongConstructor()
     {
-        $this->expectException(CastException::class);
+        $this->expectException(TransformationException::class);
         $this->expectExceptionMessage('Cannot create date from 20');
 
         $this->transformFile('Stubs/Schema/date-wrong-constructor.xsl');
@@ -24,7 +24,7 @@ class XsDateTest extends AbstractSchemaTest
 
     public function testTooManyElements()
     {
-        $this->expectException(CastException::class);
+        $this->expectException(TransformationException::class);
         $this->expectExceptionMessage('Cannot convert list of elements to string');
 
         $this->transformFile('Stubs/Schema/date-too-many-elements.xsl');

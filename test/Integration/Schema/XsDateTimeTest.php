@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Xsl\Integration\Schema;
 
-use Genkgo\Xsl\Exception\CastException;
+use Genkgo\Xsl\Exception\TransformationException;
 
 class XsDateTimeTest extends AbstractSchemaTest
 {
@@ -16,7 +16,7 @@ class XsDateTimeTest extends AbstractSchemaTest
 
     public function testWrongConstructor()
     {
-        $this->expectException(CastException::class);
+        $this->expectException(TransformationException::class);
         $this->transformFile('Stubs/Schema/dateTime-wrong-constructor.xsl');
     }
 }

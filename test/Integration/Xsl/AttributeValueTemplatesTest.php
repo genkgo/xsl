@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Genkgo\Xsl\Integration\Xsl;
 
+use Genkgo\Xsl\Exception\TransformationException;
+
 final class AttributeValueTemplatesTest extends AbstractXslTest
 {
     public function testSingleExpression()
@@ -28,13 +30,13 @@ final class AttributeValueTemplatesTest extends AbstractXslTest
 
     public function testNotEscapedNotClosed()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(TransformationException::class);
         $this->transformFile('Stubs/Xsl/AttributeValueTemplates/not-escaped-not-closed.xsl');
     }
 
     public function testInvalidEscaped()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(TransformationException::class);
         $this->transformFile('Stubs/Xsl/AttributeValueTemplates/invalid-escaped.xsl');
     }
 

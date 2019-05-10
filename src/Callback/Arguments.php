@@ -7,7 +7,7 @@ use Genkgo\Xsl\Exception\CastException;
 use Genkgo\Xsl\Schema\DataTypeParser;
 use Genkgo\Xsl\Schema\XmlSchema;
 
-final class Arguments
+final class Arguments implements \Countable
 {
     /**
      * @var array
@@ -138,6 +138,14 @@ final class Arguments
             $nsSchema = XmlSchema::URI;
             throw new \InvalidArgumentException("Expected a {$nsSchema}:{$name} object, got {$element->nodeName}");
         }
+    }
+
+    /**
+     * @return int
+     */
+    public function count(): int
+    {
+        return \count($this->arguments);
     }
 
     private function convertFromSchemaTypeToPhpType(\DOMNode $node)

@@ -71,10 +71,8 @@ final class Transpiler
      */
     public function transpile(DOMDocument $document)
     {
-        // https://github.com/phpstan/phpstan/pull/2089
-        /** @var \DOMElement|null $root */
         $root = $document->documentElement;
-        if ($root instanceof \DOMElement === false) {
+        if ($root === null) {
             return;
         }
 

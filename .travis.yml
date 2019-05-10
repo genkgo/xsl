@@ -24,8 +24,8 @@ before_script:
   - if [ "$dependencies" = "highest" ]; then composer update -n; fi;
 script:
   - ./vendor/bin/phpunit -c phpunit.xml --coverage-clover=coverage.clover
-  - ./vendor/bin/phpstan analyse -l max src
-  - ./vendor/bin/phpstan analyse -l max test
+  - ./vendor/bin/phpstan analyse -l max -c .phpstan.neon src
+  - ./vendor/bin/phpstan analyse -l max -c .phpstan.neon test
   - if [ "$TRAVIS_PHP_VERSION" != "nightly" ] && [ -z "$dependencies" ]; then ./vendor/bin/php-cs-fixer fix --dry-run --verbose --config .php_cs.dist ./src ./test ; fi
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar

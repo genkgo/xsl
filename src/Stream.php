@@ -5,6 +5,7 @@ namespace Genkgo\Xsl;
 
 use Genkgo\Xsl\Exception\ReadOnlyStreamException;
 use Genkgo\Xsl\Exception\StreamException;
+use Genkgo\Xsl\Exception\TransformationException;
 
 final class Stream
 {
@@ -44,10 +45,18 @@ final class Stream
         if (isset($streamContext['gxsl']['transpiler'])) {
             $transpiler = $streamContext['gxsl']['transpiler'];
 
-            if ($this->isRoot($path)) {
-                $this->content = $transpiler->transpileRoot();
-            } else {
-                $this->content = $transpiler->transpileFile($path);
+            try {
+                if ($this->isRoot($path)) {
+                    $this->content = $transpiler->transpileRoot();
+                } else {
+                    $this->content = $transpiler->transpileFile($path);
+                }
+            } catch (\Throwable $e) {
+                throw new TransformationException(
+                    'Cannot transpile ' . $path . '. ' . $e->getMessage(),
+                    0,
+                    $e
+                );
             }
         } else {
             if ($this->isRoot($path)) {
