@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Xsl\Integration\Xsl;
 
+use Genkgo\Xsl\Exception\TransformationException;
 use Genkgo\Xsl\Schema\XsDate;
 use Genkgo\Xsl\Schema\XsDateTime;
 use Genkgo\Xsl\Schema\XsTime;
@@ -106,7 +107,7 @@ final class FormattingTest extends AbstractXslTest
 
     public function testInvalidDataType()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(TransformationException::class);
         $this->expectExceptionMessage('Expected a date object, got scalar');
 
         $xsDateTime = XsDateTime::fromString('2015-10-16 15:37:00');
@@ -119,7 +120,7 @@ final class FormattingTest extends AbstractXslTest
 
     public function testInvalidSequence()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(TransformationException::class);
         $this->expectExceptionMessage('Expected a http://www.w3.org/2001/XMLSchema:dateTime object, got xs:item');
 
         $xsDateTime = XsDateTime::fromString('2015-10-16 15:37:00');

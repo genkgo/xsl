@@ -3,13 +3,11 @@ declare(strict_types=1);
 
 namespace Genkgo\Xsl;
 
-use DOMDocument;
 use Genkgo\Xsl\Callback\FunctionCollection;
 use Genkgo\Xsl\Callback\PhpCallback;
 use Genkgo\Xsl\Exception\TransformationException;
 use Genkgo\Xsl\Util\TransformerCollection;
 use Psr\SimpleCache\CacheInterface;
-use SimpleXMLElement;
 use XSLTProcessor as PhpXsltProcessor;
 
 final class XsltProcessor extends PhpXsltProcessor
@@ -58,7 +56,7 @@ final class XsltProcessor extends PhpXsltProcessor
     }
 
     /**
-     * @param DOMDocument|SimpleXMLElement $doc
+     * @param \DOMDocument|\SimpleXMLElement $doc
      * @return string
      */
     public function transformToXML($doc)
@@ -66,47 +64,75 @@ final class XsltProcessor extends PhpXsltProcessor
         $styleSheet = $this->styleSheetToDomDocument();
 
         $transpiler = $this->createTranspiler($styleSheet);
-        $useInternalErrors = \libxml_use_internal_errors(true);
+        $useInternalErrors = \libxml_use_internal_errors(false);
+
+        $previousHandler = \set_error_handler(
+            function ($number, $message) {
+                throw new TransformationException(
+                    'Transformation failed: ' . $message,
+                    $number
+                );
+            }
+        );
 
         try {
             parent::importStylesheet($this->getTranspiledStyleSheet($transpiler, $styleSheet));
             $this->throwOnLibxmlError();
 
             return $transpiler->transform(function () use ($doc) {
-                return parent::transformToXml($doc);
+                $result = parent::transformToXml($doc);
+                $this->throwOnLibxmlError();
+                return $result;
             });
+        } catch (\Throwable $e) {
+            throw new TransformationException('Transformation failed: ' . $e->getMessage(), 0, $e);
         } finally {
             \libxml_clear_errors();
             \libxml_use_internal_errors($useInternalErrors);
+            \set_error_handler($previousHandler);
         }
     }
 
     /**
      * @param \DOMNode $doc
-     * @return DOMDocument
+     * @return \DOMDocument
      */
     public function transformToDoc($doc)
     {
         $styleSheet = $this->styleSheetToDomDocument();
 
         $transpiler = $this->createTranspiler($styleSheet);
-        $useInternalErrors = \libxml_use_internal_errors(true);
+        $useInternalErrors = \libxml_use_internal_errors(false);
+
+        $previousHandler = \set_error_handler(
+            function ($number, $message) {
+                throw new TransformationException(
+                    'Transformation failed: ' . $message,
+                    $number
+                );
+            }
+        );
 
         try {
             parent::importStylesheet($this->getTranspiledStyleSheet($transpiler, $styleSheet));
             $this->throwOnLibxmlError();
 
             return $transpiler->transform(function () use ($doc) {
-                return parent::transformToDoc($doc);
+                $result = parent::transformToDoc($doc);
+                $this->throwOnLibxmlError();
+                return $result;
             });
+        } catch (\Throwable $e) {
+            throw new TransformationException('Transformation failed: ' . $e->getMessage(), 0, $e);
         } finally {
             \libxml_clear_errors();
             \libxml_use_internal_errors($useInternalErrors);
+            \set_error_handler($previousHandler);
         }
     }
 
     /**
-     * @param DOMDocument|SimpleXMLElement $doc
+     * @param \DOMDocument|\SimpleXMLElement $doc
      * @param string $uri
      * @return int
      */
@@ -114,18 +140,32 @@ final class XsltProcessor extends PhpXsltProcessor
     {
         $styleSheet = $this->styleSheetToDomDocument();
         $transpiler = $this->createTranspiler($styleSheet);
-        $useInternalErrors = \libxml_use_internal_errors(true);
+        $useInternalErrors = \libxml_use_internal_errors(false);
+
+        $previousHandler = \set_error_handler(
+            function ($number, $message) {
+                throw new TransformationException(
+                    'Transformation failed: ' . $message,
+                    $number
+                );
+            }
+        );
 
         try {
             parent::importStylesheet($this->getTranspiledStyleSheet($transpiler, $styleSheet));
             $this->throwOnLibxmlError();
 
             return $transpiler->transform(function () use ($doc, $uri) {
-                return parent::transformToUri($doc, $uri);
+                $result = parent::transformToUri($doc, $uri);
+                $this->throwOnLibxmlError();
+                return $result;
             });
+        } catch (\Throwable $e) {
+            throw new TransformationException('Transformation failed: ' . $e->getMessage(), 0, $e);
         } finally {
             \libxml_clear_errors();
             \libxml_use_internal_errors($useInternalErrors);
+            \set_error_handler($previousHandler);
         }
     }
 
@@ -143,10 +183,10 @@ final class XsltProcessor extends PhpXsltProcessor
 
     /**
      * @param Transpiler $transpiler
-     * @param DOMDocument $styleSheet
-     * @return DOMDocument
+     * @param \DOMDocument $styleSheet
+     * @return \DOMDocument
      */
-    private function getTranspiledStyleSheet(Transpiler $transpiler, DOMDocument $styleSheet)
+    private function getTranspiledStyleSheet(Transpiler $transpiler, \DOMDocument $styleSheet)
     {
         $this->boot();
 
@@ -155,7 +195,7 @@ final class XsltProcessor extends PhpXsltProcessor
 
         return $this->createTranspiledDocument($styleSheet);
     }
-    
+
     private function boot()
     {
         if (self::$booted === false) {
@@ -165,10 +205,10 @@ final class XsltProcessor extends PhpXsltProcessor
     }
 
     /**
-     * @param DOMDocument $styleSheet
+     * @param \DOMDocument $styleSheet
      * @return Transpiler
      */
-    private function createTranspiler(DOMDocument $styleSheet)
+    private function createTranspiler(\DOMDocument $styleSheet)
     {
         $phpFunctions = $this->phpFunctions;
 
@@ -211,10 +251,10 @@ final class XsltProcessor extends PhpXsltProcessor
     }
 
     /**
-     * @param DOMDocument $styleSheet
-     * @return DOMDocument
+     * @param \DOMDocument $styleSheet
+     * @return \DOMDocument
      */
-    private function createTranspiledDocument(DOMDocument $styleSheet)
+    private function createTranspiledDocument(\DOMDocument $styleSheet)
     {
         $documentURI = $styleSheet->documentURI;
 
@@ -224,17 +264,17 @@ final class XsltProcessor extends PhpXsltProcessor
         }
         // @codeCoverageIgnoreEnd
 
-        $transpiledStyleSheet = new DOMDocument('1.0', 'UTF-8');
+        $transpiledStyleSheet = new \DOMDocument('1.0', 'UTF-8');
         $transpiledStyleSheet->load(Stream::PROTOCOL . Stream::HOST . $documentURI . Stream::ROOT);
         return $transpiledStyleSheet;
     }
 
     /**
-     * @return DOMDocument
+     * @return \DOMDocument
      */
     private function styleSheetToDomDocument()
     {
-        if ($this->styleSheet instanceof SimpleXMLElement) {
+        if ($this->styleSheet instanceof \SimpleXMLElement) {
             $document = \dom_import_simplexml($this->styleSheet);
             if ($document === false) {
                 throw new \UnexpectedValueException('Cannot transform SimpleXMLElement to DOMDocument');
@@ -243,7 +283,7 @@ final class XsltProcessor extends PhpXsltProcessor
             return $document->ownerDocument;
         }
 
-        if ($this->styleSheet instanceof DOMDocument) {
+        if ($this->styleSheet instanceof \DOMDocument) {
             return $this->styleSheet;
         }
 

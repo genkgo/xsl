@@ -5,14 +5,14 @@ namespace Genkgo\Xsl\Integration;
 
 use DOMDocument;
 use Genkgo\Xsl\Cache\NullCache;
+use Genkgo\Xsl\Exception\TransformationException;
 use Genkgo\Xsl\ProcessorFactory;
-use Genkgo\Xsl\XsltProcessor;
 
 final class DisableEntitiesTest extends AbstractIntegrationTestCase
 {
     public function testDisableEntitiesWhenDocumentAlreadyLoaded()
     {
-        $this->expectException(\DOMException::class);
+        $this->expectException(TransformationException::class);
 
         \file_put_contents(\sys_get_temp_dir() . '/xsl-passwd', 'test');
         $factory = new ProcessorFactory(new NullCache());
@@ -30,7 +30,7 @@ final class DisableEntitiesTest extends AbstractIntegrationTestCase
 
     public function testDisableEntitiesInInclude()
     {
-        $this->expectException(\DOMException::class);
+        $this->expectException(TransformationException::class);
 
         \file_put_contents(\sys_get_temp_dir() . '/xsl-passwd', 'test');
         $factory = new ProcessorFactory(new NullCache());
