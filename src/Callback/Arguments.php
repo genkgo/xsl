@@ -148,8 +148,16 @@ final class Arguments implements \Countable
         return \count($this->arguments);
     }
 
+    /**
+     * @param \DOMNode $node
+     * @return mixed
+     */
     private function convertFromSchemaTypeToPhpType(\DOMNode $node)
     {
+        if ($node instanceof \DOMDocument) {
+            $node = $node->documentElement;
+        }
+
         if ($node->namespaceURI === XmlSchema::URI) {
             return $this->dataTypeParser->parse($node);
         }
