@@ -137,14 +137,19 @@ final class Arguments implements \Countable
      */
     public function assertSchemaType(int $number, string $name): void
     {
-        $element = $this->get($number)[0] ?? '';
-        if ($element instanceof \DOMElement === false) {
+        $node = $this->get($number)[0] ?? '';
+
+        if ($node instanceof \DOMDocument) {
+            $node = $node->documentElement;
+        }
+
+        if ($node instanceof \DOMNode === false) {
             throw new \InvalidArgumentException("Expected a {$name} object, got scalar");
         }
 
-        if ($element->namespaceURI !== XmlSchema::URI || $element->localName !== $name) {
+        if ($node->namespaceURI !== XmlSchema::URI || $node->localName !== $name) {
             $nsSchema = XmlSchema::URI;
-            throw new \InvalidArgumentException("Expected a {$nsSchema}:{$name} object, got {$element->nodeName}");
+            throw new \InvalidArgumentException("Expected a {$nsSchema}:{$name} object, got {$node->nodeName}");
         }
     }
 
