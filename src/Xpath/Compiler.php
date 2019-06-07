@@ -5,6 +5,7 @@ namespace Genkgo\Xsl\Xpath;
 
 use DOMNode;
 use Genkgo\Xsl\Callback\FunctionCollection;
+use Genkgo\Xsl\Xpath\Expression\DoubleQuoteExpression;
 use Genkgo\Xsl\Xpath\Expression\ForLoopExpression;
 use Genkgo\Xsl\Xpath\Expression\FunctionExpression;
 use Genkgo\Xsl\Xpath\Expression\SequenceExpression;
@@ -24,7 +25,8 @@ final class Compiler
         $this->expressions = [
             new FunctionExpression($functions),
             new SequenceExpression(),
-            new ForLoopExpression()
+            new ForLoopExpression(),
+            new DoubleQuoteExpression(),
         ];
     }
 

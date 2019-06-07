@@ -81,7 +81,7 @@ final class Lexer implements Iterator, SeekableIterator, Countable
             '\d+(?:\.\d*)?', // Number starting with digit.
             '\.\d+', // Number starting with decimal point.
             '"[^"]*"', // Double quoted string.
-            '\'[^\']*\'', // Single quoted string.
+            '\'([^\\\']|\'\')*\'', // Single quoted string.
             '[!<>]=', // Operators
             '\s+', // Whitespaces.
             '.', // Any single character.
