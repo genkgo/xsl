@@ -242,6 +242,8 @@ final class Text
     public static function compare(string $string1, string $string2): int
     {
         $collator = \Collator::create(\Locale::getDefault());
+
+        /** @var int|false $result */
         $result = $collator->compare($string1, $string2);
         if ($result === false) {
             throw new \UnexpectedValueException('Cannot compare strings: ' . $collator->getErrorMessage());
