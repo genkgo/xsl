@@ -222,4 +222,20 @@ class Text
 
         return XsSequence::fromArray($result);
     }
+
+    /**
+     * @param $string1
+     * @param $string2
+     * @return int
+     */
+    public static function compare($string1, $string2)
+    {
+        $collator = \Collator::create(\Locale::getDefault());
+        $result = $collator->compare($string1, $string2);
+        if ($result === false) {
+            throw new \UnexpectedValueException('Cannot compare strings: ' . $collator->getErrorMessage());
+        }
+
+        return $result;
+    }
 }

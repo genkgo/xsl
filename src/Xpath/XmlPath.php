@@ -33,7 +33,7 @@ final class XmlPath implements XmlNamespaceInterface
         $this->registerStringFunctions([
             'starts-with', 'ends-with', 'matches', 'lower-case',
             'upper-case', 'translate', 'substring-after', 'substring-before', 'replace',
-            'encode-for-uri'
+            'encode-for-uri', 'compare'
         ], $functions, Text::class);
 
         $this->registerAggregationFunctions(['avg', 'max', 'min'], $functions);

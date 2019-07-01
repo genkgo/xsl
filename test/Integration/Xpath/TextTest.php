@@ -201,4 +201,22 @@ class TextTest extends AbstractXpathTest
             $this->transformFile('Stubs/Xpath/Text/codepoints-to-string.xsl')
         );
     }
+
+    public function testCompare()
+    {
+        $this->assertSame('0', $this->transformFile('Stubs/Xpath/Text/compare.xsl', [
+            'param1' => 'hello',
+            'param2' => 'hello'
+        ]));
+
+        $this->assertSame('-1', $this->transformFile('Stubs/Xpath/Text/compare.xsl', [
+            'param1' => 'Hello World',
+            'param2' => 'World'
+        ]));
+
+        $this->assertSame('1', $this->transformFile('Stubs/Xpath/Text/compare.xsl', [
+            'param1' => 'World',
+            'param2' => 'Hello World'
+        ]));
+    }
 }
