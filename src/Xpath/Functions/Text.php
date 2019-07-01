@@ -246,7 +246,7 @@ final class Text
         /** @var int|false $result */
         $result = $collator->compare($string1, $string2);
         if ($result === false) {
-            throw new \UnexpectedValueException('Cannot compare strings: ' . $collator->getErrorMessage());
+            throw new \IntlException('Cannot compare strings: ' . $collator->getErrorMessage());
         }
 
         return $result;
