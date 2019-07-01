@@ -233,4 +233,20 @@ final class Text
 
         return XsSequence::fromArray($result);
     }
+
+    /**
+     * @param string $string1
+     * @param string $string2
+     * @return int
+     */
+    public static function compare(string $string1, string $string2): int
+    {
+        $collator = \Collator::create(\Locale::getDefault());
+        $result = $collator->compare($string1, $string2);
+        if ($result === false) {
+            throw new \UnexpectedValueException('Cannot compare strings: ' . $collator->getErrorMessage());
+        }
+
+        return $result;
+    }
 }

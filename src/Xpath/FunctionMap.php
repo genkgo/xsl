@@ -35,6 +35,7 @@ final class FunctionMap extends AbstractLazyFunctionMap
             'starts-with' => ['newStringFunction', Text::class],
             'ends-with' => ['newStringFunction', Text::class],
             'matches' => ['newStringFunction', Text::class],
+            'compare' => ['newStringFunction', Text::class],
             'lower-case' => ['newStringFunction', Text::class],
             'upper-case' => ['newStringFunction', Text::class],
             'translate' => ['newStringFunction', Text::class],
