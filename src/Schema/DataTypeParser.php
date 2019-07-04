@@ -18,6 +18,8 @@ final class DataTypeParser
         }
 
         switch ($node->localName) {
+            case 'item':
+                return $node->textContent;
             case 'integer':
                 return XsInteger::parseNode($node);
             case 'date':
