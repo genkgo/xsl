@@ -19,6 +19,7 @@ use Genkgo\Xsl\Xsl\Node\AttributeSelect;
 use Genkgo\Xsl\Xsl\Node\AttributeTest;
 use Genkgo\Xsl\Xsl\Node\ElementAttribute;
 use Genkgo\Xsl\Xsl\Node\ElementForEachGroup;
+use Genkgo\Xsl\Xsl\Node\ElementFunction;
 use Genkgo\Xsl\Xsl\Node\ElementValueOf;
 use Genkgo\Xsl\Xsl\Node\IncludeWindowsTransformer;
 
@@ -49,6 +50,7 @@ final class Transformer implements TransformerInterface
             new AttributeTest($xpathCompiler),
             new ElementValueOf(),
             new ElementAttribute(),
+            new ElementFunction(),
         ];
 
         // @codeCoverageIgnoreStart
