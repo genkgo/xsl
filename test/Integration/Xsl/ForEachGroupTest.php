@@ -222,4 +222,18 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
             \trim($processor->transformToXml($data))
         );
     }
+
+    public function testByMultipleLevelSort()
+    {
+        $styleSheet = new DOMDocument();
+        $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-multiple-level-sort.xsl');
+
+        $processor = new XsltProcessor(new NullCache());
+        $processor->importStyleSheet($styleSheet);
+
+        $data = new DOMDocument();
+        $data->load('Stubs/packages.xml');
+
+        $this->assertEquals('CAMTMigrationsXSLComposer', \trim($processor->transformToXml($data)));
+    }
 }

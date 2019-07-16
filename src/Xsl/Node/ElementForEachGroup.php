@@ -53,9 +53,10 @@ final class ElementForEachGroup implements ElementTransformerInterface
         $iterationId = $this->createIterationId($document, $groupId);
         $groupVariable = $this->createGroupVariable($document, $groupId);
 
-        $sorts = $element->getElementsByTagNameNS(XslTransformations::URI, 'sort');
-        while ($sorts->length > 0) {
-            $item = $sorts->item(0);
+        $childSorts = new \DOMXPath($document);
+        $childSorts->registerNamespace('xsl', XslTransformations::URI);
+        $sorts = $childSorts->query('xsl:sort', $element);
+        foreach ($sorts as $item) {
             if ($item instanceof DOMElement) {
                 $xslForEach->appendChild($this->convertSort($item, $groupId));
             }
