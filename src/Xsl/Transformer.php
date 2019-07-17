@@ -141,8 +141,7 @@ final class Transformer implements TransformerInterface
     public static function newDefaultTransformer(
         Compiler $xpathCompiler,
         array $excludePrefixes = self::DEFAULT_EXCLUDE_PREFIXES
-    ): self
-    {
+    ): self {
         $elementTransformers = [
             new ElementForEachGroup($xpathCompiler),
             new AttributeExpandText($xpathCompiler),
