@@ -61,7 +61,7 @@ final class XsltProcessor extends PhpXsltProcessor
     /**
      * @param object $stylesheet
      */
-    public function importStyleSheet($stylesheet): void
+    public function importStyleSheet($stylesheet)
     {
         $this->styleSheet = $stylesheet;
     }
