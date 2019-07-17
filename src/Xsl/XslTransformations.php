@@ -18,11 +18,20 @@ final class XslTransformations implements XmlNamespaceInterface
     private $xpathCompiler;
 
     /**
-     * @param Compiler $xpathCompiler
+     * @var array
      */
-    public function __construct(Compiler $xpathCompiler)
-    {
+    private $defaultExcludePrefixes;
+
+    /**
+     * @param Compiler $xpathCompiler
+     * @param array $defaultExcludePrefixes
+     */
+    public function __construct(
+        Compiler $xpathCompiler,
+        array $defaultExcludePrefixes = Transformer::DEFAULT_EXCLUDE_PREFIXES
+    ) {
         $this->xpathCompiler = $xpathCompiler;
+        $this->defaultExcludePrefixes = $defaultExcludePrefixes;
     }
 
     /**
@@ -33,6 +42,11 @@ final class XslTransformations implements XmlNamespaceInterface
     public function register(TransformerCollection $transformers, FunctionCollection $functions): void
     {
         $functions->attach(self::URI, new FunctionMap(self::URI));
-        $transformers->attach(new Transformer($this->xpathCompiler));
+        $transformers->attach(
+            Transformer::newDefaultTransformer(
+                $this->xpathCompiler,
+                $this->defaultExcludePrefixes
+            )
+        );
     }
 }

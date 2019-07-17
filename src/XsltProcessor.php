@@ -7,6 +7,7 @@ use Genkgo\Xsl\Callback\FunctionCollection;
 use Genkgo\Xsl\Callback\PhpCallback;
 use Genkgo\Xsl\Exception\TransformationException;
 use Genkgo\Xsl\Util\TransformerCollection;
+use Genkgo\Xsl\Xsl\Transformer;
 use Psr\SimpleCache\CacheInterface;
 use XSLTProcessor as PhpXsltProcessor;
 
@@ -33,6 +34,11 @@ final class XsltProcessor extends PhpXsltProcessor
     private $cache;
 
     /**
+     * @var bool
+     */
+    private $excludeAllNamespaces;
+
+    /**
      * @var array|XmlNamespaceInterface[]
      */
     private $extensions;
@@ -47,10 +53,15 @@ final class XsltProcessor extends PhpXsltProcessor
         $this->extensions = $extensions;
     }
 
+    public function excludeAllPrefixes(): void
+    {
+        $this->excludeAllNamespaces = true;
+    }
+
     /**
      * @param object $stylesheet
      */
-    public function importStyleSheet($stylesheet)
+    public function importStyleSheet($stylesheet): void
     {
         $this->styleSheet = $stylesheet;
     }
@@ -59,7 +70,7 @@ final class XsltProcessor extends PhpXsltProcessor
      * @param \DOMDocument|\SimpleXMLElement $doc
      * @return string
      */
-    public function transformToXML($doc)
+    public function transformToXML($doc):? string
     {
         $styleSheet = $this->styleSheetToDomDocument();
 
@@ -97,7 +108,7 @@ final class XsltProcessor extends PhpXsltProcessor
      * @param \DOMNode $doc
      * @return \DOMDocument
      */
-    public function transformToDoc($doc)
+    public function transformToDoc($doc):? \DOMDocument
     {
         $styleSheet = $this->styleSheetToDomDocument();
 
@@ -136,7 +147,7 @@ final class XsltProcessor extends PhpXsltProcessor
      * @param string $uri
      * @return int
      */
-    public function transformToUri($doc, $uri)
+    public function transformToUri($doc, $uri):? int
     {
         $styleSheet = $this->styleSheetToDomDocument();
         $transpiler = $this->createTranspiler($styleSheet);
@@ -172,7 +183,7 @@ final class XsltProcessor extends PhpXsltProcessor
     /**
      * @param string|array|null $restrict
      */
-    public function registerPHPFunctions($restrict = null)
+    public function registerPHPFunctions($restrict = null): void
     {
         if (\is_string($restrict)) {
             $restrict = [$restrict];
@@ -186,7 +197,7 @@ final class XsltProcessor extends PhpXsltProcessor
      * @param \DOMDocument $styleSheet
      * @return \DOMDocument
      */
-    private function getTranspiledStyleSheet(Transpiler $transpiler, \DOMDocument $styleSheet)
+    private function getTranspiledStyleSheet(Transpiler $transpiler, \DOMDocument $styleSheet): \DOMDocument
     {
         $this->boot();
 
@@ -196,7 +207,7 @@ final class XsltProcessor extends PhpXsltProcessor
         return $this->createTranspiledDocument($styleSheet);
     }
 
-    private function boot()
+    private function boot(): void
     {
         if (self::$booted === false) {
             \stream_wrapper_register('gxsl', Stream::class);
@@ -208,7 +219,7 @@ final class XsltProcessor extends PhpXsltProcessor
      * @param \DOMDocument $styleSheet
      * @return Transpiler
      */
-    private function createTranspiler(\DOMDocument $styleSheet)
+    private function createTranspiler(\DOMDocument $styleSheet): Transpiler
     {
         $phpFunctions = $this->phpFunctions;
 
@@ -238,12 +249,14 @@ final class XsltProcessor extends PhpXsltProcessor
      * @param Xpath\Compiler $xpathCompiler
      * @return XmlNamespaceInterface[]
      */
-    private function getNamespaces($xpathCompiler)
+    private function getNamespaces(Xpath\Compiler $xpathCompiler): array
     {
+        $defaultExcludedPrefixes = $this->excludeAllNamespaces ? ['#all'] : Transformer::DEFAULT_EXCLUDE_PREFIXES;
+
         return \array_merge(
             $this->extensions,
             [
-                new Xsl\XslTransformations($xpathCompiler),
+                new Xsl\XslTransformations($xpathCompiler, $defaultExcludedPrefixes),
                 new Xpath\XmlPath(),
                 new Schema\XmlSchema()
             ]
@@ -254,7 +267,7 @@ final class XsltProcessor extends PhpXsltProcessor
      * @param \DOMDocument $styleSheet
      * @return \DOMDocument
      */
-    private function createTranspiledDocument(\DOMDocument $styleSheet)
+    private function createTranspiledDocument(\DOMDocument $styleSheet): \DOMDocument
     {
         $documentURI = $styleSheet->documentURI;
 
@@ -272,7 +285,7 @@ final class XsltProcessor extends PhpXsltProcessor
     /**
      * @return \DOMDocument
      */
-    private function styleSheetToDomDocument()
+    private function styleSheetToDomDocument(): \DOMDocument
     {
         if ($this->styleSheet instanceof \SimpleXMLElement) {
             $document = \dom_import_simplexml($this->styleSheet);
@@ -294,7 +307,7 @@ final class XsltProcessor extends PhpXsltProcessor
      * @param Transpiler $transpiler
      * @return array
      */
-    private function createStreamOptions(Transpiler $transpiler)
+    private function createStreamOptions(Transpiler $transpiler): array
     {
         $contextOptions = [
             'gxsl' => [
@@ -305,7 +318,7 @@ final class XsltProcessor extends PhpXsltProcessor
         return $contextOptions;
     }
 
-    private function throwOnLibxmlError()
+    private function throwOnLibxmlError(): void
     {
         $errors = \libxml_get_errors();
         if ($errors === []) {

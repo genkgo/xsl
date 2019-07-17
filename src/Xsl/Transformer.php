@@ -25,7 +25,7 @@ use Genkgo\Xsl\Xsl\Node\IncludeWindowsTransformer;
 
 final class Transformer implements TransformerInterface
 {
-    private const DEFAULT_EXCLUDE_PREFIXES = ['php', 'xs'];
+    public const DEFAULT_EXCLUDE_PREFIXES = ['php', 'xs'];
 
     /**
      * @var ElementTransformerInterface[]
@@ -38,30 +38,23 @@ final class Transformer implements TransformerInterface
     private $attributeTransformers = [];
 
     /**
-     * @param Compiler $xpathCompiler
+     * @var array
      */
-    public function __construct(Compiler $xpathCompiler)
-    {
-        $this->elementTransformers = [
-            new ElementForEachGroup($xpathCompiler),
-            new AttributeExpandText($xpathCompiler),
-            new AttributeMatch($xpathCompiler),
-            new AttributeSelect($xpathCompiler),
-            new AttributeTest($xpathCompiler),
-            new ElementValueOf(),
-            new ElementAttribute(),
-            new ElementFunction(),
-        ];
+    private $defaultExcludePrefixes = self::DEFAULT_EXCLUDE_PREFIXES;
 
-        // @codeCoverageIgnoreStart
-        if (PHP_OS === 'WINNT') {
-            $this->elementTransformers[] = new IncludeWindowsTransformer();
-        }
-        // @codeCoverageIgnoreEnd
-
-        $this->attributeTransformers = [
-            new AttributeValueTemplates($xpathCompiler)
-        ];
+    /**
+     * @param array $elementTransformers
+     * @param array $attributeTransformers
+     * @param array $defaultExcludePrefixes
+     */
+    public function __construct(
+        array $elementTransformers,
+        array $attributeTransformers,
+        array $defaultExcludePrefixes
+    ) {
+        $this->elementTransformers = $elementTransformers;
+        $this->attributeTransformers = $attributeTransformers;
+        $this->defaultExcludePrefixes = $defaultExcludePrefixes;
     }
 
     /**
@@ -81,7 +74,7 @@ final class Transformer implements TransformerInterface
 
         $excludePrefixes = \array_merge($documentPrefixes, self::DEFAULT_EXCLUDE_PREFIXES);
 
-        if (\in_array('#all', $excludePrefixes) === true) {
+        if (\in_array('#all', $excludePrefixes, true) === true || \in_array('#all', $this->defaultExcludePrefixes, true)) {
             $excludePrefixes = \array_merge($excludePrefixes, \array_keys($namespaces));
             $excludePrefixes = \array_filter(
                 $excludePrefixes,
@@ -138,5 +131,39 @@ final class Transformer implements TransformerInterface
                 }
             }
         }
+    }
+
+    /**
+     * @param Compiler $xpathCompiler
+     * @param array $excludePrefixes
+     * @return Transformer
+     */
+    public static function newDefaultTransformer(
+        Compiler $xpathCompiler,
+        array $excludePrefixes = self::DEFAULT_EXCLUDE_PREFIXES
+    ): self
+    {
+        $elementTransformers = [
+            new ElementForEachGroup($xpathCompiler),
+            new AttributeExpandText($xpathCompiler),
+            new AttributeMatch($xpathCompiler),
+            new AttributeSelect($xpathCompiler),
+            new AttributeTest($xpathCompiler),
+            new ElementValueOf(),
+            new ElementAttribute(),
+            new ElementFunction(),
+        ];
+
+        // @codeCoverageIgnoreStart
+        if (PHP_OS === 'WINNT') {
+            $elementTransformers[] = new IncludeWindowsTransformer();
+        }
+        // @codeCoverageIgnoreEnd
+
+        return new self(
+            $elementTransformers,
+            [new AttributeValueTemplates($xpathCompiler)],
+            $excludePrefixes
+        );
     }
 }

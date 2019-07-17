@@ -73,4 +73,19 @@ class XsltProcessorTest extends AbstractTestCase
 
         $this->assertGreaterThan(1, \strlen($decorator->transformToXML($xmlDoc)));
     }
+
+    public function testExcludePrefixes()
+    {
+        $xslDoc = new DOMDocument();
+        $xslDoc->load('Stubs/exclude-prefixes.xsl');
+
+        $xmlDoc = new DOMDocument();
+        $xmlDoc->load('Stubs/collection.xml');
+
+        $processor = new XsltProcessor(new NullCache());
+        $processor->excludeAllPrefixes();
+        $processor->importStyleSheet($xslDoc);
+
+        $this->assertSame('<p>test</p>', \trim($processor->transformToXML($xmlDoc)));
+    }
 }
