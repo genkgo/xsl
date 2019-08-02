@@ -60,9 +60,9 @@ final class Transpiler
 
             $this->transpile($document);
             $result = $document->saveXML();
+            $this->cache->set($documentURI, $result);
         }
 
-        $this->cache->set($documentURI, $result);
         return $result;
     }
 
@@ -105,9 +105,9 @@ final class Transpiler
 
             $this->transpile($document);
             $result = $document->saveXML();
+            $this->cache->set($path, $result);
         }
 
-        $this->cache->set($path, $result);
         return $result;
     }
 
