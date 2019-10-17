@@ -50,7 +50,18 @@ final class StringFunction extends AbstractFunction
     {
         $callable = [$this->className, $this->methodName];
         if (\is_callable($callable)) {
-            return \call_user_func_array($callable, $arguments->unpackFromSchemaType());
+            $arguments = \array_map(
+                function ($expectString) {
+                    if (\is_array($expectString) && isset($expectString[0]) && isset($expectString[0]->textContent)) {
+                        return $expectString[0]->textContent;
+                    }
+
+                    return $expectString;
+                },
+                $arguments->unpackFromSchemaType()
+            );
+
+            return \call_user_func_array($callable, $arguments);
         }
 
         throw new \InvalidArgumentException('Argument is not callable');

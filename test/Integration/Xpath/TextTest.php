@@ -65,6 +65,11 @@ class TextTest extends AbstractXpathTest
         $this->assertEquals('php', $this->transformFile('Stubs/Xpath/Text/lower-case.xsl'));
     }
 
+    public function testLowerCaseMultipleMatches()
+    {
+        $this->assertEquals('guitar', $this->transformFile('Stubs/Xpath/Text/lower-case-multiple-matches.xsl'));
+    }
+
     public function testUpperCase()
     {
         $this->assertEquals('PHP', $this->transformFile('Stubs/Xpath/Text/upper-case.xsl'));
