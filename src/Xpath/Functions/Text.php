@@ -160,6 +160,16 @@ final class Text
      */
     public static function replace(string $input, string $pattern, string $replacement, string $flags = ''): string
     {
+        if ($flags !== '' && \strlen($flags) > \strspn($flags, 'smixq')) {
+            throw new \InvalidArgumentException('Only flags s, m, i, x and q are allowed.');
+        }
+
+        $quote = \strpos($flags, 'q');
+        if ($quote !== false) {
+            $pattern = \preg_quote($pattern, '/');
+            $flags = \substr_replace($flags, '', $quote, 1);
+        }
+
         return (string)\preg_replace('/'.$pattern.'/'.$flags, $replacement, $input);
     }
 

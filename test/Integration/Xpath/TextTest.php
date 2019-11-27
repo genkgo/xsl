@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Genkgo\Xsl\Integration\Xpath;
 
+use Genkgo\Xsl\Exception\TransformationException;
+
 class TextTest extends AbstractXpathTest
 {
     public function testConcat()
@@ -113,7 +115,51 @@ class TextTest extends AbstractXpathTest
 
     public function testReplace()
     {
-        $this->assertEquals('[1=ab][2=]cd', $this->transformFile('Stubs/Xpath/Text/replace.xsl'));
+        $this->assertEquals('[1=ab][2=]cd', $this->transformFile('Stubs/Xpath/Text/replace.xsl', [
+            'param1' => 'abcd',
+            'param2' => '(ab)|(a)',
+            'param3' => '[1=$1][2=$2]',
+        ]));
+    }
+
+    public function testReplaceMultiple()
+    {
+        $this->assertEquals('Be**a Ita*ia', $this->transformFile('Stubs/Xpath/Text/replace.xsl', [
+            'param1' => 'Bella Italia',
+            'param2' => 'l',
+            'param3' => '*',
+        ]));
+    }
+
+    public function testReplaceFlagsQ()
+    {
+        $this->assertEquals('Bella*Italia', $this->transformFile('Stubs/Xpath/Text/replace.xsl', [
+            'param1' => 'Bella.Italia',
+            'param2' => '.',
+            'param3' => '*',
+            'param4' => 'q',
+        ]));
+    }
+
+    public function testReplaceInvalidFlag()
+    {
+        $this->expectException(TransformationException::class);
+
+        $this->transformFile('Stubs/Xpath/Text/replace.xsl', [
+            'param1' => '',
+            'param2' => '',
+            'param3' => '',
+            'param4' => 'a',
+        ]);
+    }
+
+    public function testReplaceEscapeCharacters()
+    {
+        $this->assertEquals('Bella Italia', $this->transformFile('Stubs/Xpath/Text/replace.xsl', [
+            'param1' => 'Bella.Italia',
+            'param2' => '\.',
+            'param3' => ' ',
+        ]));
     }
 
     public function testTranslate()
