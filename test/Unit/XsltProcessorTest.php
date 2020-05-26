@@ -6,7 +6,6 @@ namespace Genkgo\Xsl\Unit;
 use DOMDocument;
 use Genkgo\Xsl\AbstractTestCase;
 use Genkgo\Xsl\Cache\NullCache;
-use Genkgo\Xsl\ProcessorFactory;
 use Genkgo\Xsl\XsltProcessor;
 
 class XsltProcessorTest extends AbstractTestCase

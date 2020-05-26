@@ -128,6 +128,12 @@ final class Text
             $flags = '';
         }
 
+        $quote = \strpos($flags, 'q');
+        if ($quote !== false) {
+            $pattern = \preg_quote($pattern, '/');
+            $flags = \substr_replace($flags, '', $quote, 1);
+        }
+
         $split = \preg_split('/'.$pattern.'/'.$flags, $input);
         if ($split === false) {
             return XsSequence::fromArray([]);
