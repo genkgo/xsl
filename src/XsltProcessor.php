@@ -115,7 +115,7 @@ final class XsltProcessor extends PhpXsltProcessor
         $transpiler = $this->createTranspiler($styleSheet);
         $useInternalErrors = \libxml_use_internal_errors(false);
 
-        $previousHandler = \set_error_handler(
+        \set_error_handler(
             function ($number, $message) {
                 throw new TransformationException(
                     'Transformation failed: ' . $message,
@@ -138,7 +138,7 @@ final class XsltProcessor extends PhpXsltProcessor
         } finally {
             \libxml_clear_errors();
             \libxml_use_internal_errors($useInternalErrors);
-            \set_error_handler($previousHandler);
+            \restore_error_handler();
         }
     }
 
@@ -153,7 +153,7 @@ final class XsltProcessor extends PhpXsltProcessor
         $transpiler = $this->createTranspiler($styleSheet);
         $useInternalErrors = \libxml_use_internal_errors(false);
 
-        $previousHandler = \set_error_handler(
+        \set_error_handler(
             function ($number, $message) {
                 throw new TransformationException(
                     'Transformation failed: ' . $message,
@@ -176,7 +176,7 @@ final class XsltProcessor extends PhpXsltProcessor
         } finally {
             \libxml_clear_errors();
             \libxml_use_internal_errors($useInternalErrors);
-            \set_error_handler($previousHandler);
+            \restore_error_handler();
         }
     }
 
