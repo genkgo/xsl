@@ -75,33 +75,19 @@ final class XsltProcessor extends PhpXsltProcessor
         $styleSheet = $this->styleSheetToDomDocument();
 
         $transpiler = $this->createTranspiler($styleSheet);
-        $useInternalErrors = \libxml_use_internal_errors(false);
 
-        \set_error_handler(
-            function ($number, $message) {
-                throw new TransformationException(
-                    'Transformation failed: ' . $message,
-                    $number
-                );
+        return $this->catchLibXmlErrorThrowTransformException(
+            function () use ($doc, $styleSheet, $transpiler):? string {
+                parent::importStylesheet($this->getTranspiledStyleSheet($transpiler, $styleSheet));
+                $this->throwOnLibxmlError();
+
+                return $transpiler->transform(function () use ($doc) {
+                    $result = parent::transformToXml($doc);
+                    $this->throwOnLibxmlError();
+                    return $result;
+                });
             }
         );
-
-        try {
-            parent::importStylesheet($this->getTranspiledStyleSheet($transpiler, $styleSheet));
-            $this->throwOnLibxmlError();
-
-            return $transpiler->transform(function () use ($doc) {
-                $result = parent::transformToXml($doc);
-                $this->throwOnLibxmlError();
-                return $result;
-            });
-        } catch (\Throwable $e) {
-            throw new TransformationException('Transformation failed: ' . $e->getMessage(), 0, $e);
-        } finally {
-            \libxml_clear_errors();
-            \libxml_use_internal_errors($useInternalErrors);
-            \restore_error_handler();
-        }
     }
 
     /**
@@ -113,33 +99,19 @@ final class XsltProcessor extends PhpXsltProcessor
         $styleSheet = $this->styleSheetToDomDocument();
 
         $transpiler = $this->createTranspiler($styleSheet);
-        $useInternalErrors = \libxml_use_internal_errors(false);
 
-        \set_error_handler(
-            function ($number, $message) {
-                throw new TransformationException(
-                    'Transformation failed: ' . $message,
-                    $number
-                );
+        return $this->catchLibXmlErrorThrowTransformException(
+            function () use ($doc, $styleSheet, $transpiler):? \DOMDocument {
+                parent::importStylesheet($this->getTranspiledStyleSheet($transpiler, $styleSheet));
+                $this->throwOnLibxmlError();
+
+                return $transpiler->transform(function () use ($doc) {
+                    $result = parent::transformToDoc($doc);
+                    $this->throwOnLibxmlError();
+                    return $result;
+                });
             }
         );
-
-        try {
-            parent::importStylesheet($this->getTranspiledStyleSheet($transpiler, $styleSheet));
-            $this->throwOnLibxmlError();
-
-            return $transpiler->transform(function () use ($doc) {
-                $result = parent::transformToDoc($doc);
-                $this->throwOnLibxmlError();
-                return $result;
-            });
-        } catch (\Throwable $e) {
-            throw new TransformationException('Transformation failed: ' . $e->getMessage(), 0, $e);
-        } finally {
-            \libxml_clear_errors();
-            \libxml_use_internal_errors($useInternalErrors);
-            \restore_error_handler();
-        }
     }
 
     /**
@@ -151,33 +123,19 @@ final class XsltProcessor extends PhpXsltProcessor
     {
         $styleSheet = $this->styleSheetToDomDocument();
         $transpiler = $this->createTranspiler($styleSheet);
-        $useInternalErrors = \libxml_use_internal_errors(false);
 
-        \set_error_handler(
-            function ($number, $message) {
-                throw new TransformationException(
-                    'Transformation failed: ' . $message,
-                    $number
-                );
+        return $this->catchLibXmlErrorThrowTransformException(
+            function () use ($doc, $uri, $styleSheet, $transpiler):? int {
+                parent::importStylesheet($this->getTranspiledStyleSheet($transpiler, $styleSheet));
+                $this->throwOnLibxmlError();
+
+                return $transpiler->transform(function () use ($doc, $uri) {
+                    $result = parent::transformToUri($doc, $uri);
+                    $this->throwOnLibxmlError();
+                    return $result;
+                });
             }
         );
-
-        try {
-            parent::importStylesheet($this->getTranspiledStyleSheet($transpiler, $styleSheet));
-            $this->throwOnLibxmlError();
-
-            return $transpiler->transform(function () use ($doc, $uri) {
-                $result = parent::transformToUri($doc, $uri);
-                $this->throwOnLibxmlError();
-                return $result;
-            });
-        } catch (\Throwable $e) {
-            throw new TransformationException('Transformation failed: ' . $e->getMessage(), 0, $e);
-        } finally {
-            \libxml_clear_errors();
-            \libxml_use_internal_errors($useInternalErrors);
-            \restore_error_handler();
-        }
     }
 
     /**
@@ -327,5 +285,26 @@ final class XsltProcessor extends PhpXsltProcessor
         }
 
         throw TransformationException::fromLibxmlErrorList($errors);
+    }
+
+    private function catchLibXmlErrorThrowTransformException(\Closure $closure)
+    {
+        $useInternalErrors = \libxml_use_internal_errors(false);
+
+        \set_error_handler(
+            function ($number, $message) {
+                throw new TransformationException('Transformation failed: ' . $message, $number);
+            }
+        );
+
+        try {
+            return $closure();
+        } catch (\Throwable $e) {
+            throw new TransformationException('Transformation failed: ' . $e->getMessage(), 0, $e);
+        } finally {
+            \libxml_clear_errors();
+            \libxml_use_internal_errors($useInternalErrors);
+            \restore_error_handler();
+        }
     }
 }
