@@ -162,8 +162,7 @@ final class XsltProcessor extends PhpXsltProcessor
         $streamContext = \stream_context_create($this->createStreamOptions($transpiler));
         \libxml_set_streams_context($streamContext);
 
-        $transpiledDocument = $this->createTranspiledDocument($styleSheet);
-        return $transpiledDocument;
+        return $this->createTranspiledDocument($styleSheet);
     }
 
     private function boot(): void
