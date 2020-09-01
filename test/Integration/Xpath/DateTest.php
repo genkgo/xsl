@@ -7,26 +7,32 @@ class DateTest extends AbstractXpathTest
 {
     public function testCurrentTime()
     {
-        $this->assertEquals(1, \preg_match(
+        $this->assertRegExp(
             '/[0-9]{2}\:[0-9]{2}\:[0-9]{2}\+[0-9]{2}\:[0-9]{2}/',
-            $this->transformFile('Stubs/Xpath/Date/current-time.xsl')
-        ));
+            $this->transformFile(
+                'Stubs/Xpath/Date/current-time.xsl'
+            )
+        );
     }
 
     public function testCurrentDate()
     {
-        $this->assertEquals(1, \preg_match(
+        $this->assertRegExp(
             '/[0-9]{4}\-[0-9]{2}\-[0-9]{2}\+[0-9]{2}\:[0-9]{2}/',
-            $this->transformFile('Stubs/Xpath/Date/current-date.xsl')
-        ));
+            $this->transformFile(
+                'Stubs/Xpath/Date/current-date.xsl'
+            )
+        );
     }
 
     public function testCurrentDateTime()
     {
-        $this->assertEquals(1, \preg_match(
+        $this->assertRegExp(
             '/[0-9]{4}\-[0-9]{2}\-[0-9]{2}T[0-9]{2}\:[0-9]{2}\:[0-9]{2}\+[0-9]{2}\:[0-9]{2}/',
-            $this->transformFile('Stubs/Xpath/Date/current-dateTime.xsl')
-        ));
+            $this->transformFile(
+                'Stubs/Xpath/Date/current-dateTime.xsl'
+            )
+        );
     }
 
     public function testYearFromDate()

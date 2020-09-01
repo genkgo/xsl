@@ -101,7 +101,7 @@ class SequenceTest extends AbstractXpathTest
         $items = \explode(' ', $this->transformFile('Stubs/Xpath/Sequence/unordered.xsl'));
 
         foreach ($items as $item) {
-            $this->assertTrue(\in_array($item, $expected));
+            $this->assertContains($item, $expected);
         }
     }
 
