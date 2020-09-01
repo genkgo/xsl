@@ -7,6 +7,7 @@ use DOMDocument;
 use Genkgo\Xsl\AbstractTestCase;
 use Genkgo\Xsl\Cache\NullCache;
 use Genkgo\Xsl\XsltProcessor;
+use PHPUnit\Framework\Error\Error;
 
 class XsltProcessorTest extends AbstractTestCase
 {
@@ -86,5 +87,28 @@ class XsltProcessorTest extends AbstractTestCase
         $processor->importStyleSheet($xslDoc);
 
         $this->assertSame('<p>test</p>', \trim($processor->transformToXML($xmlDoc)));
+    }
+
+    public function testErrorHandlerIsRestoredAfterTransformToXml(): void
+    {
+        $xmlDoc = new DOMDocument();
+        $xmlDoc->loadXML('<root/>');
+
+        $xslDoc = new DOMDocument();
+        $xslDoc->loadXML(
+            '<?xml version="1.0"?>' . PHP_EOL
+            . '<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"/>'
+        );
+
+        $processor = new XsltProcessor(new NullCache());
+        $processor->importStyleSheet($xslDoc);
+
+        $processor->transformToXML($xmlDoc);
+
+        // test that after transformation the error is captured by the
+        // previous error handler and not by the one set in transformToXML
+        $this->expectException(Error::class);
+        $this->expectExceptionMessage('Error captured by phpunit error handler');
+        \trigger_error('Error captured by phpunit error handler', E_USER_ERROR);
     }
 }
