@@ -9,13 +9,13 @@ abstract class AbstractTestCase extends TestCase
 {
     private $oldCwd;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->oldCwd = \getcwd();
         \chdir(__DIR__);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         \chdir($this->oldCwd);
     }
