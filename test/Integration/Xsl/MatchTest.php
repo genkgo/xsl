@@ -7,6 +7,6 @@ final class MatchTest extends AbstractXslTest
 {
     public function testMatch()
     {
-        $this->assertContains('matched', $this->transformFile('Stubs/Xsl/match.xsl'));
+        $this->assertStringContainsString('matched', $this->transformFile('Stubs/Xsl/match.xsl'));
     }
 }

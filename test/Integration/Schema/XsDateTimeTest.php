@@ -11,7 +11,7 @@ class XsDateTimeTest extends AbstractSchemaTest
     {
         $result = $this->transformFile('Stubs/Schema/dateTime.xsl');
 
-        $this->assertContains('1995-05-10T00:00:00+00:00', $result);
+        $this->assertStringContainsString('1995-05-10T00:00:00+00:00', $result);
     }
 
     public function testWrongConstructor()
