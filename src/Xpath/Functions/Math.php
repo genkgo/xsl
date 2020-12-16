@@ -11,7 +11,7 @@ final class Math
      */
     public static function abs($number)
     {
-        return \abs($number);
+        return \abs((float) $number);
     }
 
     /**
@@ -20,7 +20,7 @@ final class Math
      */
     public static function ceiling($number)
     {
-        return \ceil($number);
+        return \ceil((float) $number);
     }
 
     /**
@@ -29,7 +29,7 @@ final class Math
      */
     public static function floor($number)
     {
-        return \floor($number);
+        return \floor((float) $number);
     }
 
     /**
@@ -38,7 +38,7 @@ final class Math
      */
     public static function round($number)
     {
-        return \round($number);
+        return \round((float) $number);
     }
 
     /**
@@ -48,6 +48,6 @@ final class Math
      */
     public static function roundHalfToEven($number, $precision = 0)
     {
-        return \round($number, (int)$precision, PHP_ROUND_HALF_EVEN);
+        return \round((float) $number, (int)$precision, PHP_ROUND_HALF_EVEN);
     }
 }
