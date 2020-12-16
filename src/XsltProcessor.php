@@ -92,9 +92,10 @@ final class XsltProcessor extends PhpXsltProcessor
 
     /**
      * @param \DOMNode $doc
+     * @param string|null $returnClass
      * @return \DOMDocument
      */
-    public function transformToDoc($doc):? \DOMDocument
+    public function transformToDoc($doc, ?string $returnClass = null):? \DOMDocument
     {
         $styleSheet = $this->styleSheetToDomDocument();
 
