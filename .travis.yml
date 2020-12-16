@@ -24,6 +24,9 @@ matrix:
       env: dependencies=highest
   allow_failures:
     - php: 8.0
+env:
+  global:
+    - XDEBUG_MODE=coverage
 before_script:
   - composer self-update
   - if [ "$TRAVIS_PHP_VERSION" != "8.0" ]; then composer remove friendsofphp/php-cs-fixer --dev --no-interaction --no-progress --no-update; fi;
