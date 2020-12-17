@@ -1,8 +1,4 @@
 language: php
-php:
-  - 7.3
-  - 7.4
-  - 8.0
 matrix:
   include:
     - php: 7.3
@@ -17,22 +13,19 @@ matrix:
       env: dependencies=lowest
     - php: 8.0
       env: dependencies=highest
-  allow_failures:
-    - php: 8.0
 env:
   global:
     - XDEBUG_MODE=coverage
 before_script:
   - composer self-update
   - if [ "$TRAVIS_PHP_VERSION" == "8.0" ]; then composer remove friendsofphp/php-cs-fixer phpstan/phpstan phpstan/phpstan-phpunit --dev --no-interaction --no-progress --no-update; fi;
-  - if [ -z "$dependencies" ]; then composer install; fi;
-  - if [ "$dependencies" = "lowest" ]; then composer update --prefer-lowest -n; fi;
   - if [ "$dependencies" = "highest" ]; then composer update -n; fi;
+  - if [ "$dependencies" = "lowest" ]; then composer update --prefer-lowest -n; fi;
 script:
   - ./vendor/bin/phpunit -c phpunit.xml --coverage-clover=coverage.clover
   - if [ -x "./vendor/bin/phpstan"]; then ./vendor/bin/phpstan analyse -l max -c .phpstan.neon src ; fi
   - if [ -x "./vendor/bin/phpstan"]; then ./vendor/bin/phpstan analyse -l max -c .phpstan.neon test ; fi
-  - if [ -x "./vendor/bin/php-cs-fixer" ] && [ -z "$dependencies" ]; then ./vendor/bin/php-cs-fixer fix --dry-run --verbose --config .php_cs.dist ./src ./test ; fi
+  - if [ -x "./vendor/bin/php-cs-fixer" ]; then ./vendor/bin/php-cs-fixer fix --dry-run --verbose --config .php_cs.dist ./src ./test ; fi
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
