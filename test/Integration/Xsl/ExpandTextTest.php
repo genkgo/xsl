@@ -15,7 +15,7 @@ class ExpandTextTest extends AbstractXslTest
 
     public function testExpandTextOverwrite()
     {
-        $this->assertContains(
+        $this->assertStringContainsString(
             '{artist}',
             $this->transformFile('Stubs/Xsl/TextValueTemplates/expand-text-overwrite.xsl')
         );

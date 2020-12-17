@@ -17,7 +17,7 @@ class ValueOfTest extends AbstractXslTest
 
     public function testSequenceSingleItem()
     {
-        $this->assertNotContains(',', $this->transformFile('Stubs/Xsl/ValueOf/sequence-single.xsl'));
+        $this->assertStringNotContainsString(',', $this->transformFile('Stubs/Xsl/ValueOf/sequence-single.xsl'));
     }
 
     public function testWithoutSeparator()

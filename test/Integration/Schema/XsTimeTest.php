@@ -11,7 +11,7 @@ class XsTimeTest extends AbstractSchemaTest
     {
         $result = $this->transformFile('Stubs/Schema/time.xsl');
 
-        $this->assertContains('12:00:00', $result);
+        $this->assertStringContainsString('12:00:00', $result);
     }
 
     public function testWrongConstructor()

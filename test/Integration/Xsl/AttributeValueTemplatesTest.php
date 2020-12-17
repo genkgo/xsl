@@ -11,21 +11,21 @@ final class AttributeValueTemplatesTest extends AbstractXslTest
     {
         $result = $this->transformFile('Stubs/Xsl/AttributeValueTemplates/single-expression.xsl');
 
-        $this->assertContains('#Ladyland', $result);
+        $this->assertStringContainsString('#Ladyland', $result);
     }
 
     public function testEscaping()
     {
         $result = $this->transformFile('Stubs/Xsl/AttributeValueTemplates/escaping.xsl');
 
-        $this->assertContains('#{substring-after(title, \'Electric \')}', $result);
+        $this->assertStringContainsString('#{substring-after(title, \'Electric \')}', $result);
     }
 
     public function testMultipleExpression()
     {
         $result = $this->transformFile('Stubs/Xsl/AttributeValueTemplates/multiple-expressions.xsl');
 
-        $this->assertContains('Ladyland/Jimi Hendrix', $result);
+        $this->assertStringContainsString('Ladyland/Jimi Hendrix', $result);
     }
 
     public function testNotEscapedNotClosed()
@@ -44,27 +44,27 @@ final class AttributeValueTemplatesTest extends AbstractXslTest
     {
         $result = $this->transformFile('Stubs/Xsl/AttributeValueTemplates/expression-with-content.xsl');
 
-        $this->assertContains('#Ladyland#', $result);
+        $this->assertStringContainsString('#Ladyland#', $result);
     }
 
     public function testExpressionAndEscaping()
     {
         $result = $this->transformFile('Stubs/Xsl/AttributeValueTemplates/expression-and-escaping.xsl');
 
-        $this->assertContains('#Ladyland}', $result);
+        $this->assertStringContainsString('#Ladyland}', $result);
     }
 
     public function testAmpersandEscaped()
     {
         $result = $this->transformFile('Stubs/Xsl/AttributeValueTemplates/ampersand-escaped.xsl');
 
-        $this->assertContains('link?x=y&amp;a=b', $result);
+        $this->assertStringContainsString('link?x=y&amp;a=b', $result);
     }
 
     public function testAmpersandGreaterThan()
     {
         $result = $this->transformFile('Stubs/Xsl/AttributeValueTemplates/ampersand-greater-than.xsl');
 
-        $this->assertContains('link?x=y&amp;year=1997', $result);
+        $this->assertStringContainsString('link?x=y&amp;year=1997', $result);
     }
 }

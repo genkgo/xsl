@@ -8,19 +8,19 @@ class SequenceTest extends AbstractXpathTest
     public function testConstructorString()
     {
         $result = $this->transformFile('Stubs/Xpath/Sequence/constructor-string.xsl');
-        $this->assertContains('a b c', $result);
+        $this->assertStringContainsString('a b c', $result);
     }
 
     public function testMultipleParenthesis()
     {
         $result = $this->transformFile('Stubs/Xpath/Sequence/constructor-multiple-parenthesis.xsl');
-        $this->assertContains('a b c', $result);
+        $this->assertStringContainsString('a b c', $result);
     }
 
     public function testConstructorInteger()
     {
         $result = $this->transformFile('Stubs/Xpath/Sequence/constructor-integer.xsl');
-        $this->assertContains('1 2 3', $result);
+        $this->assertStringContainsString('1 2 3', $result);
     }
 
     public function testReverse()
