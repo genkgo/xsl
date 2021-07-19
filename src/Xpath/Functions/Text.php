@@ -120,6 +120,10 @@ final class Text
     public static function tokenize(Arguments $arguments): XsSequence
     {
         $input = $arguments->castFromSchemaType(0);
+        if ($input === '') {
+            return XsSequence::fromArray([]);
+        }
+
         $pattern = $arguments->castFromSchemaType(1);
 
         try {
