@@ -293,6 +293,10 @@ final class XsltProcessor extends PhpXsltProcessor
 
         \set_error_handler(
             function ($number, $message) {
+                if (\error_reporting() === 0) {
+                    return false;
+                }
+
                 throw new TransformationException('Transformation failed: ' . $message, $number);
             }
         );
