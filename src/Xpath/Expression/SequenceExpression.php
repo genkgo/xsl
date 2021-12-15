@@ -51,7 +51,9 @@ final class SequenceExpression implements ExpressionInterface
         $key = $lexer->key() + 1;
         $commaFound = false;
 
-        while ($nextToken = $lexer->peek($key)) {
+        while ($lexer->peek($key) !== '') {
+            $nextToken = $lexer->peek($key);
+
             if ($nextToken === '(') {
                 return false;
             }

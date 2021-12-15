@@ -4,7 +4,7 @@
 
     <xsl:template match="collection">
 
-        <xsl:value-of select="(1, 2, 3)" />
+        <xsl:value-of select="(0, 1, 2, 3)" />
 
     </xsl:template>
 
