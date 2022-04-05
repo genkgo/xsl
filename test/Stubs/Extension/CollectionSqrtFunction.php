@@ -9,12 +9,12 @@ use Genkgo\Xsl\TransformationContext;
 final class CollectionSqrtFunction
 {
     /**
-     * @var array
+     * @var array<int, int>
      */
     private $collection;
 
     /**
-     * @param array $collection
+     * @param array<int, int> $collection
      */
     public function __construct(array $collection)
     {

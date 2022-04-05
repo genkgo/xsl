@@ -15,19 +15,6 @@ use Genkgo\Xsl\Xsl\XslTransformations;
 final class ElementForEachGroup implements ElementTransformerInterface
 {
     /**
-     * @var Compiler
-     */
-    private $xpathCompiler;
-
-    /**
-     * @param Compiler $compiler
-     */
-    public function __construct(Compiler $compiler)
-    {
-        $this->xpathCompiler = $compiler;
-    }
-
-    /**
      * @param DOMElement $element
      * @return bool
      */

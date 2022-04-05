@@ -10,7 +10,7 @@ use Genkgo\Xsl\XsltProcessor;
 
 final class FunctionTest extends AbstractIntegrationTestCase
 {
-    public function testFunction()
+    public function testFunction(): void
     {
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/Function/function.xsl');

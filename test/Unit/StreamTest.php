@@ -16,7 +16,7 @@ use Genkgo\Xsl\Util\TransformerCollection;
 
 final class StreamTest extends AbstractTestCase
 {
-    public function testStreamOpenRead()
+    public function testStreamOpenRead(): void
     {
         $stream = new Stream();
         $stream->context = $this->createContext();
@@ -24,7 +24,7 @@ final class StreamTest extends AbstractTestCase
         $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>', \trim($stream->stream_read(9999)));
     }
 
-    public function testStreamOpenWithoutContext()
+    public function testStreamOpenWithoutContext(): void
     {
         $this->expectException(StreamException::class);
 
@@ -34,7 +34,7 @@ final class StreamTest extends AbstractTestCase
         $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>', \trim($stream->stream_read(9999)));
     }
 
-    public function testStreamWrite()
+    public function testStreamWrite(): void
     {
         $this->expectException(ReadOnlyStreamException::class);
 
@@ -42,7 +42,7 @@ final class StreamTest extends AbstractTestCase
         $stream->stream_write();
     }
 
-    public function testFullPath()
+    public function testFullPath(): void
     {
         $unregister = false;
         if (\in_array('gxsl', \stream_get_wrappers()) === false) {
@@ -60,6 +60,9 @@ final class StreamTest extends AbstractTestCase
         }
     }
 
+    /**
+     * @return resource
+     */
     private function createContext()
     {
         return \stream_context_create([

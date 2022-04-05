@@ -10,7 +10,7 @@ use Genkgo\Xsl\Schema\XsTime;
 
 final class FormattingTest extends AbstractXslTest
 {
-    public function testDateTime()
+    public function testDateTime(): void
     {
         $xsDateTime = XsDateTime::fromString('2015-10-16 15:37:00');
 
@@ -23,7 +23,7 @@ final class FormattingTest extends AbstractXslTest
         );
     }
 
-    public function testDateTimeOtherLanguage()
+    public function testDateTimeOtherLanguage(): void
     {
         $xsDateTime = XsDateTime::fromString('2015-10-16 15:37:00');
 
@@ -37,7 +37,7 @@ final class FormattingTest extends AbstractXslTest
         );
     }
 
-    public function testTime()
+    public function testTime(): void
     {
         $xsTime = XsTime::fromString('15:37:00');
 
@@ -50,7 +50,7 @@ final class FormattingTest extends AbstractXslTest
         );
     }
 
-    public function testTimeLanguage()
+    public function testTimeLanguage(): void
     {
         $xsTime = XsTime::fromString('15:37:00');
 
@@ -64,7 +64,7 @@ final class FormattingTest extends AbstractXslTest
         );
     }
 
-    public function testDate()
+    public function testDate(): void
     {
         $xsDate = XsDate::fromString('2015-10-16');
 
@@ -77,7 +77,7 @@ final class FormattingTest extends AbstractXslTest
         );
     }
 
-    public function testDateOtherLanguage()
+    public function testDateOtherLanguage(): void
     {
         $xsDate = XsDate::fromString('2015-10-16');
 
@@ -91,7 +91,7 @@ final class FormattingTest extends AbstractXslTest
         );
     }
 
-    public function testJanuaryFirst2017()
+    public function testJanuaryFirst2017(): void
     {
         $xsDate = XsDate::fromString('2017-01-01');
 
@@ -105,7 +105,7 @@ final class FormattingTest extends AbstractXslTest
         );
     }
 
-    public function testInvalidDataType()
+    public function testInvalidDataType(): void
     {
         $this->expectException(TransformationException::class);
         $this->expectExceptionMessage('Expected a date object, got scalar');
@@ -118,7 +118,7 @@ final class FormattingTest extends AbstractXslTest
         ]);
     }
 
-    public function testInvalidSequence()
+    public function testInvalidSequence(): void
     {
         $this->expectException(TransformationException::class);
         $this->expectExceptionMessage('Expected a http://www.w3.org/2001/XMLSchema:dateTime object, got xs:item');
@@ -131,7 +131,7 @@ final class FormattingTest extends AbstractXslTest
         ]);
     }
 
-    public function testFormatCurrent()
+    public function testFormatCurrent(): void
     {
         $this->assertEquals(
             \date('d'),
@@ -141,7 +141,7 @@ final class FormattingTest extends AbstractXslTest
         );
     }
 
-    public function testEmptySequence()
+    public function testEmptySequence(): void
     {
         $this->assertEquals(
             '',

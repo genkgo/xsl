@@ -10,7 +10,7 @@ use Genkgo\Xsl\XsltProcessor;
 
 final class CacheTest extends AbstractIntegrationTestCase
 {
-    public function testCacheRoot()
+    public function testCacheRoot(): void
     {
         $cache = new ArrayCache();
         $factory = new ProcessorFactory($cache);
@@ -37,7 +37,7 @@ final class CacheTest extends AbstractIntegrationTestCase
         $this->assertEquals(158, \trim($processor->transformToXML($xmlDoc)));
     }
 
-    public function testCacheInclude()
+    public function testCacheInclude(): void
     {
         $cache = new ArrayCache();
         $factory = new ProcessorFactory($cache);

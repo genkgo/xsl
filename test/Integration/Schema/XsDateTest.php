@@ -7,14 +7,14 @@ use Genkgo\Xsl\Exception\TransformationException;
 
 class XsDateTest extends AbstractSchemaTest
 {
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $result = $this->transformFile('Stubs/Schema/date.xsl');
 
         $this->assertStringContainsString('1995-05-10+00:00', $result);
     }
 
-    public function testWrongConstructor()
+    public function testWrongConstructor(): void
     {
         $this->expectException(TransformationException::class);
         $this->expectExceptionMessage('Cannot create date from 20');
@@ -22,7 +22,7 @@ class XsDateTest extends AbstractSchemaTest
         $this->transformFile('Stubs/Schema/date-wrong-constructor.xsl');
     }
 
-    public function testTooManyElements()
+    public function testTooManyElements(): void
     {
         $this->expectException(TransformationException::class);
         $this->expectExceptionMessage('Cannot convert list of elements to string');

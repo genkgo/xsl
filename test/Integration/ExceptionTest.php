@@ -11,7 +11,7 @@ use Genkgo\Xsl\XsltProcessor;
 
 final class ExceptionTest extends AbstractTestCase
 {
-    public function testException()
+    public function testException(): void
     {
         $this->expectException(TransformationException::class);
 

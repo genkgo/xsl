@@ -10,7 +10,7 @@ use Genkgo\Xsl\ProcessorFactory;
 
 final class DisableEntitiesTest extends AbstractIntegrationTestCase
 {
-    public function testDisableEntitiesWhenDocumentAlreadyLoaded()
+    public function testDisableEntitiesWhenDocumentAlreadyLoaded(): void
     {
         $this->expectException(TransformationException::class);
 
@@ -28,7 +28,7 @@ final class DisableEntitiesTest extends AbstractIntegrationTestCase
         $processor->transformToXML($xmlDoc);
     }
 
-    public function testDisableEntitiesInInclude()
+    public function testDisableEntitiesInInclude(): void
     {
         $this->expectException(TransformationException::class);
 

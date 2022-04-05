@@ -10,7 +10,7 @@ use Genkgo\Xsl\XsltProcessor;
 
 final class ForEachGroupTest extends AbstractIntegrationTestCase
 {
-    public function testByElement()
+    public function testByElement(): void
     {
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-element.xsl');
@@ -24,7 +24,7 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         $this->assertEquals('testtest', \trim($processor->transformToXml($data)));
     }
 
-    public function testByAttribute()
+    public function testByAttribute(): void
     {
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-attribute.xsl');
@@ -38,7 +38,7 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         $this->assertEquals('testtest', \trim($processor->transformToXml($data)));
     }
 
-    public function testByFunction()
+    public function testByFunction(): void
     {
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-function.xsl');
@@ -52,7 +52,7 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         $this->assertEquals('testtesttest', \trim($processor->transformToXml($data)));
     }
 
-    public function testEmpty()
+    public function testEmpty(): void
     {
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/ForEachGroup/group-empty.xsl');
@@ -66,7 +66,7 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         $this->assertEquals('', \trim((string)$processor->transformToXml($data)));
     }
 
-    public function testByCurrentGroupingKey()
+    public function testByCurrentGroupingKey(): void
     {
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-current-grouping-key.xsl');
@@ -80,7 +80,7 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         $this->assertEquals('ComposerGenkgo', \trim($processor->transformToXml($data)));
     }
 
-    public function testByCurrentGroupingKeySort()
+    public function testByCurrentGroupingKeySort(): void
     {
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-current-grouping-key-sort.xsl');
@@ -94,7 +94,7 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         $this->assertEquals('GenkgoComposer', \trim($processor->transformToXml($data)));
     }
 
-    public function testByCurrentGroup()
+    public function testByCurrentGroup(): void
     {
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-current-group.xsl');
@@ -108,7 +108,7 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         $this->assertEquals('Composer:-ComposerGenkgo:-CAMT-XSL-Migrations', \trim($processor->transformToXml($data)));
     }
 
-    public function testCurrentGroupCurrentGroupingKeyWithForEach()
+    public function testCurrentGroupCurrentGroupingKeyWithForEach(): void
     {
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/ForEachGroup/current-group-without-for-each-group.xsl');
@@ -122,7 +122,7 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         $this->assertEquals('', \trim((string)$processor->transformToXml($data)));
     }
 
-    public function testByAggregating()
+    public function testByAggregating(): void
     {
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-aggregating.xsl');
@@ -136,7 +136,7 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         $this->assertEquals('20116044', \trim($processor->transformToXml($data)));
     }
 
-    public function testByAncestor()
+    public function testByAncestor(): void
     {
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-ancestor.xsl');
@@ -150,7 +150,7 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         $this->assertEquals('2015-10-24 16:13:122015-10-24 16:13:12', \trim($processor->transformToXml($data)));
     }
 
-    public function testByTest()
+    public function testByTest(): void
     {
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-test.xsl');
@@ -164,7 +164,7 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         $this->assertEquals('1 CAMT packages', \trim($processor->transformToXml($data)));
     }
 
-    public function testByPosition()
+    public function testByPosition(): void
     {
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-position.xsl');
@@ -178,7 +178,7 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         $this->assertEquals('22', \trim($processor->transformToXml($data)));
     }
 
-    public function testWithNamespaceFunctions()
+    public function testWithNamespaceFunctions(): void
     {
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-namespace-functions.xsl');
@@ -192,7 +192,7 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         $this->assertEquals('201120152014', \trim($processor->transformToXml($data)));
     }
 
-    public function testByAttributeValueTemplates()
+    public function testByAttributeValueTemplates(): void
     {
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-avt.xsl');
@@ -206,7 +206,7 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         $this->assertEquals('<span title="1 CAMT packages for key Genkgo">CAMT</span>', \trim($processor->transformToXml($data)));
     }
 
-    public function testMultipleCalls()
+    public function testMultipleCalls(): void
     {
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/ForEachGroup/group-multiple.xsl');
@@ -223,7 +223,7 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         );
     }
 
-    public function testByMultipleLevelSort()
+    public function testByMultipleLevelSort(): void
     {
         $styleSheet = new DOMDocument();
         $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-multiple-level-sort.xsl');

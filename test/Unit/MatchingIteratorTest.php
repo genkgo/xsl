@@ -9,7 +9,7 @@ use Genkgo\Xsl\Xpath\MatchingIterator;
 
 class MatchingIteratorTest extends AbstractTestCase
 {
-    public function testWithMatches()
+    public function testWithMatches(): void
     {
         $lexer = new Lexer(['/', '/', '*']);
         $iterator = new MatchingIterator($lexer, '/\//');
@@ -25,7 +25,7 @@ class MatchingIteratorTest extends AbstractTestCase
         $this->assertEquals(2, \iterator_count($iterator));
     }
 
-    public function testNoMatches()
+    public function testNoMatches(): void
     {
         $lexer = new Lexer(['/', '/', '*']);
         $iterator = new MatchingIterator($lexer, '/a/');
@@ -33,7 +33,7 @@ class MatchingIteratorTest extends AbstractTestCase
         $this->assertEquals(0, \iterator_count($iterator));
     }
 
-    public function testEmpty()
+    public function testEmpty(): void
     {
         $lexer = new Lexer([]);
         $iterator = new MatchingIterator($lexer, '/a/');
@@ -41,7 +41,7 @@ class MatchingIteratorTest extends AbstractTestCase
         $this->assertEquals(0, \iterator_count($iterator));
     }
 
-    public function testOtherSeekPosition()
+    public function testOtherSeekPosition(): void
     {
         $lexer = new Lexer(['/', '/', '*']);
         $lexer->seek(1);
@@ -59,7 +59,7 @@ class MatchingIteratorTest extends AbstractTestCase
         $this->assertEquals(1, \iterator_count($iterator));
     }
 
-    public function testDirectionDown()
+    public function testDirectionDown(): void
     {
         $lexer = new Lexer(['/', '/', '*']);
         $iterator = new MatchingIterator($lexer, '/\//', MatchingIterator::DIRECTION_DOWN);
@@ -67,7 +67,7 @@ class MatchingIteratorTest extends AbstractTestCase
         $this->assertEquals(1, \iterator_count($iterator));
     }
 
-    public function testDirectionDownOtherSeekPosition()
+    public function testDirectionDownOtherSeekPosition(): void
     {
         $lexer = new Lexer(['/', '/', '*']);
         $lexer->seek(1);

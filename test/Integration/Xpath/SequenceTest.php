@@ -5,25 +5,25 @@ namespace Genkgo\Xsl\Integration\Xpath;
 
 class SequenceTest extends AbstractXpathTest
 {
-    public function testConstructorString()
+    public function testConstructorString(): void
     {
         $result = $this->transformFile('Stubs/Xpath/Sequence/constructor-string.xsl');
         $this->assertStringContainsString('a b c', $result);
     }
 
-    public function testMultipleParenthesis()
+    public function testMultipleParenthesis(): void
     {
         $result = $this->transformFile('Stubs/Xpath/Sequence/constructor-multiple-parenthesis.xsl');
         $this->assertStringContainsString('a b c', $result);
     }
 
-    public function testConstructorInteger()
+    public function testConstructorInteger(): void
     {
         $result = $this->transformFile('Stubs/Xpath/Sequence/constructor-integer.xsl');
         $this->assertStringContainsString('1 2 3', $result);
     }
 
-    public function testReverse()
+    public function testReverse(): void
     {
         $this->assertEquals(
             'genkgo/xsl by transpiled is xsl2',
@@ -31,7 +31,7 @@ class SequenceTest extends AbstractXpathTest
         );
     }
 
-    public function testInsertBefore()
+    public function testInsertBefore(): void
     {
         $this->assertEquals(
             'xsl2 and xpath2 is transpiled by genkgo/xsl',
@@ -39,7 +39,7 @@ class SequenceTest extends AbstractXpathTest
         );
     }
 
-    public function testRemove()
+    public function testRemove(): void
     {
         $this->assertEquals(
             'xsl2 transpiled by genkgo/xsl',
@@ -47,7 +47,7 @@ class SequenceTest extends AbstractXpathTest
         );
     }
 
-    public function testSubsequenceOffset()
+    public function testSubsequenceOffset(): void
     {
         $this->assertEquals(
             'transpiled by genkgo/xsl',
@@ -55,7 +55,7 @@ class SequenceTest extends AbstractXpathTest
         );
     }
 
-    public function testSubsequenceFromLength()
+    public function testSubsequenceFromLength(): void
     {
         $this->assertEquals(
             'transpiled by',
@@ -63,7 +63,7 @@ class SequenceTest extends AbstractXpathTest
         );
     }
 
-    public function testDistinctValuesElement()
+    public function testDistinctValuesElement(): void
     {
         $this->assertEquals(
             'guitar',
@@ -71,7 +71,7 @@ class SequenceTest extends AbstractXpathTest
         );
     }
 
-    public function testDistinctValuesAttribute()
+    public function testDistinctValuesAttribute(): void
     {
         $this->assertEquals(
             '12:00:00+00:00 09:00:00+00:00',
@@ -79,7 +79,7 @@ class SequenceTest extends AbstractXpathTest
         );
     }
 
-    public function testDistinctValuesScalars()
+    public function testDistinctValuesScalars(): void
     {
         $this->assertEquals(
             '1 2 3 4',
@@ -87,7 +87,7 @@ class SequenceTest extends AbstractXpathTest
         );
     }
 
-    public function testAmpersand()
+    public function testAmpersand(): void
     {
         $this->assertEquals(
             'some string',
@@ -95,7 +95,7 @@ class SequenceTest extends AbstractXpathTest
         );
     }
 
-    public function testUnordered()
+    public function testUnordered(): void
     {
         $expected = \explode(' ', 'genkgo/xsl by transpiled is xsl2');
         $items = \explode(' ', $this->transformFile('Stubs/Xpath/Sequence/unordered.xsl'));
@@ -105,7 +105,7 @@ class SequenceTest extends AbstractXpathTest
         }
     }
 
-    public function testIndexOfText()
+    public function testIndexOfText(): void
     {
         $this->assertEquals('false', $this->transformFile('Stubs/Xpath/Sequence/index-of-text.xsl', [
             'param1' => 'Hello',
@@ -118,7 +118,7 @@ class SequenceTest extends AbstractXpathTest
         ]));
     }
 
-    public function testIndexOfSequence()
+    public function testIndexOfSequence(): void
     {
         $this->assertEquals('2', $this->transformFile('Stubs/Xpath/Sequence/index-of-sequence.xsl', [
             'param' => '1997',

@@ -7,11 +7,11 @@ use PHPUnit\Framework\TestCase;
 
 abstract class AbstractTestCase extends TestCase
 {
-    private $oldCwd;
+    private string $oldCwd;
 
     protected function setUp(): void
     {
-        $this->oldCwd = \getcwd();
+        $this->oldCwd = (string)\getcwd();
         \chdir(__DIR__);
     }
 

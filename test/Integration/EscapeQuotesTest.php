@@ -9,7 +9,7 @@ use Genkgo\Xsl\ProcessorFactory;
 
 final class EscapeQuotesTest extends AbstractIntegrationTestCase
 {
-    public function testDisableEntitiesWhenDocumentAlreadyLoaded()
+    public function testDisableEntitiesWhenDocumentAlreadyLoaded(): void
     {
         $factory = new ProcessorFactory(new NullCache());
 

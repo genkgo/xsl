@@ -11,7 +11,7 @@ use Genkgo\Xsl\Xsl\Node\IncludeWindowsTransformer;
 
 class IncludeWindowsTransformerTest extends AbstractTestCase
 {
-    public function testFullPath()
+    public function testFullPath(): void
     {
         $document = new DOMDocument('1.0', 'UTF-8');
         $document->load('Stubs/include-full-windows-path.xsl');
@@ -21,8 +21,8 @@ class IncludeWindowsTransformerTest extends AbstractTestCase
 
         $items = 0;
 
+        /** @var \DOMNodeList<\DOMElement> $list */
         $list = $xpath->query('//xsl:include');
-        /** @var \DOMElement $element */
         foreach ($list as $element) {
             $this->assertTrue($transformer->supports($element));
             $transformer->transform($element);

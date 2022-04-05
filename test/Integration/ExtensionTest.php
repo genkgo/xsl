@@ -11,7 +11,7 @@ use Genkgo\Xsl\XsltProcessor;
 
 final class ExtensionTest extends AbstractIntegrationTestCase
 {
-    public function testXpathFunction()
+    public function testXpathFunction(): void
     {
         $extension = new MyExtension();
 
@@ -30,7 +30,7 @@ final class ExtensionTest extends AbstractIntegrationTestCase
         $this->assertEquals('Hello World was called and received 20 arguments!', \trim($processorResult));
     }
 
-    public function testXpathFunctionXsl1()
+    public function testXpathFunctionXsl1(): void
     {
         $extension = new MyExtension();
 
@@ -50,7 +50,7 @@ final class ExtensionTest extends AbstractIntegrationTestCase
         $this->assertEquals('Hello World was called and received 20 arguments!', \trim($processorResult));
     }
 
-    public function testClosure()
+    public function testClosure(): void
     {
         $extension = new MyExtension();
         $factory = new ProcessorFactory(new NullCache(), [$extension]);
@@ -69,7 +69,7 @@ final class ExtensionTest extends AbstractIntegrationTestCase
         $this->assertEquals('20', \trim($processorResult));
     }
 
-    public function testMethod()
+    public function testMethod(): void
     {
         $extension = new MyExtension();
         $factory = new ProcessorFactory(new NullCache(), [$extension]);
