@@ -44,18 +44,12 @@ final class MatchingIterator implements Iterator
         $this->start();
     }
 
-    /**
-     * @return string
-     */
-    public function current()
+    public function current(): string
     {
         return $this->lexer->peek($this->position);
     }
 
-    /**
-     * @return void
-     */
-    public function next()
+    public function next(): void
     {
         $this->position += $this->direction;
         $end = $this->direction === self::DIRECTION_UP ? $this->lexer->count() : 0;
@@ -71,26 +65,17 @@ final class MatchingIterator implements Iterator
         $this->position = -1;
     }
 
-    /**
-     * @return int
-     */
     public function key(): int
     {
         return $this->position;
     }
 
-    /**
-     * @return boolean
-     */
-    public function valid()
+    public function valid(): bool
     {
         return $this->position !== -1;
     }
 
-    /**
-     * @return void
-     */
-    public function rewind()
+    public function rewind(): void
     {
         $this->start();
     }
