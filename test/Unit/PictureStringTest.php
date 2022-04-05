@@ -8,20 +8,20 @@ use Genkgo\Xsl\Xsl\Functions\Formatter\PictureString;
 
 final class PictureStringTest extends AbstractTestCase
 {
-    public function testComponentOnly()
+    public function testComponentOnly(): void
     {
         $pictureString = new PictureString('Y');
         $this->assertEquals('Y', $pictureString->getComponentSpecifier());
     }
 
-    public function testComponentAndPresentationModifier()
+    public function testComponentAndPresentationModifier(): void
     {
         $pictureString = new PictureString('FN');
         $this->assertEquals('F', $pictureString->getComponentSpecifier());
         $this->assertEquals('N', $pictureString->getPresentationModifier());
     }
 
-    public function testComponentAndPresentationModifierAndMinWidth()
+    public function testComponentAndPresentationModifierAndMinWidth(): void
     {
         $pictureString = new PictureString('FN,1');
         $this->assertEquals('F', $pictureString->getComponentSpecifier());
@@ -29,14 +29,14 @@ final class PictureStringTest extends AbstractTestCase
         $this->assertEquals('1', $pictureString->getMinWidth());
     }
 
-    public function testComponentAndMinWidth()
+    public function testComponentAndMinWidth(): void
     {
         $pictureString = new PictureString('F,1');
         $this->assertEquals('F', $pictureString->getComponentSpecifier());
         $this->assertEquals('1', $pictureString->getMinWidth());
     }
 
-    public function testComponentAndPresentationModifierAndMinMaxWidth()
+    public function testComponentAndPresentationModifierAndMinMaxWidth(): void
     {
         $pictureString = new PictureString('FN,1-2');
         $this->assertEquals('F', $pictureString->getComponentSpecifier());
@@ -45,7 +45,7 @@ final class PictureStringTest extends AbstractTestCase
         $this->assertEquals('2', $pictureString->getMaxWidth());
     }
 
-    public function testComponentAndMinMaxWidth()
+    public function testComponentAndMinMaxWidth(): void
     {
         $pictureString = new PictureString('F,1-2');
         $this->assertEquals('F', $pictureString->getComponentSpecifier());
@@ -53,7 +53,7 @@ final class PictureStringTest extends AbstractTestCase
         $this->assertEquals('2', $pictureString->getMaxWidth());
     }
 
-    public function testLongerPresentationModifier()
+    public function testLongerPresentationModifier(): void
     {
         $pictureString = new PictureString('FNn,1-2');
         $this->assertEquals('F', $pictureString->getComponentSpecifier());
@@ -62,19 +62,19 @@ final class PictureStringTest extends AbstractTestCase
         $this->assertEquals('2', $pictureString->getMaxWidth());
     }
 
-    public function testUnlimitedMinWidth()
+    public function testUnlimitedMinWidth(): void
     {
         $pictureString = new PictureString('FNn,*-2');
         $this->assertNull($pictureString->getMinWidth());
     }
 
-    public function testUnlimitedMaxWidth()
+    public function testUnlimitedMaxWidth(): void
     {
         $pictureString = new PictureString('FNn,1-*');
         $this->assertNull($pictureString->getMaxWidth());
     }
 
-    public function testInvalidComponent()
+    public function testInvalidComponent(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new PictureString('G');

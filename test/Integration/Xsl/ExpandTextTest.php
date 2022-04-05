@@ -5,7 +5,7 @@ namespace Genkgo\Xsl\Integration\Xsl;
 
 class ExpandTextTest extends AbstractXslTest
 {
-    public function testExpandText()
+    public function testExpandText(): void
     {
         $this->assertEquals(
             'Ben Harper Jimi Hendrix',
@@ -13,7 +13,7 @@ class ExpandTextTest extends AbstractXslTest
         );
     }
 
-    public function testExpandTextOverwrite()
+    public function testExpandTextOverwrite(): void
     {
         $this->assertStringContainsString(
             '{artist}',

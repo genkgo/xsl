@@ -5,7 +5,7 @@ namespace Genkgo\Xsl\Integration\Xsl;
 
 class TestTest extends AbstractXslTest
 {
-    public function testMatch()
+    public function testMatch(): void
     {
         $this->assertEquals('<test>Electric Ladyland</test>', $this->transformFile('Stubs/Xsl/test.xsl'));
     }

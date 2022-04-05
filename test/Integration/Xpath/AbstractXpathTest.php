@@ -10,7 +10,10 @@ use Genkgo\Xsl\XsltProcessor;
 
 abstract class AbstractXpathTest extends AbstractIntegrationTestCase
 {
-    protected function transformFile($path, array $parameters = [])
+    /**
+     * @param array<string, scalar> $parameters
+     */
+    protected function transformFile(string $path, array $parameters = []): string
     {
         $styleSheet = new DOMDocument();
         $styleSheet->load($path);

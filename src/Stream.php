@@ -41,8 +41,8 @@ final class Stream
 
         $streamContext = \stream_context_get_options($this->context);
 
-        /** @var Transpiler $transpiler */
         if (isset($streamContext['gxsl']['transpiler'])) {
+            /** @var Transpiler $transpiler */
             $transpiler = $streamContext['gxsl']['transpiler'];
 
             try {

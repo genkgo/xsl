@@ -10,7 +10,7 @@ use Genkgo\Xsl\Schema\XmlSchema;
 
 final class FactoryTest extends AbstractTestCase
 {
-    public function testNewInstances()
+    public function testNewInstances(): void
     {
         $factory = new ProcessorFactory(new NullCache(), [new XmlSchema()]);
 

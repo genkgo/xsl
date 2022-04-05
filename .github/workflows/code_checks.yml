@@ -12,12 +12,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php: ['7.4']
+        php: ['7.4', '8.0', '8.1']
 
     name: PHP ${{ matrix.php }} tests
     steps:
       - uses: actions/checkout@v2
-      - uses: shivammathur/setup-php@v1
+      - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           coverage: none
@@ -27,9 +27,9 @@ jobs:
 
       - name: Run tests
         run: ./vendor/bin/phpunit -c phpunit.xml
-#      - name: Static analysis for source
-#        run: ./vendor/bin/phpstan analyse -l max src
-#      - name: Static analysis for tests
-#        run: ./vendor/bin/phpstan analyse -l max test
+      - name: Static analysis for source
+        run: ./vendor/bin/phpstan analyse -l 5 src
+      - name: Static analysis for tests
+        run: ./vendor/bin/phpstan analyse -l 7 test
       - name: Code Style
         run: ./vendor/bin/php-cs-fixer fix --dry-run --verbose --config .php-cs-fixer.dist.php ./src ./test

@@ -9,7 +9,7 @@ use Genkgo\Xsl\XsltProcessor;
 
 final class ProcessXslt2DocumentsTest extends AbstractIntegrationTestCase
 {
-    public function testMultipleMethod()
+    public function testMultipleMethod(): void
     {
         $xslDoc = new DOMDocument();
         $xslDoc->load('Stubs/combine-multiple-functions.xsl');
@@ -24,7 +24,7 @@ final class ProcessXslt2DocumentsTest extends AbstractIntegrationTestCase
         $this->assertEquals(157, \trim($processorResult));
     }
 
-    public function testInclude()
+    public function testInclude(): void
     {
         $xslDoc = new DOMDocument();
         $xslDoc->load('Stubs/include2.xsl');
@@ -39,7 +39,7 @@ final class ProcessXslt2DocumentsTest extends AbstractIntegrationTestCase
         $this->assertEquals(157, \trim($transpilerResult));
     }
 
-    public function testIncludeFullPath()
+    public function testIncludeFullPath(): void
     {
         $xslDoc = new DOMDocument("1.0", "UTF-8");
         $xslRoot = $xslDoc->createElementNS('http://www.w3.org/1999/XSL/Transform', 'xsl:stylesheet');
@@ -62,7 +62,7 @@ final class ProcessXslt2DocumentsTest extends AbstractIntegrationTestCase
         $this->assertEquals(157, \trim($transpilerResult));
     }
 
-    public function testExcludePrefixesAll()
+    public function testExcludePrefixesAll(): void
     {
         $xslDoc = new DOMDocument("1.0", "UTF-8");
         $xslRoot = $xslDoc->createElementNS('http://www.w3.org/1999/XSL/Transform', 'xsl:stylesheet');

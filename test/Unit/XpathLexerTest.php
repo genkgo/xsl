@@ -36,7 +36,7 @@ use Genkgo\Xsl\AbstractTestCase;
 
 final class XpathLexerTest extends AbstractTestCase
 {
-    public function testTokenize()
+    public function testTokenize(): void
     {
         $sourcePath = '//*[@id="i"]';
         $expectedTokens = ['//', '*', '[', '@', 'id', '=', '"i"', ']'];
@@ -50,7 +50,7 @@ final class XpathLexerTest extends AbstractTestCase
         }
     }
 
-    public function testNext()
+    public function testNext(): void
     {
         $expectedTokens = ['/', 'bookstore', '/', 'book', '[', 'price', '>',
             '35.00', ']'];
@@ -62,7 +62,7 @@ final class XpathLexerTest extends AbstractTestCase
         }
     }
 
-    public function testCount()
+    public function testCount(): void
     {
         $resultLexer = new Xpath\Lexer([]);
         $this->assertCount(0, $resultLexer);
@@ -71,7 +71,7 @@ final class XpathLexerTest extends AbstractTestCase
         $this->assertCount(8, $resultLexer);
     }
 
-    public function testSeek()
+    public function testSeek(): void
     {
         $expectedTokens = ['name', '(', '"some_name"', ')'];
         $resultLexer = new Xpath\Lexer($expectedTokens);
@@ -82,7 +82,7 @@ final class XpathLexerTest extends AbstractTestCase
         }
     }
 
-    public function testBack()
+    public function testBack(): void
     {
         $expectedTokens = ['..', '/', 'contents', '/', 'child', '::', 'sections'];
 
@@ -95,7 +95,7 @@ final class XpathLexerTest extends AbstractTestCase
         $this->assertEquals($expectedTokens[\count($expectedTokens) - 1], $resultLexer->current());
     }
 
-    public function testIterate()
+    public function testIterate(): void
     {
         $expectedTokens = ['..', '/', 'contents', '/', 'child', '::', 'sections'];
 
@@ -108,7 +108,7 @@ final class XpathLexerTest extends AbstractTestCase
         }
     }
 
-    public function testInsert()
+    public function testInsert(): void
     {
         $expectedTokens = ['//', '*', '[', '@', 'id', '=', '"i"', ']', '/', 'book'];
         $resultLexer = new Xpath\Lexer(['//', '*', '[', '@', 'id', '=', '"i"', ']']);

@@ -91,7 +91,7 @@ final class XsltProcessor extends PhpXsltProcessor
     }
 
     /**
-     * @param \DOMNode $doc
+     * @param \DOMDocument $doc
      * @param string|null $returnClass
      * @return \DOMDocument
      */
@@ -248,7 +248,9 @@ final class XsltProcessor extends PhpXsltProcessor
     {
         if ($this->styleSheet instanceof \SimpleXMLElement) {
             $document = \dom_import_simplexml($this->styleSheet);
-            if ($document === false) {
+
+            /** @phpstan-ignore-next-line */
+            if (!$document instanceof \DOMDocument === false) {
                 throw new \UnexpectedValueException('Cannot transform SimpleXMLElement to DOMDocument');
             }
 

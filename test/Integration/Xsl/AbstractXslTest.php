@@ -10,7 +10,10 @@ use Genkgo\Xsl\XsltProcessor;
 
 abstract class AbstractXslTest extends AbstractIntegrationTestCase
 {
-    protected function transformFile($path, array $parameters = [])
+    /**
+     * @param array<string, scalar> $parameters
+     */
+    protected function transformFile(string $path, array $parameters = []): string
     {
         $styleSheet = new DOMDocument();
         $styleSheet->preserveWhiteSpace = true;
@@ -18,10 +21,7 @@ abstract class AbstractXslTest extends AbstractIntegrationTestCase
 
         $processor = new XsltProcessor(new NullCache());
         $processor->importStyleSheet($styleSheet);
-
-        foreach ($parameters as $key => $value) {
-            $processor->setParameter('', $key, $value);
-        }
+        $processor->setParameter('', $parameters);
 
         $document = new DOMDocument();
         $document->load('Stubs/collection.xml');

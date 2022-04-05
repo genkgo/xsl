@@ -9,7 +9,7 @@ use Genkgo\Xsl\Xsl\Functions\Formatter\IntlDateTimeFormatter;
 
 final class IntlDateFormatterTest extends AbstractXslTest
 {
-    public function testFormatDate()
+    public function testFormatDate(): void
     {
         $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
 
@@ -24,7 +24,7 @@ final class IntlDateFormatterTest extends AbstractXslTest
         );
     }
 
-    public function testFormatTime()
+    public function testFormatTime(): void
     {
         $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
 
@@ -39,7 +39,7 @@ final class IntlDateFormatterTest extends AbstractXslTest
         );
     }
 
-    public function testFormatDateTime()
+    public function testFormatDateTime(): void
     {
         $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
 
@@ -65,7 +65,7 @@ final class IntlDateFormatterTest extends AbstractXslTest
         );
     }
 
-    public function testInvalidPicture()
+    public function testInvalidPicture(): void
     {
         $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
 
@@ -79,7 +79,7 @@ final class IntlDateFormatterTest extends AbstractXslTest
         }
     }
 
-    public function testNoValidComponents()
+    public function testNoValidComponents(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('No valid components found');
@@ -88,7 +88,7 @@ final class IntlDateFormatterTest extends AbstractXslTest
         $formatter->formatDate(new DateTime('2015-10-16'), '[A]', 'en_US');
     }
 
-    public function testNotSupportedComponent()
+    public function testNotSupportedComponent(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Component [E] is not supported');
@@ -97,7 +97,7 @@ final class IntlDateFormatterTest extends AbstractXslTest
         $formatter->formatDate(new DateTime('2015-10-16'), '[E]', 'en_US');
     }
 
-    public function testEscapeBrackets()
+    public function testEscapeBrackets(): void
     {
         $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
         $this->assertEquals(
@@ -110,7 +110,7 @@ final class IntlDateFormatterTest extends AbstractXslTest
         );
     }
 
-    public function testUnclosedFormat()
+    public function testUnclosedFormat(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Wrong formatted date, missing ]');
@@ -123,7 +123,7 @@ final class IntlDateFormatterTest extends AbstractXslTest
         );
     }
 
-    public function testFormatDateNo24Hour()
+    public function testFormatDateNo24Hour(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -135,7 +135,7 @@ final class IntlDateFormatterTest extends AbstractXslTest
         );
     }
 
-    public function testWrongEscape()
+    public function testWrongEscape(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Wrong formatted date, escape by doubling [[ and ]]');
@@ -148,7 +148,7 @@ final class IntlDateFormatterTest extends AbstractXslTest
         );
     }
 
-    public function testFormatMonthName()
+    public function testFormatMonthName(): void
     {
         $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
         $this->assertEquals(
@@ -161,7 +161,7 @@ final class IntlDateFormatterTest extends AbstractXslTest
         );
     }
 
-    public function testFormatMonthNameAbbreviated()
+    public function testFormatMonthNameAbbreviated(): void
     {
         $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
         $this->assertEquals(
@@ -174,7 +174,7 @@ final class IntlDateFormatterTest extends AbstractXslTest
         );
     }
 
-    public function testFormatDayName()
+    public function testFormatDayName(): void
     {
         $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
         $this->assertEquals(
@@ -187,7 +187,7 @@ final class IntlDateFormatterTest extends AbstractXslTest
         );
     }
 
-    public function testFormatDayNameAbbreviated()
+    public function testFormatDayNameAbbreviated(): void
     {
         $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
         $this->assertEquals(
@@ -200,7 +200,7 @@ final class IntlDateFormatterTest extends AbstractXslTest
         );
     }
 
-    public function testFormatDayNameFull()
+    public function testFormatDayNameFull(): void
     {
         $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
         $this->assertEquals(
@@ -213,7 +213,7 @@ final class IntlDateFormatterTest extends AbstractXslTest
         );
     }
 
-    public function testUpperCase()
+    public function testUpperCase(): void
     {
         $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
         $this->assertEquals(
@@ -226,7 +226,7 @@ final class IntlDateFormatterTest extends AbstractXslTest
         );
     }
 
-    public function testLowerCase()
+    public function testLowerCase(): void
     {
         $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
         $this->assertEquals(
@@ -239,7 +239,7 @@ final class IntlDateFormatterTest extends AbstractXslTest
         );
     }
 
-    public function testFormatDayNameAbbreviatedCapitalWithMonthCapital()
+    public function testFormatDayNameAbbreviatedCapitalWithMonthCapital(): void
     {
         $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
         $this->assertEquals(
@@ -252,7 +252,7 @@ final class IntlDateFormatterTest extends AbstractXslTest
         );
     }
 
-    public function testFormatDayInMonthWithoutLeadingZero()
+    public function testFormatDayInMonthWithoutLeadingZero(): void
     {
         $formatter =new IntlDateTimeFormatter(\date_default_timezone_get());
         $this->assertSame(
@@ -265,7 +265,7 @@ final class IntlDateFormatterTest extends AbstractXslTest
         );
     }
 
-    public function testFormatMonthWithoutLeadingZero()
+    public function testFormatMonthWithoutLeadingZero(): void
     {
         $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
         $this->assertSame(
@@ -278,7 +278,7 @@ final class IntlDateFormatterTest extends AbstractXslTest
         );
     }
 
-    public function testMonthName()
+    public function testMonthName(): void
     {
         $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
         $this->assertSame(
@@ -291,7 +291,7 @@ final class IntlDateFormatterTest extends AbstractXslTest
         );
     }
 
-    public function testJanuaryFirst2017()
+    public function testJanuaryFirst2017(): void
     {
         $formatter = new IntlDateTimeFormatter(\date_default_timezone_get());
         $this->assertSame(

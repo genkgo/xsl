@@ -16,7 +16,7 @@ abstract class AbstractXsElement extends DOMDocument
 
         $root = $this->createElementNS(XmlSchema::URI, 'xs:' . $this->getElementName());
         if ($value !== null) {
-            $root->nodeValue = $value;
+            $root->nodeValue = (string)$value;
         }
         $this->appendChild($root);
     }

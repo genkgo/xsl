@@ -23,7 +23,7 @@ final class ElementFunction implements ElementTransformerInterface
      */
     public function transform(DOMElement $element): void
     {
-        $prefixes = $element->ownerDocument->documentElement->getAttribute('extension-element-prefixes') ?? '';
+        $prefixes = $element->ownerDocument->documentElement->getAttribute('extension-element-prefixes');
         if (\strpos(' ' . $prefixes . ' ', ' func ') === false) {
             $prefixes .=  ' func';
         }

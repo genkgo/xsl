@@ -5,7 +5,7 @@ namespace Genkgo\Xsl\Integration\Xsl;
 
 final class AttributeTest extends AbstractXslTest
 {
-    public function testAttributeSelect()
+    public function testAttributeSelect(): void
     {
         $this->assertSame(
             '<cd attr="guitar"/><cd attr="guitar"/>',
@@ -13,7 +13,7 @@ final class AttributeTest extends AbstractXslTest
         );
     }
 
-    public function testAttributeSelectSeparator()
+    public function testAttributeSelectSeparator(): void
     {
         $this->assertSame(
             '<cd attr="guitar, guitar"/>',

@@ -100,8 +100,8 @@ final class Transformer implements TransformerInterface
      */
     private function transformElements(DOMDocument $document, string $xslPrefix) : void
     {
-        /** @var DOMNodeList|DOMElement[] $list */
         $matchAndSelectElements = new DOMXPath($document);
+        /** @var DOMNodeList|DOMElement[] $list */
         $list = $matchAndSelectElements->query('//' . $xslPrefix . ':*');
         foreach ($list as $element) {
             foreach ($this->elementTransformers as $elementTransformer) {
@@ -118,11 +118,11 @@ final class Transformer implements TransformerInterface
      */
     private function transformAttributes(DOMDocument $document, $xslPrefix)
     {
-        /** @var DOMNodeList|DOMAttr[] $list */
         $matchAndSelectElements = new DOMXPath($document);
         $lengthPrefix = \strlen($xslPrefix);
         $expression = '//*[substring(name(), 1, ' . $lengthPrefix . ') != "' . $xslPrefix . '"]/@*[contains(., "{") or contains(., "}")]';
 
+        /** @var DOMNodeList|DOMAttr[] $list */
         $list = $matchAndSelectElements->query($expression);
         foreach ($list as $attribute) {
             foreach ($this->attributeTransformers as $attributeTransformer) {
@@ -143,7 +143,7 @@ final class Transformer implements TransformerInterface
         array $excludePrefixes = self::DEFAULT_EXCLUDE_PREFIXES
     ): self {
         $elementTransformers = [
-            new ElementForEachGroup($xpathCompiler),
+            new ElementForEachGroup(),
             new AttributeExpandText($xpathCompiler),
             new AttributeMatch($xpathCompiler),
             new AttributeSelect($xpathCompiler),

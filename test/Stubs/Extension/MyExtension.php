@@ -35,7 +35,8 @@ final class MyExtension implements XmlNamespaceInterface
         $functions->attach(
             self::URI,
             new class implements FunctionMapInterface {
-                private $functions = [];
+                /** @var array<string, FunctionInterface> */
+                private array $functions = [];
 
                 public function __construct()
                 {

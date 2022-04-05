@@ -7,14 +7,14 @@ use Genkgo\Xsl\Exception\TransformationException;
 
 class XsIntegerTest extends AbstractSchemaTest
 {
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $result = $this->transformFile('Stubs/Schema/integer.xsl');
 
         $this->assertSame('1995', $result);
     }
 
-    public function testWrongConstructor()
+    public function testWrongConstructor(): void
     {
         $this->expectException(TransformationException::class);
         $this->transformFile('Stubs/Schema/integer-wrong-constructor.xsl');

@@ -11,14 +11,14 @@ use PHPUnit\Framework\Error\Error;
 
 class XsltProcessorTest extends AbstractTestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $decorator = new XsltProcessor(new NullCache());
 
         $this->assertTrue($decorator instanceof \XSLTProcessor);
     }
 
-    public function testWithConfig()
+    public function testWithConfig(): void
     {
         $xslDoc = new DOMDocument();
         $xslDoc->load('Stubs/collection.xsl');
@@ -32,7 +32,7 @@ class XsltProcessorTest extends AbstractTestCase
         $this->assertGreaterThan(1, \strlen($decorator->transformToXML($xmlDoc)));
     }
 
-    public function testVersion1()
+    public function testVersion1(): void
     {
         $xslDoc = new DOMDocument();
         $xslDoc->load('Stubs/version-1.0.xsl');
@@ -46,7 +46,7 @@ class XsltProcessorTest extends AbstractTestCase
         $this->assertGreaterThan(1, \strlen($decorator->transformToXML($xmlDoc)));
     }
 
-    public function testVersion2()
+    public function testVersion2(): void
     {
         $xslDoc = new DOMDocument();
         $xslDoc->load('Stubs/version-2.0.xsl');
@@ -60,7 +60,7 @@ class XsltProcessorTest extends AbstractTestCase
         $this->assertGreaterThan(1, \strlen($decorator->transformToXML($xmlDoc)));
     }
 
-    public function testVersion3()
+    public function testVersion3(): void
     {
         $xslDoc = new DOMDocument();
         $xslDoc->load('Stubs/version-3.0.xsl');
@@ -74,7 +74,7 @@ class XsltProcessorTest extends AbstractTestCase
         $this->assertGreaterThan(1, \strlen($decorator->transformToXML($xmlDoc)));
     }
 
-    public function testExcludePrefixes()
+    public function testExcludePrefixes(): void
     {
         $xslDoc = new DOMDocument();
         $xslDoc->load('Stubs/exclude-prefixes.xsl');
@@ -107,8 +107,8 @@ class XsltProcessorTest extends AbstractTestCase
 
         // test that after transformation the error is captured by the
         // previous error handler and not by the one set in transformToXML
-        $this->expectException(Error::class);
-        $this->expectExceptionMessage('Error captured by phpunit error handler');
+        $this->expectError();
+        $this->expectErrorMessage('Error captured by phpunit error handler');
         \trigger_error('Error captured by phpunit error handler', E_USER_ERROR);
     }
 }
