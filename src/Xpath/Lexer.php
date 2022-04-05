@@ -102,7 +102,7 @@ final class Lexer implements Iterator, SeekableIterator, Countable
     /**
      * @return string
      */
-    public function current()
+    public function current(): string
     {
         return $this->tokens[$this->position];
     }
@@ -110,7 +110,7 @@ final class Lexer implements Iterator, SeekableIterator, Countable
     /**
      * @return void
      */
-    public function next()
+    public function next(): void
     {
         $this->position++;
     }
@@ -118,7 +118,7 @@ final class Lexer implements Iterator, SeekableIterator, Countable
     /**
      * @return int
      */
-    public function key()
+    public function key(): int
     {
         return $this->position;
     }
@@ -126,7 +126,7 @@ final class Lexer implements Iterator, SeekableIterator, Countable
     /**
      * @return boolean
      */
-    public function valid()
+    public function valid(): bool
     {
         return isset($this->tokens[$this->position]);
     }
@@ -134,7 +134,7 @@ final class Lexer implements Iterator, SeekableIterator, Countable
     /**
      * @return void
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->position = 0;
     }
@@ -143,7 +143,7 @@ final class Lexer implements Iterator, SeekableIterator, Countable
      * @param  int  $position
      * @return void
      */
-    public function seek($position)
+    public function seek($position): void
     {
         $this->position = $position;
     }
@@ -160,7 +160,7 @@ final class Lexer implements Iterator, SeekableIterator, Countable
     /**
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return \count($this->tokens);
     }
