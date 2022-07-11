@@ -33,11 +33,10 @@ final class CurrentGroupingKey implements FunctionInterface
         }
 
         if ($currentElement->localName === 'sort' && $currentElement->namespaceURI === XslTransformations::URI) {
-            $resultTokens = ['current()', '/', '@key'];
+            $resultTokens = ['current()'];
         } else {
             if ($xslForEach instanceof DOMElement) {
-                $groupId = $xslForEach->getAttribute('group-id');
-                $resultTokens = ['$current-group-' . $groupId, '/', '@key'];
+                $resultTokens = ['current()'];
             } else {
                 throw new \UnexpectedValueException('Expecting DOMElement');
             }
@@ -51,7 +50,7 @@ final class CurrentGroupingKey implements FunctionInterface
      * @param DOMNode|DOMElement $element
      * @return bool
      */
-    private function isForEachGroupElement(DOMNode $element)
+    private function isForEachGroupElement(DOMNode $element): bool
     {
         if ($element instanceof DOMElement) {
             return $element->nodeName === 'xsl:for-each' && $element->getAttribute('group-id');

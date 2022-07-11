@@ -12,9 +12,4 @@
         <directory>./test/Unit</directory>
         <directory>./test/Integration</directory>
     </testsuite>
-    <filter>
-        <whitelist addUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./src</directory>
-        </whitelist>
-    </filter>
 </phpunit>

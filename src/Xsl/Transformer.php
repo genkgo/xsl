@@ -143,7 +143,7 @@ final class Transformer implements TransformerInterface
         array $excludePrefixes = self::DEFAULT_EXCLUDE_PREFIXES
     ): self {
         $elementTransformers = [
-            new ElementForEachGroup(),
+            new ElementForEachGroup($xpathCompiler),
             new AttributeExpandText($xpathCompiler),
             new AttributeMatch($xpathCompiler),
             new AttributeSelect($xpathCompiler),
