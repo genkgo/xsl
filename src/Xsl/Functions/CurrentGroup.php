@@ -37,21 +37,8 @@ final class CurrentGroup implements FunctionInterface
             throw new \UnexpectedValueException('Expecting DOMElement');
         }
 
-        $resultTokens = [];
-        $resultTokens[] = '$current-un-grouped-' . $groupId;
-        $resultTokens[] = '[';
-        $resultTokens[] = 'generate-id';
-        $resultTokens[] = '(';
-        $resultTokens[] = '.';
-        $resultTokens[] = ')';
-        $resultTokens[] = '=';
-        $resultTokens[] = '$current-group-' . $groupId;
-        $resultTokens[] = '//';
-        $resultTokens[] = 'xsl:element-id';
-        $resultTokens[] = ']';
-
         $lexer->seek($lexer->key() + 2);
-        return $resultTokens;
+        return ['$current-group-' . $groupId];
     }
 
     /**

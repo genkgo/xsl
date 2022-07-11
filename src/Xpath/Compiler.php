@@ -51,4 +51,25 @@ final class Compiler
 
         return \trim(\implode('', $resultTokens));
     }
+
+    /**
+     * @param Lexer $tokens
+     * @param DOMNode $currentElement
+     * @return string
+     */
+    public function compileTokens(Lexer $tokens, DOMNode $currentElement): string
+    {
+        $resultTokens = [];
+        foreach ($tokens as $token) {
+            foreach ($this->expressions as $expression) {
+                if ($expression->supports($tokens)) {
+                    $resultTokens = $expression->merge($tokens, $currentElement, $resultTokens);
+                    continue 2;
+                }
+            }
+            $resultTokens[] = $token;
+        }
+
+        return \trim(\implode('', $resultTokens));
+    }
 }
