@@ -33,17 +33,18 @@ final class CurrentGroupingKey implements FunctionInterface
         }
 
         if ($currentElement->localName === 'sort' && $currentElement->namespaceURI === XslTransformations::URI) {
-            $resultTokens = ['current()'];
+            $lexer->seek($lexer->key() + 2);
+            return ['current()'];
         } else {
             if ($xslForEach instanceof DOMElement) {
-                $resultTokens = ['current()'];
+                $groupId = $xslForEach->getAttribute('group-id');
             } else {
                 throw new \UnexpectedValueException('Expecting DOMElement');
             }
         }
 
         $lexer->seek($lexer->key() + 2);
-        return $resultTokens;
+        return ['$current-grouping-key-' . $groupId];
     }
 
     /**

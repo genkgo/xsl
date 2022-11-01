@@ -49,6 +49,7 @@ final class ElementForEachGroup implements ElementTransformerInterface
         $document = $element->ownerDocument;
 
         $xslForEach = $this->createForEachStatement($element, $groupId);
+        $groupingKeyVariable = $this->createGroupingKeyVariable($element, $groupId);
         $unGroupedVariable = $this->createUnGroupedVariable($element, $groupId);
         $groupVariable = $this->createGroupVariable($element, $groupId);
 
@@ -61,6 +62,7 @@ final class ElementForEachGroup implements ElementTransformerInterface
             }
         }
 
+        $xslForEach->appendChild($groupingKeyVariable);
         $xslForEach->appendChild($groupVariable);
 
         while ($element->childNodes->length > 0) {
@@ -121,6 +123,19 @@ final class ElementForEachGroup implements ElementTransformerInterface
                 $this->xpathCompiler->compile($element->getAttribute('group-by'), $element)
             )
         );
+        return $variable;
+    }
+
+    /**
+     * @param DOMElement $element
+     * @param string $groupId
+     * @return DOMElement
+     */
+    private function createGroupingKeyVariable(DOMElement $element, string $groupId): DOMElement
+    {
+        $variable = $element->ownerDocument->createElementNS(XslTransformations::URI, 'xsl:variable');
+        $variable->setAttribute('name', 'current-grouping-key-' . $groupId);
+        $variable->setAttribute('select', 'current()');
         return $variable;
     }
 

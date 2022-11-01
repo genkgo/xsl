@@ -80,6 +80,20 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         $this->assertEquals('ComposerGenkgo', \trim($processor->transformToXml($data)));
     }
 
+    public function testByCurrentGroupingKeyInNewForEach(): void
+    {
+        $styleSheet = new DOMDocument();
+        $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-current-grouping-key-in-new-for-each.xsl');
+
+        $processor = new XsltProcessor(new NullCache());
+        $processor->importStyleSheet($styleSheet);
+
+        $data = new DOMDocument();
+        $data->load('Stubs/packages.xml');
+
+        $this->assertEquals('ComposerGenkgoGenkgoGenkgo', \trim($processor->transformToXml($data)));
+    }
+
     public function testByCurrentGroupingKeySort(): void
     {
         $styleSheet = new DOMDocument();
