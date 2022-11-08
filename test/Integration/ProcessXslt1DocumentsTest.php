@@ -107,6 +107,7 @@ final class ProcessXslt1DocumentsTest extends AbstractIntegrationTestCase
 
         $transpiler = new XsltProcessor(new NullCache());
         $transpiler->importStylesheet($xslDoc);
+        /** @var DOMDocument $transpilerResult */
         $transpilerResult = $transpiler->transformToDoc($xmlDoc);
 
         $this->assertEquals($nativeResult->saveXML(), $transpilerResult->saveXML());

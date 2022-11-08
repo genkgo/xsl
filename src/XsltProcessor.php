@@ -58,12 +58,10 @@ final class XsltProcessor extends PhpXsltProcessor
         $this->excludeAllNamespaces = true;
     }
 
-    /**
-     * @param object $stylesheet
-     */
-    public function importStyleSheet($stylesheet)
+    public function importStylesheet(object $stylesheet): bool
     {
         $this->styleSheet = $stylesheet;
+        return true;
     }
 
     /**
@@ -91,23 +89,21 @@ final class XsltProcessor extends PhpXsltProcessor
     }
 
     /**
-     * @param \DOMDocument $doc
-     * @param string|null $returnClass
-     * @return \DOMDocument
+     * @param object|\DOMDocument $document
      */
-    public function transformToDoc($doc, ?string $returnClass = null):? \DOMDocument
+    public function transformToDoc(object $document, ?string $returnClass = null): \DOMDocument|false
     {
         $styleSheet = $this->styleSheetToDomDocument();
 
         $transpiler = $this->createTranspiler($styleSheet);
 
         return $this->catchLibXmlErrorThrowTransformException(
-            function () use ($doc, $styleSheet, $transpiler):? \DOMDocument {
+            function () use ($document, $returnClass, $styleSheet, $transpiler):? \DOMDocument {
                 parent::importStylesheet($this->getTranspiledStyleSheet($transpiler, $styleSheet));
                 $this->throwOnLibxmlError();
 
-                return $transpiler->transform(function () use ($doc) {
-                    $result = parent::transformToDoc($doc);
+                return $transpiler->transform(function () use ($document, $returnClass) {
+                    $result = parent::transformToDoc($document, $returnClass);
                     $this->throwOnLibxmlError();
                     return $result;
                 });
@@ -116,22 +112,20 @@ final class XsltProcessor extends PhpXsltProcessor
     }
 
     /**
-     * @param \DOMDocument|\SimpleXMLElement $doc
-     * @param string $uri
-     * @return int
+     * @param object|\DOMDocument|\SimpleXMLElement $document
      */
-    public function transformToUri($doc, $uri):? int
+    public function transformToUri(object $document, string $uri): int
     {
         $styleSheet = $this->styleSheetToDomDocument();
         $transpiler = $this->createTranspiler($styleSheet);
 
         return $this->catchLibXmlErrorThrowTransformException(
-            function () use ($doc, $uri, $styleSheet, $transpiler):? int {
+            function () use ($document, $uri, $styleSheet, $transpiler):? int {
                 parent::importStylesheet($this->getTranspiledStyleSheet($transpiler, $styleSheet));
                 $this->throwOnLibxmlError();
 
-                return $transpiler->transform(function () use ($doc, $uri) {
-                    $result = parent::transformToUri($doc, $uri);
+                return $transpiler->transform(function () use ($document, $uri) {
+                    $result = parent::transformToUri($document, $uri);
                     $this->throwOnLibxmlError();
                     return $result;
                 });
