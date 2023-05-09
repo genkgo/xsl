@@ -54,7 +54,7 @@ final class Transpiler
 
         $result = $this->cache->get($documentURI, '');
         if ($result === '') {
-            if ($document->doctype instanceof \DOMDocumentType && $document->doctype->entities->length > 0) {
+            if ($document->doctype instanceof \DOMDocumentType && $document->doctype->entities->count() > 0) {
                 throw new \DOMException('Invalid document, contains entities');
             }
 
@@ -99,7 +99,7 @@ final class Transpiler
             $document->resolveExternals = false;
             $document->load($path);
 
-            if ($document->doctype instanceof \DOMDocumentType && $document->doctype->entities->length > 0) {
+            if ($document->doctype instanceof \DOMDocumentType && $document->doctype->entities->count() > 0) {
                 throw new \DOMException('Invalid document, contains entities');
             }
 
