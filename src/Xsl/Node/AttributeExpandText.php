@@ -54,6 +54,8 @@ final class AttributeExpandText implements ElementTransformerInterface
 
         $childrenQuery = new \DOMXPath($element->ownerDocument);
         $elements = $childrenQuery->query('.//text()', $element);
+
+        /** @var \DOMText $element */
         foreach ($elements as $element) {
             $overwritesQuery = new \DOMXPath($element->ownerDocument);
             $nearestExpand = $overwritesQuery->evaluate(
