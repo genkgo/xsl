@@ -25,12 +25,8 @@ final class GroupBy
         /** @var DOMElement $current */
         $current = $arguments->get(3)[0];
 
-        foreach ($namespaces as $prefix => $namespace) {
-            $current->ownerDocument->documentElement->setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:' . $prefix, $namespace);
-        }
-
         $compiler = new Compiler($context->getFunctions());
-        $xpathExpression = $compiler->compileTokens(Lexer::tokenize('string(' . $groupBy . ')'), $current);
+        $xpathExpression = $compiler->compileTokens(Lexer::tokenize('string(' . $groupBy . ')'), $current, $namespaces);
 
         $values = [];
         foreach ($list as $key => $element) {

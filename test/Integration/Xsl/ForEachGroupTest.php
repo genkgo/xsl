@@ -206,6 +206,20 @@ final class ForEachGroupTest extends AbstractIntegrationTestCase
         $this->assertEquals('201120152014', \trim($processor->transformToXml($data)));
     }
 
+    public function testWithNamespaceFunctionsCopyOf(): void
+    {
+        $styleSheet = new DOMDocument();
+        $styleSheet->load('Stubs/Xsl/ForEachGroup/group-by-namespace-functions-copy-of.xsl');
+
+        $processor = new XsltProcessor(new NullCache());
+        $processor->importStyleSheet($styleSheet);
+
+        $data = new DOMDocument();
+        $data->load('Stubs/packages.xml');
+
+        $this->assertEquals('<div><p>test</p></div><div><p>test</p></div><div><p>test</p></div><div><p>test</p></div>', \trim($processor->transformToXml($data)));
+    }
+
     public function testByAttributeValueTemplates(): void
     {
         $styleSheet = new DOMDocument();

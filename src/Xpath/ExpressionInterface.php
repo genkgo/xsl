@@ -19,5 +19,5 @@ interface ExpressionInterface
      * @param array $tokens
      * @return array
      */
-    public function merge(Lexer $lexer, DOMNode $currentElement, array $tokens): array;
+    public function merge(Lexer $lexer, DOMNode $currentElement, array $tokens, array $namespaces = []): array;
 }

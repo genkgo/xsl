@@ -41,9 +41,9 @@ final class FunctionExpression implements ExpressionInterface
      * @param array $tokens
      * @return array
      */
-    public function merge(Lexer $lexer, DOMNode $currentElement, array $tokens): array
+    public function merge(Lexer $lexer, DOMNode $currentElement, array $tokens, array $namespaces = []): array
     {
-        return \array_merge($tokens, $this->createFunctionTokens($lexer, $currentElement));
+        return \array_merge($tokens, $this->createFunctionTokens($lexer, $currentElement, $namespaces));
     }
 
     /**
@@ -51,7 +51,7 @@ final class FunctionExpression implements ExpressionInterface
      * @param DOMNode $currentElement
      * @return string[]
      */
-    private function createFunctionTokens(Lexer $lexer, DOMNode $currentElement)
+    private function createFunctionTokens(Lexer $lexer, DOMNode $currentElement, array $namespaces = [])
     {
         if ($currentElement->ownerDocument instanceof DOMDocument === false) {
             throw new \UnexpectedValueException('Expecting currentElement attached to document');
@@ -59,8 +59,8 @@ final class FunctionExpression implements ExpressionInterface
 
         $token = $lexer->current();
         $documentElement = $currentElement->ownerDocument->documentElement;
-        $namespaces = FetchNamespacesFromNode::fetch($documentElement);
-        $functionQname = $this->convertTokenToFunctionName($token, $namespaces);
+        $documentNamespaces = \array_merge(FetchNamespacesFromNode::fetch($documentElement), $namespaces);
+        $functionQname = $this->convertTokenToFunctionName($token, $documentNamespaces);
 
         try {
             $dot = \strrpos($functionQname, ':');

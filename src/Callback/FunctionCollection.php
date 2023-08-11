@@ -8,7 +8,7 @@ final class FunctionCollection
     /**
      * @var array
      */
-    private $collection = [];
+    public $collection = [];
 
     /**
      * @param string $namespace

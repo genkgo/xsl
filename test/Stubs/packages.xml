@@ -7,6 +7,7 @@
         <dependency name="a" author="Author1"/>
         <dependency name="b" author="Author1"/>
         <dependency name="c" author="Author2"/>
+        <content><p>test</p></content>
     </package>
     <package>
         <author>Genkgo</author>
@@ -16,6 +17,7 @@
         <dependency name="x" author="Author3"/>
         <dependency name="y" author="Author4"/>
         <dependency name="z" author="Author4"/>
+        <content><p>test</p></content>
     </package>
     <package>
         <author>Genkgo</author>
@@ -25,6 +27,7 @@
         <dependency name="h" author="Author5"/>
         <dependency name="i" author="Author1"/>
         <dependency name="j" author="Author2"/>
+        <content><p>test</p></content>
     </package>
     <package>
         <author>Genkgo</author>
@@ -34,5 +37,6 @@
         <dependency name="g" author="Author3"/>
         <dependency name="h" author="Author4"/>
         <dependency name="i" author="Author1"/>
+        <content><p>test</p></content>
     </package>
 </packages>

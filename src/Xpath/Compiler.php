@@ -57,13 +57,13 @@ final class Compiler
      * @param DOMNode $currentElement
      * @return string
      */
-    public function compileTokens(Lexer $tokens, DOMNode $currentElement): string
+    public function compileTokens(Lexer $tokens, DOMNode $currentElement, array $namespaces = []): string
     {
         $resultTokens = [];
         foreach ($tokens as $token) {
             foreach ($this->expressions as $expression) {
                 if ($expression->supports($tokens)) {
-                    $resultTokens = $expression->merge($tokens, $currentElement, $resultTokens);
+                    $resultTokens = $expression->merge($tokens, $currentElement, $resultTokens, $namespaces);
                     continue 2;
                 }
             }
