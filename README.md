@@ -3,7 +3,7 @@ XSL 2.0 Transpiler in PHP.
 
 ### Installation
 
-Requires PHP 7.4 or later. It is installable and autoloadable via Composer as [genkgo/xsl](https://packagist.org/packages/genkgo/xsl).
+Requires [supported PHP version](https://www.php.net/supported-versions.php). It is installable and autoloadable via Composer as [genkgo/xsl](https://packagist.org/packages/genkgo/xsl).
 
 ### Quality
 
