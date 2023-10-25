@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Xsl\Integration\Xpath;
 
-class MathTest extends AbstractXpathTest
+class MathTestCase extends AbstractXpathTestCase
 {
     public function testAbs(): void
     {

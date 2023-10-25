@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Xsl\Integration\Xsl;
 
-final class AttributeTest extends AbstractXslTest
+final class AttributeTestCase extends AbstractXslTestCase
 {
     public function testAttributeSelect(): void
     {

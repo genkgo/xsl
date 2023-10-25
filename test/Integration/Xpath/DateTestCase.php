@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Xsl\Integration\Xpath;
 
-class DateTest extends AbstractXpathTest
+class DateTestCase extends AbstractXpathTestCase
 {
     public function testCurrentTime(): void
     {

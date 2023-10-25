@@ -5,7 +5,7 @@ namespace Genkgo\Xsl\Integration\Xsl;
 
 use Genkgo\Xsl\Exception\TransformationException;
 
-final class AttributeValueTemplatesTest extends AbstractXslTest
+final class AttributeValueTemplatesTestCase extends AbstractXslTestCase
 {
     public function testSingleExpression(): void
     {

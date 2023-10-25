@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Xsl\Integration\Xpath;
 
-class ForLoopTest extends AbstractXpathTest
+class ForLoopTestCase extends AbstractXpathTestCase
 {
     public function testSimple(): void
     {

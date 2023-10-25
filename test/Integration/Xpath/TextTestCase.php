@@ -5,7 +5,7 @@ namespace Genkgo\Xsl\Integration\Xpath;
 
 use Genkgo\Xsl\Exception\TransformationException;
 
-class TextTest extends AbstractXpathTest
+class TextTestCase extends AbstractXpathTestCase
 {
     public function testConcat(): void
     {

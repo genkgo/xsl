@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Xsl\Integration\Xpath;
 
-class AggregationTest extends AbstractXpathTest
+class AggregationTestCase extends AbstractXpathTestCase
 {
     public function testSum(): void
     {

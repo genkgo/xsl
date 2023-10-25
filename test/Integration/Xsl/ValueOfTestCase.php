@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Xsl\Integration\Xsl;
 
-class ValueOfTest extends AbstractXslTest
+class ValueOfTestCase extends AbstractXslTestCase
 {
     public function testSeparator(): void
     {

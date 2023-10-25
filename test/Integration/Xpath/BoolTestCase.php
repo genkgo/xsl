@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Xsl\Integration\Xpath;
 
-class BoolTest extends AbstractXpathTest
+class BoolTestCase extends AbstractXpathTestCase
 {
     public function testBooleanText(): void
     {

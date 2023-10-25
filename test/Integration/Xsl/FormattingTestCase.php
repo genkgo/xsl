@@ -8,7 +8,7 @@ use Genkgo\Xsl\Schema\XsDate;
 use Genkgo\Xsl\Schema\XsDateTime;
 use Genkgo\Xsl\Schema\XsTime;
 
-final class FormattingTest extends AbstractXslTest
+final class FormattingTestCase extends AbstractXslTestCase
 {
     public function testDateTime(): void
     {

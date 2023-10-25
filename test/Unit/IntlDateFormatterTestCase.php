@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace Genkgo\Xsl\Unit;
 
 use DateTime;
-use Genkgo\Xsl\Integration\Xsl\AbstractXslTest;
+use Genkgo\Xsl\Integration\Xsl\AbstractXslTestCase;
 use Genkgo\Xsl\Xsl\Functions\Formatter\IntlDateTimeFormatter;
 
-final class IntlDateFormatterTest extends AbstractXslTest
+final class IntlDateFormatterTestCase extends AbstractXslTestCase
 {
     public function testFormatDate(): void
     {

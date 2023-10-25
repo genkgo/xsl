@@ -8,7 +8,7 @@ use Genkgo\Xsl\Cache\NullCache;
 use Genkgo\Xsl\Integration\AbstractIntegrationTestCase;
 use Genkgo\Xsl\XsltProcessor;
 
-abstract class AbstractSchemaTest extends AbstractIntegrationTestCase
+abstract class AbstractSchemaTestCase extends AbstractIntegrationTestCase
 {
     /**
      * @param array<string, scalar> $parameters

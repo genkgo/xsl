@@ -5,7 +5,7 @@ namespace Genkgo\Xsl\Integration\Schema;
 
 use Genkgo\Xsl\Exception\TransformationException;
 
-class XsDateTest extends AbstractSchemaTest
+class XsDateTestCase extends AbstractSchemaTestCase
 {
     public function testConstructor(): void
     {

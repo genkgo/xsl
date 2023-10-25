@@ -5,18 +5,18 @@ namespace Genkgo\Xsl\Integration\Schema;
 
 use Genkgo\Xsl\Exception\TransformationException;
 
-class XsIntegerTest extends AbstractSchemaTest
+class XsDateTimeTestCase extends AbstractSchemaTestCase
 {
     public function testConstructor(): void
     {
-        $result = $this->transformFile('Stubs/Schema/integer.xsl');
+        $result = $this->transformFile('Stubs/Schema/dateTime.xsl');
 
-        $this->assertSame('1995', $result);
+        $this->assertStringContainsString('1995-05-10T00:00:00+00:00', $result);
     }
 
     public function testWrongConstructor(): void
     {
         $this->expectException(TransformationException::class);
-        $this->transformFile('Stubs/Schema/integer-wrong-constructor.xsl');
+        $this->transformFile('Stubs/Schema/dateTime-wrong-constructor.xsl');
     }
 }

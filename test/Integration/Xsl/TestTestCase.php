@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Xsl\Integration\Xsl;
 
-class TestTest extends AbstractXslTest
+class TestTestCase extends AbstractXslTestCase
 {
     public function testMatch(): void
     {
