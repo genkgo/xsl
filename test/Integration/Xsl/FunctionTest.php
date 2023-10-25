@@ -21,6 +21,6 @@ final class FunctionTest extends AbstractIntegrationTestCase
         $data = new DOMDocument();
         $data->load('Stubs/collection.xml');
 
-        $this->assertEquals('4', \trim($processor->transformToXml($data)));
+        $this->assertEquals('4 1', \trim($processor->transformToXml($data)));
     }
 }
