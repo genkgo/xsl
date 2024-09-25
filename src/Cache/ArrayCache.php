@@ -7,17 +7,9 @@ use Psr\SimpleCache\CacheInterface;
 
 final class ArrayCache implements CacheInterface
 {
-    /**
-     * @var array
-     */
-    private $memory = [];
+    private array $memory = [];
 
-    /**
-     * @param string $key
-     * @param mixed $default
-     * @return mixed
-     */
-    public function get($key, $default = null)
+    public function get(string $key, mixed $default = null): mixed
     {
         if (isset($this->memory[$key])) {
             return $this->getNonExpiredCacheOrDefault($this->memory[$key], $default);
@@ -26,13 +18,7 @@ final class ArrayCache implements CacheInterface
         return $default;
     }
 
-    /**
-     * @param string $key
-     * @param mixed $value
-     * @param int|null|\DateInterval $ttl
-     * @return bool
-     */
-    public function set($key, $value, $ttl = null)
+    public function set(string $key, mixed $value, null|int|\DateInterval $ttl = null): bool
     {
         $expires = null;
 
@@ -47,43 +33,26 @@ final class ArrayCache implements CacheInterface
         return true;
     }
 
-    /**
-     * @param string $key
-     * @return bool
-     */
-    public function delete($key)
+    public function delete(string $key): bool
     {
         unset($this->memory[$key]);
         return true;
     }
 
-    /**
-     * @return bool
-     */
-    public function clear()
+    public function clear(): bool
     {
         $this->memory = [];
         return true;
     }
 
-    /**
-     * @param iterable $keys
-     * @param mixed $default
-     * @return iterable
-     */
-    public function getMultiple($keys, $default = null)
+    public function getMultiple(iterable $keys, mixed $default = null): iterable
     {
-        foreach (\array_keys($this->memory) as $key) {
-            yield $this->get($key, $default);
+        foreach ($keys as $key) {
+            yield $key => $this->get($key, $default);
         }
     }
 
-    /**
-     * @param iterable $values
-     * @param null|int|\DateInterval $ttl
-     * @return bool
-     */
-    public function setMultiple($values, $ttl = null)
+    public function setMultiple(iterable $values, null|int|\DateInterval $ttl = null): bool
     {
         foreach ($values as $key => $value) {
             $this->set($key, $value, $ttl);
@@ -92,11 +61,7 @@ final class ArrayCache implements CacheInterface
         return true;
     }
 
-    /**
-     * @param iterable $keys
-     * @return bool
-     */
-    public function deleteMultiple($keys)
+    public function deleteMultiple(iterable $keys): bool
     {
         foreach (\array_keys($this->memory) as $key) {
             $this->delete($key);
@@ -105,21 +70,12 @@ final class ArrayCache implements CacheInterface
         return true;
     }
 
-    /**
-     * @param string $key
-     * @return bool
-     */
-    public function has($key)
+    public function has(string $key): bool
     {
         return isset($this->memory[$key]);
     }
 
-    /**
-     * @param array $keyData
-     * @param mixed|null $default
-     * @return mixed
-     */
-    private function getNonExpiredCacheOrDefault(array $keyData, $default = null)
+    private function getNonExpiredCacheOrDefault(array $keyData, mixed $default = null): mixed
     {
         [$value, $expires] = $keyData;
 
