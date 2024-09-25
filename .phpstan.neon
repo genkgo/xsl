@@ -1,7 +1,0 @@
-parameters:
-    ignoreErrors:
-        # Ignore documentElement errors:
-        - '# on DOMElement|null#'
-
-includes:
-- vendor/phpstan/phpstan-phpunit/extension.neon
