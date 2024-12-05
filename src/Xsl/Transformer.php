@@ -13,6 +13,7 @@ use Genkgo\Xsl\TransformerInterface;
 use Genkgo\Xsl\Util\FetchNamespacesFromNode;
 use Genkgo\Xsl\Xpath\Compiler;
 use Genkgo\Xsl\Xsl\Node\AttributeExpandText;
+use Genkgo\Xsl\Xsl\Node\AttributeName;
 use Genkgo\Xsl\Xsl\Node\AttributeValueTemplates;
 use Genkgo\Xsl\Xsl\Node\AttributeMatch;
 use Genkgo\Xsl\Xsl\Node\AttributeSelect;
@@ -147,6 +148,7 @@ final class Transformer implements TransformerInterface
             new AttributeExpandText($xpathCompiler),
             new AttributeMatch($xpathCompiler),
             new AttributeSelect($xpathCompiler),
+            new AttributeName($xpathCompiler),
             new AttributeTest($xpathCompiler),
             new ElementValueOf(),
             new ElementAttribute(),

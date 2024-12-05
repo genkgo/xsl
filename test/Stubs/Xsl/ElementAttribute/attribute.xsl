@@ -5,7 +5,7 @@
     <xsl:template match="collection">
         <xsl:for-each select="cd">
             <cd>
-                <xsl:attribute name="attr" select="instrument" />
+                <xsl:attribute name="{lower-case('ATTR')}" select="instrument" />
             </cd>
         </xsl:for-each>
     </xsl:template>
