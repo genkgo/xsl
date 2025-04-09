@@ -2,7 +2,7 @@
     "name" : "genkgo/xsl",
     "description": "XSL 2.0 Transpiler in PHP",
     "require" : {
-        "php" : " ~8.2.0 || ~8.3.0",
+        "php" : "^8.2",
         "ext-json" : "*",
         "ext-libxml" : "*",
         "ext-xsl" : "*",
