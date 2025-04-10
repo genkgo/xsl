@@ -39,7 +39,7 @@ final class TransformationContext
         DOMDocument $document,
         TransformerCollection $transformers,
         FunctionCollection $functions,
-        array $phpFunctions = null
+        ?array $phpFunctions = null
     ) {
         $this->document = $document;
         $this->transformers = $transformers;
