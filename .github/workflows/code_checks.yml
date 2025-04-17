@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php: ['8.2', '8.3']
+        php: ['8.2', '8.3', '8.4']
 
     name: PHP ${{ matrix.php }} tests
     steps:
@@ -25,6 +25,9 @@ jobs:
       - name: Download dependencies
         run: composer update --no-ansi --prefer-stable --prefer-dist --no-interaction --no-progress --no-suggest
 
+      - name: Set env var if PHP is 8.4
+        if: matrix.php == '8.4'
+        run: echo "PHP_CS_FIXER_IGNORE_ENV=1" >> $GITHUB_ENV
       - name: Run tests
         run: ./vendor/bin/phpunit -c phpunit.xml
       - name: Static analysis for source
