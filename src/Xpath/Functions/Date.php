@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Xsl\Xpath\Functions;
 
+use DateTimeZone;
 use Genkgo\Xsl\Callback\Arguments;
 use Genkgo\Xsl\Schema\XsDate;
 use Genkgo\Xsl\Schema\XsDateTime;
@@ -230,5 +231,14 @@ final class Date
         $arguments->assertSchemaType(0, 'dayTimeDuration');
 
         return new XsInteger((int) $arguments->castFromSchemaType(0)->format('%s'));
+    }
+
+    public static function adjustDateTimeToTimezone(Arguments $arguments)
+    {
+        $arguments->assertSchemaType(0, 'dateTime');
+        $adjustedDateTime = $arguments->castFromSchemaType(0)
+            ->setTimezone(new DateTimeZone(\date_default_timezone_get()));
+
+        return new XsDateTime($adjustedDateTime->format(XsDateTime::FORMAT));
     }
 }

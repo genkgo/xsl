@@ -99,4 +99,20 @@ class DateTestCase extends AbstractXpathTestCase
     {
         $this->assertEquals(10, $this->transformFile('Stubs/Xpath/Date/seconds-from-dateTime.xsl'));
     }
+
+    public function testAdjustDateTimeToTimezone(): void
+    {
+        $defaultTimezone = \date_default_timezone_get();
+        \date_default_timezone_set('Europe/Amsterdam');
+
+        try {
+            $result = $this->transformFile('Stubs/Xpath/Date/adjust-dateTime-to-timezone.xsl', [
+                'date' => '2015-07-07T15:00:00+00:00'
+            ]);
+
+            $this->assertEquals('2015-07-07T17:00:00+02:00', $result);
+        } finally {
+            \date_default_timezone_set($defaultTimezone);
+        }
+    }
 }

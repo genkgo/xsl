@@ -79,6 +79,7 @@ final class FunctionMap extends AbstractLazyFunctionMap
             'hours-from-duration' => ['newScalarReturnFunction', Date::class, 'integer'],
             'minutes-from-duration' => ['newScalarReturnFunction', Date::class, 'integer'],
             'seconds-from-duration' => ['newScalarReturnFunction', Date::class, 'integer'],
+            'adjust-dateTime-to-timezone' => ['newScalarReturnFunction', Date::class, 'dateTime'],
             'current-grouping-key' => new CurrentGroupingKey(),
             'current-group' => new CurrentGroup(),
             'format-dateTime' => new ClosureFunction(
