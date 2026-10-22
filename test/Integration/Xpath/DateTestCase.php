@@ -50,6 +50,16 @@ class DateTestCase extends AbstractXpathTestCase
         $this->assertEquals(1, $this->transformFile('Stubs/Xpath/Date/years-from-duration.xsl'));
     }
 
+    public function testHoursFromDurations(): void
+    {
+        $this->assertEquals(1, $this->transformFile('Stubs/Xpath/Date/hours-from-duration.xsl'));
+    }
+
+    public function testMinutesFromDurations(): void
+    {
+        $this->assertEquals(0, $this->transformFile('Stubs/Xpath/Date/minutes-from-duration.xsl'));
+    }
+
     public function testMonthFromDate(): void
     {
         $this->assertEquals(6, $this->transformFile('Stubs/Xpath/Date/month-from-date.xsl'));
