@@ -8,6 +8,29 @@ on:
       - master
 
 jobs:
+  early-test-php-next:
+    name: Build with upcoming PHP version
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.6'
+
+      - name: Setup Problem Matchers for PHPUnit
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - uses: "ramsey/composer-install@v3"
+        with:
+          composer-options: "--ignore-platform-req=php+"
+
+      - name: Run tests
+        run: composer test || true
+
   tests:
     runs-on: ubuntu-latest
     strategy:
