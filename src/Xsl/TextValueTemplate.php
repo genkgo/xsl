@@ -50,10 +50,11 @@ final class TextValueTemplate
                 if ($i8 !== $i9) {                        // a "}" that isn't a "}}"
                     throw new \InvalidArgumentException("Closing curly brace in attribute value template \"" . $expression . "\" must be doubled", 370);
                 }
-                $components[] = \substr($expression, $last, $i8 + 2 - $last);
+
+                $components[] = \substr($expression, $last, $i8 + 1 - $last);
                 $last = $i8 + 2;
             } elseif ($i1 !== false && $i1 === $i0) {              // found a doubled "{{"
-                $components[] = \substr($expression, $last, $i1 + 2 - $last);
+                $components[] = \substr($expression, $last, $i1 + 1 - $last);
                 $last = $i1 + 2;
             } elseif ($i0 !== false) {                        // found a single "{"
                 if ($i0 > $last) {

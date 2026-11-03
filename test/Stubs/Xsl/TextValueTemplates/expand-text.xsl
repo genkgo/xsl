@@ -3,7 +3,7 @@
     <xsl:output omit-xml-declaration="yes" />
 
     <xsl:template match="collection" expand-text="yes">
-        {cd/artist}
+        the cds from {string-join(cd/artist, ', ')} are from {{ {string-join(cd/year, ', ')} }}
     </xsl:template>
 
 </xsl:stylesheet>

@@ -8,7 +8,7 @@ class ExpandTextTestCase extends AbstractXslTestCase
     public function testExpandText(): void
     {
         $this->assertEquals(
-            'Ben Harper Jimi Hendrix',
+            'the cds from Ben Harper, Jimi Hendrix are from { 1995, 1997 }',
             $this->transformFile('Stubs/Xsl/TextValueTemplates/expand-text.xsl')
         );
     }
